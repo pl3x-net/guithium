@@ -1,0 +1,6 @@
+name: "${name}"
+main: "${group}.${name}Bukkit"
+version: "${version}"
+api-version: "1.19"
+description: "${description}"
+author: "BillyGalbreath"

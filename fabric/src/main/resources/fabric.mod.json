@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "servergui",
+  "version": "${version}",
+  "name": "ServerGUI Client",
+  "description": "Allows the server to add GUIs to the client",
+  "authors": [
+    "BillyGalbreath"
+  ],
+  "contact": {
+    "homepage": "https://purpurmc.org/",
+    "sources": "https://github.com/BillyGalbreath/ServerGUIClient",
+    "issues": "https://github.com/BillyGalbreath/ServerGUIClient/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.pl3x.servergui.fabric.ServerGUIFabric"
+    ],
+    "modmenu": [
+      "net.pl3x.servergui.fabric.configuration.ModMenu"
+    ]
+  },
+  "mixins": [
+    "servergui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/mtAAnkk"
+      }
+    }
+  }
+}
