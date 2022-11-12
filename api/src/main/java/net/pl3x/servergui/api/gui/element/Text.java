@@ -2,6 +2,7 @@ package net.pl3x.servergui.api.gui.element;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,46 +11,55 @@ import java.util.Objects;
 
 public class Text extends AbstractElement {
     private String text;
-    private boolean shadow;
+    private Boolean shadow;
 
-    public Text(@NotNull String id, @NotNull String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, boolean shadow, float scale, double zIndex) {
-        super(id, "text", pos, anchor, offset, scale, zIndex);
+    public Text(@NotNull String id, @Nullable String parent, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow, @Nullable Float scale, @Nullable Double zIndex) {
+        super(id, "text", parent, pos, anchor, offset, scale, zIndex);
         setText(text);
         setShadow(shadow);
     }
 
-    @NotNull
+    @Nullable
     public String getText() {
         return this.text;
     }
 
-    public void setText(@NotNull String text) {
-        Preconditions.checkNotNull(text, "Text cannot be null");
+    public void setText(@Nullable String text) {
         this.text = text;
     }
 
-    public boolean hasShadow() {
+    @Nullable
+    public Boolean hasShadow() {
         return this.shadow;
     }
 
-    public void setShadow(boolean shadow) {
+    public void setShadow(@Nullable Boolean shadow) {
         this.shadow = shadow;
     }
 
     @Override
     @NotNull
     public JsonElement toJson() {
-        JsonObjectWrapper json = new JsonObjectWrapper();
-        json.addProperty("id", getId());
-        json.addProperty("type", getType());
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
         json.addProperty("text", getText());
         json.addProperty("shadow", hasShadow());
-        json.addProperty("pos", getPos());
-        json.addProperty("anchor", getAnchor());
-        json.addProperty("offset", getOffset());
-        json.addProperty("scale", getScale());
-        json.addProperty("zIndex", getZIndex());
         return json.getJsonObject();
+    }
+
+    @NotNull
+    public static Text fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("id"), "ID cannot be null");
+        return new Text(
+            json.get("id").getAsString(),
+            !json.has("parent") ? null : json.get("parent").getAsString(),
+            !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("shadow") ? null : json.get("shadow").getAsBoolean(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
+            !json.has("zIndex") ? null : json.get("zIndex").getAsDouble()
+        );
     }
 
     @Override
@@ -64,8 +74,8 @@ public class Text extends AbstractElement {
             return false;
         }
         Text other = (Text) o;
-        return getText().equals(other.getText())
-            && hasShadow() == other.hasShadow()
+        return Objects.equals(getText(), other.getText())
+            && Objects.equals(hasShadow(), other.hasShadow())
             && super.equals(o);
     }
 
@@ -76,143 +86,55 @@ public class Text extends AbstractElement {
 
     @Override
     public String toString() {
-        return "Text{"
-            + "id=" + getId()
-            + ",type=" + getType()
+        return String.format("%s{%s}", "Text", getPropertiesAsString());
+    }
+
+    @Override
+    @NotNull
+    public String getPropertiesAsString() {
+        return super.getPropertiesAsString()
             + ",text=" + getText()
-            + ",shadow=" + hasShadow()
-            + ",pos=" + getPos()
-            + ",anchor=" + getAnchor()
-            + ",offset=" + getOffset()
-            + ",scale=" + getScale()
-            + ",z-index=" + getZIndex()
-            + "}";
+            + ",shadow=" + hasShadow();
     }
 
-    public static Builder builder(@NotNull String id, @NotNull String text) {
-        return new Builder(id, text);
+    public static Builder builder(@NotNull String id) {
+        return new Builder(id);
     }
 
-    public static class Builder {
-        private String id;
+    public static class Builder extends AbstractBuilder<Builder> {
         private String text;
-        private Point pos = new Point();
-        private Point anchor = new Point();
-        private Point offset = new Point();
-        private boolean shadow = true;
-        private float scale = 1.0F;
-        private double zIndex = 0.0D;
+        private Boolean shadow;
 
-        public Builder(@NotNull String id, @NotNull String text) {
-            setId(id);
-            setText(text);
+        public Builder(@NotNull String id) {
+            super(id);
         }
 
-        @NotNull
-        public String getId() {
-            return id;
-        }
-
-        @NotNull
-        public Builder setId(@NotNull String id) {
-            Preconditions.checkNotNull(id, "ID cannot be null");
-            this.id = id;
-            return this;
-        }
-
-        @NotNull
+        @Nullable
         public String getText() {
             return text;
         }
 
         @NotNull
-        public Builder setText(@NotNull String text) {
-            Preconditions.checkNotNull(text, "Text cannot be null");
+        public Builder setText(@Nullable String text) {
             this.text = text;
             return this;
         }
 
-        @NotNull
-        public Point getPos() {
-            return pos;
-        }
-
-        @NotNull
-        public Builder setPos(float x, float y) {
-            return setPos(Point.of(x, y));
-        }
-
-        @NotNull
-        public Builder setPos(@Nullable Point pos) {
-            this.pos = pos == null ? new Point() : pos;
-            return this;
-        }
-
-        @NotNull
-        public Point getAnchor() {
-            return anchor;
-        }
-
-        @NotNull
-        public Builder setAnchor(float x, float y) {
-            return setAnchor(Point.of(x, y));
-        }
-
-        @NotNull
-        public Builder setAnchor(@Nullable Point anchor) {
-            this.anchor = anchor == null ? new Point() : anchor;
-            return this;
-        }
-
-        @NotNull
-        public Point getOffset() {
-            return offset;
-        }
-
-        @NotNull
-        public Builder setOffset(float x, float y) {
-            return setOffset(Point.of(x, y));
-        }
-
-        @NotNull
-        public Builder setOffset(@Nullable Point offset) {
-            this.offset = offset == null ? new Point() : offset;
-            return this;
-        }
-
-        public boolean hasShadow() {
+        @Nullable
+        public Boolean hasShadow() {
             return shadow;
         }
 
         @NotNull
-        public Builder setShadow(boolean shadow) {
+        public Builder setShadow(@Nullable Boolean shadow) {
             this.shadow = shadow;
             return this;
         }
 
-        public float getScale() {
-            return scale;
-        }
-
-        @NotNull
-        public Builder setScale(float scale) {
-            this.scale = scale;
-            return this;
-        }
-
-        public double getZIndex() {
-            return zIndex;
-        }
-
-        @NotNull
-        public Builder setZIndex(double zIndex) {
-            this.zIndex = zIndex;
-            return this;
-        }
-
+        @Override
         @NotNull
         public Text build() {
-            return new Text(getId(), getText(), getPos(), getAnchor(), getOffset(), hasShadow(), getScale(), getZIndex());
+            return new Text(getId(), getParent(), getText(), getPos(), getAnchor(), getOffset(), hasShadow(), getScale(), getZIndex());
         }
     }
 }

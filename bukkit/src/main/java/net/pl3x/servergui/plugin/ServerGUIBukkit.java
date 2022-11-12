@@ -1,11 +1,7 @@
 package net.pl3x.servergui.plugin;
 
 import net.pl3x.servergui.api.ServerGUI;
-import net.pl3x.servergui.api.gui.GuiManager;
-import net.pl3x.servergui.api.json.Gson;
 import net.pl3x.servergui.api.texture.TextureManager;
-import net.pl3x.servergui.plugin.json.ElementAdapter;
-import net.pl3x.servergui.plugin.json.GuiAdapter;
 import net.pl3x.servergui.plugin.network.NetworkManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -19,15 +15,11 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
         return instance;
     }
 
-    private final Gson gson;
-    private final GuiManager guiManager;
     private final TextureManager textureManager;
 
     public ServerGUIBukkit() {
         instance = this;
 
-        this.gson = new Gson(new GuiAdapter(), new ElementAdapter());
-        this.guiManager = new GuiManager();
         this.textureManager = new TextureManager();
 
         try {
@@ -42,18 +34,6 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
 
     public void onEnable() {
         NetworkManager.register();
-    }
-
-    @Override
-    @NotNull
-    public Gson gson() {
-        return this.gson;
-    }
-
-    @Override
-    @NotNull
-    public GuiManager getGuiManager() {
-        return this.guiManager;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.pl3x.servergui.api.json;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,6 +27,14 @@ public class JsonObjectWrapper {
      */
     public JsonObjectWrapper() {
         this.wrapped = new JsonObject();
+    }
+
+    /**
+     * Extends an existing JsonObject.
+     */
+    public JsonObjectWrapper(JsonElement jsonElement) {
+        Preconditions.checkArgument(jsonElement instanceof JsonObject, "Can only extend JsonObject");
+        this.wrapped = (JsonObject) jsonElement;
     }
 
     /**

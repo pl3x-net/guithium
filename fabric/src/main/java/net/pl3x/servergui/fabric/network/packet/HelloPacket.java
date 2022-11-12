@@ -8,10 +8,9 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.pl3x.servergui.api.ServerGUI;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
 
 public class HelloPacket extends Packet {
-    public static final Identifier CHANNEL = new Identifier(ServerGUIFabric.MOD_ID, "hello");
+    public static final Identifier CHANNEL = new Identifier(ServerGUI.MOD_ID, "hello");
 
     public void send() {
         ByteArrayDataOutput out = out();

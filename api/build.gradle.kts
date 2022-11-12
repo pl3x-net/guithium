@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    `maven-publish`
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -31,5 +32,16 @@ tasks {
     }
     javadoc {
         options.encoding = Charsets.UTF_8.name()
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "${rootProject.group}"
+            artifactId = "servergui-api"
+            version = "${rootProject.version}"
+            from(components["java"])
+        }
     }
 }
