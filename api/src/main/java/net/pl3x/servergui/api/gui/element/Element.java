@@ -1,9 +1,12 @@
 package net.pl3x.servergui.api.gui.element;
 
 import com.google.gson.JsonObject;
+import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public interface Element extends JsonSerializable {
     @NotNull
@@ -47,6 +50,10 @@ public interface Element extends JsonSerializable {
     Double getZIndex();
 
     void setZIndex(@Nullable Double zIndex);
+
+    default void send(UUID uuid) {
+        ServerGUI.api().getNetworkManager().send(uuid, this);
+    }
 
     static Element createElement(JsonObject json) {
         return switch (!json.has("type") ? "" : json.get("type").getAsString()) {
