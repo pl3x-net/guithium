@@ -1,4 +1,4 @@
-# ServerGUI Bukkit Plugin
+# ServerGUI
 
 ### Elements
 
