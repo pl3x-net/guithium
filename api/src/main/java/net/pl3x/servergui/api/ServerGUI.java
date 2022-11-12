@@ -1,5 +1,6 @@
 package net.pl3x.servergui.api;
 
+import net.pl3x.servergui.api.network.NetworkManager;
 import net.pl3x.servergui.api.texture.TextureManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,9 @@ public interface ServerGUI {
     static ServerGUI api() {
         return Provider.api();
     }
+
+    @NotNull
+    NetworkManager getNetworkManager();
 
     @NotNull
     TextureManager getTextureManager();

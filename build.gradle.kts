@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    `maven-publish`
 }
 
 project.version = "${extra["minecraft_version"]}-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
@@ -29,16 +28,5 @@ tasks {
         dependsOn(mergedJar)
         archiveBaseName.set(rootProject.name)
         from({ mergedJar.filter { it.name.endsWith("jar") && it.path.contains(rootDir.path) }.map { zipTree(it) } })
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "${rootProject.group}"
-            artifactId = "servergui"
-            version = "${rootProject.version}"
-            from(components["java"])
-        }
     }
 }
