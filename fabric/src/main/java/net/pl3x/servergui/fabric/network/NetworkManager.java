@@ -3,7 +3,7 @@ package net.pl3x.servergui.fabric.network;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
-import net.pl3x.servergui.fabric.network.packet.GuiPacket;
+import net.pl3x.servergui.fabric.network.packet.ElementPacket;
 import net.pl3x.servergui.fabric.network.packet.HelloPacket;
 import net.pl3x.servergui.fabric.network.packet.TexturesPacket;
 
@@ -17,9 +17,10 @@ public class NetworkManager {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ServerGUIFabric.instance().getScheduler().cancelAll();
             ServerGUIFabric.instance().getTextureManager().clear();
+            ServerGUIFabric.instance().getRenderableElementManager().clear();
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(GuiPacket.CHANNEL, GuiPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(ElementPacket.CHANNEL, ElementPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(HelloPacket.CHANNEL, HelloPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(TexturesPacket.CHANNEL, TexturesPacket::receive);
     }

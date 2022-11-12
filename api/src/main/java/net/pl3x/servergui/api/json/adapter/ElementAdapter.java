@@ -1,9 +1,8 @@
-package net.pl3x.servergui.api.json;
+package net.pl3x.servergui.api.json.adapter;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 
-public abstract class ElementAdapter implements JsonSerializer<Element>, JsonDeserializer<Element> {
+public class ElementAdapter implements JsonSerializer<Element>, JsonDeserializer<Element> {
     @Override
     @NotNull
     public JsonElement serialize(@NotNull Element element, @NotNull Type type, @NotNull JsonSerializationContext context) {
@@ -21,8 +20,6 @@ public abstract class ElementAdapter implements JsonSerializer<Element>, JsonDes
 
     @Override
     public Element deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return createElement(json.getAsJsonObject());
+        return Element.createElement(json.getAsJsonObject());
     }
-
-    protected abstract Element createElement(JsonObject json);
 }

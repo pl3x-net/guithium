@@ -14,13 +14,17 @@ import net.pl3x.servergui.api.gui.element.Point;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class RenderableImage extends Image implements RenderableElement {
+public class RenderableImage extends RenderableElement {
     private Texture texture;
 
-    public RenderableImage(@NotNull String id, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset, float scale, double zIndex) {
-        super(id, pos, size, anchor, offset, scale, zIndex);
+    public RenderableImage(Image image, RenderableElement parent) {
+        super(image, parent);
+    }
+
+    @Override
+    public Image getElement() {
+        return (Image) super.getElement();
     }
 
     public Texture getTexture() {
@@ -28,9 +32,14 @@ public class RenderableImage extends Image implements RenderableElement {
     }
 
     @Override
-    public void render(@NotNull MatrixStack matrix) {
+    public void render(@NotNull MatrixStack matrix, float delta) {
+        Image image = getElement();
+        if (image.getSize() == null) {
+            return;
+        }
+
         if (getTexture() == null) {
-            this.texture = ServerGUIFabric.instance().getTextureManager().get(getId());
+            this.texture = ServerGUIFabric.instance().getTextureManager().get(image.getId());
             return;
         }
 
@@ -40,18 +49,12 @@ public class RenderableImage extends Image implements RenderableElement {
 
         matrix.push();
 
-        setupScaleAndZIndex(matrix);
+        Point pos = getRenderPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(matrix));
 
-        double anchorX = Math.ceil(ServerGUIFabric.screenWidth * getAnchor().getX() / getScale());
-        double anchorY = Math.ceil(ServerGUIFabric.screenHeight * getAnchor().getY() / getScale());
-
-        int offsetX = (int) (getSize().getX() * getOffset().getX());
-        int offsetY = (int) (getSize().getY() * getOffset().getY());
-
-        float x0 = (float) (anchorX + getPos().getX() + offsetX);
-        float y0 = (float) (anchorY + getPos().getY() + offsetY);
-        float x1 = x0 + getSize().getX();
-        float y1 = y0 + getSize().getY();
+        float x0 = pos.getX();
+        float y0 = pos.getY();
+        float x1 = x0 + image.getSize().getX();
+        float y1 = y0 + image.getSize().getY();
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());

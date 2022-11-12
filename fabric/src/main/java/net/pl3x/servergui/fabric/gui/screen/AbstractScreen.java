@@ -3,6 +3,7 @@ package net.pl3x.servergui.fabric.gui.screen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.pl3x.servergui.api.ServerGUI;
 
 public abstract class AbstractScreen extends Screen {
     private final Screen parent;
@@ -10,7 +11,7 @@ public abstract class AbstractScreen extends Screen {
     protected int centerX;
 
     public AbstractScreen(Screen parent) {
-        super(Text.translatable("servergui.options.title"));
+        super(Text.translatable(ServerGUI.MOD_ID + ".options.title"));
         this.parent = parent;
     }
 
