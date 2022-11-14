@@ -2,6 +2,7 @@ package net.pl3x.servergui.fabric.gui;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.pl3x.servergui.api.Key;
+import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 
 import java.util.Map;
@@ -31,6 +32,8 @@ public class ScreenManager {
     }
 
     public void render(MatrixStack matrix, float delta) {
-        this.screens.forEach((key, screen) -> screen.render(matrix, 0, 0, delta));
+        if (!ServerGUIFabric.client.options.debugEnabled) {
+            this.screens.forEach((key, screen) -> screen.render(matrix, 0, 0, delta));
+        }
     }
 }

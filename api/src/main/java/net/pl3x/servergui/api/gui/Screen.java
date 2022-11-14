@@ -12,9 +12,7 @@ import net.pl3x.servergui.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -23,15 +21,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Screen extends Keyed implements JsonSerializable {
     private Type type;
+    private Background background;
     private final Map<Key, Element> elements = new ConcurrentHashMap<>();
 
-    public Screen(@NotNull Key key) {
-        this(key, null);
-    }
-
-    public Screen(@NotNull Key key, @Nullable Type type) {
+    public Screen(@NotNull Key key, @Nullable Type type, @Nullable Background background) {
         super(key);
         setType(type);
+        setBackground(background);
     }
 
     @Nullable
@@ -41,6 +37,15 @@ public class Screen extends Keyed implements JsonSerializable {
 
     public void setType(@Nullable Type type) {
         this.type = type;
+    }
+
+    @Nullable
+    public Background getBackground() {
+        return this.background;
+    }
+
+    public void setBackground(@Nullable Background background) {
+        this.background = background;
     }
 
     public void addElements(@NotNull Collection<Element> elements) {
@@ -110,6 +115,7 @@ public class Screen extends Keyed implements JsonSerializable {
         JsonObjectWrapper json = new JsonObjectWrapper();
         json.addProperty("key", getKey());
         json.addProperty("type", getType());
+        json.addProperty("background", getBackground());
         json.addProperty("elements", getElements().values());
         return json.getJsonObject();
     }
@@ -119,7 +125,8 @@ public class Screen extends Keyed implements JsonSerializable {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Screen screen = new Screen(
             Key.of(json.get("key").getAsString()),
-            !json.has("type") ? null : Type.get(json.get("type").getAsString())
+            !json.has("type") ? null : Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT)),
+            !json.has("background") ? null : Background.valueOf(json.get("background").getAsString().toUpperCase(Locale.ROOT))
         );
         if (json.has("elements")) {
             json.get("elements").getAsJsonArray().forEach(jsonElement -> {
@@ -176,6 +183,7 @@ public class Screen extends Keyed implements JsonSerializable {
 
     public static class Builder extends Keyed {
         private Type type;
+        private Background background;
 
         public Builder(@NotNull String key) {
             this(Key.of(key));
@@ -196,37 +204,28 @@ public class Screen extends Keyed implements JsonSerializable {
             return this;
         }
 
+        @Nullable
+        public Background getBackground() {
+            return this.background;
+        }
+
+        @NotNull
+        public Builder setBackground(@Nullable Background background) {
+            this.background = background;
+            return this;
+        }
+
         @NotNull
         public Screen build() {
-            return new Screen(getKey(), getType());
+            return new Screen(getKey(), getType(), getBackground());
         }
     }
 
     public enum Type {
-        HUD,
-        SCREEN;
+        HUD, SCREEN
+    }
 
-        private final String name;
-
-        Type() {
-            this.name = name().toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        @NotNull
-        public String toString() {
-            return this.name;
-        }
-
-        private static final Map<String, Type> BY_NAME = new HashMap<>();
-
-        static {
-            Arrays.stream(values()).forEach(type -> BY_NAME.put(type.toString(), type));
-        }
-
-        @Nullable
-        public static Type get(@Nullable String type) {
-            return type == null ? null : BY_NAME.get(type.toLowerCase(Locale.ROOT));
-        }
+    public enum Background {
+        CLEAR, GRADIENT, TEXTURE
     }
 }
