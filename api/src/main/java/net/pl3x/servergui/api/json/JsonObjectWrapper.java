@@ -5,10 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.pl3x.servergui.api.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,6 +54,20 @@ public class JsonObjectWrapper {
      * JsonPrimitive of String.
      *
      * @param property name of the member.
+     * @param value    the key value associated with the member.
+     */
+    public void addProperty(@NotNull String property, @Nullable Key value) {
+        if (value == null) {
+            return;
+        }
+        getJsonObject().addProperty(property, value.toString());
+    }
+
+    /**
+     * Convenience method to add a primitive member. The specified value is converted to a
+     * JsonPrimitive of String.
+     *
+     * @param property name of the member.
      * @param value    the enum value associated with the member.
      */
     public void addProperty(@NotNull String property, @Nullable Enum<?> value) {
@@ -83,7 +98,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the value associated with the member.
      */
-    public void addProperty(String property, List<? extends JsonSerializable> value) {
+    public void addProperty(String property, Collection<? extends JsonSerializable> value) {
         if (value == null) {
             return;
         }

@@ -3,6 +3,7 @@ package net.pl3x.servergui.fabric.gui.texture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.util.Identifier;
+import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 
 import javax.imageio.ImageIO;
@@ -16,8 +17,8 @@ public class Texture {
 
     private boolean isLoaded;
 
-    public Texture(String id, String url) {
-        this.identifier = new Identifier(id);
+    public Texture(Key key, String url) {
+        this.identifier = new Identifier(key.toString());
         this.url = url;
 
         load();

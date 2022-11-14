@@ -1,7 +1,9 @@
 package net.pl3x.servergui.api.gui.element;
 
 import com.google.gson.JsonObject;
+import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.ServerGUI;
+import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,15 +12,10 @@ import java.util.UUID;
 
 public interface Element extends JsonSerializable {
     @NotNull
-    String getId();
+    Key getKey();
 
     @NotNull
     String getType();
-
-    @Nullable
-    String getParent();
-
-    void setParent(@Nullable String parent);
 
     @Nullable
     Point getPos();
@@ -57,7 +54,6 @@ public interface Element extends JsonSerializable {
 
     static Element createElement(JsonObject json) {
         return switch (!json.has("type") ? "" : json.get("type").getAsString()) {
-            case "container" -> Container.fromJson(json);
             case "image" -> Image.fromJson(json);
             case "text" -> Text.fromJson(json);
             default -> null;

@@ -10,16 +10,16 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import net.pl3x.servergui.api.gui.element.Image;
-import net.pl3x.servergui.api.gui.element.Point;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import net.pl3x.servergui.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableImage extends RenderableElement {
     private Texture texture;
 
-    public RenderableImage(Image image, RenderableElement parent) {
-        super(image, parent);
+    public RenderableImage(Image image, RenderableScreen screen) {
+        super(image, screen);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RenderableImage extends RenderableElement {
         }
 
         if (getTexture() == null) {
-            this.texture = ServerGUIFabric.instance().getTextureManager().get(image.getId());
+            this.texture = ServerGUIFabric.instance().getTextureManager().get(image.getKey());
             return;
         }
 
@@ -49,13 +49,14 @@ public class RenderableImage extends RenderableElement {
 
         matrix.push();
 
-        Point pos = getRenderPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(matrix));
+        calcScreenPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(matrix));
 
-        float x0 = pos.getX();
-        float y0 = pos.getY();
+        float x0 = getScreenPos().getX();
+        float y0 = getScreenPos().getY();
         float x1 = x0 + image.getSize().getX();
         float y1 = y0 + image.getSize().getY();
 
+        RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
         Matrix4f model = matrix.peek().getPositionMatrix();
@@ -66,6 +67,9 @@ public class RenderableImage extends RenderableElement {
         bufferBuilder.vertex(model, x1, y1, 0F).texture(1, 1).next();
         bufferBuilder.vertex(model, x1, y0, 0F).texture(1, 0).next();
         BufferRenderer.drawWithShader(bufferBuilder.end());
+        RenderSystem.disableBlend();
+
+        getChildren().forEach(child -> child.render(matrix, delta));
 
         matrix.pop();
     }

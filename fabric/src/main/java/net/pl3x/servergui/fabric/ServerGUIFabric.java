@@ -2,7 +2,7 @@ package net.pl3x.servergui.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.pl3x.servergui.fabric.gui.element.RenderableElementManager;
+import net.pl3x.servergui.fabric.gui.ScreenManager;
 import net.pl3x.servergui.fabric.gui.texture.TextureManager;
 import net.pl3x.servergui.fabric.network.NetworkManager;
 import net.pl3x.servergui.fabric.scheduler.Scheduler;
@@ -14,20 +14,20 @@ public class ServerGUIFabric implements ClientModInitializer {
 
     private static ServerGUIFabric instance;
 
-    private final RenderableElementManager renderableElementManager;
+    public static ServerGUIFabric instance() {
+        return instance;
+    }
+
     private final Scheduler scheduler;
+    private final ScreenManager screenManager;
     private final TextureManager textureManager;
 
     public ServerGUIFabric() {
         instance = this;
 
-        this.renderableElementManager = new RenderableElementManager();
         this.scheduler = new Scheduler();
+        this.screenManager = new ScreenManager();
         this.textureManager = new TextureManager();
-    }
-
-    public static ServerGUIFabric instance() {
-        return instance;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class ServerGUIFabric implements ClientModInitializer {
         this.scheduler.register();
     }
 
-    public RenderableElementManager getRenderableElementManager() {
-        return this.renderableElementManager;
-    }
-
     public Scheduler getScheduler() {
         return this.scheduler;
+    }
+
+    public ScreenManager getScreenManager() {
+        return this.screenManager;
     }
 
     public TextureManager getTextureManager() {

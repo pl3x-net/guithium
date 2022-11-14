@@ -2,7 +2,7 @@ package net.pl3x.servergui.plugin;
 
 import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.texture.TextureManager;
-import net.pl3x.servergui.plugin.network.BukkitNetworkManager;
+import net.pl3x.servergui.plugin.network.NetworkManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,13 +15,13 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
         return instance;
     }
 
-    private final BukkitNetworkManager networkManager;
+    private final NetworkManager networkManager;
     private final TextureManager textureManager;
 
     public ServerGUIBukkit() {
         instance = this;
 
-        this.networkManager = new BukkitNetworkManager();
+        this.networkManager = new NetworkManager(this);
         this.textureManager = new TextureManager();
 
         try {
@@ -40,7 +40,7 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
 
     @Override
     @NotNull
-    public BukkitNetworkManager getNetworkManager() {
+    public NetworkManager getNetworkManager() {
         return this.networkManager;
     }
 

@@ -3,6 +3,8 @@ package net.pl3x.servergui.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.pl3x.servergui.api.Key;
+import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +15,8 @@ public class Text extends AbstractElement {
     private String text;
     private Boolean shadow;
 
-    public Text(@NotNull String id, @Nullable String parent, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow, @Nullable Float scale, @Nullable Double zIndex) {
-        super(id, "text", parent, pos, anchor, offset, scale, zIndex);
+    public Text(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow, @Nullable Float scale, @Nullable Double zIndex) {
+        super(key, "text", pos, anchor, offset, scale, zIndex);
         setText(text);
         setShadow(shadow);
     }
@@ -48,10 +50,9 @@ public class Text extends AbstractElement {
 
     @NotNull
     public static Text fromJson(@NotNull JsonObject json) {
-        Preconditions.checkArgument(json.has("id"), "ID cannot be null");
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Text(
-            json.get("id").getAsString(),
-            !json.has("parent") ? null : json.get("parent").getAsString(),
+            Key.of(json.get("key").getAsString()),
             !json.has("text") ? null : json.get("text").getAsString(),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
@@ -97,16 +98,24 @@ public class Text extends AbstractElement {
             + ",shadow=" + hasShadow();
     }
 
-    public static Builder builder(@NotNull String id) {
-        return new Builder(id);
+    public static Builder builder(@NotNull String key) {
+        return new Builder(key);
+    }
+
+    public static Builder builder(@NotNull Key key) {
+        return new Builder(key);
     }
 
     public static class Builder extends AbstractBuilder<Builder> {
         private String text;
         private Boolean shadow;
 
-        public Builder(@NotNull String id) {
-            super(id);
+        public Builder(@NotNull String key) {
+            this(Key.of(key));
+        }
+
+        public Builder(@NotNull Key key) {
+            super(key);
         }
 
         @Nullable
@@ -134,7 +143,7 @@ public class Text extends AbstractElement {
         @Override
         @NotNull
         public Text build() {
-            return new Text(getId(), getParent(), getText(), getPos(), getAnchor(), getOffset(), hasShadow(), getScale(), getZIndex());
+            return new Text(getKey(), getText(), getPos(), getAnchor(), getOffset(), hasShadow(), getScale(), getZIndex());
         }
     }
 }

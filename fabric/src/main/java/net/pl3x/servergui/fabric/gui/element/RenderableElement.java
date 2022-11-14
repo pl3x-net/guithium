@@ -1,12 +1,12 @@
 package net.pl3x.servergui.fabric.gui.element;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.pl3x.servergui.api.gui.element.Container;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.gui.element.Image;
-import net.pl3x.servergui.api.gui.element.Point;
+import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.gui.element.Text;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,12 +14,14 @@ import java.util.List;
 
 public abstract class RenderableElement {
     private Element element;
-    private RenderableElement parent;
+    private RenderableScreen screen;
     private final List<RenderableElement> children = new ArrayList<>();
 
-    public RenderableElement(Element element, RenderableElement parent) {
+    private final Point screenPos = new Point();
+
+    public RenderableElement(Element element, RenderableScreen screen) {
         this.element = element;
-        this.parent = parent;
+        this.screen = screen;
     }
 
     public Element getElement() {
@@ -30,16 +32,12 @@ public abstract class RenderableElement {
         this.element = element;
     }
 
-    public RenderableElement getParent() {
-        return this.parent;
-    }
-
-    public void setParent(RenderableElement parent) {
-        this.parent = parent;
-    }
-
     public List<RenderableElement> getChildren() {
         return this.children;
+    }
+
+    public Point getScreenPos() {
+        return this.screenPos;
     }
 
     protected float setupScaleAndZIndex(@NotNull MatrixStack matrix) {
@@ -54,7 +52,7 @@ public abstract class RenderableElement {
         return scale == null ? 1.0F : scale;
     }
 
-    protected Point getRenderPos(float width, float height, float scale) {
+    protected void calcScreenPos(float width, float height, float scale) {
         Point pos = getElement().getPos();
         if (pos == null) {
             pos = Point.ZERO;
@@ -74,19 +72,14 @@ public abstract class RenderableElement {
             offsetY = (int) (height * getElement().getOffset().getY());
         }
 
-        return Point.of(
-            (int) (anchorX + pos.getX() - offsetX),
-            (int) (anchorY + pos.getY() - offsetY)
-        );
+        getScreenPos().setX((int) (anchorX + pos.getX() - offsetX));
+        getScreenPos().setY((int) (anchorY + pos.getY() - offsetY));
     }
 
-    public static RenderableElement createRenderableElement(Element element) {
-        RenderableElementManager manager = ServerGUIFabric.instance().getRenderableElementManager();
-        RenderableElement parent = element.getParent() == null ? null : manager.getElement(element.getParent());
+    public static RenderableElement createRenderableElement(Element element, RenderableScreen screen) {
         return switch (element.getType()) {
-            case "container" -> new RenderableContainer((Container) element, parent);
-            case "image" -> new RenderableImage((Image) element, parent);
-            case "text" -> new RenderableText((Text) element, parent);
+            case "image" -> new RenderableImage((Image) element, screen);
+            case "text" -> new RenderableText((Text) element, screen);
             default -> null;
         };
     }
