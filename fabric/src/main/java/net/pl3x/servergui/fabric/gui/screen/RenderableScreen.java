@@ -41,6 +41,16 @@ public class RenderableScreen extends AbstractScreen {
 
     @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
+        if (this.screen.getType() != Screen.Type.HUD) {
+            Screen.Background background = this.screen.getBackground();
+            if (background == null) {
+                background = Screen.Background.GRADIENT;
+            }
+            switch (background) {
+                case TEXTURE -> this.renderBackgroundTexture(0);
+                case GRADIENT -> this.fillGradient(matrix, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+            }
+        }
         this.screen.getElements().forEach((key, element) -> {
             RenderableElement renderableElement = this.elements.get(element.getKey());
             if (renderableElement != null) {
