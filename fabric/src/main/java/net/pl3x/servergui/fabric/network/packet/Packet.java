@@ -11,7 +11,6 @@ import net.minecraft.util.Identifier;
 
 public abstract class Packet {
     protected void send(Identifier channel, ByteArrayDataOutput out) {
-        System.out.println("send " + channel);
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
             ClientPlayNetworking.send(channel, new PacketByteBuf(Unpooled.wrappedBuffer(out.toByteArray())));
         }

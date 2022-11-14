@@ -2,6 +2,9 @@ package net.pl3x.servergui.api.gui.element;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
+import net.pl3x.servergui.api.Key;
+import net.pl3x.servergui.api.Keyed;
+import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,21 +12,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class AbstractElement implements Element {
-    private final String id;
+    private final Key key;
     private final String type;
-    private String parent;
     private Point pos;
     private Point anchor;
     private Point offset;
     private Float scale;
     private Double zIndex;
 
-    public AbstractElement(@NotNull String id, @NotNull String type, @Nullable String parent, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
-        Preconditions.checkNotNull(id, "ID cannot be null");
+    public AbstractElement(@NotNull Key key, @NotNull String type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
+        Preconditions.checkNotNull(key, "Key cannot be null");
         Preconditions.checkNotNull(type, "Type cannot be null");
-        this.id = id;
+        this.key = key;
         this.type = type;
-        setParent(parent);
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
@@ -33,25 +34,14 @@ public abstract class AbstractElement implements Element {
 
     @Override
     @NotNull
-    public String getId() {
-        return this.id;
+    public Key getKey() {
+        return this.key;
     }
 
     @Override
     @NotNull
     public String getType() {
         return this.type;
-    }
-
-    @Override
-    @Nullable
-    public String getParent() {
-        return this.parent;
-    }
-
-    @Override
-    public void setParent(@Nullable String parent) {
-        this.parent = parent;
     }
 
     @Override
@@ -128,9 +118,8 @@ public abstract class AbstractElement implements Element {
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper();
-        json.addProperty("id", getId());
+        json.addProperty("key", getKey());
         json.addProperty("type", getType());
-        json.addProperty("parent", getParent());
         json.addProperty("pos", getPos());
         json.addProperty("anchor", getAnchor());
         json.addProperty("offset", getOffset());
@@ -151,9 +140,8 @@ public abstract class AbstractElement implements Element {
             return false;
         }
         Element other = (Element) o;
-        return Objects.equals(getId(), other.getId())
+        return Objects.equals(getKey(), other.getKey())
             && Objects.equals(getType(), other.getType())
-            && Objects.equals(getParent(), other.getParent())
             && Objects.equals(getPos(), other.getPos())
             && Objects.equals(getAnchor(), other.getAnchor())
             && Objects.equals(getOffset(), other.getOffset())
@@ -163,7 +151,7 @@ public abstract class AbstractElement implements Element {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType(), getParent(), getPos(), getAnchor(), getOffset(), getScale(), getZIndex());
+        return Objects.hash(getKey(), getType(), getPos(), getAnchor(), getOffset(), getScale(), getZIndex());
     }
 
     @Override
@@ -173,9 +161,8 @@ public abstract class AbstractElement implements Element {
 
     @NotNull
     public String getPropertiesAsString() {
-        return "id=" + getId()
+        return "key=" + getKey()
             + ",type=" + getType()
-            + ",parent=" + getParent()
             + ",pos=" + getPos()
             + ",anchor=" + getAnchor()
             + ",offset=" + getOffset()
@@ -183,42 +170,15 @@ public abstract class AbstractElement implements Element {
             + ",z-index=" + getZIndex();
     }
 
-    public static abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
-        private String id;
-        private String parent;
+    public static abstract class AbstractBuilder<T extends AbstractBuilder<T>> extends Keyed {
         private Point pos;
         private Point anchor;
         private Point offset;
         private Float scale;
         private Double zIndex;
 
-        public AbstractBuilder(@NotNull String id) {
-            setId(id);
-        }
-
-        @NotNull
-        public String getId() {
-            return id;
-        }
-
-        @NotNull
-        public T setId(@NotNull String id) {
-            Preconditions.checkNotNull(id, "ID cannot be null");
-            this.id = id;
-            //noinspection unchecked
-            return (T) this;
-        }
-
-        @Nullable
-        public String getParent() {
-            return parent;
-        }
-
-        @NotNull
-        public T setParent(@Nullable String parent) {
-            this.parent = parent;
-            //noinspection unchecked
-            return (T) this;
+        public AbstractBuilder(@NotNull Key key) {
+            super(key);
         }
 
         @Nullable
@@ -232,9 +192,9 @@ public abstract class AbstractElement implements Element {
         }
 
         @NotNull
+        @SuppressWarnings("unchecked")
         public T setPos(@Nullable Point pos) {
             this.pos = pos;
-            //noinspection unchecked
             return (T) this;
         }
 
@@ -249,9 +209,9 @@ public abstract class AbstractElement implements Element {
         }
 
         @NotNull
+        @SuppressWarnings("unchecked")
         public T setAnchor(@Nullable Point anchor) {
             this.anchor = anchor;
-            //noinspection unchecked
             return (T) this;
         }
 
@@ -266,9 +226,9 @@ public abstract class AbstractElement implements Element {
         }
 
         @NotNull
+        @SuppressWarnings("unchecked")
         public T setOffset(@Nullable Point offset) {
             this.offset = offset;
-            //noinspection unchecked
             return (T) this;
         }
 
@@ -278,9 +238,9 @@ public abstract class AbstractElement implements Element {
         }
 
         @NotNull
+        @SuppressWarnings("unchecked")
         public T setScale(@Nullable Float scale) {
             this.scale = scale;
-            //noinspection unchecked
             return (T) this;
         }
 
@@ -290,9 +250,9 @@ public abstract class AbstractElement implements Element {
         }
 
         @NotNull
+        @SuppressWarnings("unchecked")
         public T setZIndex(@Nullable Double zIndex) {
             this.zIndex = zIndex;
-            //noinspection unchecked
             return (T) this;
         }
 

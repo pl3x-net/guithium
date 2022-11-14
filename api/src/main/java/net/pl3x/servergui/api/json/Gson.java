@@ -1,14 +1,17 @@
 package net.pl3x.servergui.api.json;
 
 import com.google.gson.GsonBuilder;
+import net.pl3x.servergui.api.gui.Screen;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.json.adapter.ElementAdapter;
+import net.pl3x.servergui.api.json.adapter.ScreenAdapter;
 
 import java.lang.reflect.Type;
 
 public class Gson {
     private static final com.google.gson.Gson gson = new GsonBuilder()
         .registerTypeHierarchyAdapter(Element.class, new ElementAdapter())
+        .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
         .disableHtmlEscaping()
         .setLenient()
         .create();

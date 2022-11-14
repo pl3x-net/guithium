@@ -3,6 +3,8 @@ package net.pl3x.servergui.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.pl3x.servergui.api.Key;
+import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,8 +14,8 @@ import java.util.Objects;
 public class Image extends AbstractElement {
     private Point size;
 
-    public Image(@NotNull String id, @Nullable String parent, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
-        super(id, "image", parent, pos, anchor, offset, scale, zIndex);
+    public Image(@NotNull Key key, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
+        super(key, "image", pos, anchor, offset, scale, zIndex);
         setSize(size);
     }
 
@@ -40,10 +42,9 @@ public class Image extends AbstractElement {
 
     @NotNull
     public static Image fromJson(@NotNull JsonObject json) {
-        Preconditions.checkArgument(json.has("id"), "ID cannot be null");
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Image(
-            json.get("id").getAsString(),
-            !json.has("parent") ? null : json.get("parent").getAsString(),
+            Key.of(json.get("key").getAsString()),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
@@ -86,15 +87,23 @@ public class Image extends AbstractElement {
             + ",size=" + getSize();
     }
 
-    public static Builder builder(@NotNull String id) {
-        return new Builder(id);
+    public static Builder builder(@NotNull String key) {
+        return new Builder(key);
+    }
+
+    public static Builder builder(@NotNull Key key) {
+        return new Builder(key);
     }
 
     public static class Builder extends AbstractBuilder<Builder> {
         private Point size;
 
-        public Builder(@NotNull String id) {
-            super(id);
+        public Builder(@NotNull String key) {
+            this(Key.of(key));
+        }
+
+        public Builder(@NotNull Key key) {
+            super(key);
         }
 
         @Nullable
@@ -116,7 +125,7 @@ public class Image extends AbstractElement {
         @Override
         @NotNull
         public Image build() {
-            return new Image(getId(), getParent(), getPos(), getSize(), getAnchor(), getOffset(), getScale(), getZIndex());
+            return new Image(getKey(), getPos(), getSize(), getAnchor(), getOffset(), getScale(), getZIndex());
         }
     }
 }

@@ -1,4 +1,4 @@
-package net.pl3x.servergui.api.gui.element;
+package net.pl3x.servergui.api.gui;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

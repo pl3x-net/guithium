@@ -13,7 +13,7 @@ public class MixinInGameHud {
     @Inject(method = "renderHotbar", at = @At("HEAD"))
     private void renderHotbar(float delta, MatrixStack matrix, CallbackInfo ci) {
         try {
-            ServerGUIFabric.instance().getRenderableElementManager().render(matrix, delta);
+            ServerGUIFabric.instance().getScreenManager().render(matrix, delta);
         } catch (Throwable t) {
             t.printStackTrace();
         }

@@ -3,14 +3,14 @@ package net.pl3x.servergui.fabric.gui.element;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.pl3x.servergui.api.gui.element.Point;
 import net.pl3x.servergui.api.gui.element.Text;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableText extends RenderableElement {
-    public RenderableText(Text text, RenderableElement parent) {
-        super(text, parent);
+    public RenderableText(Text text, RenderableScreen screen) {
+        super(text, screen);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class RenderableText extends RenderableElement {
 
         matrix.push();
 
-        Point pos = getRenderPos(
+        calcScreenPos(
             ServerGUIFabric.client.textRenderer.getWidth(text.getText()),
             ServerGUIFabric.client.textRenderer.fontHeight,
             setupScaleAndZIndex(matrix)
@@ -36,11 +36,20 @@ public class RenderableText extends RenderableElement {
 
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
         ServerGUIFabric.client.textRenderer.draw(
-            text.getText(), pos.getX(), pos.getY(), 0xFFFFFF,
+            text.getText(),
+            getScreenPos().getX(),
+            getScreenPos().getY(),
+            0xFFFFFF,
             Boolean.TRUE.equals(text.hasShadow()),
             matrix.peek().getPositionMatrix(),
-            immediate, false, 0, 0xF000F0);
+            immediate,
+            false,
+            0,
+            0xF000F0
+        );
         immediate.draw();
+
+        getChildren().forEach(child -> child.render(matrix, delta));
 
         matrix.pop();
     }

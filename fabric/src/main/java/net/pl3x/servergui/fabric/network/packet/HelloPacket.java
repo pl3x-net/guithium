@@ -22,9 +22,9 @@ public class HelloPacket extends Packet {
         ByteArrayDataInput in = in(buf.getWrittenBytes());
         int protocol = in.readInt();
         if (protocol == ServerGUI.PROTOCOL) {
-            System.out.println("Server responded with correct protocol");
+            System.out.println("Server responded with correct protocol (" + protocol + ")");
         } else {
-            System.out.println("Server responded with a different protocol");
+            System.out.println("Server responded with a different protocol (" + protocol + ")");
         }
     }
 }
