@@ -1,7 +1,9 @@
 package net.pl3x.servergui.plugin;
 
 import net.pl3x.servergui.api.ServerGUI;
+import net.pl3x.servergui.api.player.PlayerManager;
 import net.pl3x.servergui.api.texture.TextureManager;
+import net.pl3x.servergui.plugin.listener.PlayerListener;
 import net.pl3x.servergui.plugin.network.NetworkManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -16,12 +18,14 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
     }
 
     private final NetworkManager networkManager;
+    private final PlayerManager playerManager;
     private final TextureManager textureManager;
 
     public ServerGUIBukkit() {
         instance = this;
 
         this.networkManager = new NetworkManager(this);
+        this.playerManager = new PlayerManager();
         this.textureManager = new TextureManager();
 
         try {
@@ -36,12 +40,20 @@ public class ServerGUIBukkit extends JavaPlugin implements ServerGUI {
 
     public void onEnable() {
         getNetworkManager().register();
+
+        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
 
     @Override
     @NotNull
     public NetworkManager getNetworkManager() {
         return this.networkManager;
+    }
+
+    @Override
+    @NotNull
+    public PlayerManager getPlayerManager() {
+        return this.playerManager;
     }
 
     @Override

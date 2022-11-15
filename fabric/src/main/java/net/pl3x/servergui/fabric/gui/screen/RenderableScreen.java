@@ -6,14 +6,16 @@ import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.gui.Screen;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.element.RenderableElement;
+import net.pl3x.servergui.fabric.network.packet.ScreenPacket;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RenderableScreen extends AbstractScreen {
     private final Screen screen;
-    public final Map<Key, RenderableElement> elements = new HashMap<>();
+    private final Map<Key, RenderableElement> elements = new HashMap<>();
 
     public RenderableScreen(@NotNull Screen screen) {
         super(ServerGUIFabric.client == null ? null : ServerGUIFabric.client.currentScreen);
@@ -54,8 +56,50 @@ public class RenderableScreen extends AbstractScreen {
         this.screen.getElements().forEach((key, element) -> {
             RenderableElement renderableElement = this.elements.get(element.getKey());
             if (renderableElement != null) {
-                renderableElement.render(matrix, delta);
+                renderableElement.render(matrix, mouseX, mouseY, delta);
             }
         });
+
+        super.render(matrix, mouseX, mouseY, delta);
+    }
+
+    @Override
+    public void close() {
+        ScreenPacket.send(this.screen.getKey());
+        super.close();
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        for (RenderableElement element : getElements().values()) {
+            if (element.mouseClicked(mouseX, mouseY, button)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        return false;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
+            close();
+            return true;
+        }
+        return false;
     }
 }

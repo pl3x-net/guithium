@@ -9,6 +9,7 @@ import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import net.pl3x.servergui.api.json.JsonSerializable;
+import net.pl3x.servergui.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +17,6 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Screen extends Keyed implements JsonSerializable {
@@ -105,8 +105,12 @@ public class Screen extends Keyed implements JsonSerializable {
         return hasElement(Key.of(key));
     }
 
-    public void send(@NotNull UUID uuid) {
-        ServerGUI.api().getNetworkManager().send(uuid, this);
+    public void open(@NotNull Player player) {
+        ServerGUI.api().getNetworkManager().send(player, this);
+    }
+
+    public void close(@NotNull Player player) {
+        ServerGUI.api().getNetworkManager().send(player, this);
     }
 
     @Override

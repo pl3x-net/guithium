@@ -12,7 +12,7 @@ import net.pl3x.servergui.api.ServerGUI;
 public class HelloPacket extends Packet {
     public static final Identifier CHANNEL = new Identifier(ServerGUI.MOD_ID, "hello");
 
-    public void send() {
+    public static void send() {
         ByteArrayDataOutput out = out();
         out.writeInt(ServerGUI.PROTOCOL);
         send(CHANNEL, out);

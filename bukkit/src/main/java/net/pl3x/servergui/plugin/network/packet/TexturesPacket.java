@@ -1,15 +1,15 @@
 package net.pl3x.servergui.plugin.network.packet;
 
 import com.google.common.io.ByteArrayDataOutput;
+import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.json.Gson;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+import net.pl3x.servergui.api.player.Player;
 
 import java.util.Map;
 
 public class TexturesPacket extends Packet {
-    public static final NamespacedKey CHANNEL = new NamespacedKey(ServerGUI.MOD_ID, "textures");
+    public static final Key CHANNEL = Key.of(ServerGUI.MOD_ID + ":textures");
 
     public static void send(Player player) {
         Map<String, String> textures = ServerGUI.api().getTextureManager().get();
@@ -19,6 +19,6 @@ public class TexturesPacket extends Packet {
 
         ByteArrayDataOutput out = out();
         out.writeUTF(Gson.toJson(textures));
-        send(player, CHANNEL, out);
+        player.send(CHANNEL, out);
     }
 }

@@ -1,23 +1,21 @@
 package net.pl3x.servergui.fabric.gui.element;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.pl3x.servergui.api.gui.Point;
+import net.pl3x.servergui.api.gui.element.Button;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.gui.element.Image;
-import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.gui.element.Text;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class RenderableElement {
     private Element element;
-    private RenderableScreen screen;
-    private final List<RenderableElement> children = new ArrayList<>();
-
+    private final RenderableScreen screen;
     private final Point screenPos = new Point();
+
+    private boolean hovered;
 
     public RenderableElement(Element element, RenderableScreen screen) {
         this.element = element;
@@ -32,8 +30,8 @@ public abstract class RenderableElement {
         this.element = element;
     }
 
-    public List<RenderableElement> getChildren() {
-        return this.children;
+    public RenderableScreen getScreen() {
+        return this.screen;
     }
 
     public Point getScreenPos() {
@@ -78,11 +76,32 @@ public abstract class RenderableElement {
 
     public static RenderableElement createRenderableElement(Element element, RenderableScreen screen) {
         return switch (element.getType()) {
+            case "button" -> new RenderableButton((Button) element, screen);
             case "image" -> new RenderableImage((Image) element, screen);
             case "text" -> new RenderableText((Text) element, screen);
             default -> null;
         };
     }
 
-    public abstract void render(@NotNull MatrixStack matrix, float delta);
+    public abstract void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta);
+
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return false;
+    }
+
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return false;
+    }
+
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        return false;
+    }
+
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        return false;
+    }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return false;
+    }
 }
