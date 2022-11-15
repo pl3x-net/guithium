@@ -1,14 +1,14 @@
 package net.pl3x.servergui.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
+import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.servergui.api.gui.element.Image;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
@@ -32,7 +32,7 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         Image image = getElement();
         if (image.getSize() == null) {
             return;
@@ -47,9 +47,9 @@ public class RenderableImage extends RenderableElement {
             return;
         }
 
-        matrix.push();
+        poseStack.pushPose();
 
-        calcScreenPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(matrix));
+        calcScreenPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(poseStack));
 
         float x0 = getScreenPos().getX();
         float y0 = getScreenPos().getY();
@@ -63,15 +63,15 @@ public class RenderableImage extends RenderableElement {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
 
-        Matrix4f model = matrix.peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(model, x0, y0, 0F).texture(0, 0).next();
-        bufferBuilder.vertex(model, x0, y1, 0F).texture(0, 1).next();
-        bufferBuilder.vertex(model, x1, y1, 0F).texture(1, 1).next();
-        bufferBuilder.vertex(model, x1, y0, 0F).texture(1, 0).next();
-        BufferRenderer.drawWithShader(bufferBuilder.end());
+        Matrix4f model = poseStack.last().pose();
+        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        buf.vertex(model, x0, y0, 0F).uv(0, 0).endVertex();
+        buf.vertex(model, x0, y1, 0F).uv(0, 1).endVertex();
+        buf.vertex(model, x1, y1, 0F).uv(1, 1).endVertex();
+        buf.vertex(model, x1, y0, 0F).uv(1, 0).endVertex();
+        BufferUploader.drawWithShader(buf.end());
 
-        matrix.pop();
+        poseStack.popPose();
     }
 }

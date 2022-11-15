@@ -11,7 +11,7 @@ import net.pl3x.servergui.fabric.network.packet.TexturesPacket;
 public class NetworkManager {
     public static void register() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if (!client.isInSingleplayer()) {
+            if (!client.isLocalServer()) {
                 // send hello on first client tick
                 ServerGUIFabric.instance().getScheduler()
                     .addTask(0, HelloPacket::send);

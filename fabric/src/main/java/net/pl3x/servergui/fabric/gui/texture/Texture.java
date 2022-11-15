@@ -1,8 +1,8 @@
 package net.pl3x.servergui.fabric.gui.texture;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 
@@ -12,19 +12,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Texture {
-    private final Identifier identifier;
+    private final ResourceLocation identifier;
     private final String url;
 
     private boolean isLoaded;
 
     public Texture(Key key, String url) {
-        this.identifier = new Identifier(key.toString());
+        this.identifier = new ResourceLocation(key.toString());
         this.url = url;
 
         load();
     }
 
-    public Identifier getIdentifier() {
+    public ResourceLocation getIdentifier() {
         return this.identifier;
     }
 
@@ -45,13 +45,13 @@ public class Texture {
         try {
             BufferedImage image = ImageIO.read(new URL(getUrl()));
 
-            NativeImageBackedTexture texture = new NativeImageBackedTexture(image.getWidth(), image.getHeight(), true);
-            ServerGUIFabric.client.getTextureManager().registerTexture(getIdentifier(), texture);
+            DynamicTexture texture = new DynamicTexture(image.getWidth(), image.getHeight(), true);
+            ServerGUIFabric.client.getTextureManager().register(getIdentifier(), texture);
 
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getWidth(); y++) {
                     //noinspection ConstantConditions
-                    texture.getImage().setColor(x, y, rgb2bgr(image.getRGB(x, y)));
+                    texture.getPixels().setPixelRGBA(x, y, rgb2bgr(image.getRGB(x, y)));
                 }
             }
 
@@ -64,7 +64,7 @@ public class Texture {
     }
 
     public void unload() {
-        ServerGUIFabric.client.getTextureManager().destroyTexture(getIdentifier());
+        ServerGUIFabric.client.getTextureManager().release(getIdentifier());
     }
 
     private static int rgb2bgr(int color) {

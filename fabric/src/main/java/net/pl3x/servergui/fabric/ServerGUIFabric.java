@@ -1,14 +1,14 @@
 package net.pl3x.servergui.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.pl3x.servergui.fabric.gui.ScreenManager;
 import net.pl3x.servergui.fabric.gui.texture.TextureManager;
 import net.pl3x.servergui.fabric.network.NetworkManager;
 import net.pl3x.servergui.fabric.scheduler.Scheduler;
 
 public class ServerGUIFabric implements ClientModInitializer {
-    public static MinecraftClient client;
+    public static Minecraft client;
     public static int screenWidth;
     public static int screenHeight;
 

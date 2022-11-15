@@ -1,6 +1,6 @@
 package net.pl3x.servergui.fabric.gui;
 
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
@@ -31,9 +31,9 @@ public class ScreenManager {
         this.screens.clear();
     }
 
-    public void render(MatrixStack matrix, float delta) {
-        if (!ServerGUIFabric.client.options.debugEnabled) {
-            this.screens.forEach((key, screen) -> screen.render(matrix, 0, 0, delta));
+    public void render(PoseStack poseStack, float delta) {
+        if (!ServerGUIFabric.client.options.renderDebug) {
+            this.screens.forEach((key, screen) -> screen.render(poseStack, 0, 0, delta));
         }
     }
 }

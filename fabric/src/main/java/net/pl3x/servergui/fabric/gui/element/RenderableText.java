@@ -1,8 +1,8 @@
 package net.pl3x.servergui.fabric.gui.element;
 
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.pl3x.servergui.api.gui.element.Text;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
@@ -19,36 +19,36 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         Text text = getElement();
 
         if (text.getText() == null || text.getText().isBlank()) {
             return;
         }
 
-        matrix.push();
+        poseStack.pushPose();
 
         calcScreenPos(
-            ServerGUIFabric.client.textRenderer.getWidth(text.getText()),
-            ServerGUIFabric.client.textRenderer.fontHeight,
-            setupScaleAndZIndex(matrix)
+            ServerGUIFabric.client.font.width(text.getText()),
+            ServerGUIFabric.client.font.lineHeight,
+            setupScaleAndZIndex(poseStack)
         );
 
-        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-        ServerGUIFabric.client.textRenderer.draw(
+        MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+        ServerGUIFabric.client.font.drawInBatch(
             text.getText(),
             getScreenPos().getX(),
             getScreenPos().getY(),
             0xFFFFFF,
             Boolean.TRUE.equals(text.hasShadow()),
-            matrix.peek().getPositionMatrix(),
+            poseStack.last().pose(),
             immediate,
             false,
             0,
             0xF000F0
         );
-        immediate.draw();
+        immediate.endBatch();
 
-        matrix.pop();
+        poseStack.popPose();
     }
 }
