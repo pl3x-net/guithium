@@ -1,6 +1,6 @@
 package net.pl3x.servergui.fabric.gui.element;
 
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.gui.element.Button;
 import net.pl3x.servergui.api.gui.element.Element;
@@ -38,14 +38,14 @@ public abstract class RenderableElement {
         return this.screenPos;
     }
 
-    protected float setupScaleAndZIndex(@NotNull MatrixStack matrix) {
+    protected float setupScaleAndZIndex(@NotNull PoseStack poseStack) {
         Float scale = getElement().getScale();
         if (scale != null && scale != 1.0F) {
-            matrix.scale(scale, scale, 1.0F);
+            poseStack.scale(scale, scale, 1.0F);
         }
         Double zIndex = getElement().getZIndex();
         if (zIndex != null && zIndex != 0.0D) {
-            matrix.translate(0.0D, 0.0D, zIndex);
+            poseStack.translate(0.0D, 0.0D, zIndex);
         }
         return scale == null ? 1.0F : scale;
     }
@@ -83,7 +83,7 @@ public abstract class RenderableElement {
         };
     }
 
-    public abstract void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta);
+    public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return false;

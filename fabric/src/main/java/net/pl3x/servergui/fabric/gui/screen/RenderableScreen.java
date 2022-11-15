@@ -1,7 +1,7 @@
 package net.pl3x.servergui.fabric.gui.screen;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.gui.Screen;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
@@ -18,7 +18,7 @@ public class RenderableScreen extends AbstractScreen {
     private final Map<Key, RenderableElement> elements = new HashMap<>();
 
     public RenderableScreen(@NotNull Screen screen) {
-        super(ServerGUIFabric.client == null ? null : ServerGUIFabric.client.currentScreen);
+        super(ServerGUIFabric.client == null ? null : ServerGUIFabric.client.screen);
 
         Preconditions.checkNotNull(screen, "Screen cannot be null");
         this.screen = screen;
@@ -42,31 +42,31 @@ public class RenderableScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
         if (this.screen.getType() != Screen.Type.HUD) {
             Screen.Background background = this.screen.getBackground();
             if (background == null) {
                 background = Screen.Background.GRADIENT;
             }
             switch (background) {
-                case TEXTURE -> this.renderBackgroundTexture(0);
-                case GRADIENT -> this.fillGradient(matrix, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+                case TEXTURE -> renderDirtBackground(0);
+                case GRADIENT -> fillGradient(poseStack, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
             }
         }
         this.screen.getElements().forEach((key, element) -> {
             RenderableElement renderableElement = this.elements.get(element.getKey());
             if (renderableElement != null) {
-                renderableElement.render(matrix, mouseX, mouseY, delta);
+                renderableElement.render(poseStack, mouseX, mouseY, delta);
             }
         });
 
-        super.render(matrix, mouseX, mouseY, delta);
+        super.render(poseStack, mouseX, mouseY, delta);
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         ScreenPacket.send(this.screen.getKey());
-        super.close();
+        super.onClose();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class RenderableScreen extends AbstractScreen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
-            close();
+            onClose();
             return true;
         }
         return false;

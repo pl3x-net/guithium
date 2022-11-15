@@ -21,7 +21,8 @@ repositories {
 dependencies {
     implementation(project(":api"))
     minecraft("com.mojang:minecraft:${project.extra["minecraft_version"]}")
-    mappings("net.fabricmc:yarn:${project.extra["yarn_mappings"]}:v2")
+    //mappings("net.fabricmc:yarn:${project.extra["yarn_mappings"]}:v2")
+    mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${project.extra["loader_version"]}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.extra["fabric_version"]}")
     modImplementation("com.terraformersmc:modmenu:${project.extra["modmenu_version"]}")

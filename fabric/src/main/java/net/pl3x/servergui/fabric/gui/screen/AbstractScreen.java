@@ -1,12 +1,12 @@
 package net.pl3x.servergui.fabric.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.pl3x.servergui.fabric.ServerGUIFabric;
 
 public abstract class AbstractScreen extends Screen {
-    private static final Text BLANK = Text.of("");
+    private static final Component BLANK = Component.literal("");
 
     protected final Screen parent;
 
@@ -24,9 +24,9 @@ public abstract class AbstractScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         if (!RenderSystem.isOnRenderThread()) {
-            RenderSystem.recordRenderCall(this::close);
+            RenderSystem.recordRenderCall(this::onClose);
             return;
         }
         ServerGUIFabric.client.setScreen(this.parent);

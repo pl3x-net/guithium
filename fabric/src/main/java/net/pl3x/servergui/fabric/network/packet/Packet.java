@@ -5,14 +5,14 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class Packet {
-    protected static void send(Identifier channel, ByteArrayDataOutput out) {
-        if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-            ClientPlayNetworking.send(channel, new PacketByteBuf(Unpooled.wrappedBuffer(out.toByteArray())));
+    protected static void send(ResourceLocation channel, ByteArrayDataOutput out) {
+        if (Minecraft.getInstance().getConnection() != null) {
+            ClientPlayNetworking.send(channel, new FriendlyByteBuf(Unpooled.wrappedBuffer(out.toByteArray())));
         }
     }
 
