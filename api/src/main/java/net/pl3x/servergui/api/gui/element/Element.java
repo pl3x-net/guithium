@@ -5,10 +5,9 @@ import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonSerializable;
+import net.pl3x.servergui.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public interface Element extends JsonSerializable {
     @NotNull
@@ -48,12 +47,13 @@ public interface Element extends JsonSerializable {
 
     void setZIndex(@Nullable Double zIndex);
 
-    default void send(UUID uuid) {
-        ServerGUI.api().getNetworkManager().send(uuid, this);
+    default void send(Player player) {
+        ServerGUI.api().getNetworkManager().send(player, this);
     }
 
     static Element createElement(JsonObject json) {
         return switch (!json.has("type") ? "" : json.get("type").getAsString()) {
+            case "button" -> Button.fromJson(json);
             case "image" -> Image.fromJson(json);
             case "text" -> Text.fromJson(json);
             default -> null;

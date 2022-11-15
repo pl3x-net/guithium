@@ -25,6 +25,10 @@ public abstract class AbstractScreen extends Screen {
 
     @Override
     public void close() {
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderSystem.recordRenderCall(this::close);
+            return;
+        }
         ServerGUIFabric.client.setScreen(this.parent);
     }
 

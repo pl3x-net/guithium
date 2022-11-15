@@ -19,7 +19,7 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull MatrixStack matrix, float delta) {
+    public void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta) {
         Text text = getElement();
 
         if (text.getText() == null || text.getText().isBlank()) {
@@ -48,8 +48,6 @@ public class RenderableText extends RenderableElement {
             0xF000F0
         );
         immediate.draw();
-
-        getChildren().forEach(child -> child.render(matrix, delta));
 
         matrix.pop();
     }

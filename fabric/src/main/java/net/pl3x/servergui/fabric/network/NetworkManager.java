@@ -14,7 +14,7 @@ public class NetworkManager {
             if (!client.isInSingleplayer()) {
                 // send hello on first client tick
                 ServerGUIFabric.instance().getScheduler()
-                    .addTask(0, () -> new HelloPacket().send());
+                    .addTask(0, HelloPacket::send);
             }
         });
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {

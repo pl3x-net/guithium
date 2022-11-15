@@ -32,7 +32,7 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull MatrixStack matrix, float delta) {
+    public void render(@NotNull MatrixStack matrix, int mouseX, int mouseY, float delta) {
         Image image = getElement();
         if (image.getSize() == null) {
             return;
@@ -56,9 +56,13 @@ public class RenderableImage extends RenderableElement {
         float x1 = x0 + image.getSize().getX();
         float y1 = y0 + image.getSize().getY();
 
-        RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
+
         Matrix4f model = matrix.peek().getPositionMatrix();
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
@@ -67,9 +71,6 @@ public class RenderableImage extends RenderableElement {
         bufferBuilder.vertex(model, x1, y1, 0F).texture(1, 1).next();
         bufferBuilder.vertex(model, x1, y0, 0F).texture(1, 0).next();
         BufferRenderer.drawWithShader(bufferBuilder.end());
-        RenderSystem.disableBlend();
-
-        getChildren().forEach(child -> child.render(matrix, delta));
 
         matrix.pop();
     }
