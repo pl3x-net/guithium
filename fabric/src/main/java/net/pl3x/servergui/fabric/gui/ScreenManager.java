@@ -2,7 +2,7 @@ package net.pl3x.servergui.fabric.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.pl3x.servergui.api.Key;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ public class ScreenManager {
     }
 
     public void render(PoseStack poseStack, float delta) {
-        if (!ServerGUIFabric.client.options.renderDebug) {
+        if (!ServerGUI.client.options.renderDebug) {
             this.screens.forEach((key, screen) -> screen.render(poseStack, 0, 0, delta));
         }
     }

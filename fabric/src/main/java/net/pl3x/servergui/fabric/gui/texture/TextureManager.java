@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class TextureManager {
+public class TextureManager extends net.pl3x.servergui.api.gui.texture.TextureManager {
     private final Map<Key, Texture> textures = new HashMap<>();
 
-    public void add(Key key, String url) {
+    public void add(String id, String url) {
+        Key key = Key.of(id);
         this.textures.put(key, new Texture(key, url));
     }
 

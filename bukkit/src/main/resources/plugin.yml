@@ -1,5 +1,5 @@
 name: "${name}"
-main: "${group}.${name}Bukkit"
+main: "${group}.${name}"
 version: "${version}"
 api-version: "1.19"
 description: "${description}"

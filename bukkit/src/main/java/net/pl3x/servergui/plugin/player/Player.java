@@ -1,22 +1,26 @@
 package net.pl3x.servergui.plugin.player;
 
-import com.google.common.io.ByteArrayDataOutput;
-import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.gui.Screen;
-import net.pl3x.servergui.api.player.Player;
-import net.pl3x.servergui.plugin.ServerGUIBukkit;
+import net.pl3x.servergui.plugin.net.Connection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class BukkitPlayer implements Player {
+public class Player implements net.pl3x.servergui.api.player.Player {
     private final org.bukkit.entity.Player player;
+    private final Connection connection;
 
     private Screen currentScreen;
 
-    public BukkitPlayer(@NotNull org.bukkit.entity.Player player) {
+    public Player(@NotNull org.bukkit.entity.Player player) {
         this.player = player;
+        this.connection = new Connection(this);
+    }
+
+    @NotNull
+    public org.bukkit.entity.Player getBukkitPlayer() {
+        return this.player;
     }
 
     @Override
@@ -39,13 +43,14 @@ public class BukkitPlayer implements Player {
 
     @Override
     public void setCurrentScreen(@Nullable Screen screen) {
-        System.out.println("Current screen: " + (screen == null ? null : screen.getKey()));
-        Thread.dumpStack();
-        this.currentScreen = screen;
+        if (screen == null || screen.getType() != Screen.Type.HUD) {
+            this.currentScreen = screen;
+        }
     }
 
     @Override
-    public void send(@NotNull Key channel, @NotNull ByteArrayDataOutput out) {
-        this.player.sendPluginMessage(ServerGUIBukkit.instance(), channel.toString(), out.toByteArray());
+    @NotNull
+    public Connection getConnection() {
+        return this.connection;
     }
 }

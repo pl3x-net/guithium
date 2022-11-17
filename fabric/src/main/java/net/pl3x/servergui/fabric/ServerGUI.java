@@ -2,29 +2,33 @@ package net.pl3x.servergui.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
+import net.pl3x.servergui.api.player.PlayerManager;
 import net.pl3x.servergui.fabric.gui.ScreenManager;
 import net.pl3x.servergui.fabric.gui.texture.TextureManager;
-import net.pl3x.servergui.fabric.network.NetworkManager;
+import net.pl3x.servergui.fabric.net.NetworkHandler;
 import net.pl3x.servergui.fabric.scheduler.Scheduler;
+import org.jetbrains.annotations.NotNull;
 
-public class ServerGUIFabric implements ClientModInitializer {
+public class ServerGUI implements ClientModInitializer, net.pl3x.servergui.api.ServerGUI {
     public static Minecraft client;
     public static int screenWidth;
     public static int screenHeight;
 
-    private static ServerGUIFabric instance;
+    private static ServerGUI instance;
 
-    public static ServerGUIFabric instance() {
+    public static ServerGUI instance() {
         return instance;
     }
 
+    private final NetworkHandler networkHandler;
     private final Scheduler scheduler;
     private final ScreenManager screenManager;
     private final TextureManager textureManager;
 
-    public ServerGUIFabric() {
+    public ServerGUI() {
         instance = this;
 
+        this.networkHandler = new NetworkHandler(this);
         this.scheduler = new Scheduler();
         this.screenManager = new ScreenManager();
         this.textureManager = new TextureManager();
@@ -32,19 +36,34 @@ public class ServerGUIFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        NetworkManager.register();
+        getNetworkHandler().register();
 
         this.scheduler.register();
     }
 
+    @Override
+    @NotNull
+    public NetworkHandler getNetworkHandler() {
+        return this.networkHandler;
+    }
+
+    @Override
+    @NotNull
+    public PlayerManager getPlayerManager() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @NotNull
     public Scheduler getScheduler() {
         return this.scheduler;
     }
 
+    @NotNull
     public ScreenManager getScreenManager() {
         return this.screenManager;
     }
 
+    @NotNull
     public TextureManager getTextureManager() {
         return this.textureManager;
     }
