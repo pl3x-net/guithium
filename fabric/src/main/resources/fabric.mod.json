@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "servergui",
+  "id": "guithium",
   "version": "${version}",
-  "name": "ServerGUI Client",
-  "description": "Allows the server to add GUIs to the client",
+  "name": "Guithium",
+  "description": "Allows servers to add GUIs to your client",
   "authors": [
     "BillyGalbreath"
   ],
   "contact": {
-    "homepage": "https://purpurmc.org/",
-    "sources": "https://github.com/BillyGalbreath/ServerGUIClient",
-    "issues": "https://github.com/BillyGalbreath/ServerGUIClient/issues"
+    "homepage": "https://github.com/BillyGalbreath/Guithium",
+    "sources": "https://github.com/BillyGalbreath/Guithium",
+    "issues": "https://github.com/BillyGalbreath/Guithium/issues"
   },
   "license": "MIT",
   "icon": "assets/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.pl3x.servergui.fabric.ServerGUI"
+      "net.pl3x.guithium.fabric.Guithium"
     ],
     "modmenu": [
-      "net.pl3x.servergui.fabric.configuration.ModMenu"
+      "net.pl3x.guithium.fabric.configuration.ModMenu"
     ]
   },
   "mixins": [
-    "servergui.mixins.json"
+    "guithium.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.9",
@@ -34,7 +34,7 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/mtAAnkk"
+        "modmenu.discord": "https://discord.gg/nhGzEkwXQX"
       }
     }
   }

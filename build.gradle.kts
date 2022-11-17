@@ -4,7 +4,7 @@ plugins {
 }
 
 project.version = "${extra["minecraft_version"]}-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
-project.group = "net.pl3x.servergui";
+project.group = "net.pl3x.guithium";
 
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true
@@ -36,7 +36,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "${rootProject.group}"
-            artifactId = "servergui"
+            artifactId = "guithium"
             version = "${rootProject.version}"
             from(components["java"])
         }

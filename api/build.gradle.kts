@@ -1,12 +1,11 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "${rootProject.group}.api"
 version = rootProject.version
-description = "ServerGui API"
+description = "Guithium API"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -39,7 +38,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "${rootProject.group}"
-            artifactId = "servergui-api"
+            artifactId = "guithium-api"
             version = "${rootProject.version}"
             from(components["java"])
         }

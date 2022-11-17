@@ -5,7 +5,7 @@ plugins {
 
 group = "${rootProject.group}.plugin"
 version = rootProject.version
-description = "ServerGui Bukkit Plugin"
+description = "Guithium Bukkit Plugin"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
