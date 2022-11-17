@@ -1,8 +1,7 @@
 package net.pl3x.servergui.api.player;
 
-import com.google.common.io.ByteArrayDataOutput;
-import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.gui.Screen;
+import net.pl3x.servergui.api.net.Connection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,5 +19,6 @@ public interface Player {
 
     void setCurrentScreen(@Nullable Screen screen);
 
-    void send(@NotNull Key channel, @NotNull ByteArrayDataOutput out);
+    @NotNull
+    Connection getConnection();
 }

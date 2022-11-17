@@ -2,9 +2,9 @@ package net.pl3x.servergui.api.gui.element;
 
 import com.google.gson.JsonObject;
 import net.pl3x.servergui.api.Key;
-import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.gui.Point;
 import net.pl3x.servergui.api.json.JsonSerializable;
+import net.pl3x.servergui.api.net.packet.ElementPacket;
 import net.pl3x.servergui.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +48,7 @@ public interface Element extends JsonSerializable {
     void setZIndex(@Nullable Double zIndex);
 
     default void send(Player player) {
-        ServerGUI.api().getNetworkManager().send(player, this);
+        player.getConnection().send(new ElementPacket(this));
     }
 
     static Element createElement(JsonObject json) {

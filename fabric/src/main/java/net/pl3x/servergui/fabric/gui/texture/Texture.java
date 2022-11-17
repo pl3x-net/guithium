@@ -1,10 +1,11 @@
 package net.pl3x.servergui.fabric.gui.texture;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.servergui.api.Key;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -46,16 +47,21 @@ public class Texture {
             BufferedImage image = ImageIO.read(new URL(getUrl()));
 
             DynamicTexture texture = new DynamicTexture(image.getWidth(), image.getHeight(), true);
-            ServerGUIFabric.client.getTextureManager().register(getIdentifier(), texture);
+
+            NativeImage nativeImage = texture.getPixels();
+            if (nativeImage == null) {
+                return;
+            }
 
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getWidth(); y++) {
-                    //noinspection ConstantConditions
-                    texture.getPixels().setPixelRGBA(x, y, rgb2bgr(image.getRGB(x, y)));
+                    nativeImage.setPixelRGBA(x, y, rgb2bgr(image.getRGB(x, y)));
                 }
             }
 
             texture.upload();
+
+            ServerGUI.client.getTextureManager().register(getIdentifier(), texture);
             this.isLoaded = true;
         } catch (IOException e) {
             System.out.println(getIdentifier() + " " + getUrl());
@@ -64,7 +70,7 @@ public class Texture {
     }
 
     public void unload() {
-        ServerGUIFabric.client.getTextureManager().release(getIdentifier());
+        ServerGUI.client.getTextureManager().release(getIdentifier());
     }
 
     private static int rgb2bgr(int color) {

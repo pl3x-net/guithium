@@ -5,10 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.Keyed;
-import net.pl3x.servergui.api.ServerGUI;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.json.JsonObjectWrapper;
 import net.pl3x.servergui.api.json.JsonSerializable;
+import net.pl3x.servergui.api.net.packet.CloseScreenPacket;
+import net.pl3x.servergui.api.net.packet.OpenScreenPacket;
 import net.pl3x.servergui.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -106,11 +107,13 @@ public class Screen extends Keyed implements JsonSerializable {
     }
 
     public void open(@NotNull Player player) {
-        ServerGUI.api().getNetworkManager().send(player, this);
+        player.setCurrentScreen(this);
+        player.getConnection().send(new OpenScreenPacket(this));
     }
 
     public void close(@NotNull Player player) {
-        ServerGUI.api().getNetworkManager().send(player, this);
+        player.setCurrentScreen(null);
+        player.getConnection().send(new CloseScreenPacket(this));
     }
 
     @Override

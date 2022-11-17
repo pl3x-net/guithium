@@ -1,12 +1,13 @@
 package net.pl3x.servergui.fabric.gui.screen;
 
 import com.google.common.base.Preconditions;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.pl3x.servergui.api.Key;
 import net.pl3x.servergui.api.gui.Screen;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.api.net.packet.CloseScreenPacket;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.element.RenderableElement;
-import net.pl3x.servergui.fabric.network.packet.ScreenPacket;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
@@ -18,7 +19,7 @@ public class RenderableScreen extends AbstractScreen {
     private final Map<Key, RenderableElement> elements = new HashMap<>();
 
     public RenderableScreen(@NotNull Screen screen) {
-        super(ServerGUIFabric.client == null ? null : ServerGUIFabric.client.screen);
+        super(ServerGUI.client == null ? null : ServerGUI.client.screen);
 
         Preconditions.checkNotNull(screen, "Screen cannot be null");
         this.screen = screen;
@@ -65,7 +66,7 @@ public class RenderableScreen extends AbstractScreen {
 
     @Override
     public void onClose() {
-        ScreenPacket.send(this.screen.getKey());
+        ServerGUI.instance().getNetworkHandler().getConnection().send(new CloseScreenPacket(this.screen));
         super.onClose();
     }
 
@@ -97,9 +98,25 @@ public class RenderableScreen extends AbstractScreen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
-            onClose();
+            close();
             return true;
         }
         return false;
+    }
+
+    public void close() {
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderSystem.recordRenderCall(this::close);
+            return;
+        }
+        onClose();
+    }
+
+    public void open() {
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderSystem.recordRenderCall(this::open);
+            return;
+        }
+        ServerGUI.client.setScreen(this);
     }
 }

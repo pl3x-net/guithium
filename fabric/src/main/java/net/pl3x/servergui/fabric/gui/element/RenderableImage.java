@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.servergui.api.gui.element.Image;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import net.pl3x.servergui.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class RenderableImage extends RenderableElement {
         }
 
         if (getTexture() == null) {
-            this.texture = ServerGUIFabric.instance().getTextureManager().get(image.getKey());
+            this.texture = ServerGUI.instance().getTextureManager().get(image.getKey());
             return;
         }
 

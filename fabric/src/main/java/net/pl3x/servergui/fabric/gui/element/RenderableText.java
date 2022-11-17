@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.pl3x.servergui.api.gui.element.Text;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,13 +29,13 @@ public class RenderableText extends RenderableElement {
         poseStack.pushPose();
 
         calcScreenPos(
-            ServerGUIFabric.client.font.width(text.getText()),
-            ServerGUIFabric.client.font.lineHeight,
+            ServerGUI.client.font.width(text.getText()),
+            ServerGUI.client.font.lineHeight,
             setupScaleAndZIndex(poseStack)
         );
 
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-        ServerGUIFabric.client.font.drawInBatch(
+        ServerGUI.client.font.drawInBatch(
             text.getText(),
             getScreenPos().getX(),
             getScreenPos().getY(),

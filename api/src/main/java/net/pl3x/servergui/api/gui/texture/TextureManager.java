@@ -1,4 +1,6 @@
-package net.pl3x.servergui.api.texture;
+package net.pl3x.servergui.api.gui.texture;
+
+import net.pl3x.servergui.api.net.packet.TexturesPacket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +12,11 @@ public class TextureManager {
         this.textures.put(id, url);
     }
 
-    public Map<String, String> get() {
-        return this.textures;
+    public TexturesPacket getPacket() {
+        if (this.textures.isEmpty()) {
+            return null;
+        }
+        return new TexturesPacket(this.textures);
     }
 
     public void remove(String id) {

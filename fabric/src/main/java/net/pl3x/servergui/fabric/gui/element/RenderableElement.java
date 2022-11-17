@@ -6,7 +6,7 @@ import net.pl3x.servergui.api.gui.element.Button;
 import net.pl3x.servergui.api.gui.element.Element;
 import net.pl3x.servergui.api.gui.element.Image;
 import net.pl3x.servergui.api.gui.element.Text;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,8 +59,8 @@ public abstract class RenderableElement {
         double anchorX = 0;
         double anchorY = 0;
         if (getElement().getAnchor() != null) {
-            anchorX = Math.ceil(ServerGUIFabric.screenWidth * getElement().getAnchor().getX() / scale);
-            anchorY = Math.ceil(ServerGUIFabric.screenHeight * getElement().getAnchor().getY() / scale);
+            anchorX = Math.ceil(ServerGUI.screenWidth * getElement().getAnchor().getX() / scale);
+            anchorY = Math.ceil(ServerGUI.screenHeight * getElement().getAnchor().getY() / scale);
         }
 
         int offsetX = 0;

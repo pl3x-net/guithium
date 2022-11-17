@@ -1,8 +1,8 @@
 package net.pl3x.servergui.api;
 
-import net.pl3x.servergui.api.network.NetworkManager;
+import net.pl3x.servergui.api.gui.texture.TextureManager;
+import net.pl3x.servergui.api.net.NetworkHandler;
 import net.pl3x.servergui.api.player.PlayerManager;
-import net.pl3x.servergui.api.texture.TextureManager;
 import org.jetbrains.annotations.NotNull;
 
 public interface ServerGUI {
@@ -24,7 +24,7 @@ public interface ServerGUI {
     }
 
     @NotNull
-    NetworkManager getNetworkManager();
+    NetworkHandler getNetworkHandler();
 
     @NotNull
     PlayerManager getPlayerManager();

@@ -1,9 +1,8 @@
 package net.pl3x.servergui.fabric.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.fabric.ServerGUI;
 
 public abstract class AbstractScreen extends Screen {
     private static final Component BLANK = Component.literal("");
@@ -25,18 +24,6 @@ public abstract class AbstractScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (!RenderSystem.isOnRenderThread()) {
-            RenderSystem.recordRenderCall(this::onClose);
-            return;
-        }
-        ServerGUIFabric.client.setScreen(this.parent);
-    }
-
-    public void open() {
-        if (!RenderSystem.isOnRenderThread()) {
-            RenderSystem.recordRenderCall(this::open);
-            return;
-        }
-        ServerGUIFabric.client.setScreen(this);
+        ServerGUI.client.setScreen(this.parent);
     }
 }

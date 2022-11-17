@@ -17,7 +17,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.pl3x.servergui.fabric.ServerGUIFabric"
+      "net.pl3x.servergui.fabric.ServerGUI"
     ],
     "modmenu": [
       "net.pl3x.servergui.fabric.configuration.ModMenu"

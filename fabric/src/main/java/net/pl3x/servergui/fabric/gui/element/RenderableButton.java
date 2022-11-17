@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.pl3x.servergui.api.gui.element.Button;
-import net.pl3x.servergui.fabric.ServerGUIFabric;
+import net.pl3x.servergui.api.net.packet.ButtonClickPacket;
+import net.pl3x.servergui.fabric.ServerGUI;
 import net.pl3x.servergui.fabric.gui.screen.RenderableScreen;
-import net.pl3x.servergui.fabric.network.packet.ElementPacket;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableButton extends RenderableElement {
@@ -59,7 +59,7 @@ public class RenderableButton extends RenderableElement {
         int yOffset = disabled ? 0 : hovered ? 2 : 1;
         GuiComponent.blit(poseStack, x, y, 0, 0, 46 + yOffset * 20, width / 2, height, 256, 256);
         GuiComponent.blit(poseStack, x + width / 2, y, 0, 200 - width / 2F, 46 + yOffset * 20, width / 2, height, 256, 256);
-        GuiComponent.drawCenteredString(poseStack, ServerGUIFabric.client.font, button.getText(), x + width / 2, y + (height - 8) / 2, disabled ? 10526880 : 16777215);
+        GuiComponent.drawCenteredString(poseStack, ServerGUI.client.font, button.getText(), x + width / 2, y + (height - 8) / 2, disabled ? 10526880 : 16777215);
 
         poseStack.popPose();
     }
@@ -67,9 +67,9 @@ public class RenderableButton extends RenderableElement {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.hovered) {
-            ServerGUIFabric.client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            System.out.println("Button clicked!");
-            ElementPacket.send("button_click", getElement().getKey().toString());
+            ServerGUI.client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            ButtonClickPacket packet = new ButtonClickPacket(getScreen().getScreen(), getElement());
+            ServerGUI.instance().getNetworkHandler().getConnection().send(packet);
             return true;
         }
         return false;
