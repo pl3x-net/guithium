@@ -6,7 +6,7 @@ plugins {
 base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.fabric"
 version = rootProject.version
-description = "ServerGui API"
+description = "Guithium Fabric Mod"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
