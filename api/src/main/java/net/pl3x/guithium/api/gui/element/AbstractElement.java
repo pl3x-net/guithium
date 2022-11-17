@@ -2,10 +2,10 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
-import net.pl3x.guithium.api.Keyed;
-import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.Key;
+import net.pl3x.guithium.api.Keyed;
 import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,10 +17,8 @@ public abstract class AbstractElement implements Element {
     private Point pos;
     private Point anchor;
     private Point offset;
-    private Float scale;
-    private Double zIndex;
 
-    public AbstractElement(@NotNull Key key, @NotNull String type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
+    public AbstractElement(@NotNull Key key, @NotNull String type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
         Preconditions.checkNotNull(key, "Key cannot be null");
         Preconditions.checkNotNull(type, "Type cannot be null");
         this.key = key;
@@ -28,8 +26,6 @@ public abstract class AbstractElement implements Element {
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
-        setScale(scale);
-        setZIndex(zIndex);
     }
 
     @Override
@@ -93,28 +89,6 @@ public abstract class AbstractElement implements Element {
     }
 
     @Override
-    @Nullable
-    public Float getScale() {
-        return this.scale;
-    }
-
-    @Override
-    public void setScale(@Nullable Float scale) {
-        this.scale = scale;
-    }
-
-    @Override
-    @Nullable
-    public Double getZIndex() {
-        return this.zIndex;
-    }
-
-    @Override
-    public void setZIndex(@Nullable Double zIndex) {
-        this.zIndex = zIndex;
-    }
-
-    @Override
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper();
@@ -123,8 +97,6 @@ public abstract class AbstractElement implements Element {
         json.addProperty("pos", getPos());
         json.addProperty("anchor", getAnchor());
         json.addProperty("offset", getOffset());
-        json.addProperty("scale", getScale());
-        json.addProperty("zIndex", getZIndex());
         return json.getJsonObject();
     }
 
@@ -144,14 +116,12 @@ public abstract class AbstractElement implements Element {
             && Objects.equals(getType(), other.getType())
             && Objects.equals(getPos(), other.getPos())
             && Objects.equals(getAnchor(), other.getAnchor())
-            && Objects.equals(getOffset(), other.getOffset())
-            && Objects.equals(getScale(), other.getScale())
-            && Objects.equals(getZIndex(), other.getZIndex());
+            && Objects.equals(getOffset(), other.getOffset());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getType(), getPos(), getAnchor(), getOffset(), getScale(), getZIndex());
+        return Objects.hash(getKey(), getType(), getPos(), getAnchor(), getOffset());
     }
 
     @Override
@@ -165,17 +135,13 @@ public abstract class AbstractElement implements Element {
             + ",type=" + getType()
             + ",pos=" + getPos()
             + ",anchor=" + getAnchor()
-            + ",offset=" + getOffset()
-            + ",scale=" + getScale()
-            + ",z-index=" + getZIndex();
+            + ",offset=" + getOffset();
     }
 
     public static abstract class AbstractBuilder<T extends AbstractBuilder<T>> extends Keyed {
         private Point pos;
         private Point anchor;
         private Point offset;
-        private Float scale;
-        private Double zIndex;
 
         public AbstractBuilder(@NotNull Key key) {
             super(key);
@@ -229,30 +195,6 @@ public abstract class AbstractElement implements Element {
         @SuppressWarnings("unchecked")
         public T setOffset(@Nullable Point offset) {
             this.offset = offset;
-            return (T) this;
-        }
-
-        @Nullable
-        public Float getScale() {
-            return scale;
-        }
-
-        @NotNull
-        @SuppressWarnings("unchecked")
-        public T setScale(@Nullable Float scale) {
-            this.scale = scale;
-            return (T) this;
-        }
-
-        @Nullable
-        public Double getZIndex() {
-            return zIndex;
-        }
-
-        @NotNull
-        @SuppressWarnings("unchecked")
-        public T setZIndex(@Nullable Double zIndex) {
-            this.zIndex = zIndex;
             return (T) this;
         }
 

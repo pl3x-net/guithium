@@ -1,6 +1,7 @@
 package net.pl3x.guithium.fabric.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -32,7 +33,7 @@ public class ScreenManager {
     }
 
     public void render(PoseStack poseStack, float delta) {
-        if (!Guithium.client.options.renderDebug) {
+        if (!Minecraft.getInstance().options.renderDebug) {
             this.screens.forEach((key, screen) -> screen.render(poseStack, 0, 0, delta));
         }
     }

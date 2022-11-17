@@ -2,10 +2,10 @@ package net.pl3x.guithium.fabric.gui.texture;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.fabric.Guithium;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -61,7 +61,7 @@ public class Texture {
 
             texture.upload();
 
-            Guithium.client.getTextureManager().register(getIdentifier(), texture);
+            Minecraft.getInstance().getTextureManager().register(getIdentifier(), texture);
             this.isLoaded = true;
         } catch (IOException e) {
             System.out.println(getIdentifier() + " " + getUrl());
@@ -70,7 +70,7 @@ public class Texture {
     }
 
     public void unload() {
-        Guithium.client.getTextureManager().release(getIdentifier());
+        Minecraft.getInstance().getTextureManager().release(getIdentifier());
     }
 
     private static int rgb2bgr(int color) {

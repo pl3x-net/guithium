@@ -2,8 +2,8 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +14,24 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
+    @NotNull
     public Text getElement() {
         return (Text) super.getElement();
+    }
+
+    @Override
+    public void init(Minecraft minecraft, int width, int height) {
+        String text = getElement().getText();
+        if (text == null || text.isBlank()) {
+            return;
+        }
+
+        super.init(minecraft, width, height);
+
+        calcScreenPos(
+            Minecraft.getInstance().font.width(text),
+            Minecraft.getInstance().font.lineHeight
+        );
     }
 
     @Override
@@ -28,17 +44,11 @@ public class RenderableText extends RenderableElement {
 
         poseStack.pushPose();
 
-        calcScreenPos(
-            Guithium.client.font.width(text.getText()),
-            Guithium.client.font.lineHeight,
-            setupScaleAndZIndex(poseStack)
-        );
-
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-        Guithium.client.font.drawInBatch(
+        Minecraft.getInstance().font.drawInBatch(
             text.getText(),
-            getScreenPos().getX(),
-            getScreenPos().getY(),
+            this.pos.getX(),
+            this.pos.getY(),
             0xFFFFFF,
             Boolean.TRUE.equals(text.hasShadow()),
             poseStack.last().pose(),

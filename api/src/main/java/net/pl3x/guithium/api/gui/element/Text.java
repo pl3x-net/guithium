@@ -3,9 +3,9 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,8 +15,8 @@ public class Text extends AbstractElement {
     private String text;
     private Boolean shadow;
 
-    public Text(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow, @Nullable Float scale, @Nullable Double zIndex) {
-        super(key, "text", pos, anchor, offset, scale, zIndex);
+    public Text(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
+        super(key, "text", pos, anchor, offset);
         setText(text);
         setShadow(shadow);
     }
@@ -57,9 +57,7 @@ public class Text extends AbstractElement {
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("shadow") ? null : json.get("shadow").getAsBoolean(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("zIndex") ? null : json.get("zIndex").getAsDouble()
+            !json.has("shadow") ? null : json.get("shadow").getAsBoolean()
         );
     }
 
@@ -143,7 +141,7 @@ public class Text extends AbstractElement {
         @Override
         @NotNull
         public Text build() {
-            return new Text(getKey(), getText(), getPos(), getAnchor(), getOffset(), hasShadow(), getScale(), getZIndex());
+            return new Text(getKey(), getText(), getPos(), getAnchor(), getOffset(), hasShadow());
         }
     }
 }

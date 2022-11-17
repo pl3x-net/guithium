@@ -1,5 +1,6 @@
 package net.pl3x.guithium.fabric.net;
 
+import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
@@ -21,10 +22,14 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
 
     @Override
     public void handleCloseScreen(CloseScreenPacket packet) {
-        // client does not send this packet to the server
-        if (Guithium.client.screen instanceof RenderableScreen screen) {
-            if (screen.getScreen().equals(packet.getScreen())) {
-                screen.close();
+        Screen screen = packet.getScreen();
+        if (screen.getType() == Screen.Type.HUD) {
+            Guithium.instance().getScreenManager().remove(screen.getKey());
+        } else {
+            if (Minecraft.getInstance().screen instanceof RenderableScreen renderableScreen) {
+                if (renderableScreen.getScreen().equals(packet.getScreen())) {
+                    renderableScreen.close();
+                }
             }
         }
     }
@@ -33,7 +38,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     public void handleElement(ElementPacket packet) {
         Element element = packet.getElement();
 
-        if (Guithium.client.screen instanceof RenderableScreen currentScreen) {
+        if (Minecraft.getInstance().screen instanceof RenderableScreen currentScreen) {
             RenderableElement renderableElement = currentScreen.getElements().get(element.getKey());
             if (renderableElement != null) {
                 renderableElement.setElement(element);
