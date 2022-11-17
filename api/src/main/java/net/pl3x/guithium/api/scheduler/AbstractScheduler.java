@@ -9,9 +9,7 @@ public abstract class AbstractScheduler {
 
     public abstract void register();
 
-    protected abstract void startTick();
-
-    protected void endTick() {
+    protected void tick() {
         Iterator<Task> iter = this.tasks.iterator();
         while (iter.hasNext()) {
             Task task = iter.next();

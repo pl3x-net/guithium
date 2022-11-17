@@ -1,7 +1,7 @@
 package net.pl3x.guithium.plugin.net;
 
-import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
@@ -11,6 +11,7 @@ import net.pl3x.guithium.api.net.packet.HelloPacket;
 import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.util.TriConsumer;
 import net.pl3x.guithium.plugin.event.HelloEvent;
 
 public class PacketListener implements net.pl3x.guithium.api.net.PacketListener {
@@ -31,7 +32,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
         }
 
         if (screen.getElements().get(Key.of(buttonId)) instanceof Button button) {
-            Button.TriConsumer<Screen, Button, Player> onClick = button.onClick();
+            TriConsumer<Screen, Button, Player> onClick = button.onClick();
             if (onClick != null) {
                 onClick.accept(screen, button, player);
             }

@@ -3,11 +3,12 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.player.Player;
-import net.pl3x.guithium.api.Key;
+import net.pl3x.guithium.api.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,8 +20,8 @@ public class Button extends AbstractElement {
 
     private TriConsumer<Screen, Button, Player> onClick;
 
-    public Button(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
-        super(key, "button", pos, anchor, offset, scale, zIndex);
+    public Button(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
+        super(key, "button", pos, anchor, offset);
         setText(text);
         setSize(size);
     }
@@ -73,9 +74,7 @@ public class Button extends AbstractElement {
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("zIndex") ? null : json.get("zIndex").getAsDouble()
+            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject())
         );
     }
 
@@ -171,22 +170,9 @@ public class Button extends AbstractElement {
         @Override
         @NotNull
         public Button build() {
-            Button button = new Button(getKey(), getText(), getPos(), getSize(), getAnchor(), getOffset(), getScale(), getZIndex());
+            Button button = new Button(getKey(), getText(), getPos(), getSize(), getAnchor(), getOffset());
             button.onClick(this.onClick);
             return button;
-        }
-    }
-
-    @FunctionalInterface
-    public interface TriConsumer<T, U, V> {
-        void accept(T t, U u, V v);
-
-        default TriConsumer<T, U, V> andThen(TriConsumer<? super T, ? super U, ? super V> after) {
-            Objects.requireNonNull(after);
-            return (a, b, c) -> {
-                accept(a, b, c);
-                after.accept(a, b, c);
-            };
         }
     }
 }

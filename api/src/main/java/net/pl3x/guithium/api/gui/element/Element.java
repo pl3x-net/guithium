@@ -1,11 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonObject;
-import net.pl3x.guithium.api.json.JsonSerializable;
-import net.pl3x.guithium.api.player.Player;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.net.packet.ElementPacket;
+import net.pl3x.guithium.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,16 +36,6 @@ public interface Element extends JsonSerializable {
     void setOffset(float x, float y);
 
     void setOffset(@Nullable Point offset);
-
-    @Nullable
-    Float getScale();
-
-    void setScale(@Nullable Float scale);
-
-    @Nullable
-    Double getZIndex();
-
-    void setZIndex(@Nullable Double zIndex);
 
     default void send(Player player) {
         player.getConnection().send(new ElementPacket(this));

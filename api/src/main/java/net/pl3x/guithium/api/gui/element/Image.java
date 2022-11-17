@@ -3,9 +3,9 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,8 +14,8 @@ import java.util.Objects;
 public class Image extends AbstractElement {
     private Point size;
 
-    public Image(@NotNull Key key, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset, @Nullable Float scale, @Nullable Double zIndex) {
-        super(key, "image", pos, anchor, offset, scale, zIndex);
+    public Image(@NotNull Key key, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
+        super(key, "image", pos, anchor, offset);
         setSize(size);
     }
 
@@ -48,9 +48,7 @@ public class Image extends AbstractElement {
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("zIndex") ? null : json.get("zIndex").getAsDouble()
+            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject())
         );
     }
 
@@ -125,7 +123,7 @@ public class Image extends AbstractElement {
         @Override
         @NotNull
         public Image build() {
-            return new Image(getKey(), getPos(), getSize(), getAnchor(), getOffset(), getScale(), getZIndex());
+            return new Image(getKey(), getPos(), getSize(), getAnchor(), getOffset());
         }
     }
 }

@@ -8,7 +8,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Image;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -16,6 +18,10 @@ import net.pl3x.guithium.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableImage extends RenderableElement {
+    private float x0;
+    private float y0;
+    private float x1;
+    private float y1;
     private Texture texture;
 
     public RenderableImage(Image image, RenderableScreen screen) {
@@ -23,12 +29,30 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
+    @NotNull
     public Image getElement() {
         return (Image) super.getElement();
     }
 
     public Texture getTexture() {
         return this.texture;
+    }
+
+    @Override
+    public void init(Minecraft minecraft, int width, int height) {
+        Point size = getElement().getSize();
+        if (size == null) {
+            return;
+        }
+
+        super.init(minecraft, width, height);
+
+        calcScreenPos(size.getX(), size.getY());
+
+        this.x0 = this.pos.getX();
+        this.y0 = this.pos.getY();
+        this.x1 = this.x0 + size.getX();
+        this.y1 = this.y0 + size.getY();
     }
 
     @Override
@@ -49,13 +73,6 @@ public class RenderableImage extends RenderableElement {
 
         poseStack.pushPose();
 
-        calcScreenPos(image.getSize().getX(), image.getSize().getY(), setupScaleAndZIndex(poseStack));
-
-        float x0 = getScreenPos().getX();
-        float y0 = getScreenPos().getY();
-        float x1 = x0 + image.getSize().getX();
-        float y1 = y0 + image.getSize().getY();
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -66,10 +83,10 @@ public class RenderableImage extends RenderableElement {
         Matrix4f model = poseStack.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buf.vertex(model, x0, y0, 0F).uv(0, 0).endVertex();
-        buf.vertex(model, x0, y1, 0F).uv(0, 1).endVertex();
-        buf.vertex(model, x1, y1, 0F).uv(1, 1).endVertex();
-        buf.vertex(model, x1, y0, 0F).uv(1, 0).endVertex();
+        buf.vertex(model, this.x0, this.y0, 0F).uv(0, 0).endVertex();
+        buf.vertex(model, this.x0, this.y1, 0F).uv(0, 1).endVertex();
+        buf.vertex(model, this.x1, this.y1, 0F).uv(1, 1).endVertex();
+        buf.vertex(model, this.x1, this.y0, 0F).uv(1, 0).endVertex();
         BufferUploader.drawWithShader(buf.end());
 
         poseStack.popPose();

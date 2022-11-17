@@ -1,8 +1,8 @@
 package net.pl3x.guithium.fabric.gui.screen;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.fabric.Guithium;
 
 public abstract class AbstractScreen extends Screen {
     private static final Component BLANK = Component.literal("");
@@ -17,13 +17,13 @@ public abstract class AbstractScreen extends Screen {
     }
 
     @Override
-    public void init() {
+    protected void init() {
         super.init();
         this.centerX = (int) (this.width / 2F);
     }
 
     @Override
     public void onClose() {
-        Guithium.client.setScreen(this.parent);
+        Minecraft.getInstance().setScreen(this.parent);
     }
 }
