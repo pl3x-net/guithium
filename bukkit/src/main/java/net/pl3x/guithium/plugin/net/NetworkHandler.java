@@ -4,11 +4,12 @@ import net.pl3x.guithium.api.net.packet.Packet;
 import net.pl3x.guithium.api.player.Player;
 import net.pl3x.guithium.plugin.Guithium;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
     private final Guithium plugin;
 
-    public NetworkHandler(Guithium plugin) {
+    public NetworkHandler(@NotNull Guithium plugin) {
         this.plugin = plugin;
     }
 

@@ -36,6 +36,8 @@ public class GL {
 
     public static void drawSolidRect(Matrix4f matrix4f, float x0, float y0, float x1, float y1, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
         RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -44,6 +46,7 @@ public class GL {
         buf.vertex(matrix4f, x0, y1, 0).color(colorBottomLeft).endVertex();
         buf.vertex(matrix4f, x1, y1, 0).color(colorBottomRight).endVertex();
         BufferUploader.drawWithShader(buf.end());
+        RenderSystem.disableBlend();
         RenderSystem.enableTexture();
     }
 

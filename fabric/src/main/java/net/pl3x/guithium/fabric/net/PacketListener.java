@@ -12,16 +12,17 @@ import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.element.RenderableElement;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
+import org.jetbrains.annotations.NotNull;
 
 public class PacketListener implements net.pl3x.guithium.api.net.PacketListener {
     @Override
-    public void handleButtonClick(ButtonClickPacket packet) {
+    public void handleButtonClick(@NotNull ButtonClickPacket packet) {
         // server does not send this packet to the client
         throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
-    public void handleCloseScreen(CloseScreenPacket packet) {
+    public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         Screen screen = packet.getScreen();
         if (screen.getType() == Screen.Type.HUD) {
             Guithium.instance().getHudManager().remove(screen.getKey());
@@ -35,7 +36,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleElement(ElementPacket packet) {
+    public void handleElement(@NotNull ElementPacket packet) {
         Element element = packet.getElement();
 
         if (Minecraft.getInstance().screen instanceof RenderableScreen currentScreen) {
@@ -55,7 +56,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleHello(HelloPacket packet) {
+    public void handleHello(@NotNull HelloPacket packet) {
         int protocol = packet.getProtocol();
         if (protocol == net.pl3x.guithium.api.Guithium.PROTOCOL) {
             System.out.println("Server responded with correct protocol (" + protocol + ")");
@@ -65,11 +66,8 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleOpenScreen(OpenScreenPacket packet) {
+    public void handleOpenScreen(@NotNull OpenScreenPacket packet) {
         Screen screen = packet.getScreen();
-        if (screen == null) {
-            return;
-        }
 
         RenderableScreen renderableScreen = new RenderableScreen(screen);
 
@@ -81,7 +79,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleTextures(TexturesPacket packet) {
+    public void handleTextures(@NotNull TexturesPacket packet) {
         packet.getTextures().forEach((id, url) -> {
             // add texture to manager
             Guithium.instance().getTextureManager().add(id, url);

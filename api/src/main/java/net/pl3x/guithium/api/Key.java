@@ -62,6 +62,7 @@ public final class Key {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return this.key;
     }

@@ -53,7 +53,7 @@ public abstract class NetworkHandler {
      * @param listener Packet listener
      * @param in       Data received
      */
-    public void receive(PacketListener listener, @NotNull ByteArrayDataInput in) {
+    public void receive(@NotNull PacketListener listener, @NotNull ByteArrayDataInput in) {
         Packet packet = getPacket(in);
         if (packet == null) {
             System.out.println("Received unknown packet from server%n");

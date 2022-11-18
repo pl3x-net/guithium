@@ -13,7 +13,7 @@ public class CloseScreenPacket extends Packet {
 
     private final Screen screen;
 
-    public CloseScreenPacket(Screen screen) {
+    public CloseScreenPacket(@NotNull Screen screen) {
         this.screen = screen;
     }
 
@@ -22,10 +22,12 @@ public class CloseScreenPacket extends Packet {
     }
 
     @Override
+    @NotNull
     public Key getKey() {
         return KEY;
     }
 
+    @NotNull
     public Screen getScreen() {
         return this.screen;
     }

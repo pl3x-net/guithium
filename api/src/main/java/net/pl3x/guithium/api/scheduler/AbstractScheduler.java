@@ -1,5 +1,7 @@
 package net.pl3x.guithium.api.scheduler;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,15 +39,15 @@ public abstract class AbstractScheduler {
         }
     }
 
-    public void addTask(Task task) {
+    public void addTask(@NotNull Task task) {
         this.tasks.add(task);
     }
 
-    public void addTask(int delay, Runnable runnable) {
+    public void addTask(int delay, @NotNull Runnable runnable) {
         addTask(delay, false, runnable);
     }
 
-    public void addTask(int delay, boolean repeat, Runnable runnable) {
+    public void addTask(int delay, boolean repeat, @NotNull Runnable runnable) {
         addTask(new Task(delay, repeat) {
             @Override
             public void run() {

@@ -4,35 +4,39 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class HudManager {
-    private final Map<Key, RenderableScreen> screens = new ConcurrentHashMap<>();
+    private final Map<Key, RenderableScreen> screens = new HashMap<>();
 
-    public void add(RenderableScreen renderableScreen) {
-        this.screens.put(renderableScreen.getScreen().getKey(), renderableScreen);
-        renderableScreen.refresh();
+    public void add(@NotNull RenderableScreen screen) {
+        this.screens.put(screen.getScreen().getKey(), screen);
+        screen.refresh();
     }
 
+    @NotNull
     public Map<Key, RenderableScreen> getAll() {
         return this.screens;
     }
 
-    public RenderableScreen get(Key key) {
+    @Nullable
+    public RenderableScreen get(@NotNull Key key) {
         return this.screens.get(key);
     }
 
-    public RenderableScreen remove(Key key) {
-        return this.screens.remove(key);
+    public void remove(@NotNull Key key) {
+        this.screens.remove(key);
     }
 
     public void clear() {
         this.screens.clear();
     }
 
-    public void render(PoseStack poseStack, float delta) {
+    public void render(@NotNull PoseStack poseStack, float delta) {
         if (!Minecraft.getInstance().options.renderDebug) {
             this.screens.forEach((key, screen) -> screen.render(poseStack, 0, 0, delta));
         }

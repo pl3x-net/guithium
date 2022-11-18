@@ -16,6 +16,7 @@ public class Connection implements net.pl3x.guithium.api.net.Connection {
     }
 
     @Override
+    @NotNull
     public net.pl3x.guithium.api.net.PacketListener getPacketListener() {
         return this.packetListener;
     }

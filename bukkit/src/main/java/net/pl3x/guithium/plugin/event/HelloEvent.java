@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class HelloEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
 
-    public HelloEvent(Player player) {
+    public HelloEvent(@NotNull Player player) {
         super(player);
     }
 

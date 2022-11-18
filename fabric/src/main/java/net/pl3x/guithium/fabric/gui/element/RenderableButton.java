@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Tickable;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -17,8 +18,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class RenderableButton extends RenderableElement {
-    public RenderableButton(Button button, RenderableScreen screen) {
+public class RenderableButton extends RenderableElement implements Tickable {
+    private int tooltipDelay;
+
+    public RenderableButton(@NotNull Button button, @NotNull RenderableScreen screen) {
         super(button, screen);
     }
 
@@ -29,7 +32,16 @@ public class RenderableButton extends RenderableElement {
     }
 
     @Override
-    public void init(Minecraft minecraft, int width, int height) {
+    public void tick() {
+        if (this.renderableWidget.isHovered && this.renderableWidget.active) {
+            this.tooltipDelay++;
+        } else if (this.tooltipDelay > 0) {
+            this.tooltipDelay = 0;
+        }
+    }
+
+    @Override
+    public void init(@NotNull Minecraft minecraft, int width, int height) {
         Point size = getElement().getSize();
         if (size == null) {
             return;
@@ -60,7 +72,7 @@ public class RenderableButton extends RenderableElement {
                 Guithium.instance().getNetworkHandler().getConnection().send(packet);
             },
             (button, poseStack, x, y) -> {
-                if (tooltip != null) {
+                if (tooltip != null && button.isHovered && this.tooltipDelay > 10) {
                     this.screen.renderTooltip(poseStack, tooltip, x, y);
                 }
             }

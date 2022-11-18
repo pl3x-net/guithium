@@ -14,7 +14,7 @@ public class ButtonClickPacket extends Packet {
     private final String screenId;
     private final String buttonId;
 
-    public ButtonClickPacket(Screen screen, Button button) {
+    public ButtonClickPacket(@NotNull Screen screen, @NotNull Button button) {
         this.screenId = screen.getKey().toString();
         this.buttonId = button.getKey().toString();
     }
@@ -25,14 +25,17 @@ public class ButtonClickPacket extends Packet {
     }
 
     @Override
+    @NotNull
     public Key getKey() {
         return KEY;
     }
 
+    @NotNull
     public String getScreenId() {
         return this.screenId;
     }
 
+    @NotNull
     public String getButtonId() {
         return this.buttonId;
     }

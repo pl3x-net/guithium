@@ -11,83 +11,65 @@ import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.guithium.api.gui.Point;
-import net.pl3x.guithium.api.gui.element.Image;
-import net.pl3x.guithium.fabric.Guithium;
+import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
-import net.pl3x.guithium.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
 
-public class RenderableImage extends RenderableElement {
+public class RenderableGradient extends RenderableElement {
     private float x0;
     private float y0;
     private float x1;
     private float y1;
-    private Texture texture;
 
-    public RenderableImage(@NotNull Image image, @NotNull RenderableScreen screen) {
-        super(image, screen);
+    public RenderableGradient(@NotNull Gradient gradient, @NotNull RenderableScreen screen) {
+        super(gradient, screen);
     }
 
     @Override
     @NotNull
-    public Image getElement() {
-        return (Image) super.getElement();
-    }
-
-    public Texture getTexture() {
-        return this.texture;
+    public Gradient getElement() {
+        return (Gradient) super.getElement();
     }
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
         Point size = getElement().getSize();
         if (size == null) {
-            return;
+            size = Point.ONE;
         }
 
         calcScreenPos(size.getX(), size.getY());
 
         this.x0 = this.pos.getX();
         this.y0 = this.pos.getY();
-        this.x1 = this.x0 + size.getX();
-        this.y1 = this.y0 + size.getY();
+        this.x1 = this.x0 + size.getX() * this.screen.width;
+        this.y1 = this.y0 + size.getY() * this.screen.height;
     }
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        Image image = getElement();
-        if (image.getSize() == null) {
-            return;
-        }
-
-        if (getTexture() == null) {
-            this.texture = Guithium.instance().getTextureManager().get(image.getKey());
-            return;
-        }
-
-        if (!getTexture().isLoaded()) {
-            return;
-        }
+        Gradient gradient = getElement();
 
         poseStack.pushPose();
 
+        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         Matrix4f model = poseStack.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
-        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buf.vertex(model, this.x1, this.y0, 0).uv(1, 0).endVertex();
-        buf.vertex(model, this.x0, this.y0, 0).uv(0, 0).endVertex();
-        buf.vertex(model, this.x0, this.y1, 0).uv(0, 1).endVertex();
-        buf.vertex(model, this.x1, this.y1, 0).uv(1, 1).endVertex();
+        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buf.vertex(model, this.x1, this.y0, 0).color(gradient.getColorTopRight()).endVertex();
+        buf.vertex(model, this.x0, this.y0, 0).color(gradient.getColorTopLeft()).endVertex();
+        buf.vertex(model, this.x0, this.y1, 0).color(gradient.getColorBottomLeft()).endVertex();
+        buf.vertex(model, this.x1, this.y1, 0).color(gradient.getColorBottomRight()).endVertex();
         BufferUploader.drawWithShader(buf.end());
 
         RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
 
         poseStack.popPose();
     }

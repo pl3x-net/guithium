@@ -5,6 +5,8 @@ import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.json.adapter.ElementAdapter;
 import net.pl3x.guithium.api.json.adapter.ScreenAdapter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -14,21 +16,26 @@ public class Gson {
         .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
         .disableHtmlEscaping()
         .setLenient()
+        .setPrettyPrinting()
         .create();
 
+    @NotNull
     public static com.google.gson.Gson gson() {
         return gson;
     }
 
-    public static String toJson(Object src) {
+    @NotNull
+    public static String toJson(@Nullable Object src) {
         return gson().toJson(src);
     }
 
-    public static <T> T fromJson(String json, Class<T> classOfT) {
+    @Nullable
+    public static <T> T fromJson(@Nullable String json, @NotNull Class<T> classOfT) {
         return gson().fromJson(json, classOfT);
     }
 
-    public static <T> T fromJson(String json, Type typeOfT) {
+    @Nullable
+    public static <T> T fromJson(@Nullable String json, @NotNull Type typeOfT) {
         return gson().fromJson(json, typeOfT);
     }
 }

@@ -21,6 +21,7 @@ public class HelloPacket extends Packet {
     }
 
     @Override
+    @NotNull
     public Key getKey() {
         return KEY;
     }

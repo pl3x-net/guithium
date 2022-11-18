@@ -61,11 +61,12 @@ public class Button extends AbstractElement {
         this.size = size;
     }
 
+    @Nullable
     public TriConsumer<Screen, Button, Player> onClick() {
         return this.onClick;
     }
 
-    public void onClick(TriConsumer<Screen, Button, Player> run) {
+    public void onClick(@Nullable TriConsumer<Screen, Button, Player> run) {
         this.onClick = run;
     }
 
@@ -117,6 +118,7 @@ public class Button extends AbstractElement {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return String.format("Button{%s}", getPropertiesAsString());
     }
@@ -130,10 +132,12 @@ public class Button extends AbstractElement {
             + ",size=" + getSize();
     }
 
+    @NotNull
     public static Builder builder(@NotNull String key) {
         return new Builder(key);
     }
 
+    @NotNull
     public static Builder builder(@NotNull Key key) {
         return new Builder(key);
     }
@@ -191,7 +195,7 @@ public class Button extends AbstractElement {
         }
 
         @NotNull
-        public Builder onClick(TriConsumer<Screen, Button, Player> run) {
+        public Builder onClick(@Nullable TriConsumer<Screen, Button, Player> run) {
             this.onClick = run;
             return this;
         }

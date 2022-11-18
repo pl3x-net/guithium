@@ -4,7 +4,7 @@ plugins {
 }
 
 project.version = "${extra["minecraft_version"]}-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
-project.group = "net.pl3x.guithium";
+project.group = "net.pl3x.guithium"
 
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true

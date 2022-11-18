@@ -13,16 +13,17 @@ import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.Player;
 import net.pl3x.guithium.api.util.TriConsumer;
 import net.pl3x.guithium.plugin.event.HelloEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PacketListener implements net.pl3x.guithium.api.net.PacketListener {
     private final Player player;
 
-    public PacketListener(Player player) {
+    public PacketListener(@NotNull Player player) {
         this.player = player;
     }
 
     @Override
-    public void handleButtonClick(ButtonClickPacket packet) {
+    public void handleButtonClick(@NotNull ButtonClickPacket packet) {
         String screenId = packet.getScreenId();
         String buttonId = packet.getButtonId();
 
@@ -40,7 +41,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleCloseScreen(CloseScreenPacket packet) {
+    public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         Screen screen = this.player.getCurrentScreen();
         if (screen != null) {
             if (screen.equals(packet.getScreen())) {
@@ -50,13 +51,13 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleElement(ElementPacket packet) {
+    public void handleElement(@NotNull ElementPacket packet) {
         // client does not send this packet to the server
         throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
-    public void handleHello(HelloPacket packet) {
+    public void handleHello(@NotNull HelloPacket packet) {
         int protocol = packet.getProtocol();
 
         System.out.println(this.player.getName() + " is using Guithium with protocol " + protocol);
@@ -75,13 +76,13 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
-    public void handleOpenScreen(OpenScreenPacket packet) {
+    public void handleOpenScreen(@NotNull OpenScreenPacket packet) {
         // client does not send this packet to the server
         throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
-    public void handleTextures(TexturesPacket packet) {
+    public void handleTextures(@NotNull TexturesPacket packet) {
         // client does not send this packet to the server
         throw new UnsupportedOperationException("Not supported.");
     }

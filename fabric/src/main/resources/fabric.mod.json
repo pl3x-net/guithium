@@ -26,6 +26,7 @@
   "mixins": [
     "guithium.mixins.json"
   ],
+  "accessWidener": "guithium.accesswidener",
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric": "*",
