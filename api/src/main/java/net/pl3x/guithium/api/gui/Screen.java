@@ -3,32 +3,32 @@ package net.pl3x.guithium.api.gui;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Keyed;
+import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.gui.element.Gradient;
+import net.pl3x.guithium.api.gui.element.Rect;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
-import net.pl3x.guithium.api.player.Player;
-import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Screen extends Keyed implements JsonSerializable {
     private Type type;
-    private Background background;
-    private final Map<Key, Element> elements = new ConcurrentHashMap<>();
+    private final Map<Key, Element> elements = new LinkedHashMap<>();
 
-    public Screen(@NotNull Key key, @Nullable Type type, @Nullable Background background) {
+    public Screen(@NotNull Key key, @Nullable Type type) {
         super(key);
         setType(type);
-        setBackground(background);
     }
 
     @Nullable
@@ -38,15 +38,6 @@ public class Screen extends Keyed implements JsonSerializable {
 
     public void setType(@Nullable Type type) {
         this.type = type;
-    }
-
-    @Nullable
-    public Background getBackground() {
-        return this.background;
-    }
-
-    public void setBackground(@Nullable Background background) {
-        this.background = background;
     }
 
     public void addElements(@NotNull Collection<Element> elements) {
@@ -122,7 +113,6 @@ public class Screen extends Keyed implements JsonSerializable {
         JsonObjectWrapper json = new JsonObjectWrapper();
         json.addProperty("key", getKey());
         json.addProperty("type", getType());
-        json.addProperty("background", getBackground());
         json.addProperty("elements", getElements().values());
         return json.getJsonObject();
     }
@@ -132,13 +122,12 @@ public class Screen extends Keyed implements JsonSerializable {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Screen screen = new Screen(
             Key.of(json.get("key").getAsString()),
-            !json.has("type") ? null : Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT)),
-            !json.has("background") ? null : Background.valueOf(json.get("background").getAsString().toUpperCase(Locale.ROOT))
+            !json.has("type") ? null : Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT))
         );
         if (json.has("elements")) {
             json.get("elements").getAsJsonArray().forEach(jsonElement -> {
                 if (jsonElement.isJsonObject()) {
-                    Element element = Element.createElement(jsonElement.getAsJsonObject());
+                    Element element = Element.fromJson(jsonElement.getAsJsonObject());
                     if (element != null) {
                         screen.getElements().put(element.getKey(), element);
                     }
@@ -190,7 +179,7 @@ public class Screen extends Keyed implements JsonSerializable {
 
     public static class Builder extends Keyed {
         private Type type;
-        private Background background;
+        private Rect background;
 
         public Builder(@NotNull String key) {
             this(Key.of(key));
@@ -198,11 +187,12 @@ public class Screen extends Keyed implements JsonSerializable {
 
         public Builder(@NotNull Key key) {
             super(key);
+            setBackground(Gradient.DEFAULT);
         }
 
         @Nullable
         public Type getType() {
-            return type;
+            return this.type;
         }
 
         @NotNull
@@ -212,27 +202,27 @@ public class Screen extends Keyed implements JsonSerializable {
         }
 
         @Nullable
-        public Background getBackground() {
+        public Rect getBackground() {
             return this.background;
         }
 
         @NotNull
-        public Builder setBackground(@Nullable Background background) {
+        public Builder setBackground(@Nullable Rect background) {
             this.background = background;
             return this;
         }
 
         @NotNull
         public Screen build() {
-            return new Screen(getKey(), getType(), getBackground());
+            Screen screen = new Screen(getKey(), getType());
+            if (getBackground() != null && getType() != Type.HUD) {
+                screen.addElement(getBackground());
+            }
+            return screen;
         }
     }
 
     public enum Type {
         HUD, SCREEN
-    }
-
-    public enum Background {
-        CLEAR, GRADIENT, TEXTURE
     }
 }

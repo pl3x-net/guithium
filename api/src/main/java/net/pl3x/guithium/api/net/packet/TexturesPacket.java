@@ -18,7 +18,7 @@ public class TexturesPacket extends Packet {
     }.getType();
     private final Map<String, String> textures;
 
-    public TexturesPacket(Map<String, String> textures) {
+    public TexturesPacket(@NotNull Map<String, String> textures) {
         this.textures = textures;
     }
 
@@ -27,10 +27,12 @@ public class TexturesPacket extends Packet {
     }
 
     @Override
+    @NotNull
     public Key getKey() {
         return KEY;
     }
 
+    @NotNull
     public Map<String, String> getTextures() {
         return this.textures;
     }

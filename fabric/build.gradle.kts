@@ -47,6 +47,7 @@ tasks {
 loom {
     @Suppress("UnstableApiUsage")
     mixin.defaultRefmapName.set("guithium.refmap.json")
+    accessWidenerPath.set(file("src/main/resources/guithium.accesswidener"))
     runConfigs.configureEach {
         ideConfigGenerated(true)
     }

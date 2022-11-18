@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class Point implements JsonSerializable {
     public static final Point ZERO = new Point(0, 0);
+    public static final Point ONE = new Point(1, 1);
 
     private float x;
     private float y;
@@ -55,7 +56,7 @@ public class Point implements JsonSerializable {
     }
 
     @NotNull
-    public static Point fromJson(JsonObject json) {
+    public static Point fromJson(@NotNull JsonObject json) {
         return new Point(
             !json.has("x") ? 0 : json.get("x").getAsFloat(),
             !json.has("y") ? 0 : json.get("y").getAsFloat()

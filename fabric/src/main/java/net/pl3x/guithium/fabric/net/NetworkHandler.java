@@ -14,7 +14,7 @@ public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
     private final Guithium mod;
     private final Connection connection;
 
-    public NetworkHandler(Guithium mod) {
+    public NetworkHandler(@NotNull Guithium mod) {
         this.mod = mod;
         this.connection = new Connection();
     }

@@ -8,6 +8,8 @@ import net.pl3x.guithium.fabric.net.NetworkHandler;
 import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+
 public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Guithium {
     private static Guithium instance;
 
@@ -27,6 +29,14 @@ public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Gui
         this.networkHandler = new NetworkHandler(this);
         this.scheduler = new Scheduler();
         this.textureManager = new TextureManager();
+
+        try {
+            Field api = Guithium.Provider.class.getDeclaredField("api");
+            api.setAccessible(true);
+            api.set(null, this);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

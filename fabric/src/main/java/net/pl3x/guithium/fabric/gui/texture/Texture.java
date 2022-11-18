@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Key;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,17 +19,19 @@ public class Texture {
 
     private boolean isLoaded;
 
-    public Texture(Key key, String url) {
+    public Texture(@NotNull Key key, @NotNull String url) {
         this.identifier = new ResourceLocation(key.toString());
         this.url = url;
 
         load();
     }
 
+    @NotNull
     public ResourceLocation getIdentifier() {
         return this.identifier;
     }
 
+    @NotNull
     public String getUrl() {
         return this.url;
     }

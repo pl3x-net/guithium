@@ -2,12 +2,12 @@ package net.pl3x.guithium.api.player;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerManager {
-    private final Map<UUID, Player> players = new ConcurrentHashMap<>();
+    private final Map<UUID, Player> players = new HashMap<>();
 
     public void add(@NotNull Player player) {
         this.players.put(player.getUUID(), player);

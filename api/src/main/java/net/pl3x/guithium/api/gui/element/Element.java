@@ -37,13 +37,15 @@ public interface Element extends JsonSerializable {
 
     void setOffset(@Nullable Point offset);
 
-    default void send(Player player) {
+    default void send(@NotNull Player player) {
         player.getConnection().send(new ElementPacket(this));
     }
 
-    static Element createElement(JsonObject json) {
+    @Nullable
+    static Element fromJson(@NotNull JsonObject json) {
         return switch (!json.has("type") ? "" : json.get("type").getAsString()) {
             case "button" -> Button.fromJson(json);
+            case "gradient" -> Gradient.fromJson(json);
             case "image" -> Image.fromJson(json);
             case "text" -> Text.fromJson(json);
             default -> null;

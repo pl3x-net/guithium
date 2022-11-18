@@ -86,6 +86,7 @@ public class Text extends AbstractElement {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return String.format("%s{%s}", "Text", getPropertiesAsString());
     }
@@ -98,10 +99,12 @@ public class Text extends AbstractElement {
             + ",shadow=" + hasShadow();
     }
 
+    @NotNull
     public static Builder builder(@NotNull String key) {
         return new Builder(key);
     }
 
+    @NotNull
     public static Builder builder(@NotNull Key key) {
         return new Builder(key);
     }

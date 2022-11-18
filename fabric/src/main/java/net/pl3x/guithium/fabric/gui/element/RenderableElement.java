@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Image;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -19,7 +20,7 @@ public abstract class RenderableElement {
 
     protected AbstractWidget renderableWidget;
 
-    public RenderableElement(Element element, RenderableScreen screen) {
+    public RenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {
         this.element = element;
         this.screen = screen;
     }
@@ -29,7 +30,7 @@ public abstract class RenderableElement {
         return this.element;
     }
 
-    public void setElement(Element element) {
+    public void setElement(@NotNull Element element) {
         this.element = element;
         this.screen.refresh();
     }
@@ -38,7 +39,7 @@ public abstract class RenderableElement {
         return this.renderableWidget;
     }
 
-    public void init(Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft minecraft, int width, int height) {
     }
 
     public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
@@ -67,9 +68,10 @@ public abstract class RenderableElement {
         this.pos.setY((int) (anchorY + pos.getY() - offsetY));
     }
 
-    public static RenderableElement createRenderableElement(Element element, RenderableScreen screen) {
+    public static RenderableElement createRenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {
         return switch (element.getType()) {
             case "button" -> new RenderableButton((Button) element, screen);
+            case "gradient" -> new RenderableGradient((Gradient) element, screen);
             case "image" -> new RenderableImage((Image) element, screen);
             case "text" -> new RenderableText((Text) element, screen);
             default -> null;

@@ -9,6 +9,7 @@ public interface Connection {
      *
      * @return Packet listener
      */
+    @NotNull
     PacketListener getPacketListener();
 
     /**

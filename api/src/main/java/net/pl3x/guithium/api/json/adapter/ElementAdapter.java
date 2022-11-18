@@ -8,6 +8,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import net.pl3x.guithium.api.gui.element.Element;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -19,7 +20,8 @@ public class ElementAdapter implements JsonSerializer<Element>, JsonDeserializer
     }
 
     @Override
-    public Element deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return Element.createElement(json.getAsJsonObject());
+    @Nullable
+    public Element deserialize(@NotNull JsonElement json, @NotNull Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
+        return Element.fromJson(json.getAsJsonObject());
     }
 }

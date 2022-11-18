@@ -35,7 +35,7 @@ public class JsonObjectWrapper {
     /**
      * Extends an existing JsonObject.
      */
-    public JsonObjectWrapper(JsonElement jsonElement) {
+    public JsonObjectWrapper(@NotNull JsonElement jsonElement) {
         Preconditions.checkArgument(jsonElement instanceof JsonObject, "Can only extend JsonObject");
         this.wrapped = (JsonObject) jsonElement;
     }
@@ -45,6 +45,7 @@ public class JsonObjectWrapper {
      *
      * @return JsonObject
      */
+    @NotNull
     public JsonObject getJsonObject() {
         return this.wrapped;
     }
@@ -52,7 +53,7 @@ public class JsonObjectWrapper {
     // Let's add some stuff..
 
     /**
-     * Convenience method to add a primitive member. The specified value is converted to a
+     * Convenience method to add a primitive member. The specified value is serialized to a
      * JsonPrimitive of String.
      *
      * @param property name of the member.
@@ -81,6 +82,24 @@ public class JsonObjectWrapper {
 
     /**
      * Convenience method to add a primitive member. The specified value is converted to a
+     * JsonArray of JsonPrimitive Numbers.
+     *
+     * @param property name of the member.
+     * @param value    the enum value associated with the member.
+     */
+    public void addProperty(@NotNull String property, int[] value) {
+        if (value == null) {
+            return;
+        }
+        JsonArray arr = new JsonArray();
+        for (int i : value) {
+            arr.add(i);
+        }
+        getJsonObject().add(property, arr);
+    }
+
+    /**
+     * Convenience method to add a primitive member. The specified value is converted to a
      * JsonPrimitive of String.
      *
      * @param property name of the member.
@@ -94,7 +113,7 @@ public class JsonObjectWrapper {
     }
 
     /**
-     * Convenience method to add a primitive member. The specified value is converted to a
+     * Convenience method to add a primitive member. The specified value is serialized to a
      * JsonPrimitive of String.
      *
      * @param property name of the member.
@@ -109,12 +128,12 @@ public class JsonObjectWrapper {
 
     /**
      * Convenience method to add a primitive member. The specified value is converted to a
-     * JsonPrimitive of String.
+     * JsonArray of JsonPrimitive Strings.
      *
      * @param property name of the member.
      * @param value    the value associated with the member.
      */
-    public void addProperty(String property, Collection<? extends JsonSerializable> value) {
+    public void addProperty(@NotNull String property, @Nullable Collection<? extends JsonSerializable> value) {
         if (value == null) {
             return;
         }
@@ -132,7 +151,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the string value associated with the member.
      */
-    public void addProperty(String property, String value) {
+    public void addProperty(@NotNull String property, @Nullable String value) {
         if (value == null) {
             return;
         }
@@ -146,7 +165,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the number value associated with the member.
      */
-    public void addProperty(String property, Number value) {
+    public void addProperty(@NotNull String property, @Nullable Number value) {
         if (value == null) {
             return;
         }
@@ -160,7 +179,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the boolean value associated with the member.
      */
-    public void addProperty(String property, Boolean value) {
+    public void addProperty(@NotNull String property, @Nullable Boolean value) {
         if (value == null) {
             return;
         }
@@ -174,7 +193,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the number value associated with the member.
      */
-    public void addProperty(String property, Character value) {
+    public void addProperty(@NotNull String property, @Nullable Character value) {
         if (value == null) {
             return;
         }
@@ -189,7 +208,7 @@ public class JsonObjectWrapper {
      * @param property name of the member.
      * @param value    the member object.
      */
-    public void add(String property, JsonElement value) {
+    public void add(@NotNull String property, @Nullable JsonElement value) {
         if (value == null) {
             return;
         }
@@ -203,7 +222,7 @@ public class JsonObjectWrapper {
      * @return the {@link JsonElement} object that is being removed.
      * @since 1.3
      */
-    public JsonElement remove(String property) {
+    public JsonElement remove(@Nullable String property) {
         return getJsonObject().remove(property);
     }
 
@@ -213,6 +232,7 @@ public class JsonObjectWrapper {
      *
      * @return a set of members of this object.
      */
+    @NotNull
     public Set<Map.Entry<String, JsonElement>> entrySet() {
         return getJsonObject().entrySet();
     }
@@ -223,6 +243,7 @@ public class JsonObjectWrapper {
      * @return a set of member keys as Strings
      * @since 2.8.1
      */
+    @NotNull
     public Set<String> keySet() {
         return getJsonObject().keySet();
     }
@@ -242,7 +263,7 @@ public class JsonObjectWrapper {
      * @param memberName name of the member that is being checked for presence.
      * @return true if there is a member with the specified name, false otherwise.
      */
-    public boolean has(String memberName) {
+    public boolean has(@Nullable String memberName) {
         return getJsonObject().has(memberName);
     }
 
@@ -252,7 +273,7 @@ public class JsonObjectWrapper {
      * @param memberName name of the member that is being requested.
      * @return the member matching the name. Null if no such member exists.
      */
-    public JsonElement get(String memberName) {
+    public JsonElement get(@Nullable String memberName) {
         return getJsonObject().get(memberName);
     }
 
@@ -262,7 +283,7 @@ public class JsonObjectWrapper {
      * @param memberName name of the member being requested.
      * @return the JsonPrimitive corresponding to the specified member.
      */
-    public JsonPrimitive getAsJsonPrimitive(String memberName) {
+    public JsonPrimitive getAsJsonPrimitive(@Nullable String memberName) {
         return getJsonObject().getAsJsonPrimitive(memberName);
     }
 
@@ -272,7 +293,7 @@ public class JsonObjectWrapper {
      * @param memberName name of the member being requested.
      * @return the JsonArray corresponding to the specified member.
      */
-    public JsonArray getAsJsonArray(String memberName) {
+    public JsonArray getAsJsonArray(@Nullable String memberName) {
         return getJsonObject().getAsJsonArray(memberName);
     }
 
@@ -282,7 +303,7 @@ public class JsonObjectWrapper {
      * @param memberName name of the member being requested.
      * @return the JsonObject corresponding to the specified member.
      */
-    public JsonObject getAsJsonObject(String memberName) {
+    public JsonObject getAsJsonObject(@Nullable String memberName) {
         return getJsonObject().getAsJsonObject(memberName);
     }
 
@@ -291,12 +312,13 @@ public class JsonObjectWrapper {
      *
      * @since 2.8.2
      */
+    @NotNull
     public JsonObject deepCopy() {
         return getJsonObject().deepCopy();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) {
             return true;
         }

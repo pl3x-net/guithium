@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class RenderableText extends RenderableElement {
     private MutableComponent text;
 
-    public RenderableText(Text text, RenderableScreen screen) {
+    public RenderableText(@NotNull Text text, @NotNull RenderableScreen screen) {
         super(text, screen);
     }
 
@@ -25,7 +25,7 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void init(Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft minecraft, int width, int height) {
         if (getElement().getText() == null) {
             return;
         }

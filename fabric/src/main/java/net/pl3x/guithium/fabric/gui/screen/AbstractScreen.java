@@ -3,6 +3,7 @@ package net.pl3x.guithium.fabric.gui.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractScreen extends Screen {
     private static final Component BLANK = Component.literal("");
@@ -11,7 +12,7 @@ public abstract class AbstractScreen extends Screen {
 
     protected int centerX;
 
-    public AbstractScreen(Screen parent) {
+    public AbstractScreen(@Nullable Screen parent) {
         super(BLANK);
         this.parent = parent;
     }

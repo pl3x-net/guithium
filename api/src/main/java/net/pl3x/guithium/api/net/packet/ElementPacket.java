@@ -13,7 +13,7 @@ public class ElementPacket extends Packet {
 
     private final Element element;
 
-    public ElementPacket(Element element) {
+    public ElementPacket(@NotNull Element element) {
         this.element = element;
     }
 
@@ -22,10 +22,12 @@ public class ElementPacket extends Packet {
     }
 
     @Override
+    @NotNull
     public Key getKey() {
         return KEY;
     }
 
+    @NotNull
     public Element getElement() {
         return this.element;
     }
