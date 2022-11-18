@@ -31,6 +31,7 @@ public abstract class RenderableElement {
 
     public void setElement(Element element) {
         this.element = element;
+        this.screen.refresh();
     }
 
     public AbstractWidget getRenderableWidget() {

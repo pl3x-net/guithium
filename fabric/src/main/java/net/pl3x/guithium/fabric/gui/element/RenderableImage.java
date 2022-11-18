@@ -45,8 +45,6 @@ public class RenderableImage extends RenderableElement {
             return;
         }
 
-        super.init(minecraft, width, height);
-
         calcScreenPos(size.getX(), size.getY());
 
         this.x0 = this.pos.getX();

@@ -5,6 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +50,20 @@ public class JsonObjectWrapper {
     }
 
     // Let's add some stuff..
+
+    /**
+     * Convenience method to add a primitive member. The specified value is converted to a
+     * JsonPrimitive of String.
+     *
+     * @param property name of the member.
+     * @param value    the key value associated with the member.
+     */
+    public void addProperty(@NotNull String property, @Nullable Component value) {
+        if (value == null) {
+            return;
+        }
+        getJsonObject().addProperty(property, GsonComponentSerializer.gson().serialize(value));
+    }
 
     /**
      * Convenience method to add a primitive member. The specified value is converted to a

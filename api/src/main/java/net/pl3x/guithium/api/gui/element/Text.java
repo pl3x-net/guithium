@@ -3,6 +3,8 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
@@ -12,21 +14,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Text extends AbstractElement {
-    private String text;
+    private Component text;
     private Boolean shadow;
 
-    public Text(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
+    public Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
         super(key, "text", pos, anchor, offset);
         setText(text);
         setShadow(shadow);
     }
 
     @Nullable
-    public String getText() {
+    public Component getText() {
         return this.text;
     }
 
-    public void setText(@Nullable String text) {
+    public void setText(@Nullable Component text) {
         this.text = text;
     }
 
@@ -53,7 +55,7 @@ public class Text extends AbstractElement {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Text(
             Key.of(json.get("key").getAsString()),
-            !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("text") ? null : GsonComponentSerializer.gson().deserialize(json.get("text").getAsString()),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
@@ -105,7 +107,7 @@ public class Text extends AbstractElement {
     }
 
     public static class Builder extends AbstractBuilder<Builder> {
-        private String text;
+        private Component text;
         private Boolean shadow;
 
         public Builder(@NotNull String key) {
@@ -117,12 +119,12 @@ public class Text extends AbstractElement {
         }
 
         @Nullable
-        public String getText() {
+        public Component getText() {
             return text;
         }
 
         @NotNull
-        public Builder setText(@Nullable String text) {
+        public Builder setText(@Nullable Component text) {
             this.text = text;
             return this;
         }

@@ -87,4 +87,12 @@ public class RenderableScreen extends AbstractScreen {
         }
         Minecraft.getInstance().setScreen(this);
     }
+
+    public void refresh() {
+        init(
+            Minecraft.getInstance(),
+            Minecraft.getInstance().getWindow().getGuiScaledWidth(),
+            Minecraft.getInstance().getWindow().getGuiScaledHeight()
+        );
+    }
 }
