@@ -40,11 +40,8 @@ public class OpenScreenPacket extends Packet {
     @Override
     @NotNull
     public ByteArrayDataOutput write() {
-        String json = Gson.toJson(getScreen());
-        System.out.println(json);
-
         ByteArrayDataOutput out = out(this);
-        out.writeUTF(json);
+        out.writeUTF(Gson.toJson(getScreen()));
         return out;
     }
 }

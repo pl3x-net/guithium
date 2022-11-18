@@ -53,7 +53,6 @@ public class RenderableScreen extends AbstractScreen {
             if (element.getRenderableWidget() != null) {
                 addRenderableWidget(element.getRenderableWidget());
             }
-            System.out.println(element.getElement().toJson());
         });
     }
 
