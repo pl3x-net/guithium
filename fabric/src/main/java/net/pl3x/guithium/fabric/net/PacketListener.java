@@ -24,7 +24,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     public void handleCloseScreen(CloseScreenPacket packet) {
         Screen screen = packet.getScreen();
         if (screen.getType() == Screen.Type.HUD) {
-            Guithium.instance().getScreenManager().remove(screen.getKey());
+            Guithium.instance().getHudManager().remove(screen.getKey());
         } else {
             if (Minecraft.getInstance().screen instanceof RenderableScreen renderableScreen) {
                 if (renderableScreen.getScreen().equals(packet.getScreen())) {
@@ -46,7 +46,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
             }
         }
 
-        for (RenderableScreen renderableScreen : Guithium.instance().getScreenManager().getAll().values()) {
+        for (RenderableScreen renderableScreen : Guithium.instance().getHudManager().getAll().values()) {
             RenderableElement renderableElement = renderableScreen.getElements().get(element.getKey());
             if (renderableElement != null) {
                 renderableElement.setElement(element);
@@ -74,7 +74,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
         RenderableScreen renderableScreen = new RenderableScreen(screen);
 
         if (screen.getType() == Screen.Type.HUD) {
-            Guithium.instance().getScreenManager().add(renderableScreen);
+            Guithium.instance().getHudManager().add(renderableScreen);
         } else {
             renderableScreen.open();
         }

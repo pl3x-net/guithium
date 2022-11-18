@@ -49,7 +49,7 @@ public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             this.mod.getScheduler().cancelAll();
             this.mod.getTextureManager().clear();
-            this.mod.getScreenManager().clear();
+            this.mod.getHudManager().clear();
         });
     }
 }

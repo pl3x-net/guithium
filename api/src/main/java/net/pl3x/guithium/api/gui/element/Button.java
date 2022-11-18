@@ -3,6 +3,8 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
@@ -16,13 +18,15 @@ import java.util.Objects;
 
 public class Button extends AbstractElement {
     private String text;
+    private Component tooltip;
     private Point size;
 
     private TriConsumer<Screen, Button, Player> onClick;
 
-    public Button(@NotNull Key key, @Nullable String text, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
+    public Button(@NotNull Key key, @Nullable String text, @Nullable Component tooltip, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
         super(key, "button", pos, anchor, offset);
         setText(text);
+        setTooltip(tooltip);
         setSize(size);
     }
 
@@ -33,6 +37,15 @@ public class Button extends AbstractElement {
 
     public void setText(@Nullable String text) {
         this.text = text;
+    }
+
+    @Nullable
+    public Component getTooltip() {
+        return this.tooltip;
+    }
+
+    public void setTooltip(@Nullable Component tooltip) {
+        this.tooltip = tooltip;
     }
 
     @Nullable
@@ -61,6 +74,7 @@ public class Button extends AbstractElement {
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
         json.addProperty("text", getText());
+        json.addProperty("tooltip", getTooltip());
         json.addProperty("size", getSize());
         return json.getJsonObject();
     }
@@ -71,6 +85,7 @@ public class Button extends AbstractElement {
         return new Button(
             Key.of(json.get("key").getAsString()),
             !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
@@ -91,13 +106,14 @@ public class Button extends AbstractElement {
         }
         Button other = (Button) o;
         return Objects.equals(getText(), other.getText())
+            && Objects.equals(getTooltip(), other.getTooltip())
             && Objects.equals(getSize(), other.getSize())
             && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getText(), getSize(), super.hashCode());
+        return Objects.hash(getText(), getTooltip(), getSize(), super.hashCode());
     }
 
     @Override
@@ -110,6 +126,7 @@ public class Button extends AbstractElement {
     public String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",text=" + getText()
+            + ",tooltip=" + getTooltip()
             + ",size=" + getSize();
     }
 
@@ -123,6 +140,7 @@ public class Button extends AbstractElement {
 
     public static class Builder extends AbstractBuilder<Builder> {
         private String text;
+        private Component tooltip;
         private Point size;
         private TriConsumer<Screen, Button, Player> onClick;
 
@@ -142,6 +160,17 @@ public class Button extends AbstractElement {
         @NotNull
         public Builder setText(@Nullable String text) {
             this.text = text;
+            return this;
+        }
+
+        @Nullable
+        public Component getTooltip() {
+            return tooltip;
+        }
+
+        @NotNull
+        public Builder setTooltip(@Nullable Component tooltip) {
+            this.tooltip = tooltip;
             return this;
         }
 
@@ -170,7 +199,7 @@ public class Button extends AbstractElement {
         @Override
         @NotNull
         public Button build() {
-            Button button = new Button(getKey(), getText(), getPos(), getSize(), getAnchor(), getOffset());
+            Button button = new Button(getKey(), getText(), getTooltip(), getPos(), getSize(), getAnchor(), getOffset());
             button.onClick(this.onClick);
             return button;
         }
