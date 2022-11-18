@@ -16,7 +16,6 @@ public class Gson {
         .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
         .disableHtmlEscaping()
         .setLenient()
-        .setPrettyPrinting()
         .create();
 
     @NotNull
