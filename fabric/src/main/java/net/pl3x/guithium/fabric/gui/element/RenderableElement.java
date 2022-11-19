@@ -69,12 +69,11 @@ public abstract class RenderableElement {
     }
 
     public static RenderableElement createRenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {
-        return switch (element.getType()) {
-            case "button" -> new RenderableButton((Button) element, screen);
-            case "gradient" -> new RenderableGradient((Gradient) element, screen);
-            case "image" -> new RenderableImage((Image) element, screen);
-            case "text" -> new RenderableText((Text) element, screen);
-            default -> null;
-        };
+        Element.Type type = element.getType();
+        if (type == Element.Type.BUTTON) return new RenderableButton((Button) element, screen);
+        if (type == Element.Type.GRADIENT) return new RenderableGradient((Gradient) element, screen);
+        if (type == Element.Type.IMAGE) return new RenderableImage((Image) element, screen);
+        if (type == Element.Type.TEXT) return new RenderableText((Text) element, screen);
+        return null;
     }
 }

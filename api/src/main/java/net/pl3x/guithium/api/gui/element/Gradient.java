@@ -23,7 +23,7 @@ public class Gradient extends Rect {
     private final int[] colors = new int[]{0, 0, 0, 0};
 
     public Gradient(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
-        super(key, "gradient", pos, anchor, offset, size);
+        super(key, Type.GRADIENT, pos, anchor, offset, size);
         setColorTopLeft(colorTopLeft);
         setColorTopRight(colorTopRight);
         setColorBottomLeft(colorBottomLeft);
@@ -154,7 +154,7 @@ public class Gradient extends Rect {
 
     @Override
     @NotNull
-    public String getPropertiesAsString() {
+    protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",colors=" + Arrays.toString(getColors());
     }

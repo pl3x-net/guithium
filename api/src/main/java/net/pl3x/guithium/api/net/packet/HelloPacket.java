@@ -3,8 +3,8 @@ package net.pl3x.guithium.api.net.packet;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.net.PacketListener;
 import net.pl3x.guithium.api.Key;
+import net.pl3x.guithium.api.net.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
 public class HelloPacket extends Packet {

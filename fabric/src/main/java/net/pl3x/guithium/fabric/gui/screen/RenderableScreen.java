@@ -19,6 +19,22 @@ public class RenderableScreen extends AbstractScreen {
     private final Screen screen;
     private final Map<Key, RenderableElement> elements = new LinkedHashMap<>();
 
+    /*{
+        float tile = 32;
+        int x0 = 0;
+        int y0 = 0;
+        int x1 = width;
+        int y1 = height;
+        float u0 = 0;
+        float v0 = 0;
+        float u1 = x1 / tile;
+        float v1 = y1 / tile;
+        vertex(x1, y0, 0).uv(u1, v0).color(64, 64, 64, 255);
+        vertex(x0, y0, 0).uv(u0, v0).color(64, 64, 64, 255);
+        vertex(x0, y1, 0).uv(u0, v1).color(64, 64, 64, 255);
+        vertex(x1, y1, 0).uv(u1, v1).color(64, 64, 64, 255);
+    }*/
+
     public RenderableScreen(@NotNull Screen screen) {
         super(Minecraft.getInstance() == null ? null : Minecraft.getInstance().screen);
 

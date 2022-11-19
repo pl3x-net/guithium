@@ -13,16 +13,16 @@ import java.util.Objects;
 
 public abstract class AbstractElement implements Element {
     private final Key key;
-    private final String type;
+    private final Type enumLike;
     private Point pos;
     private Point anchor;
     private Point offset;
 
-    public AbstractElement(@NotNull Key key, @NotNull String type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
+    public AbstractElement(@NotNull Key key, @NotNull Type enumLike, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
         Preconditions.checkNotNull(key, "Key cannot be null");
-        Preconditions.checkNotNull(type, "Type cannot be null");
+        Preconditions.checkNotNull(enumLike, "Type cannot be null");
         this.key = key;
-        this.type = type;
+        this.enumLike = enumLike;
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
@@ -36,8 +36,8 @@ public abstract class AbstractElement implements Element {
 
     @Override
     @NotNull
-    public String getType() {
-        return this.type;
+    public Type getType() {
+        return this.enumLike;
     }
 
     @Override
@@ -130,7 +130,7 @@ public abstract class AbstractElement implements Element {
     }
 
     @NotNull
-    public String getPropertiesAsString() {
+    protected String getPropertiesAsString() {
         return "key=" + getKey()
             + ",type=" + getType()
             + ",pos=" + getPos()

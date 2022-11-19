@@ -222,6 +222,9 @@ public class Screen extends Keyed implements JsonSerializable {
         }
     }
 
+    /**
+     * Represents a screen type.
+     */
     public enum Type {
         HUD, SCREEN
     }

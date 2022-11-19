@@ -4,8 +4,8 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.net.PacketListener;
 import net.pl3x.guithium.api.Key;
+import net.pl3x.guithium.api.net.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Packet {
