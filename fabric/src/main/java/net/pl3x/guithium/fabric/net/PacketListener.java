@@ -28,7 +28,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
             Guithium.instance().getHudManager().remove(screen.getKey());
         } else {
             if (Minecraft.getInstance().screen instanceof RenderableScreen renderableScreen) {
-                if (renderableScreen.getScreen().equals(packet.getScreen())) {
+                if (renderableScreen.getScreen().getKey().equals(packet.getScreen().getKey())) {
                     renderableScreen.close();
                 }
             }

@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class Rect extends AbstractElement {
     private Point size;
 
-    public Rect(@NotNull Key key, @NotNull String type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size) {
+    public Rect(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size) {
         super(key, type, pos, anchor, offset);
         setSize(size);
     }
@@ -21,6 +21,10 @@ public abstract class Rect extends AbstractElement {
     @Nullable
     public Point getSize() {
         return this.size;
+    }
+
+    public void setSize(float x, float y) {
+        setSize(Point.of(x, y));
     }
 
     public void setSize(@Nullable Point size) {
@@ -63,12 +67,12 @@ public abstract class Rect extends AbstractElement {
     }
 
     @NotNull
-    public String getPropertiesAsString() {
+    protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",size=" + getSize();
     }
 
-    public abstract static class Builder<T extends Builder<T>> extends AbstractBuilder<Builder<T>> {
+    public abstract static class Builder<T extends Builder<T>> extends AbstractBuilder<T> {
         private Point size;
 
         public Builder(@NotNull String key) {
@@ -82,6 +86,11 @@ public abstract class Rect extends AbstractElement {
         @Nullable
         public Point getSize() {
             return this.size;
+        }
+
+        @NotNull
+        public T setSize(float x, float y) {
+            return setSize(Point.of(x, y));
         }
 
         @NotNull

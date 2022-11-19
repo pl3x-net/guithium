@@ -18,14 +18,14 @@ import net.pl3x.guithium.fabric.gui.texture.Texture;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableImage extends RenderableElement {
-    private float x0;
-    private float y0;
-    private float x1;
-    private float y1;
-    private Texture texture;
+    private final Texture texture;
+    private float x0, y0, x1, y1;
+    private float u0, v0, u1, v1;
+    private int tint;
 
     public RenderableImage(@NotNull Image image, @NotNull RenderableScreen screen) {
         super(image, screen);
+        this.texture = Guithium.instance().getTextureManager().getOrAdd(image);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class RenderableImage extends RenderableElement {
         return (Image) super.getElement();
     }
 
+    @NotNull
     public Texture getTexture() {
         return this.texture;
     }
@@ -42,7 +43,7 @@ public class RenderableImage extends RenderableElement {
     public void init(@NotNull Minecraft minecraft, int width, int height) {
         Point size = getElement().getSize();
         if (size == null) {
-            return;
+            size = Point.of(width, height);
         }
 
         calcScreenPos(size.getX(), size.getY());
@@ -51,20 +52,24 @@ public class RenderableImage extends RenderableElement {
         this.y0 = this.pos.getY();
         this.x1 = this.x0 + size.getX();
         this.y1 = this.y0 + size.getY();
+
+        this.u0 = 0;
+        this.v0 = 0;
+
+        Float tileMod = getElement().getTileModifier();
+        if (tileMod == null) {
+            this.u1 = 1;
+            this.v1 = 1;
+        } else {
+            this.u1 = this.x1 / tileMod;
+            this.v1 = this.y1 / tileMod;
+        }
+
+        this.tint = getElement().getTint() == null ? 0xFFFFFFFF : getElement().getTint();
     }
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        Image image = getElement();
-        if (image.getSize() == null) {
-            return;
-        }
-
-        if (getTexture() == null) {
-            this.texture = Guithium.instance().getTextureManager().get(image.getKey());
-            return;
-        }
-
         if (!getTexture().isLoaded()) {
             return;
         }
@@ -74,17 +79,17 @@ public class RenderableImage extends RenderableElement {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         Matrix4f model = poseStack.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
-        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buf.vertex(model, this.x1, this.y0, 0).uv(1, 0).endVertex();
-        buf.vertex(model, this.x0, this.y0, 0).uv(0, 0).endVertex();
-        buf.vertex(model, this.x0, this.y1, 0).uv(0, 1).endVertex();
-        buf.vertex(model, this.x1, this.y1, 0).uv(1, 1).endVertex();
+        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        buf.vertex(model, this.x1, this.y0, 0).uv(this.u1, this.v0).color(this.tint).endVertex();
+        buf.vertex(model, this.x0, this.y0, 0).uv(this.u0, this.v0).color(this.tint).endVertex();
+        buf.vertex(model, this.x0, this.y1, 0).uv(this.u0, this.v1).color(this.tint).endVertex();
+        buf.vertex(model, this.x1, this.y1, 0).uv(this.u1, this.v1).color(this.tint).endVertex();
         BufferUploader.drawWithShader(buf.end());
 
         RenderSystem.disableBlend();

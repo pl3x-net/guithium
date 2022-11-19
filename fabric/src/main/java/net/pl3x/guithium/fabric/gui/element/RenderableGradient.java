@@ -36,14 +36,17 @@ public class RenderableGradient extends RenderableElement {
         Point size = getElement().getSize();
         if (size == null) {
             size = Point.ONE;
+        } else {
+            width = (int) size.getX();
+            height = (int) size.getY();
         }
 
         calcScreenPos(size.getX(), size.getY());
 
         this.x0 = this.pos.getX();
         this.y0 = this.pos.getY();
-        this.x1 = this.x0 + size.getX() * this.screen.width;
-        this.y1 = this.y0 + size.getY() * this.screen.height;
+        this.x1 = this.x0 + width;
+        this.y1 = this.y0 + height;
     }
 
     @Override

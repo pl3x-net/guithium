@@ -24,7 +24,7 @@ public class Button extends AbstractElement {
     private TriConsumer<Screen, Button, Player> onClick;
 
     public Button(@NotNull Key key, @Nullable String text, @Nullable Component tooltip, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
-        super(key, "button", pos, anchor, offset);
+        super(key, Type.BUTTON, pos, anchor, offset);
         setText(text);
         setTooltip(tooltip);
         setSize(size);
@@ -125,7 +125,7 @@ public class Button extends AbstractElement {
 
     @Override
     @NotNull
-    public String getPropertiesAsString() {
+    protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",text=" + getText()
             + ",tooltip=" + getTooltip()

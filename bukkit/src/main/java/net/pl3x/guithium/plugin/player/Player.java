@@ -1,7 +1,7 @@
 package net.pl3x.guithium.plugin.player;
 
-import net.pl3x.guithium.plugin.net.Connection;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.plugin.net.Connection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

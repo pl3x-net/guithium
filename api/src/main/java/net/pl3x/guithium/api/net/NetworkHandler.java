@@ -2,14 +2,14 @@ package net.pl3x.guithium.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
 import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
-import net.pl3x.guithium.api.net.packet.ElementPacket;
-import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.net.packet.ElementPacket;
 import net.pl3x.guithium.api.net.packet.HelloPacket;
+import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.net.packet.Packet;
+import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

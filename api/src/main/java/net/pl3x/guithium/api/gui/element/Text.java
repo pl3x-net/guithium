@@ -18,7 +18,7 @@ public class Text extends AbstractElement {
     private Boolean shadow;
 
     public Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
-        super(key, "text", pos, anchor, offset);
+        super(key, Type.TEXT, pos, anchor, offset);
         setText(text);
         setShadow(shadow);
     }
@@ -93,7 +93,7 @@ public class Text extends AbstractElement {
 
     @Override
     @NotNull
-    public String getPropertiesAsString() {
+    protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",text=" + getText()
             + ",shadow=" + hasShadow();
