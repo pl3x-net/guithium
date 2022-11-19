@@ -13,9 +13,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Texture extends Keyed implements JsonSerializable {
-    public static final Texture DIRT = new Texture(Key.of("minecraft:dirt"), "textures/gui/options_background.png");
+    public static final Texture DIRT = new Texture("minecraft:dirt", "textures/gui/options_background.png");
 
     private String url;
+
+    public Texture(@NotNull String id, @NotNull String url) {
+        this(Key.of(id), url);
+    }
 
     public Texture(@NotNull Key key, @NotNull String url) {
         super(key);

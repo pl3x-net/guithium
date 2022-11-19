@@ -11,18 +11,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class AbstractElement implements Element {
-    private final Key key;
-    private final Type enumLike;
+public abstract class AbstractElement extends Keyed implements Element {
+    private final Type type;
     private Point pos;
     private Point anchor;
     private Point offset;
 
-    public AbstractElement(@NotNull Key key, @NotNull Type enumLike, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
-        Preconditions.checkNotNull(key, "Key cannot be null");
-        Preconditions.checkNotNull(enumLike, "Type cannot be null");
-        this.key = key;
-        this.enumLike = enumLike;
+    public AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
+        super(key);
+        Preconditions.checkNotNull(type, "Type cannot be null");
+        this.type = type;
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
@@ -30,14 +28,8 @@ public abstract class AbstractElement implements Element {
 
     @Override
     @NotNull
-    public Key getKey() {
-        return this.key;
-    }
-
-    @Override
-    @NotNull
     public Type getType() {
-        return this.enumLike;
+        return this.type;
     }
 
     @Override

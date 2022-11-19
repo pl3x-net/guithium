@@ -18,16 +18,15 @@ import java.util.Objects;
 
 public class Button extends AbstractElement {
     private String text;
-    private Component tooltip;
     private Point size;
+    private Component tooltip;
+    private OnClick onClick;
 
-    private TriConsumer<Screen, Button, Player> onClick;
-
-    public Button(@NotNull Key key, @Nullable String text, @Nullable Component tooltip, @Nullable Point pos, @Nullable Point size, @Nullable Point anchor, @Nullable Point offset) {
+    public Button(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable String text, @Nullable Point size, @Nullable Component tooltip) {
         super(key, Type.BUTTON, pos, anchor, offset);
         setText(text);
-        setTooltip(tooltip);
         setSize(size);
+        setTooltip(tooltip);
     }
 
     @Nullable
@@ -37,15 +36,6 @@ public class Button extends AbstractElement {
 
     public void setText(@Nullable String text) {
         this.text = text;
-    }
-
-    @Nullable
-    public Component getTooltip() {
-        return this.tooltip;
-    }
-
-    public void setTooltip(@Nullable Component tooltip) {
-        this.tooltip = tooltip;
     }
 
     @Nullable
@@ -62,12 +52,21 @@ public class Button extends AbstractElement {
     }
 
     @Nullable
+    public Component getTooltip() {
+        return this.tooltip;
+    }
+
+    public void setTooltip(@Nullable Component tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    @Nullable
     public TriConsumer<Screen, Button, Player> onClick() {
         return this.onClick;
     }
 
-    public void onClick(@Nullable TriConsumer<Screen, Button, Player> run) {
-        this.onClick = run;
+    public void onClick(@Nullable OnClick onClick) {
+        this.onClick = onClick;
     }
 
     @Override
@@ -75,8 +74,8 @@ public class Button extends AbstractElement {
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
         json.addProperty("text", getText());
-        json.addProperty("tooltip", getTooltip());
         json.addProperty("size", getSize());
+        json.addProperty("tooltip", getTooltip());
         return json.getJsonObject();
     }
 
@@ -85,12 +84,12 @@ public class Button extends AbstractElement {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Button(
             Key.of(json.get("key").getAsString()),
-            !json.has("text") ? null : json.get("text").getAsString(),
-            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject())
+            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString())
         );
     }
 
@@ -107,14 +106,14 @@ public class Button extends AbstractElement {
         }
         Button other = (Button) o;
         return Objects.equals(getText(), other.getText())
-            && Objects.equals(getTooltip(), other.getTooltip())
             && Objects.equals(getSize(), other.getSize())
+            && Objects.equals(getTooltip(), other.getTooltip())
             && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getText(), getTooltip(), getSize(), super.hashCode());
+        return Objects.hash(getText(), getSize(), getTooltip(), super.hashCode());
     }
 
     @Override
@@ -128,8 +127,8 @@ public class Button extends AbstractElement {
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",text=" + getText()
-            + ",tooltip=" + getTooltip()
-            + ",size=" + getSize();
+            + ",size=" + getSize()
+            + ",tooltip=" + getTooltip();
     }
 
     @NotNull
@@ -144,9 +143,9 @@ public class Button extends AbstractElement {
 
     public static class Builder extends AbstractBuilder<Builder> {
         private String text;
-        private Component tooltip;
         private Point size;
-        private TriConsumer<Screen, Button, Player> onClick;
+        private Component tooltip;
+        private OnClick onClick;
 
         public Builder(@NotNull String key) {
             this(Key.of(key));
@@ -195,17 +194,20 @@ public class Button extends AbstractElement {
         }
 
         @NotNull
-        public Builder onClick(@Nullable TriConsumer<Screen, Button, Player> run) {
-            this.onClick = run;
+        public Builder onClick(@Nullable OnClick onClick) {
+            this.onClick = onClick;
             return this;
         }
 
         @Override
         @NotNull
         public Button build() {
-            Button button = new Button(getKey(), getText(), getTooltip(), getPos(), getSize(), getAnchor(), getOffset());
+            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getText(), getSize(), getTooltip());
             button.onClick(this.onClick);
             return button;
         }
+    }
+
+    public interface OnClick extends TriConsumer<Screen, Button, Player> {
     }
 }
