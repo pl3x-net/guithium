@@ -80,9 +80,9 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
 
     @Override
     public void handleTextures(@NotNull TexturesPacket packet) {
-        packet.getTextures().forEach((id, url) -> {
+        packet.getTextures().forEach((key, texture) -> {
             // add texture to manager
-            Guithium.instance().getTextureManager().add(id, url);
+            Guithium.instance().getTextureManager().add(key, texture.getUrl());
         });
     }
 }

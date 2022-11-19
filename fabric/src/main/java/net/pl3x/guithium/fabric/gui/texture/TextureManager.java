@@ -3,7 +3,6 @@ package net.pl3x.guithium.fabric.gui.texture;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.element.Image;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,14 +16,8 @@ public class TextureManager extends net.pl3x.guithium.api.gui.texture.TextureMan
         return this.textures.computeIfAbsent(texture.getKey(), k -> new Texture(texture.getKey(), texture.getUrl()));
     }
 
-    public void add(@NotNull String id, @NotNull String url) {
-        Key key = Key.of(id);
+    public void add(@NotNull Key key, @NotNull String url) {
         this.textures.put(key, new Texture(key, url));
-    }
-
-    @Nullable
-    public Texture get(@NotNull Key key) {
-        return this.textures.get(key);
     }
 
     public void remove(@NotNull Key key) {
