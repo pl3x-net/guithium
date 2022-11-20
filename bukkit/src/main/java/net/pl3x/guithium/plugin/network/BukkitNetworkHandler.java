@@ -1,15 +1,16 @@
-package net.pl3x.guithium.plugin.net;
+package net.pl3x.guithium.plugin.network;
 
-import net.pl3x.guithium.api.net.packet.Packet;
-import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.network.NetworkHandler;
+import net.pl3x.guithium.api.network.packet.Packet;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.Guithium;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
+public class BukkitNetworkHandler extends NetworkHandler {
     private final Guithium plugin;
 
-    public NetworkHandler(@NotNull Guithium plugin) {
+    public BukkitNetworkHandler(@NotNull Guithium plugin) {
         this.plugin = plugin;
     }
 
@@ -19,7 +20,7 @@ public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
         Bukkit.getMessenger().registerIncomingPluginChannel(this.plugin, CHANNEL.toString(),
             (channel, sender, bytes) -> {
                 // verify player
-                Player player = this.plugin.getPlayerManager().get(sender.getUniqueId());
+                WrappedPlayer player = this.plugin.getPlayerManager().get(sender.getUniqueId());
                 if (player == null) {
                     System.out.printf("Received packet from unknown player (%s)%n", sender.getName());
                     return;

@@ -3,20 +3,22 @@ package net.pl3x.guithium.fabric.net;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
-import net.pl3x.guithium.api.net.packet.HelloPacket;
-import net.pl3x.guithium.api.net.packet.Packet;
+import net.pl3x.guithium.api.network.Connection;
+import net.pl3x.guithium.api.network.NetworkHandler;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
+import net.pl3x.guithium.api.network.packet.Packet;
 import net.pl3x.guithium.fabric.Guithium;
 import org.jetbrains.annotations.NotNull;
 
-public class NetworkHandler extends net.pl3x.guithium.api.net.NetworkHandler {
+public class FabricNetworkHandler extends NetworkHandler {
     public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(CHANNEL.toString());
 
     private final Guithium mod;
     private final Connection connection;
 
-    public NetworkHandler(@NotNull Guithium mod) {
+    public FabricNetworkHandler(@NotNull Guithium mod) {
         this.mod = mod;
-        this.connection = new Connection();
+        this.connection = new FabricConnection();
     }
 
     @NotNull

@@ -1,7 +1,7 @@
 package net.pl3x.guithium.api;
 
 import net.pl3x.guithium.api.gui.texture.TextureManager;
-import net.pl3x.guithium.api.net.NetworkHandler;
+import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
 import org.jetbrains.annotations.NotNull;
 

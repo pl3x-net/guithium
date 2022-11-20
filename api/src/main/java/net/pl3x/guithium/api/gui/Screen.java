@@ -10,9 +10,9 @@ import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Rect;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
-import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,12 +93,12 @@ public class Screen extends Keyed implements JsonSerializable {
         return hasElement(Key.of(key));
     }
 
-    public void open(@NotNull Player player) {
+    public void open(@NotNull WrappedPlayer player) {
         player.setCurrentScreen(this);
         player.getConnection().send(new OpenScreenPacket(this));
     }
 
-    public void close(@NotNull Player player) {
+    public void close(@NotNull WrappedPlayer player) {
         player.setCurrentScreen(null);
         player.getConnection().send(new CloseScreenPacket(getKey()));
     }

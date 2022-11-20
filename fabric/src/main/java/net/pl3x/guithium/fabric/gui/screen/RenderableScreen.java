@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Tickable;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.element.RenderableElement;
 import net.pl3x.guithium.fabric.gui.element.RenderableWidget;

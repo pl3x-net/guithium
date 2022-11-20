@@ -9,7 +9,7 @@ import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
-import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -210,6 +210,6 @@ public class Button extends AbstractElement {
         }
     }
 
-    public interface OnClick extends TriConsumer<Screen, Button, Player> {
+    public interface OnClick extends TriConsumer<Screen, Button, WrappedPlayer> {
     }
 }

@@ -1,7 +1,7 @@
 package net.pl3x.guithium.plugin.listener;
 
 import net.pl3x.guithium.plugin.Guithium;
-import net.pl3x.guithium.plugin.player.Player;
+import net.pl3x.guithium.plugin.player.BukkitPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,7 +17,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(@NotNull PlayerJoinEvent event) {
-        this.plugin.getPlayerManager().add(new Player(event.getPlayer()));
+        this.plugin.getPlayerManager().add(new BukkitPlayer(event.getPlayer()));
     }
 
     @EventHandler

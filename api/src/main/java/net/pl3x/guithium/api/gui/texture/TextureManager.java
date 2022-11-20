@@ -1,7 +1,7 @@
 package net.pl3x.guithium.api.gui.texture;
 
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.net.packet.TexturesPacket;
+import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

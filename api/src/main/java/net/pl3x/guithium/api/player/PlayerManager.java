@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerManager {
-    private final Map<UUID, Player> players = new HashMap<>();
+    private final Map<UUID, WrappedPlayer> players = new HashMap<>();
 
-    public void add(@NotNull Player player) {
+    public void add(@NotNull WrappedPlayer player) {
         this.players.put(player.getUUID(), player);
     }
 
-    public Player get(@NotNull UUID uuid) {
+    public WrappedPlayer get(@NotNull UUID uuid) {
         return this.players.get(uuid);
     }
 
