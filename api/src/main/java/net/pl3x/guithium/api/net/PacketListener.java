@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.net;
 
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.net.packet.ElementPacket;
 import net.pl3x.guithium.api.net.packet.HelloPacket;
@@ -10,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PacketListener {
     void handleButtonClick(@NotNull ButtonClickPacket packet);
+
+    void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet);
 
     void handleCloseScreen(@NotNull CloseScreenPacket packet);
 

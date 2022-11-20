@@ -1,17 +1,17 @@
 package net.pl3x.guithium.plugin.net;
 
 import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.net.packet.ElementPacket;
 import net.pl3x.guithium.api.net.packet.HelloPacket;
 import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.net.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.Player;
-import net.pl3x.guithium.api.util.TriConsumer;
 import net.pl3x.guithium.plugin.event.HelloEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,18 +24,26 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
 
     @Override
     public void handleButtonClick(@NotNull ButtonClickPacket packet) {
-        String screenId = packet.getScreenId();
-        String buttonId = packet.getButtonId();
-
         Screen screen = this.player.getCurrentScreen();
-        if (screen == null || !screen.getKey().toString().equals(screenId)) {
-            return;
+        if (screen != null && screen.getKey().equals(packet.getScreen())) {
+            if (screen.getElements().get(packet.getButton()) instanceof Button button) {
+                Button.OnClick onClick = button.onClick();
+                if (onClick != null) {
+                    onClick.accept(screen, button, player);
+                }
+            }
         }
+    }
 
-        if (screen.getElements().get(Key.of(buttonId)) instanceof Button button) {
-            TriConsumer<Screen, Button, Player> onClick = button.onClick();
-            if (onClick != null) {
-                onClick.accept(screen, button, player);
+    @Override
+    public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
+        Screen screen = this.player.getCurrentScreen();
+        if (screen != null && screen.getKey().equals(packet.getScreen())) {
+            if (screen.getElements().get(packet.getCheckbox()) instanceof Checkbox checkbox) {
+                Checkbox.OnClick onClick = checkbox.onClick();
+                if (onClick != null) {
+                    onClick.accept(screen, checkbox, player, packet.getChecked());
+                }
             }
         }
     }
@@ -44,7 +52,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         Screen screen = this.player.getCurrentScreen();
         if (screen != null) {
-            if (screen.equals(packet.getScreen())) {
+            if (screen.getKey().equals(packet.getScreenKey())) {
                 this.player.setCurrentScreen(null);
             }
         }

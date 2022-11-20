@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.net.packet.ElementPacket;
 import net.pl3x.guithium.api.net.packet.HelloPacket;
@@ -22,14 +23,21 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
     }
 
     @Override
+    public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
+        // server does not send this packet to the client
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
     public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
-        Screen screen = packet.getScreen();
-        if (screen.getType() == Screen.Type.HUD) {
-            Guithium.instance().getHudManager().remove(screen.getKey());
-        } else {
-            if (Minecraft.getInstance().screen instanceof RenderableScreen renderableScreen) {
-                if (renderableScreen.getScreen().getKey().equals(packet.getScreen().getKey())) {
-                    renderableScreen.close();
+        // try to remove from HUD
+        if (Guithium.instance().getHudManager().remove(packet.getScreenKey()) == null) {
+            // not on HUD, so lets get current open screen
+            if (Minecraft.getInstance().screen instanceof RenderableScreen screen) {
+                // check if screen keys match
+                if (screen.getScreen().getKey().equals(packet.getScreenKey())) {
+                    // close the screen
+                    screen.close();
                 }
             }
         }

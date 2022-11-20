@@ -28,8 +28,9 @@ public class HudManager {
         return this.screens.get(key);
     }
 
-    public void remove(@NotNull Key key) {
-        this.screens.remove(key);
+    @Nullable
+    public RenderableScreen remove(@NotNull Key key) {
+        return this.screens.remove(key);
     }
 
     public void clear() {

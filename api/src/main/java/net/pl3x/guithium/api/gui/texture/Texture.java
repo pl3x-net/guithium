@@ -13,27 +13,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Texture extends Keyed implements JsonSerializable {
-    public static final Texture DIRT = new Texture("minecraft:dirt", "textures/gui/options_background.png");
+    public static final Texture DIRT = Texture.of("minecraft:dirt", "textures/gui/options_background.png");
 
-    private String url;
+    private final String url;
 
-    public Texture(@NotNull String id, @NotNull String url) {
-        this(Key.of(id), url);
+    private Texture(@NotNull Key key, @NotNull String url) {
+        super(key);
+        Preconditions.checkNotNull(url, "Url cannot be null");
+        this.url = url;
     }
 
-    public Texture(@NotNull Key key, @NotNull String url) {
-        super(key);
-        setUrl(url);
+    @NotNull
+    public static Texture of(@NotNull String id, @NotNull String url) {
+        return of(Key.of(id), url);
+    }
+
+    @NotNull
+    public static Texture of(@NotNull Key key, @NotNull String url) {
+        return new Texture(key, url);
     }
 
     @NotNull
     public String getUrl() {
         return this.url;
-    }
-
-    public void setUrl(@NotNull String url) {
-        Preconditions.checkNotNull(url, "Url cannot be null");
-        this.url = url;
     }
 
     @Override

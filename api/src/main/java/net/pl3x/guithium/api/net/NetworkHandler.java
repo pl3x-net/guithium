@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.net.packet.ElementPacket;
 import net.pl3x.guithium.api.net.packet.HelloPacket;
@@ -25,6 +26,7 @@ public abstract class NetworkHandler {
     public NetworkHandler() {
         // register incoming packet handlers
         registerHandler(ButtonClickPacket.KEY, ButtonClickPacket::new);
+        registerHandler(CheckboxTogglePacket.KEY, CheckboxTogglePacket::new);
         registerHandler(CloseScreenPacket.KEY, CloseScreenPacket::new);
         registerHandler(ElementPacket.KEY, ElementPacket::new);
         registerHandler(HelloPacket.KEY, HelloPacket::new);

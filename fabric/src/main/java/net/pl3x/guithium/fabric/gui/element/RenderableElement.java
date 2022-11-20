@@ -2,9 +2,9 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Image;
@@ -13,16 +13,19 @@ import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class RenderableElement {
+    private final RenderableScreen screen;
     private Element element;
-    protected final RenderableScreen screen;
 
-    protected final Point pos = new Point();
+    protected Point pos = Point.ZERO;
 
-    protected AbstractWidget renderableWidget;
-
-    public RenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {
-        this.element = element;
+    public RenderableElement(@NotNull RenderableScreen screen, @NotNull Element element) {
         this.screen = screen;
+        this.element = element;
+    }
+
+    @NotNull
+    public RenderableScreen getScreen() {
+        return this.screen;
     }
 
     @NotNull
@@ -33,10 +36,6 @@ public abstract class RenderableElement {
     public void setElement(@NotNull Element element) {
         this.element = element;
         this.screen.refresh();
-    }
-
-    public AbstractWidget getRenderableWidget() {
-        return this.renderableWidget;
     }
 
     public void init(@NotNull Minecraft minecraft, int width, int height) {
@@ -64,16 +63,19 @@ public abstract class RenderableElement {
             offsetY = (int) (height * getElement().getOffset().getY());
         }
 
-        this.pos.setX((int) (anchorX + pos.getX() - offsetX));
-        this.pos.setY((int) (anchorY + pos.getY() - offsetY));
+        this.pos = Point.of(
+            (int) (anchorX + pos.getX() - offsetX),
+            (int) (anchorY + pos.getY() - offsetY)
+        );
     }
 
     public static RenderableElement createRenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {
         Element.Type type = element.getType();
-        if (type == Element.Type.BUTTON) return new RenderableButton((Button) element, screen);
-        if (type == Element.Type.GRADIENT) return new RenderableGradient((Gradient) element, screen);
-        if (type == Element.Type.IMAGE) return new RenderableImage((Image) element, screen);
-        if (type == Element.Type.TEXT) return new RenderableText((Text) element, screen);
+        if (type == Element.Type.BUTTON) return new RenderableButton(screen, (Button) element);
+        if (type == Element.Type.CHECKBOX) return new RenderableCheckbox(screen, (Checkbox) element);
+        if (type == Element.Type.GRADIENT) return new RenderableGradient(screen, (Gradient) element);
+        if (type == Element.Type.IMAGE) return new RenderableImage(screen, (Image) element);
+        if (type == Element.Type.TEXT) return new RenderableText(screen, (Text) element);
         return null;
     }
 }

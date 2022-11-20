@@ -1,16 +1,12 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Button;
-import net.pl3x.guithium.api.gui.element.Tickable;
 import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -18,11 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class RenderableButton extends RenderableElement implements Tickable {
-    private int tooltipDelay;
-
-    public RenderableButton(@NotNull Button button, @NotNull RenderableScreen screen) {
-        super(button, screen);
+public class RenderableButton extends RenderableWidget {
+    public RenderableButton(@NotNull RenderableScreen screen, @NotNull Button button) {
+        super(screen, button);
     }
 
     @Override
@@ -32,35 +26,23 @@ public class RenderableButton extends RenderableElement implements Tickable {
     }
 
     @Override
-    public void tick() {
-        if (this.renderableWidget.isHovered && this.renderableWidget.active) {
-            this.tooltipDelay++;
-        } else if (this.tooltipDelay > 0) {
-            this.tooltipDelay = 0;
-        }
+    @NotNull
+    public net.minecraft.client.gui.components.Button getWidget() {
+        return (net.minecraft.client.gui.components.Button) super.getWidget();
     }
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
         Point size = getElement().getSize();
         if (size == null) {
-            return;
+            size = Point.of(30 + minecraft.font.width(getElement().getText()), 20);
         }
 
         calcScreenPos(size.getX(), size.getY());
 
-        MutableComponent component = null;
-        if (getElement().getTooltip() != null) {
-            String json = GsonComponentSerializer.gson().serialize(getElement().getTooltip());
-            try {
-                component = Component.Serializer.fromJson(json);
-            } catch (Throwable t) {
-                component = Component.translatable(json);
-            }
-        }
-        final List<FormattedCharSequence> tooltip = component == null ? null : Minecraft.getInstance().font.split(component, 200);
+        final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
 
-        this.renderableWidget = new net.minecraft.client.gui.components.Button(
+        setWidget(new net.minecraft.client.gui.components.Button(
             (int) this.pos.getX(),
             (int) this.pos.getY(),
             (int) size.getX(),
@@ -68,21 +50,14 @@ public class RenderableButton extends RenderableElement implements Tickable {
             Component.translatable(getElement().getText()),
             (button) -> {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                ButtonClickPacket packet = new ButtonClickPacket(this.screen.getScreen(), getElement());
+                ButtonClickPacket packet = new ButtonClickPacket(getScreen().getScreen(), getElement());
                 Guithium.instance().getNetworkHandler().getConnection().send(packet);
             },
-            (button, poseStack, x, y) -> {
-                if (tooltip != null && button.isHovered && this.tooltipDelay > 10) {
-                    this.screen.renderTooltip(poseStack, tooltip, x, y);
+            (button, poseStack, mouseX, mouseY) -> {
+                if (tooltip != null && button.isHovered && getTooltipDelay() > 10) {
+                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
                 }
             }
-        );
-    }
-
-    @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        if (this.renderableWidget != null) {
-            this.renderableWidget.render(poseStack, mouseX, mouseY, delta);
-        }
+        ));
     }
 }

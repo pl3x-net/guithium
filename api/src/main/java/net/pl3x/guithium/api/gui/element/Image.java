@@ -24,7 +24,7 @@ public class Image extends Rect {
     private Integer tint;
     private Float tileModifier;
 
-    public Image(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @NotNull Texture texture, @Nullable Integer tint, @Nullable Float tileModifier) {
+    protected Image(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @NotNull Texture texture, @Nullable Integer tint, @Nullable Float tileModifier) {
         super(key, Type.IMAGE, pos, anchor, offset, size);
         setTexture(texture);
         setTint(tint);

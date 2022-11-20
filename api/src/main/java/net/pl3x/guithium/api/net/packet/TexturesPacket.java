@@ -34,7 +34,7 @@ public class TexturesPacket extends Packet {
         if (this.rawTex != null) {
             this.rawTex.forEach((id, url) -> {
                 Key key = Key.of(id);
-                this.textures.put(key, new Texture(key, url));
+                this.textures.put(key, Texture.of(key, url));
             });
         }
     }

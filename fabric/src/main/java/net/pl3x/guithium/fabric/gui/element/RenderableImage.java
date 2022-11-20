@@ -23,8 +23,8 @@ public class RenderableImage extends RenderableElement {
     private float u0, v0, u1, v1;
     private int tint;
 
-    public RenderableImage(@NotNull Image image, @NotNull RenderableScreen screen) {
-        super(image, screen);
+    public RenderableImage(@NotNull RenderableScreen screen, @NotNull Image image) {
+        super(screen, image);
         this.texture = Guithium.instance().getTextureManager().getOrAdd(image);
     }
 

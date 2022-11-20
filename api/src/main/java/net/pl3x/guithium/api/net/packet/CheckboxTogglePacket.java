@@ -4,24 +4,27 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.net.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
-public class ButtonClickPacket extends Packet {
-    public static final Key KEY = Key.of("packet:button_click");
+public class CheckboxTogglePacket extends Packet {
+    public static final Key KEY = Key.of("packet:checkbox_toggle");
 
     private final Key screen;
-    private final Key button;
+    private final Key checkbox;
+    private final boolean checked;
 
-    public ButtonClickPacket(@NotNull Screen screen, @NotNull Button button) {
+    public CheckboxTogglePacket(@NotNull Screen screen, @NotNull Checkbox checkbox, boolean checked) {
         this.screen = screen.getKey();
-        this.button = button.getKey();
+        this.checkbox = checkbox.getKey();
+        this.checked = checked;
     }
 
-    public ButtonClickPacket(@NotNull ByteArrayDataInput in) {
+    public CheckboxTogglePacket(@NotNull ByteArrayDataInput in) {
         this.screen = Key.of(in.readUTF());
-        this.button = Key.of(in.readUTF());
+        this.checkbox = Key.of(in.readUTF());
+        this.checked = in.readBoolean();
     }
 
     @Override
@@ -36,13 +39,17 @@ public class ButtonClickPacket extends Packet {
     }
 
     @NotNull
-    public Key getButton() {
-        return this.button;
+    public Key getCheckbox() {
+        return this.checkbox;
+    }
+
+    public boolean getChecked() {
+        return this.checked;
     }
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        listener.handleButtonClick(this);
+        listener.handleCheckboxToggle(this);
     }
 
     @Override
@@ -50,7 +57,8 @@ public class ButtonClickPacket extends Packet {
     public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
         out.writeUTF(getScreen().toString());
-        out.writeUTF(getButton().toString());
+        out.writeUTF(getCheckbox().toString());
+        out.writeBoolean(getChecked());
         return out;
     }
 }
