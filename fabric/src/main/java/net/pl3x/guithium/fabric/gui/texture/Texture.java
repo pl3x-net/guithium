@@ -20,15 +20,12 @@ public class Texture {
     private boolean isLoaded;
 
     public Texture(@NotNull Key key, @NotNull String url) {
-        System.out.println(key + " --- " + url);
         this.url = url;
         if (url.startsWith("http")) {
-            System.out.println("http");
             // custom texture
             this.identifier = new ResourceLocation(key.toString());
             loadFromInternet();
         } else {
-            System.out.println("vanilla");
             // vanilla texture
             this.identifier = new ResourceLocation(url);
             this.isLoaded = true;
@@ -45,31 +42,25 @@ public class Texture {
     }
 
     private void loadFromInternet() {
-        System.out.println(0);
         if (!RenderSystem.isOnRenderThread()) {
-            System.out.println(0.5);
             RenderSystem.recordRenderCall(this::loadFromInternet);
             return;
         }
         try {
-            System.out.println(1);
             BufferedImage image = ImageIO.read(new URL(this.url));
             DynamicTexture texture = new DynamicTexture(image.getWidth(), image.getHeight(), true);
             NativeImage nativeImage = texture.getPixels();
             if (nativeImage == null) {
                 return;
             }
-            System.out.println(2);
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getWidth(); y++) {
                     nativeImage.setPixelRGBA(x, y, rgb2bgr(image.getRGB(x, y)));
                 }
             }
-            System.out.println(3);
             texture.upload();
             Minecraft.getInstance().getTextureManager().register(getIdentifier(), texture);
             this.isLoaded = true;
-            System.out.println(4);
         } catch (IOException e) {
             System.out.println(getIdentifier() + " " + this.url);
             throw new RuntimeException(e);

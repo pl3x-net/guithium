@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 public class RenderableText extends RenderableElement {
     private MutableComponent text;
 
-    public RenderableText(@NotNull Text text, @NotNull RenderableScreen screen) {
-        super(text, screen);
+    public RenderableText(@NotNull RenderableScreen screen, @NotNull Text text) {
+        super(screen, text);
     }
 
     @Override

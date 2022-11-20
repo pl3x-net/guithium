@@ -23,21 +23,17 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Screen extends Keyed implements JsonSerializable {
-    private Type type;
+    private final Type type;
     private final Map<Key, Element> elements = new LinkedHashMap<>();
 
     public Screen(@NotNull Key key, @Nullable Type type) {
         super(key);
-        setType(type);
+        this.type = type;
     }
 
     @Nullable
     public Type getType() {
         return this.type;
-    }
-
-    public void setType(@Nullable Type type) {
-        this.type = type;
     }
 
     public void addElements(@NotNull Collection<Element> elements) {
@@ -104,7 +100,7 @@ public class Screen extends Keyed implements JsonSerializable {
 
     public void close(@NotNull Player player) {
         player.setCurrentScreen(null);
-        player.getConnection().send(new CloseScreenPacket(this));
+        player.getConnection().send(new CloseScreenPacket(getKey()));
     }
 
     @Override

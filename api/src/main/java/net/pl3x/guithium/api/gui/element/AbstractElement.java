@@ -17,7 +17,7 @@ public abstract class AbstractElement extends Keyed implements Element {
     private Point anchor;
     private Point offset;
 
-    public AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
+    protected AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
         super(key);
         Preconditions.checkNotNull(type, "Type cannot be null");
         this.type = type;

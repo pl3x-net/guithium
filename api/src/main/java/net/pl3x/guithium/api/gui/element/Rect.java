@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class Rect extends AbstractElement {
     private Point size;
 
-    public Rect(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size) {
+    protected Rect(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size) {
         super(key, type, pos, anchor, offset);
         setSize(size);
     }

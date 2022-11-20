@@ -10,24 +10,28 @@ import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.player.Player;
-import net.pl3x.guithium.api.util.TriConsumer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class Button extends AbstractElement {
+public class Checkbox extends AbstractElement {
     private String text;
     private Point size;
     private Component tooltip;
-    private OnClick onClick = (screen, button, player) -> {
+    private Boolean defaultSelected;
+    private Boolean showLabel;
+    private OnClick onClick = (screen, button, player, checked) -> {
     };
 
-    protected Button(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable String text, @Nullable Point size, @Nullable Component tooltip) {
-        super(key, Type.BUTTON, pos, anchor, offset);
+    protected Checkbox(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable String text, @Nullable Point size, @Nullable Component tooltip, @Nullable Boolean defaultSelected, @Nullable Boolean showLabel) {
+        super(key, Type.CHECKBOX, pos, anchor, offset);
         setText(text);
         setSize(size);
         setTooltip(tooltip);
+        setDefaultSelected(defaultSelected);
+        setShowLabel(showLabel);
     }
 
     @Nullable
@@ -62,6 +66,24 @@ public class Button extends AbstractElement {
     }
 
     @Nullable
+    public Boolean isDefaultSelected() {
+        return this.defaultSelected;
+    }
+
+    public void setDefaultSelected(@Nullable Boolean defaultSelected) {
+        this.defaultSelected = defaultSelected;
+    }
+
+    @Nullable
+    public Boolean isShowLabel() {
+        return this.showLabel;
+    }
+
+    public void setShowLabel(@Nullable Boolean showLabel) {
+        this.showLabel = showLabel;
+    }
+
+    @Nullable
     public OnClick onClick() {
         return this.onClick;
     }
@@ -77,20 +99,24 @@ public class Button extends AbstractElement {
         json.addProperty("text", getText());
         json.addProperty("size", getSize());
         json.addProperty("tooltip", getTooltip());
+        json.addProperty("default_selected", isDefaultSelected());
+        json.addProperty("show_label", isShowLabel());
         return json.getJsonObject();
     }
 
     @NotNull
-    public static Button fromJson(@NotNull JsonObject json) {
+    public static Checkbox fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
-        return new Button(
+        return new Checkbox(
             Key.of(json.get("key").getAsString()),
             !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
             !json.has("text") ? null : json.get("text").getAsString(),
             !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString())
+            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
+            !json.has("default_selected") ? null : json.get("default_selected").getAsBoolean(),
+            !json.has("show_label") ? null : json.get("show_label").getAsBoolean()
         );
     }
 
@@ -105,16 +131,18 @@ public class Button extends AbstractElement {
         if (this.getClass() != o.getClass()) {
             return false;
         }
-        Button other = (Button) o;
+        Checkbox other = (Checkbox) o;
         return Objects.equals(getText(), other.getText())
             && Objects.equals(getSize(), other.getSize())
             && Objects.equals(getTooltip(), other.getTooltip())
+            && Objects.equals(isDefaultSelected(), other.isDefaultSelected())
+            && Objects.equals(isShowLabel(), other.isShowLabel())
             && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getText(), getSize(), getTooltip(), super.hashCode());
+        return Objects.hash(getText(), getSize(), getTooltip(), isDefaultSelected(), isShowLabel(), super.hashCode());
     }
 
     @Override
@@ -129,7 +157,9 @@ public class Button extends AbstractElement {
         return super.getPropertiesAsString()
             + ",text=" + getText()
             + ",size=" + getSize()
-            + ",tooltip=" + getTooltip();
+            + ",tooltip=" + getTooltip()
+            + ",defaultSelected=" + isDefaultSelected()
+            + ",showLabel=" + isShowLabel();
     }
 
     @NotNull
@@ -146,7 +176,9 @@ public class Button extends AbstractElement {
         private String text;
         private Point size;
         private Component tooltip;
-        private OnClick onClick = (screen, button, player) -> {
+        private Boolean defaultSelected;
+        private Boolean showLabel;
+        private OnClick onClick = (screen, button, player, checked) -> {
         };
 
         public Builder(@NotNull String key) {
@@ -195,6 +227,28 @@ public class Button extends AbstractElement {
             return this;
         }
 
+        @Nullable
+        public Boolean isDefaultSelected() {
+            return this.defaultSelected;
+        }
+
+        @NotNull
+        public Builder setDefaultSelected(@Nullable Boolean defaultSelected) {
+            this.defaultSelected = defaultSelected;
+            return this;
+        }
+
+        @Nullable
+        public Boolean isShowLabel() {
+            return this.showLabel;
+        }
+
+        @NotNull
+        public Builder setShowLabel(@Nullable Boolean showLabel) {
+            this.showLabel = showLabel;
+            return this;
+        }
+
         @NotNull
         public Builder onClick(@Nullable OnClick onClick) {
             this.onClick = onClick;
@@ -203,13 +257,13 @@ public class Button extends AbstractElement {
 
         @Override
         @NotNull
-        public Button build() {
-            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getText(), getSize(), getTooltip());
-            button.onClick(this.onClick);
-            return button;
+        public Checkbox build() {
+            Checkbox checkbox = new Checkbox(getKey(), getPos(), getAnchor(), getOffset(), getText(), getSize(), getTooltip(), isDefaultSelected(), isShowLabel());
+            checkbox.onClick(this.onClick);
+            return checkbox;
         }
     }
 
-    public interface OnClick extends TriConsumer<Screen, Button, Player> {
+    public interface OnClick extends QuadConsumer<Screen, Checkbox, Player, Boolean> {
     }
 }

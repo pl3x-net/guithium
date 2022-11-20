@@ -21,8 +21,8 @@ public class RenderableGradient extends RenderableElement {
     private float x1;
     private float y1;
 
-    public RenderableGradient(@NotNull Gradient gradient, @NotNull RenderableScreen screen) {
-        super(gradient, screen);
+    public RenderableGradient(@NotNull RenderableScreen screen, @NotNull Gradient gradient) {
+        super(screen, gradient);
     }
 
     @Override

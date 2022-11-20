@@ -17,7 +17,7 @@ public class Text extends AbstractElement {
     private Component text;
     private Boolean shadow;
 
-    public Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
+    protected Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
         super(key, Type.TEXT, pos, anchor, offset);
         setText(text);
         setShadow(shadow);

@@ -13,14 +13,10 @@ public class Point implements JsonSerializable {
     public static final Point ZERO = new Point(0, 0);
     public static final Point ONE = new Point(1, 1);
 
-    private float x;
-    private float y;
+    private final float x;
+    private final float y;
 
-    public Point() {
-        this(0, 0);
-    }
-
-    public Point(float x, float y) {
+    private Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -34,16 +30,8 @@ public class Point implements JsonSerializable {
         return this.x;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
     public float getY() {
         return this.y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
     }
 
     @Override
