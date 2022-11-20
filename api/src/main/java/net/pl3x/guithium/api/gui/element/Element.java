@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.json.JsonSerializable;
-import net.pl3x.guithium.api.net.packet.ElementPacket;
-import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -119,7 +119,7 @@ public interface Element extends JsonSerializable {
      *
      * @param player Player to send to
      */
-    default void send(@NotNull Player player) {
+    default void send(@NotNull WrappedPlayer player) {
         player.getConnection().send(new ElementPacket(this));
     }
 

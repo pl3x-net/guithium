@@ -1,9 +1,9 @@
-package net.pl3x.guithium.api.net.packet;
+package net.pl3x.guithium.api.network.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.net.PacketListener;
+import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
 public class CloseScreenPacket extends Packet {

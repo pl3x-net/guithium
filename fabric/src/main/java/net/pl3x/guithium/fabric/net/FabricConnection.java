@@ -5,19 +5,21 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.pl3x.guithium.api.net.packet.Packet;
+import net.pl3x.guithium.api.network.Connection;
+import net.pl3x.guithium.api.network.PacketListener;
+import net.pl3x.guithium.api.network.packet.Packet;
 import org.jetbrains.annotations.NotNull;
 
-public class Connection implements net.pl3x.guithium.api.net.Connection {
+public class FabricConnection implements Connection {
     private final PacketListener packetListener;
 
-    public Connection() {
-        this.packetListener = new PacketListener();
+    public FabricConnection() {
+        this.packetListener = new FabricPacketListener();
     }
 
     @Override
     @NotNull
-    public net.pl3x.guithium.api.net.PacketListener getPacketListener() {
+    public PacketListener getPacketListener() {
         return this.packetListener;
     }
 
@@ -28,7 +30,7 @@ public class Connection implements net.pl3x.guithium.api.net.Connection {
         }
         ByteBuf buf = Unpooled.wrappedBuffer(packet.write().toByteArray());
         ClientPlayNetworking.send(
-            NetworkHandler.RESOURCE_LOCATION,
+            FabricNetworkHandler.RESOURCE_LOCATION,
             new FriendlyByteBuf(buf)
         );
     }

@@ -1,24 +1,26 @@
-package net.pl3x.guithium.plugin.net;
+package net.pl3x.guithium.plugin.network;
 
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
-import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
-import net.pl3x.guithium.api.net.packet.ElementPacket;
-import net.pl3x.guithium.api.net.packet.HelloPacket;
-import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.net.packet.TexturesPacket;
-import net.pl3x.guithium.api.player.Player;
+import net.pl3x.guithium.api.network.PacketListener;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.network.packet.TexturesPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.event.HelloEvent;
+import net.pl3x.guithium.plugin.player.BukkitPlayer;
 import org.jetbrains.annotations.NotNull;
 
-public class PacketListener implements net.pl3x.guithium.api.net.PacketListener {
-    private final Player player;
+public class BukkitPacketListener implements PacketListener {
+    private final WrappedPlayer player;
 
-    public PacketListener(@NotNull Player player) {
+    public BukkitPacketListener(@NotNull WrappedPlayer player) {
         this.player = player;
     }
 
@@ -80,7 +82,7 @@ public class PacketListener implements net.pl3x.guithium.api.net.PacketListener 
         }
 
         // tell other plugins about this hello
-        new HelloEvent(((net.pl3x.guithium.plugin.player.Player) this.player).getBukkitPlayer()).callEvent();
+        new HelloEvent(((BukkitPlayer) this.player).unwrap()).callEvent();
     }
 
     @Override

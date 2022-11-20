@@ -1,9 +1,10 @@
 package net.pl3x.guithium.plugin;
 
 import net.pl3x.guithium.api.gui.texture.TextureManager;
+import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.plugin.listener.PlayerListener;
-import net.pl3x.guithium.plugin.net.NetworkHandler;
+import net.pl3x.guithium.plugin.network.BukkitNetworkHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
     public Guithium() {
         instance = this;
 
-        this.networkHandler = new NetworkHandler(this);
+        this.networkHandler = new BukkitNetworkHandler(this);
         this.playerManager = new PlayerManager();
         this.textureManager = new TextureManager();
 

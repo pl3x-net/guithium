@@ -1,26 +1,30 @@
 package net.pl3x.guithium.plugin.player;
 
 import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.plugin.net.Connection;
+import net.pl3x.guithium.api.network.Connection;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.plugin.network.BukkitConnection;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class Player implements net.pl3x.guithium.api.player.Player {
-    private final org.bukkit.entity.Player player;
+public class BukkitPlayer implements WrappedPlayer {
+    private final Player player;
     private final Connection connection;
 
     private Screen currentScreen;
 
-    public Player(@NotNull org.bukkit.entity.Player player) {
+    public BukkitPlayer(@NotNull Player player) {
         this.player = player;
-        this.connection = new Connection(this);
+        this.connection = new BukkitConnection(this);
     }
 
     @NotNull
-    public org.bukkit.entity.Player getBukkitPlayer() {
-        return this.player;
+    @SuppressWarnings("unchecked")
+    public <T> T unwrap() {
+        return (T) this.player;
     }
 
     @Override
@@ -36,6 +40,12 @@ public class Player implements net.pl3x.guithium.api.player.Player {
     }
 
     @Override
+    @NotNull
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    @Override
     @Nullable
     public Screen getCurrentScreen() {
         return this.currentScreen;
@@ -46,11 +56,5 @@ public class Player implements net.pl3x.guithium.api.player.Player {
         if (screen == null || screen.getType() != Screen.Type.HUD) {
             this.currentScreen = screen;
         }
-    }
-
-    @Override
-    @NotNull
-    public Connection getConnection() {
-        return this.connection;
     }
 }

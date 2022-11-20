@@ -3,19 +3,20 @@ package net.pl3x.guithium.fabric.net;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
-import net.pl3x.guithium.api.net.packet.ElementPacket;
-import net.pl3x.guithium.api.net.packet.HelloPacket;
-import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.net.packet.TexturesPacket;
+import net.pl3x.guithium.api.network.PacketListener;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.element.RenderableElement;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
-public class PacketListener implements net.pl3x.guithium.api.net.PacketListener {
+public class FabricPacketListener implements PacketListener {
     @Override
     public void handleButtonClick(@NotNull ButtonClickPacket packet) {
         // server does not send this packet to the client

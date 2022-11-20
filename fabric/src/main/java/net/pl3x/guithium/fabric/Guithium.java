@@ -1,10 +1,11 @@
 package net.pl3x.guithium.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.fabric.gui.HudManager;
 import net.pl3x.guithium.fabric.gui.texture.TextureManager;
-import net.pl3x.guithium.fabric.net.NetworkHandler;
+import net.pl3x.guithium.fabric.net.FabricNetworkHandler;
 import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Gui
     }
 
     private final HudManager hudManager;
-    private final NetworkHandler networkHandler;
+    private final FabricNetworkHandler networkHandler;
     private final Scheduler scheduler;
     private final TextureManager textureManager;
 
@@ -26,7 +27,7 @@ public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Gui
         instance = this;
 
         this.hudManager = new HudManager();
-        this.networkHandler = new NetworkHandler(this);
+        this.networkHandler = new FabricNetworkHandler(this);
         this.scheduler = new Scheduler();
         this.textureManager = new TextureManager();
 
@@ -53,7 +54,7 @@ public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Gui
 
     @Override
     @NotNull
-    public NetworkHandler getNetworkHandler() {
+    public FabricNetworkHandler getNetworkHandler() {
         return this.networkHandler;
     }
 

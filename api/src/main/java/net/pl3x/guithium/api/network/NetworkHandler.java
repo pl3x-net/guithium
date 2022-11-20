@@ -1,16 +1,16 @@
-package net.pl3x.guithium.api.net;
+package net.pl3x.guithium.api.network;
 
 import com.google.common.io.ByteArrayDataInput;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.net.packet.CheckboxTogglePacket;
-import net.pl3x.guithium.api.net.packet.CloseScreenPacket;
-import net.pl3x.guithium.api.net.packet.ElementPacket;
-import net.pl3x.guithium.api.net.packet.HelloPacket;
-import net.pl3x.guithium.api.net.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.net.packet.Packet;
-import net.pl3x.guithium.api.net.packet.TexturesPacket;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.network.packet.Packet;
+import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

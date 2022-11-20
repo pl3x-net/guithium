@@ -7,7 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.element.Button;
-import net.pl3x.guithium.api.net.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;

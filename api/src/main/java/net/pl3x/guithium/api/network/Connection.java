@@ -1,6 +1,6 @@
-package net.pl3x.guithium.api.net;
+package net.pl3x.guithium.api.network;
 
-import net.pl3x.guithium.api.net.packet.Packet;
+import net.pl3x.guithium.api.network.packet.Packet;
 import org.jetbrains.annotations.NotNull;
 
 public interface Connection {
