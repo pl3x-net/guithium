@@ -25,7 +25,12 @@ public class FabricConnection implements Connection {
 
     @Override
     public void send(@NotNull Packet packet) {
-        if (Minecraft.getInstance().getConnection() == null) {
+        send(packet, false);
+    }
+
+    @Override
+    public void send(@NotNull Packet packet, boolean force) {
+        if (!force && Minecraft.getInstance().getConnection() == null) {
             return;
         }
         ByteBuf buf = Unpooled.wrappedBuffer(packet.write().toByteArray());

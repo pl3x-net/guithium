@@ -1,6 +1,7 @@
 package net.pl3x.guithium.plugin.network;
 
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.action.player.PlayerJoinedAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
@@ -13,7 +14,6 @@ import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
-import net.pl3x.guithium.plugin.event.HelloEvent;
 import net.pl3x.guithium.plugin.player.BukkitPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,8 +72,16 @@ public class BukkitPacketListener implements PacketListener {
 
         System.out.println(this.player.getName() + " is using Guithium with protocol " + protocol);
 
+        // set the player's client protocol
+        ((BukkitPlayer) this.player).setProtocol(protocol);
+
         // reply to the player
-        this.player.getConnection().send(new HelloPacket());
+        this.player.getConnection().send(new HelloPacket(), true);
+
+        // ensure the player has the correct guithium installed
+        if (!this.player.hasGuithium()) {
+            return;
+        }
 
         // tell client about textures
         TexturesPacket texturesPacket = Guithium.api().getTextureManager().getPacket();
@@ -82,7 +90,7 @@ public class BukkitPacketListener implements PacketListener {
         }
 
         // tell other plugins about this hello
-        new HelloEvent(((BukkitPlayer) this.player).unwrap()).callEvent();
+        Guithium.api().getActionRegistry().callAction(new PlayerJoinedAction(this.player));
     }
 
     @Override

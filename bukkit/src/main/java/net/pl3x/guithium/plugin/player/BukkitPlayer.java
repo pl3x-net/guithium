@@ -3,6 +3,7 @@ package net.pl3x.guithium.plugin.player;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.plugin.Guithium;
 import net.pl3x.guithium.plugin.network.BukkitConnection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ public class BukkitPlayer implements WrappedPlayer {
     private final Connection connection;
 
     private Screen currentScreen;
+    private int protocol;
 
     public BukkitPlayer(@NotNull Player player) {
         this.player = player;
@@ -56,5 +58,18 @@ public class BukkitPlayer implements WrappedPlayer {
         if (screen == null || screen.getType() != Screen.Type.HUD) {
             this.currentScreen = screen;
         }
+    }
+
+    @Override
+    public boolean hasGuithium() {
+        return getProtocol() == Guithium.PROTOCOL;
+    }
+
+    public int getProtocol() {
+        return this.protocol;
+    }
+
+    public void setProtocol(int protocol) {
+        this.protocol = protocol;
     }
 }

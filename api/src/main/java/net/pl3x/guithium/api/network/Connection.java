@@ -18,4 +18,12 @@ public interface Connection {
      * @param packet Packet to send
      */
     void send(@NotNull Packet packet);
+
+    /**
+     * Send packet.
+     *
+     * @param packet Packet to send
+     * @param force  Ignore protocol checks
+     */
+    void send(@NotNull Packet packet, boolean force);
 }

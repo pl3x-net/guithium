@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api;
 
+import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
@@ -22,6 +23,9 @@ public interface Guithium {
     static Guithium api() {
         return Provider.api();
     }
+
+    @NotNull
+    ActionRegistry getActionRegistry();
 
     @NotNull
     NetworkHandler getNetworkHandler();

@@ -38,9 +38,9 @@ public class RenderableButton extends RenderableWidget {
             size = Point.of(30 + minecraft.font.width(getElement().getText()), 20);
         }
 
-        calcScreenPos(size.getX(), size.getY());
-
         final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
+
+        calcScreenPos(size.getX(), size.getY());
 
         setWidget(new net.minecraft.client.gui.components.Button(
             (int) this.pos.getX(),

@@ -24,4 +24,6 @@ public interface WrappedPlayer {
     Screen getCurrentScreen();
 
     void setCurrentScreen(@Nullable Screen screen);
+
+    boolean hasGuithium();
 }

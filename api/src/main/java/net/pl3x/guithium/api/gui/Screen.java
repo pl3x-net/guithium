@@ -26,6 +26,10 @@ public class Screen extends Keyed implements JsonSerializable {
     private final Type type;
     private final Map<Key, Element> elements = new LinkedHashMap<>();
 
+    public Screen(@NotNull Key key) {
+        this(key, null);
+    }
+
     public Screen(@NotNull Key key, @Nullable Type type) {
         super(key);
         this.type = type;

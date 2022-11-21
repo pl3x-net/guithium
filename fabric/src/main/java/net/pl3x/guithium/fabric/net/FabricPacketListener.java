@@ -71,6 +71,13 @@ public class FabricPacketListener implements PacketListener {
             System.out.println("Server responded with correct protocol (" + protocol + ")");
         } else {
             System.out.println("Server responded with a different protocol (" + protocol + ")");
+            /*Minecraft.getInstance().getToasts().addToast(
+                new SystemToast(
+                    SystemToast.SystemToastIds.TUTORIAL_HINT,
+                    Component.literal("Guithium Error"),
+                    Component.literal("Protocol mismatch. Disabling mod.")
+                )
+            );*/
         }
     }
 

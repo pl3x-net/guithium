@@ -25,7 +25,7 @@ public final class Key {
     public Key(@NotNull String key) {
         Preconditions.checkNotNull(key, "Key cannot be null");
         if (!VALID_CHARS.matcher(key).matches()) {
-            throw new IllegalArgumentException(String.format("Non [a-zA-Z0-9._-] character in key '%s'", key));
+            throw new IllegalArgumentException(String.format("Non [a-zA-Z0-9:/._-] character in key '%s'", key));
         }
         this.key = key;
     }

@@ -264,6 +264,7 @@ public class Checkbox extends AbstractElement {
         }
     }
 
+    @FunctionalInterface
     public interface OnClick extends QuadConsumer<Screen, Checkbox, WrappedPlayer, Boolean> {
     }
 }
