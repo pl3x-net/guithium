@@ -210,6 +210,7 @@ public class Button extends AbstractElement {
         }
     }
 
+    @FunctionalInterface
     public interface OnClick extends TriConsumer<Screen, Button, WrappedPlayer> {
     }
 }

@@ -1,7 +1,7 @@
 package net.pl3x.guithium.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.pl3x.guithium.api.network.NetworkHandler;
+import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.fabric.gui.HudManager;
 import net.pl3x.guithium.fabric.gui.texture.TextureManager;
@@ -45,6 +45,11 @@ public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Gui
         getNetworkHandler().register();
 
         this.scheduler.register();
+    }
+
+    @NotNull
+    public ActionRegistry getActionRegistry() {
+        throw new UnsupportedOperationException("Client does not have an action registry.");
     }
 
     @NotNull

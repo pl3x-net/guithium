@@ -52,9 +52,7 @@ public class RenderableScreen extends AbstractScreen {
         this.elements.forEach((key, element) -> {
             element.init(this.minecraft, this.width, this.height);
             if (element instanceof RenderableWidget renderableWidget) {
-                if (renderableWidget.getWidget() != null) {
-                    addRenderableWidget(renderableWidget.getWidget());
-                }
+                addRenderableWidget(renderableWidget.getWidget());
             }
         });
     }

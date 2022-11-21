@@ -26,6 +26,14 @@ public class BukkitConnection implements Connection {
 
     @Override
     public void send(@NotNull Packet packet) {
+        send(packet, false);
+    }
+
+    @Override
+    public void send(@NotNull Packet packet, boolean force) {
+        if (!force && !this.player.hasGuithium()) {
+            return;
+        }
         this.player.<Player>unwrap().sendPluginMessage(
             Guithium.instance(),
             NetworkHandler.CHANNEL.toString(),

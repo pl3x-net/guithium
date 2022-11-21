@@ -1,5 +1,6 @@
 package net.pl3x.guithium.plugin;
 
+import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
@@ -18,6 +19,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
         return instance;
     }
 
+    private final ActionRegistry actionRegistry;
     private final NetworkHandler networkHandler;
     private final PlayerManager playerManager;
     private final TextureManager textureManager;
@@ -25,6 +27,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
     public Guithium() {
         instance = this;
 
+        this.actionRegistry = new ActionRegistry();
         this.networkHandler = new BukkitNetworkHandler(this);
         this.playerManager = new PlayerManager();
         this.textureManager = new TextureManager();
@@ -43,6 +46,11 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
         this.networkHandler.register();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+    }
+
+    @NotNull
+    public ActionRegistry getActionRegistry() {
+        return this.actionRegistry;
     }
 
     @Override

@@ -75,10 +75,6 @@ public abstract class Rect extends AbstractElement {
     public abstract static class Builder<T extends Builder<T>> extends AbstractBuilder<T> {
         private Point size;
 
-        public Builder(@NotNull String key) {
-            this(Key.of(key));
-        }
-
         public Builder(@NotNull Key key) {
             super(key);
         }
