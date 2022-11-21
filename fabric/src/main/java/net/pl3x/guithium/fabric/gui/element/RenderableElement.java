@@ -9,6 +9,7 @@ import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Image;
 import net.pl3x.guithium.api.gui.element.Text;
+import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,6 +77,7 @@ public abstract class RenderableElement {
         if (type == Element.Type.GRADIENT) return new RenderableGradient(screen, (Gradient) element);
         if (type == Element.Type.IMAGE) return new RenderableImage(screen, (Image) element);
         if (type == Element.Type.TEXT) return new RenderableText(screen, (Text) element);
+        if (type == Element.Type.TEXTBOX) return new RenderableTextbox(screen, (Textbox) element);
         return null;
     }
 }
