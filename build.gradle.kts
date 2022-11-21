@@ -38,7 +38,7 @@ tasks {
         versionType.set("alpha")
         uploadFile.set(jar(rootProject.name))
         gameVersions.addAll(listOf("${project.extra["minecraft_version"]}"))
-        loaders.addAll(listOf("spigot", "paper", "purpur", "fabric"))
+        loaders.addAll(listOf("spigot", "paper", "purpur", "fabric", "quill"))
         changelog.set(System.getenv("COMMIT_MESSAGE"))
     }
 }
