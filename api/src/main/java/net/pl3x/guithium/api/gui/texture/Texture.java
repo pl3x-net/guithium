@@ -17,7 +17,7 @@ public class Texture extends Keyed implements JsonSerializable {
 
     private final String url;
 
-    private Texture(@NotNull Key key, @NotNull String url) {
+    protected Texture(@NotNull Key key, @NotNull String url) {
         super(key);
         Preconditions.checkNotNull(url, "Url cannot be null");
         this.url = url;

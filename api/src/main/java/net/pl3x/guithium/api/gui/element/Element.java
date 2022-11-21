@@ -140,6 +140,7 @@ public interface Element extends JsonSerializable {
             case GRADIENT -> Gradient.fromJson(json);
             case IMAGE -> Image.fromJson(json);
             case TEXT -> Text.fromJson(json);
+            case TEXTBOX -> Textbox.fromJson(json);
         };
     }
 
@@ -147,6 +148,6 @@ public interface Element extends JsonSerializable {
      * Represents an element type.
      */
     enum Type {
-        BUTTON, CHECKBOX, GRADIENT, IMAGE, TEXT
+        BUTTON, CHECKBOX, GRADIENT, IMAGE, TEXT, TEXTBOX
     }
 }

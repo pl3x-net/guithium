@@ -16,7 +16,7 @@ public class Point implements JsonSerializable {
     private final float x;
     private final float y;
 
-    private Point(float x, float y) {
+    protected Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
