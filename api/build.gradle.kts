@@ -35,14 +35,3 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
     }
 }
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "${rootProject.group}"
-            artifactId = "guithium-api"
-            version = "${rootProject.version}"
-            from(components["java"])
-        }
-    }
-}
