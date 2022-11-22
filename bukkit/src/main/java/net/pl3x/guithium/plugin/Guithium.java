@@ -29,7 +29,8 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
     public Guithium() {
         instance = this;
 
-        this.version = getClass().getPackage().getImplementationVersion();
+        String version = getClass().getPackage().getImplementationVersion();
+        this.version = version == null ? "unknown" : version;
 
         this.actionRegistry = new ActionRegistry();
         this.networkHandler = new BukkitNetworkHandler(this);
@@ -50,6 +51,11 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
         this.networkHandler.register();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+    }
+
+    @NotNull
+    public String getVersion() {
+        return this.version;
     }
 
     @NotNull
