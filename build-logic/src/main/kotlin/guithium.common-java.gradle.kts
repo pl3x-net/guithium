@@ -38,7 +38,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "${rootProject.group}"
-            artifactId = "guithium-${project.name}"
+            artifactId = "${rootProject.name}-${project.name}"
             version = "${rootProject.version}"
             from(components["java"])
         }

@@ -5,8 +5,6 @@ plugins {
 group = "${rootProject.group}.api"
 description = "Guithium API"
 
-repositories {}
-
 dependencies {
     compileOnly("net.kyori:adventure-api:4.11.0")
     compileOnly("net.kyori:adventure-text-serializer-gson:4.11.0")

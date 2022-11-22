@@ -5,6 +5,7 @@ pluginManagement {
         maven("https://maven.fabricmc.net/")
     }
 
+    @Suppress("UnstableApiUsage")
     includeBuild("build-logic")
 }
 
