@@ -11,6 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
+      - name: Restore gradle.properties
+        env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+        shell: bash
+        run: |
+          mkdir -p ~/.gradle/
+          echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
+          echo ${GRADLE_PROPERTIES} > ~/.gradle/gradle.properties
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
