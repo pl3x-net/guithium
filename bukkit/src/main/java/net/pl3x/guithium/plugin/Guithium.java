@@ -29,7 +29,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
     public Guithium() {
         instance = this;
 
-        String version = getClass().getPackage().getImplementationVersion();
+        Str ing version = getClass().getPackage().getImplementationVersion();
         this.version = version == null ? "unknown" : version;
 
         this.actionRegistry = new ActionRegistry();
