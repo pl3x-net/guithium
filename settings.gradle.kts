@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Guithium"
+rootProject.name = "guithium"
 
 include("api")
 include("bukkit")

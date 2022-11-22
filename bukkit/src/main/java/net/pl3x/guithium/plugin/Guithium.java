@@ -27,6 +27,8 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
     public Guithium() {
         instance = this;
 
+        getClass().getPackage().getImplementationVersion();
+
         this.actionRegistry = new ActionRegistry();
         this.networkHandler = new BukkitNetworkHandler(this);
         this.playerManager = new PlayerManager();
