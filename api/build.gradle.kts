@@ -1,21 +1,9 @@
 plugins {
-    `java-library`
+    id("guithium.common-java")
 }
 
-base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.api"
-version = rootProject.version
 description = "Guithium API"
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compileOnly("net.kyori:adventure-api:4.11.0")
@@ -26,10 +14,6 @@ dependencies {
 }
 
 tasks {
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
-    }
     javadoc {
         options.encoding = Charsets.UTF_8.name()
         title = "${rootProject.name}-${project.version} API"
