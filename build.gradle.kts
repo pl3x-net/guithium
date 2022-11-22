@@ -4,11 +4,9 @@ plugins {
     id("com.modrinth.minotaur") version "2.+"
 }
 
-var snapshot = ""
-if (System.getenv("GITHUB_RUN_NUMBER") == null) {
-    snapshot = "-SNAPSHOT"
-}
-project.version = "${extra["mod_version"]}${snapshot}"
+var buildNum = System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"
+
+project.version = "${extra["mod_version"]}-SNAPSHOT"
 project.group = "net.pl3x.guithium"
 
 val mergedJar by configurations.creating<Configuration> {
@@ -35,7 +33,7 @@ tasks {
         archiveBaseName.set(rootProject.name)
         from({ mergedJar.filter { it.name.endsWith("jar") && it.path.contains(rootDir.path) }.map { zipTree(it) } })
         manifest {
-            attributes["Implementation-Version"] = "${project.extra["mod_version"]}-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
+            attributes["Implementation-Version"] = "${project.version} $buildNum"
         }
     }
     publish {

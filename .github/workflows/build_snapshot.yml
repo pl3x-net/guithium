@@ -1,8 +1,8 @@
-name: Build
+name: Build Snapshot
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build:
@@ -30,36 +30,26 @@ jobs:
         run: ./gradlew build --stacktrace
       - name: Publish to maven repo
         run: ./gradlew publish
-      - name: Deploy Javadoc
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: javadoc
-          clean: true
-          folder: api/build/docs/javadoc
-          target-folder: ./
-      - name: Publish to Modrinth
-        run: ./gradlew modrinth --stacktrace
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
         if: ${{ success() }}
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          avatar_url: https://cdn.discordapp.com/avatars/1044154256007106560/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=80
           nodetail: true
-          title: New build of Guithium is ready!
+          title: Dev snapshot built successfully!
           description: |
-            Version ${{ env.mod_version }}-${{ github.run_number }}
-            Click [here](https://modrinth.com/mod/guithium) to download!
+            Version ${{ env.mod_version }} Build ${{ github.run_number }}
+            Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
         if: ${{ failure() }}
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          avatar_url: https://cdn.discordapp.com/avatars/1044154256007106560/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=80
           nodetail: true
-          title: Build Failure!
+          title: Dev snapshot build failure!
           color: 0xff0000
           description: |
-            Version ${{ env.mod_version }}-${{ github.run_number }} failed to build.
+            Version ${{ env.mod_version }} Build ${{ github.run_number }}
+            Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!
