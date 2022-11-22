@@ -54,33 +54,6 @@ tasks {
     }
 }
 
-allprojects {
-    if (project.name != rootProject.name) {
-        apply(plugin = "java")
-        apply(plugin = "maven-publish")
-        publishing {
-            repositories {
-                maven {
-                    name = "public"
-                    url = uri("https://repo.pl3x.net/public")
-                    credentials(PasswordCredentials::class)
-                    authentication {
-                        create<BasicAuthentication>("basic")
-                    }
-                }
-            }
-            publications {
-                create<MavenPublication>("maven") {
-                    groupId = "${rootProject.group}"
-                    artifactId = "guithium-${project.name}"
-                    version = "${rootProject.version}"
-                    from(components["java"])
-                }
-            }
-        }
-    }
-}
-
 fun jar(name: String): RegularFile {
     return rootProject.layout.buildDirectory.file("libs/${name}-${project.version}.jar").get()
 }
