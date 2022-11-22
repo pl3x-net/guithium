@@ -21,7 +21,7 @@ public class RenderableImage extends RenderableElement {
     private final Texture texture;
     private float x0, y0, x1, y1;
     private float u0, v0, u1, v1;
-    private int tint;
+    private int vertexColor;
 
     public RenderableImage(@NotNull RenderableScreen screen, @NotNull Image image) {
         super(screen, image);
@@ -65,7 +65,7 @@ public class RenderableImage extends RenderableElement {
             this.v1 = this.y1 / tileMod;
         }
 
-        this.tint = getElement().getTint() == null ? 0xFFFFFFFF : getElement().getTint();
+        this.vertexColor = getElement().getVertexColor() == null ? 0xFFFFFFFF : getElement().getVertexColor();
     }
 
     @Override
@@ -86,10 +86,10 @@ public class RenderableImage extends RenderableElement {
         Matrix4f model = poseStack.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        buf.vertex(model, this.x1, this.y0, 0).uv(this.u1, this.v0).color(this.tint).endVertex();
-        buf.vertex(model, this.x0, this.y0, 0).uv(this.u0, this.v0).color(this.tint).endVertex();
-        buf.vertex(model, this.x0, this.y1, 0).uv(this.u0, this.v1).color(this.tint).endVertex();
-        buf.vertex(model, this.x1, this.y1, 0).uv(this.u1, this.v1).color(this.tint).endVertex();
+        buf.vertex(model, this.x1, this.y0, 0).uv(this.u1, this.v0).color(this.vertexColor).endVertex();
+        buf.vertex(model, this.x0, this.y0, 0).uv(this.u0, this.v0).color(this.vertexColor).endVertex();
+        buf.vertex(model, this.x0, this.y1, 0).uv(this.u0, this.v1).color(this.vertexColor).endVertex();
+        buf.vertex(model, this.x1, this.y1, 0).uv(this.u1, this.v1).color(this.vertexColor).endVertex();
         BufferUploader.drawWithShader(buf.end());
 
         RenderSystem.disableBlend();

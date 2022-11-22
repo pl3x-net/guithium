@@ -130,7 +130,7 @@ public abstract class AbstractElement extends Keyed implements Element {
 
     @Override
     public String toString() {
-        return String.format("%s{%s}", "AbstractElement", getPropertiesAsString());
+        return String.format("AbstractElement{%s}", getPropertiesAsString());
     }
 
     /**
