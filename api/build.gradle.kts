@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    `maven-publish`
 }
 
 group = "${rootProject.group}.api"
@@ -8,6 +7,8 @@ version = rootProject.version
 description = "Guithium API"
 
 java {
+    withSourcesJar()
+    withJavadocJar()
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 

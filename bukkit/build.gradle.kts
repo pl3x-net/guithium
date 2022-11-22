@@ -8,6 +8,8 @@ version = rootProject.version
 description = "Guithium Bukkit Plugin"
 
 java {
+    withSourcesJar()
+    withJavadocJar()
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
