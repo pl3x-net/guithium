@@ -171,7 +171,7 @@ public class Textbox extends Rect {
     @Override
     @NotNull
     public String toString() {
-        return String.format("%s{%s}", "Textbox", getPropertiesAsString());
+        return String.format("Textbox{%s}", getPropertiesAsString());
     }
 
     @Override

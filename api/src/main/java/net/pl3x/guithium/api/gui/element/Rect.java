@@ -92,7 +92,7 @@ public abstract class Rect extends AbstractElement {
     @Override
     @NotNull
     public String toString() {
-        return String.format("%s{%s}", "Rect", getPropertiesAsString());
+        return String.format("Rect{%s}", getPropertiesAsString());
     }
 
     @Override
@@ -155,6 +155,11 @@ public abstract class Rect extends AbstractElement {
             return (T) this;
         }
 
+        /**
+         * Build a new rect from the current properties in this builder.
+         *
+         * @return New rect
+         */
         @Override
         @NotNull
         public abstract Rect build();

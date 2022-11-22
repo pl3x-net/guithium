@@ -24,7 +24,7 @@ public class Checkbox extends Rect {
     private Component tooltip;
     private Boolean defaultSelected;
     private Boolean showLabel;
-    private OnClick onClick = (screen, button, player, selected) -> {
+    private OnClick onClick = (screen, checkbox, player, selected) -> {
     };
 
     /**
@@ -203,7 +203,7 @@ public class Checkbox extends Rect {
     @Override
     @NotNull
     public String toString() {
-        return String.format("Button{%s}", getPropertiesAsString());
+        return String.format("Checkbox{%s}", getPropertiesAsString());
     }
 
     @Override
@@ -246,7 +246,7 @@ public class Checkbox extends Rect {
         private Component tooltip;
         private Boolean defaultSelected;
         private Boolean showLabel;
-        private OnClick onClick = (screen, button, player, selected) -> {
+        private OnClick onClick = (screen, checkbox, player, selected) -> {
         };
 
         /**

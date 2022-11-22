@@ -88,7 +88,7 @@ public class Text extends AbstractElement {
     @Override
     @NotNull
     public String toString() {
-        return String.format("%s{%s}", "Text", getPropertiesAsString());
+        return String.format("Text{%s}", getPropertiesAsString());
     }
 
     @Override
