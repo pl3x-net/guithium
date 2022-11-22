@@ -32,15 +32,15 @@ public interface Element extends JsonSerializable {
     Type getType();
 
     /**
-     * Get this element's position.
+     * Get this element's position from the anchor point.
      *
-     * @return Position
+     * @return Position from anchor
      */
     @Nullable
     Point getPos();
 
     /**
-     * Set this element's position.
+     * Set this element's position from the anchor point.
      *
      * @param x X (horizontal) position
      * @param y Y (vertical) position
@@ -55,7 +55,7 @@ public interface Element extends JsonSerializable {
     void setPos(@Nullable Point pos);
 
     /**
-     * Get this element's anchor point.
+     * Get this element's anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
      *
@@ -65,7 +65,7 @@ public interface Element extends JsonSerializable {
     Point getAnchor();
 
     /**
-     * Set this element's anchor point.
+     * Set this element's anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
      *
@@ -75,7 +75,7 @@ public interface Element extends JsonSerializable {
     void setAnchor(float x, float y);
 
     /**
-     * Set this element's anchor point.
+     * Set this element's anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
      *

@@ -1,9 +1,10 @@
 plugins {
     `java-library`
+    `maven-publish`
     id("com.modrinth.minotaur") version "2.+"
 }
 
-project.version = "${extra["mod_version"]}+${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
+project.version = "${extra["mod_version"]}-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
 project.group = "net.pl3x.guithium"
 
 val mergedJar by configurations.creating<Configuration> {
@@ -30,6 +31,9 @@ tasks {
         archiveBaseName.set(rootProject.name)
         from({ mergedJar.filter { it.name.endsWith("jar") && it.path.contains(rootDir.path) }.map { zipTree(it) } })
     }
+    publish {
+        enabled = false
+    }
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("guithium")
@@ -40,6 +44,33 @@ tasks {
         gameVersions.addAll(listOf("${project.extra["minecraft_version"]}"))
         loaders.addAll(listOf("spigot", "paper", "purpur", "fabric", "quilt"))
         changelog.set(System.getenv("COMMIT_MESSAGE"))
+    }
+}
+
+allprojects {
+    if (project.name != rootProject.name) {
+        apply(plugin = "java")
+        apply(plugin = "maven-publish")
+        publishing {
+            repositories {
+                maven {
+                    name = "public"
+                    url = uri("https://repo.pl3x.net/public")
+                    credentials(PasswordCredentials::class)
+                    authentication {
+                        create<BasicAuthentication>("basic")
+                    }
+                }
+            }
+            publications {
+                create<MavenPublication>("maven") {
+                    groupId = "${rootProject.group}"
+                    artifactId = "guithium-${project.name}"
+                    version = "${rootProject.version}"
+                    from(components["java"])
+                }
+            }
+        }
     }
 }
 

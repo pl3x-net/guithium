@@ -9,6 +9,8 @@ version = rootProject.version
 description = "Guithium Fabric Mod"
 
 java {
+    withSourcesJar()
+    withJavadocJar()
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 

@@ -6,7 +6,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * The action registry.
+ */
 public class ActionRegistry {
+    /**
+     * Call an action for plugins to listen to.
+     *
+     * @param action The action to call
+     */
     public void callAction(@NotNull Action action) {
         for (RegisteredHandler handler : action.getHandlers()) {
             try {
@@ -17,6 +25,11 @@ public class ActionRegistry {
         }
     }
 
+    /**
+     * Registers all the actions in the given listener class.
+     *
+     * @param listener Action listener to register
+     */
     public void register(@NotNull ActionListener listener) {
         for (Method method : listener.getClass().getMethods()) {
             if (method.getDeclaredAnnotation(ActionHandler.class) == null) {
