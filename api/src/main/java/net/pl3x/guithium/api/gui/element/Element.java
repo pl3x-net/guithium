@@ -114,7 +114,7 @@ public interface Element extends JsonSerializable {
 
     /**
      * Send this element to a player.
-     * <p></p>
+     * <p>
      * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
      *
      * @param player Player to send to

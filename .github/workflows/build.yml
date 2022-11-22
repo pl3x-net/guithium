@@ -28,8 +28,6 @@ jobs:
         run: cat gradle.properties >> $GITHUB_ENV
       - name: Build
         run: ./gradlew build --stacktrace
-      - name: Generate Javadoc
-        run: ./gradlew javadoc
       - name: Publish to maven repo
         run: ./gradlew publish
       - name: Deploy Javadoc
@@ -47,11 +45,21 @@ jobs:
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
-        if: success()
+        if: ${{ success() }}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           nodetail: true
           title: New build of Guithium is ready!
           description: |
-            Version ${{ env.mod_version }}+${{ github.run_number }}
+            Version ${{ env.mod_version }}-${{ github.run_number }}
             Click [here](https://modrinth.com/mod/guithium) to download!
+      - name: Notify Discord
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          title: Build Failure!
+          color: 0xff0000
+          description: |
+            Version ${{ env.mod_version }}-${{ github.run_number }} failed to build.

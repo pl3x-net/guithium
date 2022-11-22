@@ -2,6 +2,7 @@ plugins {
     `java-library`
 }
 
+base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.api"
 version = rootProject.version
 description = "Guithium API"
@@ -29,10 +30,8 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
     }
-    jar {
-        archiveFileName.set("${rootProject.name}-${project.name}-${project.version}.jar")
-    }
     javadoc {
         options.encoding = Charsets.UTF_8.name()
+        title = "${rootProject.name}-${project.version} API"
     }
 }
