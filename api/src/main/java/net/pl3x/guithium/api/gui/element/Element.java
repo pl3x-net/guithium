@@ -137,8 +137,10 @@ public interface Element extends JsonSerializable {
         return switch (Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT))) {
             case BUTTON -> Button.fromJson(json);
             case CHECKBOX -> Checkbox.fromJson(json);
+            case CIRCLE -> Circle.fromJson(json);
             case GRADIENT -> Gradient.fromJson(json);
             case IMAGE -> Image.fromJson(json);
+            case LINE -> Line.fromJson(json);
             case TEXT -> Text.fromJson(json);
             case TEXTBOX -> Textbox.fromJson(json);
         };
@@ -148,6 +150,6 @@ public interface Element extends JsonSerializable {
      * Represents an element type.
      */
     enum Type {
-        BUTTON, CHECKBOX, GRADIENT, IMAGE, TEXT, TEXTBOX
+        BUTTON, CHECKBOX, CIRCLE, GRADIENT, IMAGE, LINE, TEXT, TEXTBOX
     }
 }

@@ -13,30 +13,62 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+/**
+ * Represents some drawable text.
+ */
 public class Text extends AbstractElement {
     private Component text;
     private Boolean shadow;
 
+    /**
+     * Create a new text element.
+     *
+     * @param key    Unique identifier for text
+     * @param pos    Position of text
+     * @param anchor Anchor for text
+     * @param offset Offset of text
+     * @param shadow Text has shadow
+     */
     protected Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
         super(key, Type.TEXT, pos, anchor, offset);
         setText(text);
         setShadow(shadow);
     }
 
+    /**
+     * Get the underlying text component.
+     *
+     * @return Text component
+     */
     @Nullable
     public Component getText() {
         return this.text;
     }
 
+    /**
+     * Set the underlying text component.
+     *
+     * @param text Text component
+     */
     public void setText(@Nullable Component text) {
         this.text = text;
     }
 
+    /**
+     * Get whether this text has a shadow.
+     *
+     * @return True if text has shadow
+     */
     @Nullable
     public Boolean hasShadow() {
         return this.shadow;
     }
 
+    /**
+     * Set whether this text has a shadow.
+     *
+     * @param shadow True if text has shadow
+     */
     public void setShadow(@Nullable Boolean shadow) {
         this.shadow = shadow;
     }
@@ -50,6 +82,12 @@ public class Text extends AbstractElement {
         return json.getJsonObject();
     }
 
+    /**
+     * Create a new text element from Json.
+     *
+     * @param json Json representation of a text element
+     * @return A new text element
+     */
     @NotNull
     public static Text fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
@@ -99,50 +137,102 @@ public class Text extends AbstractElement {
             + ",shadow=" + hasShadow();
     }
 
+    /**
+     * Create a new text element builder.
+     *
+     * @param key Unique identifying key for the text element
+     * @return New text element builder
+     */
     @NotNull
     public static Builder builder(@NotNull String key) {
         return new Builder(key);
     }
 
+    /**
+     * Create a new text element builder.
+     *
+     * @param key Unique identifying key for the text element
+     * @return New text element builder
+     */
     @NotNull
     public static Builder builder(@NotNull Key key) {
         return new Builder(key);
     }
 
+    /**
+     * Builder for text elements.
+     */
     public static class Builder extends AbstractBuilder<Builder> {
         private Component text;
         private Boolean shadow;
 
+        /**
+         * Create a new text element builder.
+         *
+         * @param key Unique identifying key for the text element
+         */
         public Builder(@NotNull String key) {
             this(Key.of(key));
         }
 
+        /**
+         * Create a new text element builder.
+         *
+         * @param key Unique identifying key for the text element
+         */
         public Builder(@NotNull Key key) {
             super(key);
         }
 
+        /**
+         * Get the underlying text component.
+         *
+         * @return Text component
+         */
         @Nullable
         public Component getText() {
             return text;
         }
 
+        /**
+         * Set the underlying text component.
+         *
+         * @param text Text component
+         * @return This builder
+         */
         @NotNull
         public Builder setText(@Nullable Component text) {
             this.text = text;
             return this;
         }
 
+        /**
+         * Get whether this text has a shadow.
+         *
+         * @return True if text has shadow
+         */
         @Nullable
         public Boolean hasShadow() {
             return shadow;
         }
 
+        /**
+         * Set whether this text has a shadow.
+         *
+         * @param shadow True if text has shadow
+         * @return This builder
+         */
         @NotNull
         public Builder setShadow(@Nullable Boolean shadow) {
             this.shadow = shadow;
             return this;
         }
 
+        /**
+         * Build a new text element from the current properties in this builder.
+         *
+         * @return New text element
+         */
         @Override
         @NotNull
         public Text build() {

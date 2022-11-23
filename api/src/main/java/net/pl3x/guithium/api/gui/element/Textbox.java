@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+/**
+ * Represents an interactable textbox for user input.
+ */
 public class Textbox extends Rect {
     private String value;
     private String suggestion;
@@ -21,6 +24,23 @@ public class Textbox extends Rect {
     private Integer textColor;
     private Integer textColorUneditable;
 
+    /**
+     * Creates a new textbox.
+     *
+     * @param key                 Unique identifier for button
+     * @param pos                 Position of button
+     * @param anchor              Anchor for button
+     * @param offset              Offset of button
+     * @param size                Size of button
+     * @param value               Current value for the input
+     * @param suggestion          Current suggestion on the cursor
+     * @param bordered            Show background and border
+     * @param canLoseFocus        Can textbox be focusable
+     * @param maxLength           Max input value length
+     * @param editable            Is textbox user editable
+     * @param textColor           Color of text
+     * @param textColorUneditable Color of text if uneditable
+     */
     protected Textbox(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
         super(key, Type.TEXTBOX, pos, anchor, offset, size);
         setValue(value);

@@ -30,11 +30,11 @@ public class Image extends Rect {
     /**
      * Creates a new image.
      *
-     * @param key          Unique identifier for element
-     * @param pos          Position of element
-     * @param anchor       Anchor for element
-     * @param offset       Offset of element
-     * @param size         Size of element
+     * @param key          Unique identifier for image
+     * @param pos          Position of image
+     * @param anchor       Anchor for image
+     * @param offset       Offset of image
+     * @param size         Size of image
      * @param texture      Texture of image
      * @param vertexColor  Vertex color modifier
      * @param tileModifier Tile modifier
@@ -256,6 +256,7 @@ public class Image extends Rect {
          * Set the image's texture.
          *
          * @param texture Image texture
+         * @return This builder
          */
         @NotNull
         public Builder setTexture(@NotNull Texture texture) {
@@ -288,6 +289,7 @@ public class Image extends Rect {
          * Eg, a modifier of `0xFF00FFFF` will remove all red from the texture.
          *
          * @param color Vertex color modifier
+         * @return This builder
          */
         @NotNull
         public Builder setVertexColor(@Nullable Integer color) {
@@ -319,6 +321,7 @@ public class Image extends Rect {
          * in order to get the tiled effect. This does <em>not</em> mean it is tiled 32 times.
          *
          * @param tileModifier Tile modifier
+         * @return This builder
          */
         @NotNull
         public Builder setTileModifier(@Nullable Float tileModifier) {

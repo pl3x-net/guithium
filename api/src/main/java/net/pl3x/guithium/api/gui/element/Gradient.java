@@ -28,11 +28,11 @@ public class Gradient extends Rect {
     /**
      * Creates a new gradient filled rectangle.
      *
-     * @param key              Unique identifier for element
-     * @param pos              Position of element
-     * @param anchor           Anchor for element
-     * @param offset           Offset of element
-     * @param size             Size of element
+     * @param key              Unique identifier for rectangle
+     * @param pos              Position of rectangle
+     * @param anchor           Anchor for rectangle
+     * @param offset           Offset of rectangle
+     * @param size             Size of rectangle
      * @param colorTopLeft     Top left color
      * @param colorTopRight    Top right color
      * @param colorBottomLeft  Bottom left color
@@ -335,6 +335,7 @@ public class Gradient extends Rect {
          * Set the top left color.
          *
          * @param color Top left color
+         * @return This builder
          */
         @NotNull
         public Builder setColorTopLeft(int color) {
@@ -355,6 +356,7 @@ public class Gradient extends Rect {
          * Set the top right color.
          *
          * @param color Top right color
+         * @return This builder
          */
         @NotNull
         public Builder setColorTopRight(int color) {
@@ -375,6 +377,7 @@ public class Gradient extends Rect {
          * Set the bottom left color.
          *
          * @param color Bottom left color
+         * @return This builder
          */
         @NotNull
         public Builder setColorBottomLeft(int color) {
@@ -395,6 +398,7 @@ public class Gradient extends Rect {
          * Set the bottom right color.
          *
          * @param color Bottom right color
+         * @return This builder
          */
         @NotNull
         public Builder setColorBottomRight(int color) {
@@ -406,6 +410,7 @@ public class Gradient extends Rect {
          * Set the top (left and right) colors.
          *
          * @param color Top colors
+         * @return This builder
          */
         @NotNull
         public Builder setColorTop(int color) {
@@ -418,6 +423,7 @@ public class Gradient extends Rect {
          * Set the left (top and bottom) colors.
          *
          * @param color Left colors
+         * @return This builder
          */
         @NotNull
         public Builder setColorLeft(int color) {
@@ -430,6 +436,7 @@ public class Gradient extends Rect {
          * Set the right (top and bottom) colors.
          *
          * @param color Right colors
+         * @return This builder
          */
         @NotNull
         public Builder setColorRight(int color) {
@@ -442,6 +449,7 @@ public class Gradient extends Rect {
          * Set the bottom (left and right) colors.
          *
          * @param color Bottom colors
+         * @return This builder
          */
         @NotNull
         public Builder setColorBottom(int color) {
@@ -454,6 +462,7 @@ public class Gradient extends Rect {
          * Set the colors of all four corners.
          *
          * @param color All corners colors
+         * @return This builder
          */
         @NotNull
         public Builder setColor(int color) {

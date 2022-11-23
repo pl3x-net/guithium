@@ -28,11 +28,11 @@ public class Button extends Rect {
     /**
      * Creates a new clickable button.
      *
-     * @param key     Unique identifier for element
-     * @param pos     Position of element
-     * @param anchor  Anchor for element
-     * @param offset  Offset of element
-     * @param size    Size of element
+     * @param key     Unique identifier for button
+     * @param pos     Position of button
+     * @param anchor  Anchor for button
+     * @param offset  Offset of button
+     * @param size    Size of button
      * @param text    Text label
      * @param tooltip Text on hover tooltip
      */

@@ -1,5 +1,5 @@
 name: "${name}"
-main: "${group}.${name}"
+main: "${group}.Guithium"
 version: "${version}"
 api-version: "1.19"
 description: "${description}"

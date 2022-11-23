@@ -30,11 +30,11 @@ public class Checkbox extends Rect {
     /**
      * Creates a new toggleable checkbox.
      *
-     * @param key             Unique identifier for element
-     * @param pos             Position of element
-     * @param anchor          Anchor for element
-     * @param offset          Offset of element
-     * @param size            Size of element
+     * @param key             Unique identifier for checkbox
+     * @param pos             Position of checkbox
+     * @param anchor          Anchor for checkbox
+     * @param offset          Offset of checkbox
+     * @param size            Size of checkbox
      * @param text            Text label
      * @param tooltip         Text on hover tooltip
      * @param defaultSelected Default selected state
