@@ -9,27 +9,52 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class Point implements JsonSerializable {
-    public static final Point ZERO = new Point(0, 0);
-    public static final Point ONE = new Point(1, 1);
+/**
+ * Represents a 2D vector.
+ */
+public class Vec2 implements JsonSerializable {
+    public static final Vec2 ZERO = new Vec2(0, 0);
+    public static final Vec2 ONE = new Vec2(1, 1);
 
     private final float x;
     private final float y;
 
-    protected Point(float x, float y) {
+    /**
+     * Creates a new 2D vector.
+     *
+     * @param x X component
+     * @param y Y component
+     */
+    protected Vec2(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Creates a new 2D vector.
+     *
+     * @param x X component
+     * @param y Y component
+     */
     @NotNull
-    public static Point of(float x, float y) {
-        return new Point(x, y);
+    public static Vec2 of(float x, float y) {
+        return new Vec2(x, y);
     }
 
+    /**
+     * Get the X component.
+     *
+     * @return The X component
+     */
     public float getX() {
         return this.x;
     }
 
+    /**
+     * Get the Y component.
+     *
+     * @return The Y component
+     */
     public float getY() {
         return this.y;
     }
@@ -43,9 +68,15 @@ public class Point implements JsonSerializable {
         return json.getJsonObject();
     }
 
+    /**
+     * Create a new 2D vector from Json.
+     *
+     * @param json Json representation of a 2D vector
+     * @return A new 2D vector
+     */
     @NotNull
-    public static Point fromJson(@NotNull JsonObject json) {
-        return new Point(
+    public static Vec2 fromJson(@NotNull JsonObject json) {
+        return new Vec2(
             !json.has("x") ? 0 : json.get("x").getAsFloat(),
             !json.has("y") ? 0 : json.get("y").getAsFloat()
         );
@@ -62,7 +93,7 @@ public class Point implements JsonSerializable {
         if (this.getClass() != o.getClass()) {
             return false;
         }
-        Point other = (Point) o;
+        Vec2 other = (Vec2) o;
         return Float.compare(getX(), other.getX()) == 0
             && Float.compare(getY(), other.getY()) == 0;
     }
@@ -75,6 +106,6 @@ public class Point implements JsonSerializable {
     @Override
     @NotNull
     public String toString() {
-        return "Point{x=" + getX() + ",y=" + getY() + "}";
+        return "Vec2{x=" + getX() + ",y=" + getY() + "}";
     }
 }

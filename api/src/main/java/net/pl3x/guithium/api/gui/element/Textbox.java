@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +41,7 @@ public class Textbox extends Rect {
      * @param textColor           Color of text
      * @param textColorUneditable Color of text if uneditable
      */
-    protected Textbox(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
+    protected Textbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
         super(key, Type.TEXTBOX, pos, anchor, offset, size);
         setValue(value);
         setSuggestion(suggestion);
@@ -53,76 +53,156 @@ public class Textbox extends Rect {
         setTextColorUneditable(textColorUneditable);
     }
 
+    /**
+     * Get the current value for the input.
+     *
+     * @return Current input value
+     */
     @Nullable
     public String getValue() {
         return this.value;
     }
 
+    /**
+     * Set the current value for the input.
+     *
+     * @param value Current input value
+     */
     public void setValue(@Nullable String value) {
         this.value = value;
     }
 
+    /**
+     * Get current suggestion on the cursor.
+     *
+     * @return Current suggestion
+     */
     @Nullable
     public String getSuggestion() {
         return this.suggestion;
     }
 
+    /**
+     * Set current suggestion on the cursor.
+     *
+     * @param suggestion Current suggestion
+     */
     public void setSuggestion(@Nullable String suggestion) {
         this.suggestion = suggestion;
     }
 
+    /**
+     * Get whether the input box has a background and border.
+     *
+     * @return True if bordered
+     */
     @Nullable
     public Boolean isBordered() {
         return this.bordered;
     }
 
+    /**
+     * Set whether the input box has a background and border.
+     *
+     * @param bordered True if bordered
+     */
     public void setBordered(@Nullable Boolean bordered) {
         this.bordered = bordered;
     }
 
+    /**
+     * Get whether the textbox can gain and lose focus.
+     *
+     * @return True to gain and lose focus
+     */
     @Nullable
     public Boolean canLoseFocus() {
         return this.canLoseFocus;
     }
 
+    /**
+     * Set whether the textbox can gain and lose focus.
+     *
+     * @param canLoseFocus True to gain and lose focus
+     */
     public void setCanLoseFocus(@Nullable Boolean canLoseFocus) {
         this.canLoseFocus = canLoseFocus;
     }
 
+    /**
+     * Get the maximum length of the input value.
+     *
+     * @return Max length of input value
+     */
     @Nullable
     public Integer getMaxLength() {
         return this.maxLength;
     }
 
+    /**
+     * Set the maximum length of the input value.
+     *
+     * @param maxLength Max length of input value
+     */
     public void setMaxLength(@Nullable Integer maxLength) {
         this.maxLength = maxLength;
     }
 
+    /**
+     * Get whether the textbox can be edited by the player.
+     *
+     * @return True to let player edit input value
+     */
     @Nullable
     public Boolean isEditable() {
         return this.editable;
     }
 
+    /**
+     * Set whether the textbox can be edited by the player.
+     *
+     * @param editable True to let player edit input value
+     */
     public void setEditable(@Nullable Boolean editable) {
         this.editable = editable;
     }
 
+    /**
+     * Get the text color if textbox is editable.
+     *
+     * @return Text color
+     */
     @Nullable
     public Integer getTextColor() {
         return this.textColor;
     }
 
-    public void setTextColor(@Nullable Integer textColor) {
-        this.textColor = textColor;
+    /**
+     * Get the text color if textbox is editable.
+     *
+     * @param color Text color
+     */
+    public void setTextColor(@Nullable Integer color) {
+        this.textColor = color;
     }
 
+    /**
+     * Get the text color if textbox is <em>not</em> editable.
+     *
+     * @return Text color
+     */
     @Nullable
     public Integer getTextColorUneditable() {
         return this.textColorUneditable;
     }
 
-    public void setTextColorUneditable(@Nullable Integer textColorUneditable) {
-        this.textColorUneditable = textColorUneditable;
+    /**
+     * Get the text color if textbox is <em>not</em> editable.
+     *
+     * @param color Text color
+     */
+    public void setTextColorUneditable(@Nullable Integer color) {
+        this.textColorUneditable = color;
     }
 
     @Override
@@ -140,15 +220,21 @@ public class Textbox extends Rect {
         return json.getJsonObject();
     }
 
+    /**
+     * Create a new textbox element from Json.
+     *
+     * @param json Json representation of a textbox element
+     * @return A new textbox element
+     */
     @NotNull
     public static Textbox fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Textbox(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("value") ? null : json.get("value").getAsString(),
             !json.has("suggestion") ? null : json.get("suggestion").getAsString(),
             !json.has("bordered") ? null : json.get("bordered").getAsBoolean(),
@@ -208,16 +294,31 @@ public class Textbox extends Rect {
             + ",textColorUneditable=" + getTextColorUneditable();
     }
 
+    /**
+     * Create a new textbox element builder.
+     *
+     * @param key Unique identifying key for the textbox element
+     * @return New textbox element builder
+     */
     @NotNull
     public static Builder builder(@NotNull String key) {
         return new Builder(key);
     }
 
+    /**
+     * Create a new textbox element builder.
+     *
+     * @param key Unique identifying key for the textbox element
+     * @return New textbox element builder
+     */
     @NotNull
     public static Builder builder(@NotNull Key key) {
         return new Builder(key);
     }
 
+    /**
+     * Builder for textbox elements.
+     */
     public static class Builder extends Rect.Builder<Builder> {
         private String value;
         private String suggestion;
@@ -228,102 +329,205 @@ public class Textbox extends Rect {
         private Integer textColor;
         private Integer textColorUneditable;
 
+        /**
+         * Create a new textbox element builder.
+         *
+         * @param key Unique identifying key for the textbox element
+         */
         public Builder(@NotNull String key) {
             this(Key.of(key));
         }
 
+        /**
+         * Create a new textbox element builder.
+         *
+         * @param key Unique identifying key for the textbox element
+         */
         public Builder(@NotNull Key key) {
             super(key);
         }
 
+        /**
+         * Get the current value for the input.
+         *
+         * @return Current input value
+         */
         @Nullable
         public String getValue() {
             return this.value;
         }
 
+        /**
+         * Set the current value for the input.
+         *
+         * @param value Current input value
+         * @return This builder
+         */
         @NotNull
         public Builder setValue(@Nullable String value) {
             this.value = value;
             return this;
         }
 
+        /**
+         * Get current suggestion on the cursor.
+         *
+         * @return Current suggestion
+         */
         @Nullable
         public String getSuggestion() {
             return this.suggestion;
         }
 
+        /**
+         * Set current suggestion on the cursor.
+         *
+         * @param suggestion Current suggestion
+         * @return This builder
+         */
         @NotNull
         public Builder setSuggestion(@Nullable String suggestion) {
             this.suggestion = suggestion;
             return this;
         }
 
+        /**
+         * Get whether the input box has a background and border.
+         *
+         * @return True if bordered
+         */
         @Nullable
         public Boolean isBordered() {
             return this.bordered;
         }
 
+        /**
+         * Set whether the input box has a background and border.
+         *
+         * @param bordered True if bordered
+         * @return This builder
+         */
         @NotNull
         public Builder setBordered(@Nullable Boolean bordered) {
             this.bordered = bordered;
             return this;
         }
 
+        /**
+         * Get whether the textbox can gain and lose focus.
+         *
+         * @return True to gain and lose focus
+         */
         @Nullable
         public Boolean canLoseFocus() {
             return this.canLoseFocus;
         }
 
+        /**
+         * Set whether the textbox can gain and lose focus.
+         *
+         * @param canLoseFocus True to gain and lose focus
+         * @return This builder
+         */
         @NotNull
         public Builder setCanLoseFocus(@Nullable Boolean canLoseFocus) {
             this.canLoseFocus = canLoseFocus;
             return this;
         }
 
+        /**
+         * Get the maximum length of the input value.
+         *
+         * @return Max length of input value
+         */
         @Nullable
         public Integer getMaxLength() {
             return this.maxLength;
         }
 
+        /**
+         * Set the maximum length of the input value.
+         *
+         * @param maxLength Max length of input value
+         * @return This builder
+         */
         @NotNull
         public Builder setMaxLength(@Nullable Integer maxLength) {
             this.maxLength = maxLength;
             return this;
         }
 
+        /**
+         * Get whether the textbox can be edited by the player.
+         *
+         * @return True to let player edit input value
+         */
         @Nullable
         public Boolean isEditable() {
             return this.editable;
         }
 
+        /**
+         * Set whether the textbox can be edited by the player.
+         *
+         * @param editable True to let player edit input value
+         * @return This builder
+         */
         @NotNull
         public Builder setEditable(@Nullable Boolean editable) {
             this.editable = editable;
             return this;
         }
 
+        /**
+         * Get the text color if textbox is editable.
+         *
+         * @return Text color
+         */
         @Nullable
         public Integer getTextColor() {
             return this.textColor;
         }
 
+        /**
+         * Get the text color if textbox is editable.
+         *
+         * @param color Text color
+         * @return This builder
+         */
         @NotNull
-        public Builder setTextColor(@Nullable Integer textColor) {
-            this.textColor = textColor;
+        public Builder setTextColor(@Nullable Integer color) {
+            this.textColor = color;
             return this;
         }
 
+        /**
+         * Get the text color if textbox is <em>not</em> editable.
+         *
+         * @return Text color
+         */
         @Nullable
         public Integer getTextColorUneditable() {
             return this.textColorUneditable;
         }
 
+        /**
+         * Get the text color if textbox is <em>not</em> editable.
+         *
+         * @param color Text color
+         * @return This builder
+         */
         @NotNull
-        public Builder setTextColorUneditable(@Nullable Integer textColorUneditable) {
-            this.textColorUneditable = textColorUneditable;
+        public Builder setTextColorUneditable(@Nullable Integer color) {
+            this.textColorUneditable = color;
             return this;
         }
 
+        /**
+         * Build a new textbox element from the current properties in this builder.
+         *
+         * @return New textbox element
+         */
         @Override
         @NotNull
         public Textbox build() {

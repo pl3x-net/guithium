@@ -2,7 +2,7 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Circle;
@@ -10,6 +10,7 @@ import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Image;
 import net.pl3x.guithium.api.gui.element.Line;
+import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -19,7 +20,7 @@ public abstract class RenderableElement {
     private final RenderableScreen screen;
     private Element element;
 
-    protected Point pos = Point.ZERO;
+    protected Vec2 pos = Vec2.ZERO;
 
     public RenderableElement(@NotNull RenderableScreen screen, @NotNull Element element) {
         this.screen = screen;
@@ -47,9 +48,9 @@ public abstract class RenderableElement {
     public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
 
     protected void calcScreenPos(float width, float height) {
-        Point pos = getElement().getPos();
+        Vec2 pos = getElement().getPos();
         if (pos == null) {
-            pos = Point.ZERO;
+            pos = Vec2.ZERO;
         }
 
         double anchorX = 0;
@@ -66,7 +67,7 @@ public abstract class RenderableElement {
             offsetY = (int) (height * getElement().getOffset().getY());
         }
 
-        this.pos = Point.of(
+        this.pos = Vec2.of(
             (int) (anchorX + pos.getX() - offsetX),
             (int) (anchorY + pos.getY() - offsetY)
         );
@@ -80,6 +81,7 @@ public abstract class RenderableElement {
         if (type == Element.Type.GRADIENT) return new RenderableGradient(screen, (Gradient) element);
         if (type == Element.Type.IMAGE) return new RenderableImage(screen, (Image) element);
         if (type == Element.Type.LINE) return new RenderableLine(screen, (Line) element);
+        if (type == Element.Type.RADIO) return new RenderableRadio(screen, (Radio) element);
         if (type == Element.Type.TEXT) return new RenderableText(screen, (Text) element);
         if (type == Element.Type.TEXTBOX) return new RenderableTextbox(screen, (Textbox) element);
         return null;

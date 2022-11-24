@@ -3,9 +3,9 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.gui.Vec4;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -17,13 +17,8 @@ import java.util.Objects;
  * Represents an image.
  */
 public class Image extends Rect {
-    public static final Image TILED_DIRT = Image.builder(Guithium.MOD_ID + ":tiled_dirt")
-        .setTexture(Texture.DIRT)
-        .setVertexColor(0xFF404040)
-        .setTileModifier(32.0F)
-        .build();
-
     private Texture texture;
+    private Vec4 uv;
     private Integer vertexColor;
     private Float tileModifier;
 
@@ -36,12 +31,14 @@ public class Image extends Rect {
      * @param offset       Offset of image
      * @param size         Size of image
      * @param texture      Texture of image
+     * @param uv           Texture UV
      * @param vertexColor  Vertex color modifier
      * @param tileModifier Tile modifier
      */
-    protected Image(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @NotNull Texture texture, @Nullable Integer vertexColor, @Nullable Float tileModifier) {
+    protected Image(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @NotNull Texture texture, @Nullable Vec4 uv, @Nullable Integer vertexColor, @Nullable Float tileModifier) {
         super(key, Type.IMAGE, pos, anchor, offset, size);
         setTexture(texture);
+        setUV(uv);
         setVertexColor(vertexColor);
         setTileModifier(tileModifier);
     }
@@ -64,6 +61,25 @@ public class Image extends Rect {
     public void setTexture(@NotNull Texture texture) {
         Preconditions.checkNotNull(texture, "Texture cannot be null");
         this.texture = texture;
+    }
+
+    /**
+     * Get the texture UV.
+     *
+     * @return Texture UV
+     */
+    @Nullable
+    public Vec4 getUV() {
+        return this.uv;
+    }
+
+    /**
+     * Set the texture UV.
+     *
+     * @param uv Texture UV
+     */
+    public void setUV(@Nullable Vec4 uv) {
+        this.uv = uv;
     }
 
     /**
@@ -146,11 +162,12 @@ public class Image extends Rect {
         Preconditions.checkArgument(json.has("texture"), "Texture cannot be null");
         return new Image(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             Texture.fromJson(json.get("texture").getAsJsonObject()),
+            !json.has("uv") ? null : Vec4.fromJson(json.get("uv").getAsJsonObject()),
             !json.has("vertexColor") ? null : json.get("vertexColor").getAsInt(),
             !json.has("tileMod") ? null : json.get("tileMod").getAsFloat()
         );
@@ -169,6 +186,7 @@ public class Image extends Rect {
         }
         Image other = (Image) o;
         return getTexture().equals(other.getTexture())
+            && Objects.equals(getUV(), other.getUV())
             && Objects.equals(getVertexColor(), other.getVertexColor())
             && Objects.equals(getTileModifier(), other.getTileModifier())
             && super.equals(o);
@@ -176,7 +194,7 @@ public class Image extends Rect {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTexture(), getVertexColor(), getTileModifier(), super.hashCode());
+        return Objects.hash(getTexture(), getUV(), getVertexColor(), getTileModifier(), super.hashCode());
     }
 
     @Override
@@ -190,6 +208,7 @@ public class Image extends Rect {
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
             + ",texture=" + getTexture()
+            + ",uv=" + getUV()
             + ",vertexColor=" + getVertexColor()
             + ",tileMod=" + getTileModifier();
     }
@@ -221,6 +240,7 @@ public class Image extends Rect {
      */
     public static class Builder extends Rect.Builder<Builder> {
         private Texture texture = Texture.DIRT;
+        private Vec4 uv;
         private Integer vertexColor;
         private Float tileModifier;
 
@@ -262,6 +282,28 @@ public class Image extends Rect {
         public Builder setTexture(@NotNull Texture texture) {
             Preconditions.checkNotNull(texture, "Texture cannot be null");
             this.texture = texture;
+            return this;
+        }
+
+        /**
+         * Get the texture UV.
+         *
+         * @return Texture UV
+         */
+        @Nullable
+        public Vec4 getUV() {
+            return this.uv;
+        }
+
+        /**
+         * Set the texture UV.
+         *
+         * @param uv Texture UV
+         * @return This builder
+         */
+        @NotNull
+        public Builder setUV(@Nullable Vec4 uv) {
+            this.uv = uv;
             return this;
         }
 
@@ -337,7 +379,7 @@ public class Image extends Rect {
         @Override
         @NotNull
         public Image build() {
-            return new Image(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getTexture(), getVertexColor(), getTileModifier());
+            return new Image(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getTexture(), getUV(), getVertexColor(), getTileModifier());
         }
     }
 }

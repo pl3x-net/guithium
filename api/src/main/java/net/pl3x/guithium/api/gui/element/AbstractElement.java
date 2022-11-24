@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Keyed;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,9 +16,9 @@ import java.util.Objects;
  */
 public abstract class AbstractElement extends Keyed implements Element {
     private final Type type;
-    private Point pos;
-    private Point anchor;
-    private Point offset;
+    private Vec2 pos;
+    private Vec2 anchor;
+    private Vec2 offset;
 
     /**
      * Creates a new element.
@@ -29,7 +29,7 @@ public abstract class AbstractElement extends Keyed implements Element {
      * @param anchor Anchor for element
      * @param offset Offset of element
      */
-    protected AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
+    protected AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset) {
         super(key);
         Preconditions.checkNotNull(type, "Type cannot be null");
         this.type = type;
@@ -46,49 +46,49 @@ public abstract class AbstractElement extends Keyed implements Element {
 
     @Override
     @Nullable
-    public Point getPos() {
+    public Vec2 getPos() {
         return this.pos;
     }
 
     @Override
     public void setPos(float x, float y) {
-        setPos(Point.of(x, y));
+        setPos(Vec2.of(x, y));
     }
 
     @Override
-    public void setPos(@Nullable Point pos) {
+    public void setPos(@Nullable Vec2 pos) {
         this.pos = pos;
     }
 
     @Override
     @Nullable
-    public Point getAnchor() {
+    public Vec2 getAnchor() {
         return this.anchor;
     }
 
     @Override
     public void setAnchor(float x, float y) {
-        setAnchor(Point.of(x, y));
+        setAnchor(Vec2.of(x, y));
     }
 
     @Override
-    public void setAnchor(@Nullable Point anchor) {
+    public void setAnchor(@Nullable Vec2 anchor) {
         this.anchor = anchor;
     }
 
     @Override
     @Nullable
-    public Point getOffset() {
+    public Vec2 getOffset() {
         return this.offset;
     }
 
     @Override
     public void setOffset(float x, float y) {
-        setOffset(Point.of(x, y));
+        setOffset(Vec2.of(x, y));
     }
 
     @Override
-    public void setOffset(@Nullable Point offset) {
+    public void setOffset(@Nullable Vec2 offset) {
         this.offset = offset;
     }
 
@@ -155,9 +155,9 @@ public abstract class AbstractElement extends Keyed implements Element {
      * @param <T> Type of builder
      */
     public static abstract class AbstractBuilder<T extends AbstractBuilder<T>> extends Keyed {
-        private Point pos;
-        private Point anchor;
-        private Point offset;
+        private Vec2 pos;
+        private Vec2 anchor;
+        private Vec2 offset;
 
         /**
          * Creates a new builder.
@@ -174,7 +174,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          * @return Position from anchor
          */
         @Nullable
-        public Point getPos() {
+        public Vec2 getPos() {
             return pos;
         }
 
@@ -187,7 +187,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         public T setPos(float x, float y) {
-            return setPos(Point.of(x, y));
+            return setPos(Vec2.of(x, y));
         }
 
         /**
@@ -198,7 +198,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         @SuppressWarnings("unchecked")
-        public T setPos(@Nullable Point pos) {
+        public T setPos(@Nullable Vec2 pos) {
             this.pos = pos;
             return (T) this;
         }
@@ -211,7 +211,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          * @return Anchor point
          */
         @Nullable
-        public Point getAnchor() {
+        public Vec2 getAnchor() {
             return anchor;
         }
 
@@ -226,7 +226,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         public T setAnchor(float x, float y) {
-            return setAnchor(Point.of(x, y));
+            return setAnchor(Vec2.of(x, y));
         }
 
         /**
@@ -239,7 +239,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         @SuppressWarnings("unchecked")
-        public T setAnchor(@Nullable Point anchor) {
+        public T setAnchor(@Nullable Vec2 anchor) {
             this.anchor = anchor;
             return (T) this;
         }
@@ -252,7 +252,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          * @return Position offset
          */
         @Nullable
-        public Point getOffset() {
+        public Vec2 getOffset() {
             return offset;
         }
 
@@ -267,7 +267,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         public T setOffset(float x, float y) {
-            return setOffset(Point.of(x, y));
+            return setOffset(Vec2.of(x, y));
         }
 
         /**
@@ -280,7 +280,7 @@ public abstract class AbstractElement extends Keyed implements Element {
          */
         @NotNull
         @SuppressWarnings("unchecked")
-        public T setOffset(@Nullable Point offset) {
+        public T setOffset(@Nullable Vec2 offset) {
             this.offset = offset;
             return (T) this;
         }

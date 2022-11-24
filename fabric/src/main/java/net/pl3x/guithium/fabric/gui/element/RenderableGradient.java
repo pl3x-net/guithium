@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
@@ -33,9 +33,9 @@ public class RenderableGradient extends RenderableElement {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Point size = getElement().getSize();
+        Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Point.ONE;
+            size = Vec2.ONE;
         } else {
             width = (int) size.getX();
             height = (int) size.getY();

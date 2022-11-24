@@ -1,20 +1,13 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class RenderableCheckbox extends RenderableWidget {
     public static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
@@ -37,54 +30,33 @@ public class RenderableCheckbox extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Point size = getElement().getSize();
+        Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Point.of(30 + minecraft.font.width(getElement().getText()), 20);
+            size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
         }
 
         calcScreenPos(size.getX(), size.getY());
 
-        final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
-        Boolean defaultSelected = getElement().isDefaultSelected();
-        Boolean showLabel = getElement().isShowLabel();
+        setWidget(createCheckbox(
+            TEXTURE,
+            size,
+            getElement().getLabel(),
+            getElement().isShowLabel(),
+            getElement().isSelected(),
+            processTooltip(getElement().getTooltip())
+        ));
+    }
 
-        setWidget(new net.minecraft.client.gui.components.Checkbox(
-            (int) this.pos.getX(),
-            (int) this.pos.getY(),
-            (int) size.getX(),
-            (int) size.getY(),
-            Component.translatable(getElement().getText()),
-            Boolean.TRUE.equals(defaultSelected),
-            showLabel == null || showLabel
-        ) {
-            @Override
-            public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
+    @Override
+    protected void onPress(boolean selected) {
+        // make sure the value is actually changed
+        if (Boolean.TRUE.equals(getElement().isSelected()) != selected) {
+            return;
+        }
 
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                RenderSystem.setShaderTexture(0, TEXTURE);
-                RenderSystem.setShaderColor(1, 1, 1, 1);
-
-                blit(poseStack, this.x, this.y, isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
-
-                if (showLabel == null || showLabel) {
-                    drawString(poseStack, minecraft.font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632);
-                }
-
-                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
-                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
-                }
-
-                RenderSystem.disableBlend();
-            }
-
-            @Override
-            public void onPress() {
-                super.onPress();
-                CheckboxTogglePacket packet = new CheckboxTogglePacket(getScreen().getScreen(), getElement(), selected());
-                Guithium.instance().getNetworkHandler().getConnection().send(packet);
-            }
-        });
+        // toggle this checkbox and tell the server
+        getElement().setSelected(selected);
+        Guithium.instance().getNetworkHandler().getConnection()
+            .send(new CheckboxTogglePacket(getScreen().getScreen(), getElement(), selected));
     }
 }

@@ -34,6 +34,8 @@ public class JsonObjectWrapper {
 
     /**
      * Extends an existing JsonObject.
+     *
+     * @param jsonElement JsonElement to wrap
      */
     public JsonObjectWrapper(@NotNull JsonElement jsonElement) {
         Preconditions.checkArgument(jsonElement instanceof JsonObject, "Can only extend JsonObject");
@@ -310,6 +312,7 @@ public class JsonObjectWrapper {
     /**
      * Creates a deep copy of this element and all its children
      *
+     * @return Deep copy
      * @since 2.8.2
      */
     @NotNull

@@ -3,7 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * Represents a rectangular element with a size property.
  */
 public abstract class Rect extends AbstractElement {
-    private Point size;
+    private Vec2 size;
 
     /**
      * Creates a new element.
@@ -26,7 +26,7 @@ public abstract class Rect extends AbstractElement {
      * @param offset Offset of element
      * @param size   Size of element
      */
-    protected Rect(@NotNull Key key, @NotNull Type type, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size) {
+    protected Rect(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size) {
         super(key, type, pos, anchor, offset);
         setSize(size);
     }
@@ -37,7 +37,7 @@ public abstract class Rect extends AbstractElement {
      * @return Size of element
      */
     @Nullable
-    public Point getSize() {
+    public Vec2 getSize() {
         return this.size;
     }
 
@@ -48,7 +48,7 @@ public abstract class Rect extends AbstractElement {
      * @param y Y size (height)
      */
     public void setSize(float x, float y) {
-        setSize(Point.of(x, y));
+        setSize(Vec2.of(x, y));
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class Rect extends AbstractElement {
      *
      * @param size Size of element
      */
-    public void setSize(@Nullable Point size) {
+    public void setSize(@Nullable Vec2 size) {
         this.size = size;
     }
 
@@ -108,7 +108,7 @@ public abstract class Rect extends AbstractElement {
      * @param <T> Type of builder
      */
     public abstract static class Builder<T extends Builder<T>> extends AbstractBuilder<T> {
-        private Point size;
+        private Vec2 size;
 
         /**
          * Creates a new builder.
@@ -125,7 +125,7 @@ public abstract class Rect extends AbstractElement {
          * @return Size of element
          */
         @Nullable
-        public Point getSize() {
+        public Vec2 getSize() {
             return this.size;
         }
 
@@ -138,7 +138,7 @@ public abstract class Rect extends AbstractElement {
          */
         @NotNull
         public T setSize(float x, float y) {
-            return setSize(Point.of(x, y));
+            return setSize(Vec2.of(x, y));
         }
 
         /**
@@ -149,7 +149,7 @@ public abstract class Rect extends AbstractElement {
          */
         @NotNull
         @SuppressWarnings("unchecked")
-        public T setSize(@Nullable Point size) {
+        public T setSize(@Nullable Vec2 size) {
             Preconditions.checkNotNull(size, "Size cannot be null");
             this.size = size;
             return (T) this;

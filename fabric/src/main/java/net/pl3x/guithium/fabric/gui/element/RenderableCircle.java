@@ -32,16 +32,18 @@ public class RenderableCircle extends RenderableElement {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Float radius = getElement().getRadius();
-        if (radius == null) {
+        float radius;
+        if (getElement().getRadius() == null) {
             radius = Math.min(getScreen().width, getScreen().height) / 2F;
+        } else {
+            radius = getElement().getRadius();
         }
 
         float size = radius * 2;
         calcScreenPos(size, size);
 
         if (getElement().getResolution() == null) {
-            this.resolution = (int) (float) radius;
+            this.resolution = (int) radius;
         } else {
             this.resolution = getElement().getResolution();
         }

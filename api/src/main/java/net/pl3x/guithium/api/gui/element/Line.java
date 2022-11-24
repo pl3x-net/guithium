@@ -3,7 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,8 +14,8 @@ import java.util.Objects;
  * Represents a gradient colored line.
  */
 public class Line extends AbstractElement {
-    private Point endPos;
-    private Point endAnchor;
+    private Vec2 endPos;
+    private Vec2 endAnchor;
     private Float width;
     private int startColor;
     private int endColor;
@@ -32,7 +32,7 @@ public class Line extends AbstractElement {
      * @param startColor Starting color of line
      * @param endColor   Ending color of line
      */
-    protected Line(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point endPos, @Nullable Point endAnchor, @Nullable Float width, int startColor, int endColor) {
+    protected Line(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 endPos, @Nullable Vec2 endAnchor, @Nullable Float width, int startColor, int endColor) {
         super(key, Type.LINE, pos, anchor, null);
         setEndPos(endPos);
         setEndAnchor(endAnchor);
@@ -47,7 +47,7 @@ public class Line extends AbstractElement {
      * @return End position from end anchor
      */
     @Nullable
-    public Point getEndPos() {
+    public Vec2 getEndPos() {
         return this.endPos;
     }
 
@@ -58,7 +58,7 @@ public class Line extends AbstractElement {
      * @param y Y (vertical) end position
      */
     public void setEndPos(float x, float y) {
-        setEndPos(Point.of(x, y));
+        setEndPos(Vec2.of(x, y));
     }
 
     /**
@@ -66,7 +66,7 @@ public class Line extends AbstractElement {
      *
      * @param pos End position
      */
-    public void setEndPos(@Nullable Point pos) {
+    public void setEndPos(@Nullable Vec2 pos) {
         this.endPos = pos;
     }
 
@@ -78,7 +78,7 @@ public class Line extends AbstractElement {
      * @return End anchor point
      */
     @Nullable
-    public Point getEndAnchor() {
+    public Vec2 getEndAnchor() {
         return this.endAnchor;
     }
 
@@ -91,7 +91,7 @@ public class Line extends AbstractElement {
      * @param y Y (vertical) end anchor
      */
     public void setEndAnchor(float x, float y) {
-        setEndAnchor(Point.of(x, y));
+        setEndAnchor(Vec2.of(x, y));
     }
 
     /**
@@ -101,7 +101,7 @@ public class Line extends AbstractElement {
      *
      * @param anchor End anchor point
      */
-    public void setEndAnchor(@Nullable Point anchor) {
+    public void setEndAnchor(@Nullable Vec2 anchor) {
         this.endAnchor = anchor;
     }
 
@@ -182,10 +182,10 @@ public class Line extends AbstractElement {
     public static Line fromJson(JsonObject json) {
         return new Line(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("endPos") ? null : Point.fromJson(json.get("endPos").getAsJsonObject()),
-            !json.has("endAnchor") ? null : Point.fromJson(json.get("endAnchor").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()),
+            !json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()),
             !json.has("width") ? null : json.get("width").getAsFloat(),
             !json.has("startColor") ? 0 : json.get("startColor").getAsInt(),
             !json.has("endColor") ? 0 : json.get("endColor").getAsInt()
@@ -260,8 +260,8 @@ public class Line extends AbstractElement {
      * Builder for lines.
      */
     public static class Builder extends AbstractBuilder<Builder> {
-        private Point endPos;
-        private Point endAnchor;
+        private Vec2 endPos;
+        private Vec2 endAnchor;
         private Float width;
         private int startColor;
         private int endColor;
@@ -290,7 +290,7 @@ public class Line extends AbstractElement {
          * @return End position from end anchor
          */
         @Nullable
-        public Point getEndPos() {
+        public Vec2 getEndPos() {
             return this.endPos;
         }
 
@@ -303,7 +303,7 @@ public class Line extends AbstractElement {
          */
         @NotNull
         public Builder setEndPos(float x, float y) {
-            setEndPos(Point.of(x, y));
+            setEndPos(Vec2.of(x, y));
             return this;
         }
 
@@ -314,7 +314,7 @@ public class Line extends AbstractElement {
          * @return This builder
          */
         @NotNull
-        public Builder setEndPos(@Nullable Point pos) {
+        public Builder setEndPos(@Nullable Vec2 pos) {
             this.endPos = pos;
             return this;
         }
@@ -327,7 +327,7 @@ public class Line extends AbstractElement {
          * @return End anchor point
          */
         @Nullable
-        public Point getEndAnchor() {
+        public Vec2 getEndAnchor() {
             return this.endAnchor;
         }
 
@@ -342,7 +342,7 @@ public class Line extends AbstractElement {
          */
         @NotNull
         public Builder setEndAnchor(float x, float y) {
-            setEndAnchor(Point.of(x, y));
+            setEndAnchor(Vec2.of(x, y));
             return this;
         }
 
@@ -355,7 +355,7 @@ public class Line extends AbstractElement {
          * @return This builder
          */
         @NotNull
-        public Builder setEndAnchor(@Nullable Point anchor) {
+        public Builder setEndAnchor(@Nullable Vec2 anchor) {
             this.endAnchor = anchor;
             return this;
         }

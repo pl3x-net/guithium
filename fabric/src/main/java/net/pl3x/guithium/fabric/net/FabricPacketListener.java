@@ -10,6 +10,7 @@ import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.element.RenderableElement;
@@ -92,6 +93,12 @@ public class FabricPacketListener implements PacketListener {
         } else {
             renderableScreen.open();
         }
+    }
+
+    @Override
+    public void handleRadioToggle(@NotNull RadioTogglePacket packet) {
+        // server does not send this packet to the client
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override

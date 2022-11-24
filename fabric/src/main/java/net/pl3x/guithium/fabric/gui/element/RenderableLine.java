@@ -11,7 +11,7 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Line;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public class RenderableLine extends RenderableElement {
     private int startColor;
     private int endColor;
 
-    private Point endPos = Point.ZERO;
+    private Vec2 endPos = Vec2.ZERO;
 
     public RenderableLine(@NotNull RenderableScreen screen, @NotNull Line line) {
         super(screen, line);
@@ -39,11 +39,11 @@ public class RenderableLine extends RenderableElement {
         if (getElement().getWidth() == null) {
             this.width = 1.0F;
         } else {
-            this.width = getElement().getWidth();
+            // compensate for shader weirdness
+            this.width = getElement().getWidth() * (float) Minecraft.getInstance().getWindow().getGuiScale();
         }
 
-        calcScreenPos(0, 0);
-        calcScreenEndPos();
+        calcScreenPos(width, height);
 
         this.x0 = this.pos.getX();
         this.y0 = this.pos.getY();
@@ -58,12 +58,15 @@ public class RenderableLine extends RenderableElement {
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         poseStack.pushPose();
 
+        // I'm not sure what this is about, but it puts it in the correct "zIndex"
+        poseStack.translate(0, 0, -7.8431);
+
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        RenderSystem.lineWidth((float) (this.width * Minecraft.getInstance().getWindow().getGuiScale()));
+        RenderSystem.lineWidth(this.width);
 
         Matrix4f model = poseStack.last().pose();
         Matrix3f normal = poseStack.last().normal();
@@ -81,24 +84,42 @@ public class RenderableLine extends RenderableElement {
         poseStack.popPose();
     }
 
-    private void calcScreenEndPos() {
-        Point pos = getElement().getEndPos();
+    @Override
+    protected void calcScreenPos(float width, float height) {
+        Vec2 pos = getElement().getPos();
         if (pos == null) {
-            pos = Point.ZERO;
+            pos = Vec2.ZERO;
+        }
+        Vec2 endPos = getElement().getEndPos();
+        if (endPos == null) {
+            endPos = Vec2.ZERO;
         }
 
         double anchorX = 0;
         double anchorY = 0;
+        if (getElement().getAnchor() != null) {
+            anchorX = Math.ceil(getScreen().width * getElement().getAnchor().getX());
+            anchorY = Math.ceil(getScreen().height * getElement().getAnchor().getY());
+        }
+        double endAnchorX = 0;
+        double endAnchorY = 0;
         if (getElement().getEndAnchor() != null) {
-            anchorX = Math.ceil(getScreen().width * getElement().getEndAnchor().getX());
-            anchorY = Math.ceil(getScreen().height * getElement().getEndAnchor().getY());
+            endAnchorX = Math.ceil(getScreen().width * getElement().getEndAnchor().getX());
+            endAnchorY = Math.ceil(getScreen().height * getElement().getEndAnchor().getY());
         }
 
-        this.endPos = Point.of(
-            // mojang shrinks lines by 1/256 of the screen size for some reason
-            // in the line shader, so add it back here to get full line lengths
-            (int) (anchorX + pos.getX() + (getScreen().width * (1 / 256F))),
-            (int) (anchorY + pos.getY() + (getScreen().height * (1 / 256F)))
+        // mojang shrinks lines by 1/256 of the screen size for some reason
+        // in the line shader, so add it back here to get full line lengths
+        float offsetX = getScreen().width * (1 / 256F);
+        float offsetY = getScreen().height * (1 / 256F);
+
+        this.pos = Vec2.of(
+            (int) (anchorX + pos.getX() + offsetX),
+            (int) (anchorY + pos.getY() + offsetY)
+        );
+        this.endPos = Vec2.of(
+            (int) (endAnchorX + endPos.getX() + offsetX),
+            (int) (endAnchorY + endPos.getY() + offsetY)
         );
     }
 }

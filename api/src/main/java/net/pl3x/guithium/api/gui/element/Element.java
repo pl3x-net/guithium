@@ -2,7 +2,7 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
@@ -37,7 +37,7 @@ public interface Element extends JsonSerializable {
      * @return Position from anchor
      */
     @Nullable
-    Point getPos();
+    Vec2 getPos();
 
     /**
      * Set this element's position from the anchor point.
@@ -52,7 +52,7 @@ public interface Element extends JsonSerializable {
      *
      * @param pos Position
      */
-    void setPos(@Nullable Point pos);
+    void setPos(@Nullable Vec2 pos);
 
     /**
      * Get this element's anchor point on the screen.
@@ -62,7 +62,7 @@ public interface Element extends JsonSerializable {
      * @return Anchor point
      */
     @Nullable
-    Point getAnchor();
+    Vec2 getAnchor();
 
     /**
      * Set this element's anchor point on the screen.
@@ -81,7 +81,7 @@ public interface Element extends JsonSerializable {
      *
      * @param anchor Anchor point
      */
-    void setAnchor(@Nullable Point anchor);
+    void setAnchor(@Nullable Vec2 anchor);
 
     /**
      * Get this element's position offset.
@@ -91,7 +91,7 @@ public interface Element extends JsonSerializable {
      * @return Position offset
      */
     @Nullable
-    Point getOffset();
+    Vec2 getOffset();
 
     /**
      * Set this element's position offset.
@@ -110,7 +110,7 @@ public interface Element extends JsonSerializable {
      *
      * @param offset Position offset
      */
-    void setOffset(@Nullable Point offset);
+    void setOffset(@Nullable Vec2 offset);
 
     /**
      * Send this element to a player.
@@ -141,6 +141,7 @@ public interface Element extends JsonSerializable {
             case GRADIENT -> Gradient.fromJson(json);
             case IMAGE -> Image.fromJson(json);
             case LINE -> Line.fromJson(json);
+            case RADIO -> Radio.fromJson(json);
             case TEXT -> Text.fromJson(json);
             case TEXTBOX -> Textbox.fromJson(json);
         };
@@ -150,6 +151,49 @@ public interface Element extends JsonSerializable {
      * Represents an element type.
      */
     enum Type {
-        BUTTON, CHECKBOX, CIRCLE, GRADIENT, IMAGE, LINE, TEXT, TEXTBOX
+        /**
+         * Clickable buttons.
+         */
+        BUTTON,
+
+        /**
+         * Toggleable checkboxes.
+         */
+        CHECKBOX,
+
+        /**
+         * Round circles. (oh my!)
+         */
+        CIRCLE,
+
+        /**
+         * Gradient rectangles.
+         */
+        GRADIENT,
+
+        /**
+         * Textured images.
+         */
+        IMAGE,
+
+        /**
+         * Straight lines.
+         */
+        LINE,
+
+        /**
+         * Radio buttons.
+         */
+        RADIO,
+
+        /**
+         * Renderable text.
+         */
+        TEXT,
+
+        /**
+         * Interactable textbox for user input.
+         */
+        TEXTBOX
     }
 }

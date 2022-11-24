@@ -1,16 +1,21 @@
 package net.pl3x.guithium.fabric.gui.element;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Tickable;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -49,6 +54,9 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
         getWidget().render(poseStack, mouseX, mouseY, delta);
     }
 
+    protected void onPress(boolean selected) {
+    }
+
     protected List<FormattedCharSequence> processTooltip(net.kyori.adventure.text.Component tooltip) {
         MutableComponent component = null;
         if (tooltip != null) {
@@ -60,5 +68,45 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
             }
         }
         return component == null ? null : Minecraft.getInstance().font.split(component, 200);
+    }
+
+    protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable String label, @Nullable Boolean showLabel, @Nullable Boolean selected, List<FormattedCharSequence> tooltip) {
+        return new net.minecraft.client.gui.components.Checkbox(
+            (int) this.pos.getX(),
+            (int) this.pos.getY(),
+            (int) size.getX(),
+            (int) size.getY(),
+            Component.translatable(label),
+            Boolean.TRUE.equals(selected),
+            showLabel == null || Boolean.TRUE.equals(showLabel)
+        ) {
+            @Override
+            public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, texture);
+                RenderSystem.setShaderColor(1, 1, 1, 1);
+
+                blit(poseStack, this.x, this.y, isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
+
+                if (this.showLabel) {
+                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632);
+                }
+
+                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
+                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
+                }
+
+                RenderSystem.disableBlend();
+            }
+
+            @Override
+            public void onPress() {
+                super.onPress();
+                RenderableWidget.this.onPress(selected());
+            }
+        };
     }
 }

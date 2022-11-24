@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.TriConsumer;
@@ -36,7 +36,7 @@ public class Button extends Rect {
      * @param text    Text label
      * @param tooltip Text on hover tooltip
      */
-    protected Button(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, @Nullable String text, @Nullable Component tooltip) {
+    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String text, @Nullable Component tooltip) {
         super(key, Type.BUTTON, pos, anchor, offset, size);
         setText(text);
         setTooltip(tooltip);
@@ -119,10 +119,10 @@ public class Button extends Rect {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Button(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("text") ? null : json.get("text").getAsString(),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString())
         );

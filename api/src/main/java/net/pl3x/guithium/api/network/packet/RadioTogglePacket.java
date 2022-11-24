@@ -4,26 +4,26 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Checkbox;
+import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
-public class CheckboxTogglePacket extends Packet {
-    public static final Key KEY = Key.of("packet:checkbox_toggle");
+public class RadioTogglePacket extends Packet {
+    public static final Key KEY = Key.of("packet:radio_toggle");
 
     private final Key screen;
-    private final Key checkbox;
+    private final Key radio;
     private final boolean selected;
 
-    public CheckboxTogglePacket(@NotNull Screen screen, @NotNull Checkbox checkbox, boolean selected) {
+    public RadioTogglePacket(@NotNull Screen screen, @NotNull Radio radio, boolean selected) {
         this.screen = screen.getKey();
-        this.checkbox = checkbox.getKey();
+        this.radio = radio.getKey();
         this.selected = selected;
     }
 
-    public CheckboxTogglePacket(@NotNull ByteArrayDataInput in) {
+    public RadioTogglePacket(@NotNull ByteArrayDataInput in) {
         this.screen = Key.of(in.readUTF());
-        this.checkbox = Key.of(in.readUTF());
+        this.radio = Key.of(in.readUTF());
         this.selected = in.readBoolean();
     }
 
@@ -39,8 +39,8 @@ public class CheckboxTogglePacket extends Packet {
     }
 
     @NotNull
-    public Key getCheckbox() {
-        return this.checkbox;
+    public Key getRadio() {
+        return this.radio;
     }
 
     public boolean getSelected() {
@@ -49,7 +49,7 @@ public class CheckboxTogglePacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        listener.handleCheckboxToggle(this);
+        listener.handleRadioToggle(this);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CheckboxTogglePacket extends Packet {
     public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
         out.writeUTF(getScreen().toString());
-        out.writeUTF(getCheckbox().toString());
+        out.writeUTF(getRadio().toString());
         out.writeBoolean(getSelected());
         return out;
     }

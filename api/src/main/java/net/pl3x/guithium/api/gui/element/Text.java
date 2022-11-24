@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +29,7 @@ public class Text extends AbstractElement {
      * @param offset Offset of text
      * @param shadow Text has shadow
      */
-    protected Text(@NotNull Key key, @Nullable Component text, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Boolean shadow) {
+    protected Text(@NotNull Key key, @Nullable Component text, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Boolean shadow) {
         super(key, Type.TEXT, pos, anchor, offset);
         setText(text);
         setShadow(shadow);
@@ -94,9 +94,9 @@ public class Text extends AbstractElement {
         return new Text(
             Key.of(json.get("key").getAsString()),
             !json.has("text") ? null : GsonComponentSerializer.gson().deserialize(json.get("text").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
             !json.has("shadow") ? null : json.get("shadow").getAsBoolean()
         );
     }

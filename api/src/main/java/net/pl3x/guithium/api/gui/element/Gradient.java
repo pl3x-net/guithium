@@ -4,9 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,11 +17,6 @@ import java.util.Objects;
  * Represents a gradient filled rectangle.
  */
 public class Gradient extends Rect {
-    public static final Gradient DEFAULT = Gradient.builder(Guithium.MOD_ID + ":gradient")
-        .setColorTop(0xC0101010)
-        .setColorBottom(0xD0101010)
-        .build();
-
     private final int[] colors = new int[]{0, 0, 0, 0};
 
     /**
@@ -38,7 +32,7 @@ public class Gradient extends Rect {
      * @param colorBottomLeft  Bottom left color
      * @param colorBottomRight Bottom right color
      */
-    protected Gradient(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Point size, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
+    protected Gradient(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
         super(key, Type.GRADIENT, pos, anchor, offset, size);
         setColorTopLeft(colorTopLeft);
         setColorTopRight(colorTopRight);
@@ -214,10 +208,10 @@ public class Gradient extends Rect {
         }
         return new Gradient(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("size") ? null : Point.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             colors[0], colors[1], colors[2], colors[3]
         );
     }

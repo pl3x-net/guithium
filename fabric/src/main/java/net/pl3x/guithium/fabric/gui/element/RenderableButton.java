@@ -5,7 +5,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.fabric.Guithium;
@@ -33,9 +33,9 @@ public class RenderableButton extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Point size = getElement().getSize();
+        Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Point.of(30 + minecraft.font.width(getElement().getText()), 20);
+            size = Vec2.of(30 + minecraft.font.width(getElement().getText()), 20);
         }
 
         final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());

@@ -3,6 +3,9 @@ package net.pl3x.guithium.api;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an object that can be identified by a unique id.
+ */
 public abstract class Keyed {
     private final Key key;
 

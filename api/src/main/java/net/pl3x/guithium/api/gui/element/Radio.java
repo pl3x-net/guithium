@@ -17,35 +17,60 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * Represents a toggleable checkbox.
+ * Represents a toggleable radio button.
  */
-public class Checkbox extends Rect {
+public class Radio extends Rect {
+    private Key group;
     private String label;
     private Component tooltip;
     private Boolean selected;
     private Boolean showLabel;
-    private OnToggled onToggled = (screen, checkbox, player, selected) -> {
+    private OnToggled onToggled = (screen, radio, player, selected) -> {
     };
 
     /**
-     * Creates a new toggleable checkbox.
+     * Creates a new toggleable radio button.
      *
-     * @param key       Unique identifier for checkbox
-     * @param pos       Position of checkbox
-     * @param anchor    Anchor for checkbox
-     * @param offset    Offset of checkbox
-     * @param size      Size of checkbox
+     * @param key       Unique identifier for radio button
+     * @param pos       Position of radio button
+     * @param anchor    Anchor for radio button
+     * @param offset    Offset of radio button
+     * @param size      Size of radio button
+     * @param group     Radio group
      * @param label     Text label
      * @param tooltip   Text on hover tooltip
      * @param selected  Selected state
      * @param showLabel Show text label
      */
-    protected Checkbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
-        super(key, Type.CHECKBOX, pos, anchor, offset, size);
+    protected Radio(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable Key group, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
+        super(key, Type.RADIO, pos, anchor, offset, size);
+        setGroup(group);
         setLabel(label);
         setTooltip(tooltip);
         setSelected(selected);
         setShowLabel(showLabel);
+    }
+
+    /**
+     * Get the group this radio button belongs to.
+     * <p>
+     * Only one radio button can be selected in a group at any given time.
+     *
+     * @return This radio button's group
+     */
+    public Key getGroup() {
+        return this.group;
+    }
+
+    /**
+     * Set the group this radio button belongs to.
+     * <p>
+     * Only one radio button can be selected in a group at any given time.
+     *
+     * @param group This radio button's group
+     */
+    public void setGroup(Key group) {
+        this.group = group;
     }
 
     /**
@@ -125,7 +150,7 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Get the action to execute when the checkbox is toggled.
+     * Get the action to execute when the radio button is toggled.
      *
      * @return Toggled action
      */
@@ -135,7 +160,7 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Set the action to execute when the checkbox is toggled.
+     * Set the action to execute when the radio button is toggled.
      *
      * @param onToggled Toggled action
      */
@@ -147,6 +172,7 @@ public class Checkbox extends Rect {
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("group", getGroup());
         json.addProperty("label", getLabel());
         json.addProperty("tooltip", getTooltip());
         json.addProperty("selected", isSelected());
@@ -155,20 +181,21 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Create a new checkbox from Json.
+     * Create a new radio button from Json.
      *
-     * @param json Json representation of a checkbox
-     * @return A new checkbox
+     * @param json Json representation of a radio button
+     * @return A new radio button
      */
     @NotNull
-    public static Checkbox fromJson(@NotNull JsonObject json) {
+    public static Radio fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
-        return new Checkbox(
+        return new Radio(
             Key.of(json.get("key").getAsString()),
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
+            !json.has("group") ? null : Key.of(json.get("group").getAsString()),
             !json.has("label") ? null : json.get("label").getAsString(),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("selected") ? null : json.get("selected").getAsBoolean(),
@@ -187,8 +214,9 @@ public class Checkbox extends Rect {
         if (this.getClass() != o.getClass()) {
             return false;
         }
-        Checkbox other = (Checkbox) o;
-        return Objects.equals(getLabel(), other.getLabel())
+        Radio other = (Radio) o;
+        return Objects.equals(getGroup(), other.getGroup())
+            && Objects.equals(getLabel(), other.getLabel())
             && Objects.equals(getTooltip(), other.getTooltip())
             && Objects.equals(isSelected(), other.isSelected())
             && Objects.equals(isShowLabel(), other.isShowLabel())
@@ -197,19 +225,20 @@ public class Checkbox extends Rect {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLabel(), getTooltip(), isSelected(), isShowLabel(), super.hashCode());
+        return Objects.hash(getGroup(), getLabel(), getTooltip(), isSelected(), isShowLabel(), super.hashCode());
     }
 
     @Override
     @NotNull
     public String toString() {
-        return String.format("Checkbox{%s}", getPropertiesAsString());
+        return String.format("Radio{%s}", getPropertiesAsString());
     }
 
     @Override
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
+            + ",group=" + getGroup()
             + ",label=" + getLabel()
             + ",tooltip=" + getTooltip()
             + ",selected=" + isSelected()
@@ -217,10 +246,10 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Create a new checkbox builder.
+     * Create a new radio button builder.
      *
-     * @param key Unique identifying key for the checkbox
-     * @return New checkbox builder
+     * @param key Unique identifying key for the radio button
+     * @return New radio button builder
      */
     @NotNull
     public static Builder builder(@NotNull String key) {
@@ -228,10 +257,10 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Create a new checkbox builder.
+     * Create a new radio button builder.
      *
-     * @param key Unique identifying key for the checkbox
-     * @return New checkbox builder
+     * @param key Unique identifying key for the radio button
+     * @return New radio button builder
      */
     @NotNull
     public static Builder builder(@NotNull Key key) {
@@ -239,32 +268,57 @@ public class Checkbox extends Rect {
     }
 
     /**
-     * Builder for checkboxes.
+     * Builder for radio buttons.
      */
     public static class Builder extends Rect.Builder<Builder> {
+        private Key group;
         private String label;
         private Component tooltip;
         private Boolean selected;
         private Boolean showLabel;
-        private OnToggled onToggled = (screen, checkbox, player, selected) -> {
+        private OnToggled onToggled = (screen, radio, player, selected) -> {
         };
 
         /**
-         * Create a new checkbox builder.
+         * Create a new radio button builder.
          *
-         * @param key Unique identifying key for the checkbox
+         * @param key Unique identifying key for the radio button
          */
         public Builder(@NotNull String key) {
             this(Key.of(key));
         }
 
         /**
-         * Create a new checkbox builder.
+         * Create a new radio button builder.
          *
-         * @param key Unique identifying key for the checkbox
+         * @param key Unique identifying key for the radio button
          */
         public Builder(@NotNull Key key) {
             super(key);
+        }
+
+        /**
+         * Get the group this radio button belongs to.
+         * <p>
+         * Only one radio button can be selected in a group at any given time.
+         *
+         * @return This radio button's group
+         */
+        public Key getGroup() {
+            return this.group;
+        }
+
+        /**
+         * Set the group this radio button belongs to.
+         * <p>
+         * Only one radio button can be selected in a group at any given time.
+         *
+         * @param group This radio button's group
+         * @return This builder
+         */
+        public Builder setGroup(Key group) {
+            this.group = group;
+            return this;
         }
 
         /**
@@ -356,7 +410,7 @@ public class Checkbox extends Rect {
         }
 
         /**
-         * Get the action to execute when the checkbox is toggled.
+         * Get the action to execute when the radio button is toggled.
          *
          * @return Toggled action
          */
@@ -366,7 +420,7 @@ public class Checkbox extends Rect {
         }
 
         /**
-         * Set the action to execute when the checkbox is toggled.
+         * Set the action to execute when the radio button is toggled.
          *
          * @param onToggled Toggled action
          * @return This builder
@@ -378,32 +432,32 @@ public class Checkbox extends Rect {
         }
 
         /**
-         * Build a new checkbox from the current properties in this builder.
+         * Build a new radio button from the current properties in this builder.
          *
-         * @return New checkbox
+         * @return New radio button
          */
         @Override
         @NotNull
-        public Checkbox build() {
-            Checkbox checkbox = new Checkbox(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getLabel(), getTooltip(), isSelected(), isShowLabel());
-            checkbox.onToggled(this.onToggled);
-            return checkbox;
+        public Radio build() {
+            Radio radio = new Radio(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getGroup(), getLabel(), getTooltip(), isSelected(), isShowLabel());
+            radio.onToggled(this.onToggled);
+            return radio;
         }
     }
 
     /**
-     * Executable functional interface to fire when a checkbox is toggled.
+     * Executable functional interface to fire when a radio button is toggled.
      */
     @FunctionalInterface
-    public interface OnToggled extends QuadConsumer<Screen, Checkbox, WrappedPlayer, Boolean> {
+    public interface OnToggled extends QuadConsumer<Screen, Radio, WrappedPlayer, Boolean> {
         /**
-         * Called when a checkbox is toggled.
+         * Called when a radio button is toggled.
          *
-         * @param screen   Active screen where checkbox was toggled
-         * @param checkbox Checkbox that was toggled
-         * @param player   Player that toggled the checkbox
-         * @param selected New selected state of the checkbox
+         * @param screen   Active screen where radio button was toggled
+         * @param radio    Radio button that was toggled
+         * @param player   Player that toggled the radio button
+         * @param selected New selected state of the radio button
          */
-        void accept(@NotNull Screen screen, @NotNull Checkbox checkbox, @NotNull WrappedPlayer player, @NotNull Boolean selected);
+        void accept(@NotNull Screen screen, @NotNull Radio radio, @NotNull WrappedPlayer player, @NotNull Boolean selected);
     }
 }

@@ -3,7 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,13 +22,16 @@ public class Circle extends AbstractElement {
     /**
      * Creates a new gradient filled circle.
      *
-     * @param key    Unique identifier for circle
-     * @param pos    Position of circle
-     * @param anchor Anchor for circle
-     * @param offset Offset of circle
-     * @param radius Radius of circle
+     * @param key        Unique identifier for circle
+     * @param pos        Position of circle
+     * @param anchor     Anchor for circle
+     * @param offset     Offset of circle
+     * @param radius     Radius of circle
+     * @param resolution Number of points around the circle
+     * @param innerColor Color in the center of the circle
+     * @param outerColor Color on the outer edges of the circle
      */
-    protected Circle(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Float radius, @Nullable Integer resolution, int innerColor, int outerColor) {
+    protected Circle(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float radius, @Nullable Integer resolution, int innerColor, int outerColor) {
         super(key, Type.CIRCLE, pos, anchor, offset);
         setRadius(radius);
         setResolution(resolution);
@@ -131,9 +134,9 @@ public class Circle extends AbstractElement {
     public static Circle fromJson(JsonObject json) {
         return new Circle(
             Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Point.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Point.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Point.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
             !json.has("radius") ? null : json.get("radius").getAsFloat(),
             !json.has("resolution") ? null : json.get("resolution").getAsInt(),
             !json.has("innerColor") ? 0 : json.get("innerColor").getAsInt(),

@@ -3,7 +3,7 @@ package net.pl3x.guithium.fabric.gui.element;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
@@ -29,12 +29,12 @@ public class RenderableTextbox extends RenderableWidget {
     public void init(@NotNull Minecraft minecraft, int width, int height) {
         Textbox textbox = getElement();
 
-        Point size = textbox.getSize();
+        Vec2 size = textbox.getSize();
         if (size == null) {
-            size = Point.of(120, 20);
+            size = Vec2.of(120, 20);
         }
 
-        size = Point.of(size.getX() - 2, size.getY() - 2);
+        size = Vec2.of(size.getX() - 2, size.getY() - 2);
 
         calcScreenPos(
             size.getX(),
