@@ -17,8 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class RenderableSlider extends RenderableWidget {
+    private double min = 0D;
+    private double max = 1D;
+
     public RenderableSlider(@NotNull RenderableScreen screen, @NotNull Slider slider) {
         super(screen, slider);
+        setWidget(new SliderButton(this));
     }
 
     @Override
@@ -29,8 +33,8 @@ public class RenderableSlider extends RenderableWidget {
 
     @Override
     @NotNull
-    public net.minecraft.client.gui.components.AbstractSliderButton getWidget() {
-        return (net.minecraft.client.gui.components.AbstractSliderButton) super.getWidget();
+    public SliderButton getWidget() {
+        return (SliderButton) super.getWidget();
     }
 
     @Override
@@ -40,84 +44,112 @@ public class RenderableSlider extends RenderableWidget {
             size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
         }
 
-        double diff = getElement().getMax() - getElement().getMin();
-        double value = (getElement().getValue() - getElement().getMin()) / diff;
+        if (getElement().getMin() != null) {
+            this.min = getElement().getMin();
+        }
+        if (getElement().getMax() != null) {
+            this.max = getElement().getMax();
+        }
 
-        final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
+        double diff = this.max - this.min;
+        double value = (getElement().getValue() - this.min) / diff;
 
         calcScreenPos(size.getX(), size.getY());
 
-        setWidget(new AbstractSliderButton(
+        getWidget().init(
             (int) this.pos.getX(),
             (int) this.pos.getY(),
             (int) size.getX(),
             (int) size.getY(),
             calculateMessage(),
-            value
-        ) {
-            @Override
-            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-                if (!this.visible) {
-                    return;
-                }
-                poseStack.pushPose();
-
-                rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
-                this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                renderButton(poseStack, mouseX, mouseY, delta);
-
-                poseStack.popPose();
-
-                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
-                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
-                }
-            }
-
-            @Override
-            public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-                RenderSystem.setShaderColor(1, 1, 1, 1);
-
-                int yOffset = getYImage(isHoveredOrFocused());
-                blit(poseStack, this.x, this.y, 0, 46 + yOffset * 20, this.width / 2, this.height);
-                blit(poseStack, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
-                renderBg(poseStack, minecraft, mouseX, mouseY);
-                drawCenteredString(poseStack, minecraft.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
-            }
-
-            @Override
-            protected void updateMessage() {
-                setMessage(calculateMessage());
-            }
-
-            @Override
-            protected void applyValue() {
-                double diff = getElement().getMax() - getElement().getMin();
-                int value = (int) ((diff * this.value) + getElement().getMin());
-
-                if (value == getElement().getValue()) {
-                    return;
-                }
-
-                getElement().setValue(value);
-                Guithium.instance().getNetworkHandler().getConnection()
-                    .send(new SliderChangePacket(getScreen().getScreen(), getElement(), value));
-            }
-        });
+            value,
+            processTooltip(getElement().getTooltip())
+        );
     }
 
     public Component calculateMessage() {
         String label = getElement().getLabel();
         if (label != null) {
             return Component.literal(label
-                .replace("{value}", Integer.toString((int) getElement().getValue()))
-                .replace("{min}", Integer.toString((int) getElement().getMin()))
-                .replace("{max}", Integer.toString((int) getElement().getMax()))
+                .replace("{value}", Double.toString(getElement().getValue()))
+                .replace("{min}", Double.toString(this.min))
+                .replace("{max}", Double.toString(this.max))
             );
         }
         return Component.empty();
+    }
+
+    public static class SliderButton extends AbstractSliderButton {
+        private final RenderableSlider renderableSlider;
+        private List<FormattedCharSequence> tooltip;
+
+        public SliderButton(RenderableSlider renderableSlider) {
+            super(0, 0, 0, 0, Component.empty(), 0);
+            this.renderableSlider = renderableSlider;
+        }
+
+        public void init(int x, int y, int width, int height, Component label, double value, List<FormattedCharSequence> tooltip) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.value = value;
+            setMessage(label);
+            this.tooltip = tooltip;
+        }
+
+        @Override
+        public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            if (!this.visible) {
+                return;
+            }
+            poseStack.pushPose();
+
+            this.renderableSlider.rotate(poseStack, this.x, this.y, this.width, this.height, this.renderableSlider.getElement().getRotation());
+            this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            renderButton(poseStack, mouseX, mouseY, delta);
+
+            poseStack.popPose();
+
+            if (this.tooltip != null && this.isHovered && this.renderableSlider.getTooltipDelay() > 10) {
+                this.renderableSlider.getScreen().renderTooltip(poseStack, this.tooltip, mouseX, mouseY);
+            }
+        }
+
+        @Override
+        public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+
+            int yOffset = getYImage(isHoveredOrFocused());
+            blit(poseStack, this.x, this.y, 0, 46 + yOffset * 20, this.width / 2, this.height);
+            blit(poseStack, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
+            renderBg(poseStack, Minecraft.getInstance(), mouseX, mouseY);
+            drawCenteredString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
+        }
+
+        @Override
+        protected void updateMessage() {
+            setMessage(this.renderableSlider.calculateMessage());
+        }
+
+        @Override
+        protected void applyValue() {
+            Slider element = this.renderableSlider.getElement();
+
+            double diff = this.renderableSlider.max - this.renderableSlider.min;
+            double value = (diff * this.value) + this.renderableSlider.min;
+
+            if (value == element.getValue()) {
+                return;
+            }
+
+            element.setValue(value);
+            Guithium.instance().getNetworkHandler().getConnection()
+                .send(new SliderChangePacket(this.renderableSlider.getScreen().getScreen(), element, value));
+        }
     }
 }

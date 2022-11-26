@@ -41,7 +41,7 @@ public abstract class RenderableElement {
         return this.element;
     }
 
-    public void setElement(@NotNull Element element) {
+    public void updateElement(@NotNull Element element) {
         this.element = element;
         this.screen.refresh();
     }

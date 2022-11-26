@@ -53,7 +53,7 @@ public class FabricPacketListener implements PacketListener {
         if (Minecraft.getInstance().screen instanceof RenderableScreen currentScreen) {
             RenderableElement renderableElement = currentScreen.getElements().get(element.getKey());
             if (renderableElement != null) {
-                renderableElement.setElement(element);
+                renderableElement.updateElement(element);
                 return;
             }
         }
@@ -61,7 +61,7 @@ public class FabricPacketListener implements PacketListener {
         for (RenderableScreen renderableScreen : Guithium.instance().getHudManager().getAll().values()) {
             RenderableElement renderableElement = renderableScreen.getElements().get(element.getKey());
             if (renderableElement != null) {
-                renderableElement.setElement(element);
+                renderableElement.updateElement(element);
             }
         }
     }

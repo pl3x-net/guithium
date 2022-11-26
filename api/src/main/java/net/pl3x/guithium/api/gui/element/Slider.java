@@ -22,9 +22,9 @@ import java.util.Objects;
 public class Slider extends Rect {
     private String label;
     private Component tooltip;
-    private double value;
-    private double min;
-    private double max;
+    private Double value;
+    private Double min;
+    private Double max;
     private OnChange onChange = (screen, slider, player, value) -> {
     };
 
@@ -44,7 +44,7 @@ public class Slider extends Rect {
      * @param min      Minimum value
      * @param max      Maximum value
      */
-    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, double value, double min, double max) {
+    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @NotNull Double value, @Nullable Double min, @Nullable Double max) {
         super(key, Type.SLIDER, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
@@ -96,7 +96,8 @@ public class Slider extends Rect {
      *
      * @return Slider's value
      */
-    public double getValue() {
+    @NotNull
+    public Double getValue() {
         return this.value;
     }
 
@@ -105,7 +106,8 @@ public class Slider extends Rect {
      *
      * @param value Slider's value
      */
-    public void setValue(double value) {
+    public void setValue(@NotNull Double value) {
+        Preconditions.checkNotNull(value, "Value cannot be null");
         this.value = value;
     }
 
@@ -114,7 +116,8 @@ public class Slider extends Rect {
      *
      * @return Slider's minimum value
      */
-    public double getMin() {
+    @Nullable
+    public Double getMin() {
         return this.min;
     }
 
@@ -123,7 +126,7 @@ public class Slider extends Rect {
      *
      * @param min Slider's minimum value
      */
-    public void setMin(double min) {
+    public void setMin(@Nullable Double min) {
         this.min = min;
     }
 
@@ -132,7 +135,8 @@ public class Slider extends Rect {
      *
      * @return Slider's maximum value
      */
-    public double getMax() {
+    @Nullable
+    public Double getMax() {
         return this.max;
     }
 
@@ -141,7 +145,7 @@ public class Slider extends Rect {
      *
      * @param max Slider's maximum value
      */
-    public void setMax(double max) {
+    public void setMax(@Nullable Double max) {
         this.max = max;
     }
 
@@ -215,9 +219,9 @@ public class Slider extends Rect {
         Slider other = (Slider) o;
         return Objects.equals(getLabel(), other.getLabel())
             && Objects.equals(getTooltip(), other.getTooltip())
-            && getValue() == other.getValue()
-            && getMin() == other.getMin()
-            && getMax() == other.getMax()
+            && Objects.equals(getValue(), other.getValue())
+            && Objects.equals(getMin(), other.getMin())
+            && Objects.equals(getMax(), other.getMax())
             && super.equals(o);
     }
 
@@ -271,9 +275,9 @@ public class Slider extends Rect {
     public static class Builder extends Rect.Builder<Builder> {
         private String text;
         private Component tooltip;
-        private double value;
-        private double min;
-        private double max;
+        private Double value;
+        private Double min;
+        private Double max;
         private OnChange onChange = (screen, slider, player, value) -> {
         };
 
@@ -344,7 +348,8 @@ public class Slider extends Rect {
          *
          * @return Slider's value
          */
-        public double getValue() {
+        @NotNull
+        public Double getValue() {
             return this.value;
         }
 
@@ -355,7 +360,8 @@ public class Slider extends Rect {
          * @return This builder
          */
         @NotNull
-        public Builder setValue(double value) {
+        public Builder setValue(@NotNull Double value) {
+            Preconditions.checkNotNull(value, "Value cannot be null");
             this.value = value;
             return this;
         }
@@ -365,7 +371,8 @@ public class Slider extends Rect {
          *
          * @return Slider's minimum value
          */
-        public double getMin() {
+        @Nullable
+        public Double getMin() {
             return this.min;
         }
 
@@ -375,7 +382,7 @@ public class Slider extends Rect {
          * @param min Slider's minimum value
          * @return This builder
          */
-        public Builder setMin(double min) {
+        public Builder setMin(@Nullable Double min) {
             this.min = min;
             return this;
         }
@@ -385,7 +392,8 @@ public class Slider extends Rect {
          *
          * @return Slider's maximum value
          */
-        public double getMax() {
+        @Nullable
+        public Double getMax() {
             return this.max;
         }
 
@@ -395,7 +403,7 @@ public class Slider extends Rect {
          * @param max Slider's maximum value
          * @return This builder
          */
-        public Builder setMax(double max) {
+        public Builder setMax(@Nullable Double max) {
             this.max = max;
             return this;
         }

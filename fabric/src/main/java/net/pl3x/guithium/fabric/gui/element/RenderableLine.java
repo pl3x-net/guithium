@@ -79,7 +79,7 @@ public class RenderableLine extends RenderableElement {
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        if (getElement().getRotation() == null || getElement().getRotation() <= 180F) {
+        if ((getElement().getRotation() == null || getElement().getRotation() <= 180F) && this.x0 < this.x1) {
             buf.vertex(model, this.x0, this.y0, 0).color(this.startColor).normal(normal, 1, 0, 0).endVertex();
             buf.vertex(model, this.x1, this.y1, 0).color(this.endColor).normal(normal, 1, 0, 0).endVertex();
         } else {
