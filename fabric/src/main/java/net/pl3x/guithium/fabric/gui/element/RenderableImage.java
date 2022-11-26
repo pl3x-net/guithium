@@ -26,7 +26,7 @@ public class RenderableImage extends RenderableElement {
 
     public RenderableImage(@NotNull RenderableScreen screen, @NotNull Image image) {
         super(screen, image);
-        this.texture = Guithium.instance().getTextureManager().getOrAdd(image);
+        this.texture = Guithium.instance().getTextureManager().getOrCreate(image);
     }
 
     @Override

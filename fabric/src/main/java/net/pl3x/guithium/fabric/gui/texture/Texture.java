@@ -3,6 +3,7 @@ package net.pl3x.guithium.fabric.gui.texture;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Key;
@@ -68,7 +69,21 @@ public class Texture {
     }
 
     public void unload() {
-        Minecraft.getInstance().getTextureManager().release(getIdentifier());
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderSystem.recordRenderCall(this::unload);
+            return;
+        }
+        AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(getIdentifier());
+        if (texture == null) {
+            return;
+        }
+
+        try {
+            texture.close();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        texture.releaseId();
     }
 
     private static int rgb2bgr(int color) {
