@@ -23,14 +23,16 @@ public class Text extends AbstractElement {
     /**
      * Create a new text element.
      *
-     * @param key    Unique identifier for text
-     * @param pos    Position of text
-     * @param anchor Anchor for text
-     * @param offset Offset of text
-     * @param shadow Text has shadow
+     * @param key      Unique identifier for text
+     * @param pos      Position of text
+     * @param anchor   Anchor for text
+     * @param offset   Offset of text
+     * @param rotation Rotation in degrees
+     * @param scale    Scale of element
+     * @param shadow   Text has shadow
      */
-    protected Text(@NotNull Key key, @Nullable Component text, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Boolean shadow) {
-        super(key, Type.TEXT, pos, anchor, offset);
+    protected Text(@NotNull Key key, @Nullable Component text, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float scale, @Nullable Float rotation, @Nullable Boolean shadow) {
+        super(key, Type.TEXT, pos, anchor, offset, rotation, scale);
         setText(text);
         setShadow(shadow);
     }
@@ -97,6 +99,8 @@ public class Text extends AbstractElement {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("shadow") ? null : json.get("shadow").getAsBoolean()
         );
     }
@@ -236,7 +240,7 @@ public class Text extends AbstractElement {
         @Override
         @NotNull
         public Text build() {
-            return new Text(getKey(), getText(), getPos(), getAnchor(), getOffset(), hasShadow());
+            return new Text(getKey(), getText(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), hasShadow());
         }
     }
 }

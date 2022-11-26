@@ -26,14 +26,16 @@ public class Gradient extends Rect {
      * @param pos              Position of rectangle
      * @param anchor           Anchor for rectangle
      * @param offset           Offset of rectangle
+     * @param rotation         Rotation in degrees
+     * @param scale            Scale of element
      * @param size             Size of rectangle
      * @param colorTopLeft     Top left color
      * @param colorTopRight    Top right color
      * @param colorBottomLeft  Bottom left color
      * @param colorBottomRight Bottom right color
      */
-    protected Gradient(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
-        super(key, Type.GRADIENT, pos, anchor, offset, size);
+    protected Gradient(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, int colorTopLeft, int colorTopRight, int colorBottomLeft, int colorBottomRight) {
+        super(key, Type.GRADIENT, pos, anchor, offset, rotation, scale, size);
         setColorTopLeft(colorTopLeft);
         setColorTopRight(colorTopRight);
         setColorBottomLeft(colorBottomLeft);
@@ -211,6 +213,8 @@ public class Gradient extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             colors[0], colors[1], colors[2], colors[3]
         );
@@ -473,7 +477,7 @@ public class Gradient extends Rect {
         @Override
         @NotNull
         public Gradient build() {
-            return new Gradient(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getColorTopLeft(), getColorTopRight(), getColorBottomLeft(), getColorBottomRight());
+            return new Gradient(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getColorTopLeft(), getColorTopRight(), getColorBottomLeft(), getColorBottomRight());
         }
     }
 }

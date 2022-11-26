@@ -19,23 +19,29 @@ public abstract class AbstractElement extends Keyed implements Element {
     private Vec2 pos;
     private Vec2 anchor;
     private Vec2 offset;
+    private Float rotation;
+    private Float scale;
 
     /**
      * Creates a new element.
      *
-     * @param key    Unique identifier for element
-     * @param type   Type of element
-     * @param pos    Position of element
-     * @param anchor Anchor for element
-     * @param offset Offset of element
+     * @param key      Unique identifier for element
+     * @param type     Type of element
+     * @param pos      Position of element
+     * @param anchor   Anchor for element
+     * @param offset   Offset of element
+     * @param rotation Rotation in degrees
+     * @param scale    Scale of element
      */
-    protected AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset) {
+    protected AbstractElement(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale) {
         super(key);
         Preconditions.checkNotNull(type, "Type cannot be null");
         this.type = type;
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
+        setRotation(rotation);
+        setScale(scale);
     }
 
     @Override
@@ -93,6 +99,28 @@ public abstract class AbstractElement extends Keyed implements Element {
     }
 
     @Override
+    @Nullable
+    public Float getRotation() {
+        return this.rotation;
+    }
+
+    @Override
+    public void setRotation(@Nullable Float degrees) {
+        this.rotation = degrees;
+    }
+
+    @Override
+    @Nullable
+    public Float getScale() {
+        return this.scale;
+    }
+
+    @Override
+    public void setScale(@Nullable Float scale) {
+        this.scale = scale;
+    }
+
+    @Override
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper();
@@ -101,6 +129,8 @@ public abstract class AbstractElement extends Keyed implements Element {
         json.addProperty("pos", getPos());
         json.addProperty("anchor", getAnchor());
         json.addProperty("offset", getOffset());
+        json.addProperty("rotation", getRotation());
+        json.addProperty("scale", getScale());
         return json.getJsonObject();
     }
 
@@ -120,12 +150,14 @@ public abstract class AbstractElement extends Keyed implements Element {
             && Objects.equals(getType(), other.getType())
             && Objects.equals(getPos(), other.getPos())
             && Objects.equals(getAnchor(), other.getAnchor())
-            && Objects.equals(getOffset(), other.getOffset());
+            && Objects.equals(getOffset(), other.getOffset())
+            && Objects.equals(getRotation(), other.getRotation())
+            && Objects.equals(getScale(), other.getScale());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getType(), getPos(), getAnchor(), getOffset());
+        return Objects.hash(getKey(), getType(), getPos(), getAnchor(), getOffset(), getRotation(), getScale());
     }
 
     @Override
@@ -146,7 +178,9 @@ public abstract class AbstractElement extends Keyed implements Element {
             + ",type=" + getType()
             + ",pos=" + getPos()
             + ",anchor=" + getAnchor()
-            + ",offset=" + getOffset();
+            + ",offset=" + getOffset()
+            + ",rotation=" + getRotation()
+            + ",scale=" + getScale();
     }
 
     /**
@@ -158,6 +192,8 @@ public abstract class AbstractElement extends Keyed implements Element {
         private Vec2 pos;
         private Vec2 anchor;
         private Vec2 offset;
+        private Float rotation;
+        private Float scale;
 
         /**
          * Creates a new builder.
@@ -282,6 +318,50 @@ public abstract class AbstractElement extends Keyed implements Element {
         @SuppressWarnings("unchecked")
         public T setOffset(@Nullable Vec2 offset) {
             this.offset = offset;
+            return (T) this;
+        }
+
+        /**
+         * Get this element's rotation in degrees.
+         *
+         * @return Degrees of rotation
+         */
+        @Nullable
+        public Float getRotation() {
+            return this.rotation;
+        }
+
+        /**
+         * Set this element's rotation in degrees.
+         *
+         * @param degrees Degrees of rotation
+         * @return This builder
+         */
+        @SuppressWarnings("unchecked")
+        public T setRotation(@Nullable Float degrees) {
+            this.rotation = degrees;
+            return (T) this;
+        }
+
+        /**
+         * Get this element's scale.
+         *
+         * @return Element's scale
+         */
+        @Nullable
+        public Float getScale() {
+            return this.scale;
+        }
+
+        /**
+         * Set this element's scale.
+         *
+         * @param scale Element's scale
+         * @return This builder
+         */
+        @SuppressWarnings("unchecked")
+        public T setScale(@Nullable Float scale) {
+            this.scale = scale;
             return (T) this;
         }
 

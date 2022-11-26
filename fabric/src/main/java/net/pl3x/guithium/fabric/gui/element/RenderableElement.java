@@ -1,6 +1,7 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
@@ -20,6 +21,8 @@ public abstract class RenderableElement {
     private final RenderableScreen screen;
     private Element element;
 
+    protected int cX;
+    protected int cY;
     protected Vec2 pos = Vec2.ZERO;
 
     public RenderableElement(@NotNull RenderableScreen screen, @NotNull Element element) {
@@ -46,6 +49,38 @@ public abstract class RenderableElement {
     }
 
     public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
+
+    protected void rotate(PoseStack poseStack, int x, int y, int width, int height, Float degrees) {
+        if (degrees == null) {
+            return;
+        }
+        rotate(poseStack, (int) (x + width / 2F), (int) (y + height / 2F), degrees);
+    }
+
+    protected void rotate(PoseStack poseStack, int x, int y, Float degrees) {
+        if (degrees == null) {
+            return;
+        }
+        poseStack.translate(x, y, 0D);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(degrees));
+        poseStack.translate(-x, -y, 0D);
+    }
+
+    protected void scale(PoseStack poseStack, int x, int y, int width, int height, Float scale) {
+        if (scale == null) {
+            return;
+        }
+        scale(poseStack, (int) (x + width / 2F), (int) (y + height / 2F), scale);
+    }
+
+    protected void scale(PoseStack poseStack, int x, int y, Float scale) {
+        if (scale == null) {
+            return;
+        }
+        poseStack.translate(x, y, 0D);
+        poseStack.scale(scale, scale, scale);
+        poseStack.translate(-x, -y, 0D);
+    }
 
     protected void calcScreenPos(float width, float height) {
         Vec2 pos = getElement().getPos();

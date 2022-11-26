@@ -26,13 +26,15 @@ public class Circle extends AbstractElement {
      * @param pos        Position of circle
      * @param anchor     Anchor for circle
      * @param offset     Offset of circle
+     * @param rotation   Rotation in degrees
+     * @param scale      Scale of element
      * @param radius     Radius of circle
      * @param resolution Number of points around the circle
      * @param innerColor Color in the center of the circle
      * @param outerColor Color on the outer edges of the circle
      */
-    protected Circle(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float radius, @Nullable Integer resolution, int innerColor, int outerColor) {
-        super(key, Type.CIRCLE, pos, anchor, offset);
+    protected Circle(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Float radius, @Nullable Integer resolution, int innerColor, int outerColor) {
+        super(key, Type.CIRCLE, pos, anchor, offset, rotation, scale);
         setRadius(radius);
         setResolution(resolution);
         setInnerColor(innerColor);
@@ -137,6 +139,8 @@ public class Circle extends AbstractElement {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("radius") ? null : json.get("radius").getAsFloat(),
             !json.has("resolution") ? null : json.get("resolution").getAsInt(),
             !json.has("innerColor") ? 0 : json.get("innerColor").getAsInt(),
@@ -327,7 +331,7 @@ public class Circle extends AbstractElement {
         @Override
         @NotNull
         public Circle build() {
-            return new Circle(getKey(), getPos(), getAnchor(), getOffset(), getRadius(), getResolution(), getInnerColor(), getOuterColor());
+            return new Circle(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getRadius(), getResolution(), getInnerColor(), getOuterColor());
         }
     }
 }

@@ -34,14 +34,16 @@ public class Checkbox extends Rect {
      * @param pos       Position of checkbox
      * @param anchor    Anchor for checkbox
      * @param offset    Offset of checkbox
+     * @param rotation  Rotation in degrees
+     * @param scale     Scale of element
      * @param size      Size of checkbox
      * @param label     Text label
      * @param tooltip   Text on hover tooltip
      * @param selected  Selected state
      * @param showLabel Show text label
      */
-    protected Checkbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
-        super(key, Type.CHECKBOX, pos, anchor, offset, size);
+    protected Checkbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
+        super(key, Type.CHECKBOX, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
         setSelected(selected);
@@ -168,6 +170,8 @@ public class Checkbox extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("label") ? null : json.get("label").getAsString(),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
@@ -385,7 +389,7 @@ public class Checkbox extends Rect {
         @Override
         @NotNull
         public Checkbox build() {
-            Checkbox checkbox = new Checkbox(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getLabel(), getTooltip(), isSelected(), isShowLabel());
+            Checkbox checkbox = new Checkbox(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getLabel(), getTooltip(), isSelected(), isShowLabel());
             checkbox.onToggled(this.onToggled);
             return checkbox;
         }

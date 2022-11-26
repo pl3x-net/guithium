@@ -31,6 +31,8 @@ public class Textbox extends Rect {
      * @param pos                 Position of button
      * @param anchor              Anchor for button
      * @param offset              Offset of button
+     * @param rotation            Rotation in degrees
+     * @param scale               Scale of element
      * @param size                Size of button
      * @param value               Current value for the input
      * @param suggestion          Current suggestion on the cursor
@@ -41,8 +43,8 @@ public class Textbox extends Rect {
      * @param textColor           Color of text
      * @param textColorUneditable Color of text if uneditable
      */
-    protected Textbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
-        super(key, Type.TEXTBOX, pos, anchor, offset, size);
+    protected Textbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
+        super(key, Type.TEXTBOX, pos, anchor, offset, rotation, scale, size);
         setValue(value);
         setSuggestion(suggestion);
         setBordered(bordered);
@@ -234,6 +236,8 @@ public class Textbox extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("value") ? null : json.get("value").getAsString(),
             !json.has("suggestion") ? null : json.get("suggestion").getAsString(),
@@ -531,7 +535,7 @@ public class Textbox extends Rect {
         @Override
         @NotNull
         public Textbox build() {
-            return new Textbox(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getValue(), getSuggestion(), isBordered(), canLoseFocus(), getMaxLength(), isEditable(), getTextColor(), getTextColorUneditable());
+            return new Textbox(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getValue(), getSuggestion(), isBordered(), canLoseFocus(), getMaxLength(), isEditable(), getTextColor(), getTextColorUneditable());
         }
     }
 }

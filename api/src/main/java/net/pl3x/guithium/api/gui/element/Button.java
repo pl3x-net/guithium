@@ -28,16 +28,18 @@ public class Button extends Rect {
     /**
      * Creates a new clickable button.
      *
-     * @param key     Unique identifier for button
-     * @param pos     Position of button
-     * @param anchor  Anchor for button
-     * @param offset  Offset of button
-     * @param size    Size of button
-     * @param text    Text label
-     * @param tooltip Text on hover tooltip
+     * @param key      Unique identifier for button
+     * @param pos      Position of button
+     * @param anchor   Anchor for button
+     * @param offset   Offset of button
+     * @param rotation Rotation in degrees
+     * @param scale    Scale of button
+     * @param size     Size of button
+     * @param text     Text label
+     * @param tooltip  Text on hover tooltip
      */
-    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable String text, @Nullable Component tooltip) {
-        super(key, Type.BUTTON, pos, anchor, offset, size);
+    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String text, @Nullable Component tooltip) {
+        super(key, Type.BUTTON, pos, anchor, offset, rotation, scale, size);
         setText(text);
         setTooltip(tooltip);
     }
@@ -122,6 +124,8 @@ public class Button extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("text") ? null : json.get("text").getAsString(),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString())
@@ -287,7 +291,7 @@ public class Button extends Rect {
         @Override
         @NotNull
         public Button build() {
-            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getText(), getTooltip());
+            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getText(), getTooltip());
             button.onClick(this.onClick);
             return button;
         }

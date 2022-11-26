@@ -35,6 +35,8 @@ public class Radio extends Rect {
      * @param pos       Position of radio button
      * @param anchor    Anchor for radio button
      * @param offset    Offset of radio button
+     * @param rotation  Rotation in degrees
+     * @param scale     Scale of element
      * @param size      Size of radio button
      * @param group     Radio group
      * @param label     Text label
@@ -42,8 +44,8 @@ public class Radio extends Rect {
      * @param selected  Selected state
      * @param showLabel Show text label
      */
-    protected Radio(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @Nullable Key group, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
-        super(key, Type.RADIO, pos, anchor, offset, size);
+    protected Radio(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Key group, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
+        super(key, Type.RADIO, pos, anchor, offset, rotation, scale, size);
         setGroup(group);
         setLabel(label);
         setTooltip(tooltip);
@@ -194,6 +196,8 @@ public class Radio extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("group") ? null : Key.of(json.get("group").getAsString()),
             !json.has("label") ? null : json.get("label").getAsString(),
@@ -439,7 +443,7 @@ public class Radio extends Rect {
         @Override
         @NotNull
         public Radio build() {
-            Radio radio = new Radio(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getGroup(), getLabel(), getTooltip(), isSelected(), isShowLabel());
+            Radio radio = new Radio(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getGroup(), getLabel(), getTooltip(), isSelected(), isShowLabel());
             radio.onToggled(this.onToggled);
             return radio;
         }

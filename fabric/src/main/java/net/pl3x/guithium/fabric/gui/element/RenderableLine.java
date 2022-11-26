@@ -50,6 +50,9 @@ public class RenderableLine extends RenderableElement {
         this.x1 = this.endPos.getX();
         this.y1 = this.endPos.getY();
 
+        this.cX = (int) (this.x0 + ((this.x1 - this.x0) / 2));
+        this.cY = (int) (this.y0 + ((this.y1 - this.y0) / 2));
+
         this.startColor = getElement().getStartColor();
         this.endColor = getElement().getEndColor();
     }
@@ -57,6 +60,9 @@ public class RenderableLine extends RenderableElement {
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         poseStack.pushPose();
+
+        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
+        scale(poseStack, this.cX, this.cY, getElement().getScale());
 
         // I'm not sure what this is about, but it puts it in the correct "zIndex"
         poseStack.translate(0, 0, -7.8431);
@@ -73,8 +79,13 @@ public class RenderableLine extends RenderableElement {
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
-        buf.vertex(model, this.x0, this.y0, 0).color(this.startColor).normal(normal, 1, 0, 0).endVertex();
-        buf.vertex(model, this.x1, this.y1, 0).color(this.endColor).normal(normal, 1, 0, 0).endVertex();
+        if (getElement().getRotation() == null || getElement().getRotation() <= 180F) {
+            buf.vertex(model, this.x0, this.y0, 0).color(this.startColor).normal(normal, 1, 0, 0).endVertex();
+            buf.vertex(model, this.x1, this.y1, 0).color(this.endColor).normal(normal, 1, 0, 0).endVertex();
+        } else {
+            buf.vertex(model, this.x1, this.y1, 0).color(this.endColor).normal(normal, 1, 0, 0).endVertex();
+            buf.vertex(model, this.x0, this.y0, 0).color(this.startColor).normal(normal, 1, 0, 0).endVertex();
+        }
         BufferUploader.drawWithShader(buf.end());
 
         RenderSystem.lineWidth(1);

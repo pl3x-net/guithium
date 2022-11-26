@@ -50,7 +50,7 @@ public class RenderableCheckbox extends RenderableWidget {
     @Override
     protected void onPress(boolean selected) {
         // make sure the value is actually changed
-        if (Boolean.TRUE.equals(getElement().isSelected()) != selected) {
+        if (Boolean.TRUE.equals(getElement().isSelected()) == selected) {
             return;
         }
 

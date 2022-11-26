@@ -81,10 +81,28 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
             showLabel == null || Boolean.TRUE.equals(showLabel)
         ) {
             @Override
+            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+                if (!this.visible) {
+                    return;
+                }
+                poseStack.pushPose();
+
+                rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
+                scale(poseStack, this.x, this.y, this.width, this.height, getElement().getScale());
+                this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                renderButton(poseStack, mouseX, mouseY, delta);
+
+                poseStack.popPose();
+
+                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
+                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
+                }
+            }
+
+            @Override
             public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
-
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -94,12 +112,6 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 if (this.showLabel) {
                     drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632);
                 }
-
-                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
-                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
-                }
-
-                RenderSystem.disableBlend();
             }
 
             @Override

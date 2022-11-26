@@ -28,12 +28,14 @@ public class Line extends AbstractElement {
      * @param anchor     Start anchor for line
      * @param endPos     End position of line
      * @param endAnchor  End anchor for line
+     * @param rotation   Rotation in degrees
+     * @param scale      Scale of element
      * @param width      Width of line
      * @param startColor Starting color of line
      * @param endColor   Ending color of line
      */
-    protected Line(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 endPos, @Nullable Vec2 endAnchor, @Nullable Float width, int startColor, int endColor) {
-        super(key, Type.LINE, pos, anchor, null);
+    protected Line(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 endPos, @Nullable Vec2 endAnchor, @Nullable Float rotation, @Nullable Float scale, @Nullable Float width, int startColor, int endColor) {
+        super(key, Type.LINE, pos, anchor, null, rotation, scale);
         setEndPos(endPos);
         setEndAnchor(endAnchor);
         setWidth(width);
@@ -186,6 +188,8 @@ public class Line extends AbstractElement {
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()),
             !json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("width") ? null : json.get("width").getAsFloat(),
             !json.has("startColor") ? 0 : json.get("startColor").getAsInt(),
             !json.has("endColor") ? 0 : json.get("endColor").getAsInt()
@@ -432,7 +436,7 @@ public class Line extends AbstractElement {
         @Override
         @NotNull
         public Line build() {
-            return new Line(getKey(), getPos(), getAnchor(), getEndPos(), getEndAnchor(), getWidth(), getStartColor(), getEndColor());
+            return new Line(getKey(), getPos(), getAnchor(), getEndPos(), getEndAnchor(), getRotation(), getScale(), getWidth(), getStartColor(), getEndColor());
         }
     }
 }

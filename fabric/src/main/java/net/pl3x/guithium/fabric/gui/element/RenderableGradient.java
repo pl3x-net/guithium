@@ -47,6 +47,9 @@ public class RenderableGradient extends RenderableElement {
         this.y0 = this.pos.getY();
         this.x1 = this.x0 + width;
         this.y1 = this.y0 + height;
+
+        this.cX = (int) (this.x0 + width / 2);
+        this.cY = (int) (this.y0 + height / 2);
     }
 
     @Override
@@ -55,10 +58,12 @@ public class RenderableGradient extends RenderableElement {
 
         poseStack.pushPose();
 
+        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
+        scale(poseStack, this.cX, this.cY, getElement().getScale());
+
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 

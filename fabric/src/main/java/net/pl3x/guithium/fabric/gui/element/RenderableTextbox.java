@@ -1,5 +1,6 @@
 package net.pl3x.guithium.fabric.gui.element;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -41,6 +42,9 @@ public class RenderableTextbox extends RenderableWidget {
             size.getY()
         );
 
+        this.cX = (int) (this.pos.getX() + size.getX() / 2);
+        this.cY = (int) (this.pos.getY() + size.getY() / 2);
+
         EditBox editbox = new EditBox(
             minecraft.font,
             (int) this.pos.getX() + 1,
@@ -48,7 +52,22 @@ public class RenderableTextbox extends RenderableWidget {
             (int) size.getX(),
             (int) size.getY(),
             Component.translatable(getElement().getSuggestion())
-        );
+        ) {
+            @Override
+            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+                if (!this.visible) {
+                    return;
+                }
+                poseStack.pushPose();
+
+                rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
+                scale(poseStack, this.x, this.y, this.width, this.height, getElement().getScale());
+                this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                renderButton(poseStack, mouseX, mouseY, delta);
+
+                poseStack.popPose();
+            }
+        };
 
         setWidget(editbox);
 

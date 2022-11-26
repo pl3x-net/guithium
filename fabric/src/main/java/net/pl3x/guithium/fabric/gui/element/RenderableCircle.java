@@ -54,11 +54,17 @@ public class RenderableCircle extends RenderableElement {
         this.x = this.pos.getX() + radius;
         this.y = this.pos.getY() + radius;
         this.radius = radius;
+
+        this.cX = (int) this.x;
+        this.cY = (int) this.y;
     }
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         poseStack.pushPose();
+
+        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
+        scale(poseStack, this.cX, this.cY, getElement().getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();

@@ -19,15 +19,17 @@ public abstract class Rect extends AbstractElement {
     /**
      * Creates a new element.
      *
-     * @param key    Unique identifier for element
-     * @param type   Type of element
-     * @param pos    Position of element
-     * @param anchor Anchor for element
-     * @param offset Offset of element
-     * @param size   Size of element
+     * @param key      Unique identifier for element
+     * @param type     Type of element
+     * @param pos      Position of element
+     * @param anchor   Anchor for element
+     * @param offset   Offset of element
+     * @param rotation Rotation in degrees
+     * @param scale    Scale of element
+     * @param size     Size of element
      */
-    protected Rect(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size) {
-        super(key, type, pos, anchor, offset);
+    protected Rect(@NotNull Key key, @NotNull Type type, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size) {
+        super(key, type, pos, anchor, offset, rotation, scale);
         setSize(size);
     }
 

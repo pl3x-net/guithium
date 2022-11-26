@@ -37,10 +37,13 @@ public class RenderableText extends RenderableElement {
             this.text = Component.translatable(json);
         }
 
-        calcScreenPos(
-            Minecraft.getInstance().font.width(this.text),
-            Minecraft.getInstance().font.lineHeight
-        );
+        int textWidth = Minecraft.getInstance().font.width(this.text);
+        int textHeight = Minecraft.getInstance().font.lineHeight;
+
+        calcScreenPos(textWidth, textHeight);
+
+        this.cX = (int) (this.pos.getX() + textWidth / 2);
+        this.cY = (int) (this.pos.getY() + textHeight / 2);
     }
 
     @Override
@@ -50,6 +53,9 @@ public class RenderableText extends RenderableElement {
         }
 
         poseStack.pushPose();
+
+        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
+        scale(poseStack, this.cX, this.cY, getElement().getScale());
 
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         Minecraft.getInstance().font.drawInBatch(

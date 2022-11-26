@@ -54,6 +54,9 @@ public class RenderableImage extends RenderableElement {
         this.x1 = this.x0 + size.getX();
         this.y1 = this.y0 + size.getY();
 
+        this.cX = (int) (this.x0 + size.getX() / 2);
+        this.cY = (int) (this.y0 + size.getY() / 2);
+
         Vec4 uv = getElement().getUV();
         Float tileMod = getElement().getTileModifier();
         if (uv != null) {
@@ -88,9 +91,11 @@ public class RenderableImage extends RenderableElement {
 
         poseStack.pushPose();
 
+        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
+        scale(poseStack, this.cX, this.cY, getElement().getScale());
+
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
         RenderSystem.setShaderColor(1, 1, 1, 1);

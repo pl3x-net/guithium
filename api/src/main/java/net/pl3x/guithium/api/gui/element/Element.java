@@ -113,6 +113,36 @@ public interface Element extends JsonSerializable {
     void setOffset(@Nullable Vec2 offset);
 
     /**
+     * Get this element's rotation in degrees.
+     *
+     * @return Degrees of rotation
+     */
+    @Nullable
+    Float getRotation();
+
+    /**
+     * Set this element's rotation in degrees.
+     *
+     * @param degrees Degrees of rotation
+     */
+    void setRotation(@Nullable Float degrees);
+
+    /**
+     * Get this element's scale.
+     *
+     * @return Element's scale
+     */
+    @Nullable
+    Float getScale();
+
+    /**
+     * Set this element's scale.
+     *
+     * @param scale Element's scale
+     */
+    void setScale(@Nullable Float scale);
+
+    /**
      * Send this element to a player.
      * <p>
      * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.

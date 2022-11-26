@@ -29,14 +29,16 @@ public class Image extends Rect {
      * @param pos          Position of image
      * @param anchor       Anchor for image
      * @param offset       Offset of image
+     * @param rotation     Rotation in degrees
+     * @param scale        Scale of element
      * @param size         Size of image
      * @param texture      Texture of image
      * @param uv           Texture UV
      * @param vertexColor  Vertex color modifier
      * @param tileModifier Tile modifier
      */
-    protected Image(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Vec2 size, @NotNull Texture texture, @Nullable Vec4 uv, @Nullable Integer vertexColor, @Nullable Float tileModifier) {
-        super(key, Type.IMAGE, pos, anchor, offset, size);
+    protected Image(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @NotNull Texture texture, @Nullable Vec4 uv, @Nullable Integer vertexColor, @Nullable Float tileModifier) {
+        super(key, Type.IMAGE, pos, anchor, offset, rotation, scale, size);
         setTexture(texture);
         setUV(uv);
         setVertexColor(vertexColor);
@@ -165,6 +167,8 @@ public class Image extends Rect {
             !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
             !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
             !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+            !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             Texture.fromJson(json.get("texture").getAsJsonObject()),
             !json.has("uv") ? null : Vec4.fromJson(json.get("uv").getAsJsonObject()),
@@ -379,7 +383,7 @@ public class Image extends Rect {
         @Override
         @NotNull
         public Image build() {
-            return new Image(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getTexture(), getUV(), getVertexColor(), getTileModifier());
+            return new Image(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getTexture(), getUV(), getVertexColor(), getTileModifier());
         }
     }
 }
