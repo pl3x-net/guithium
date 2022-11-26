@@ -35,6 +35,7 @@ jobs:
         if: ${{ success() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          username: GitHub
           avatar_url: https://cdn.discordapp.com/avatars/1044154256007106560/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=80
           nodetail: true
           title: Dev snapshot built successfully!
@@ -46,6 +47,7 @@ jobs:
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          username: GitHub
           avatar_url: https://cdn.discordapp.com/avatars/1044154256007106560/df91181b3f1cf0ef1592fbe18e0962d7.webp?size=80
           nodetail: true
           title: Dev snapshot build failure!

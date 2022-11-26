@@ -3,35 +3,34 @@ package net.pl3x.guithium.fabric.gui.element;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Vec2;
-import net.pl3x.guithium.api.gui.element.Button;
-import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.gui.element.Slider;
+import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class RenderableButton extends RenderableWidget {
-    public RenderableButton(@NotNull RenderableScreen screen, @NotNull Button button) {
-        super(screen, button);
+public class RenderableSlider extends RenderableWidget {
+    public RenderableSlider(@NotNull RenderableScreen screen, @NotNull Slider slider) {
+        super(screen, slider);
     }
 
     @Override
     @NotNull
-    public Button getElement() {
-        return (Button) super.getElement();
+    public Slider getElement() {
+        return (Slider) super.getElement();
     }
 
     @Override
     @NotNull
-    public net.minecraft.client.gui.components.Button getWidget() {
-        return (net.minecraft.client.gui.components.Button) super.getWidget();
+    public net.minecraft.client.gui.components.AbstractSliderButton getWidget() {
+        return (net.minecraft.client.gui.components.AbstractSliderButton) super.getWidget();
     }
 
     @Override
@@ -45,17 +44,13 @@ public class RenderableButton extends RenderableWidget {
 
         calcScreenPos(size.getX(), size.getY());
 
-        setWidget(new net.minecraft.client.gui.components.Button(
+        setWidget(new AbstractSliderButton(
             (int) this.pos.getX(),
             (int) this.pos.getY(),
             (int) size.getX(),
             (int) size.getY(),
-            Component.translatable(getElement().getLabel()),
-            (button) -> {
-                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                ButtonClickPacket packet = new ButtonClickPacket(getScreen().getScreen(), getElement());
-                Guithium.instance().getNetworkHandler().getConnection().send(packet);
-            }
+            calculateMessage(),
+            getElement().getValue()
         ) {
             @Override
             public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
@@ -89,6 +84,37 @@ public class RenderableButton extends RenderableWidget {
                 renderBg(poseStack, minecraft, mouseX, mouseY);
                 drawCenteredString(poseStack, minecraft.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
             }
+
+            @Override
+            protected void updateMessage() {
+                setMessage(calculateMessage());
+            }
+
+            @Override
+            protected void applyValue() {
+                double diff = getElement().getMax() - getElement().getMin();
+                int value = (int) ((diff * this.value) + getElement().getMin());
+
+                if (value == getElement().getValue()) {
+                    return;
+                }
+
+                getElement().setValue(value);
+                Guithium.instance().getNetworkHandler().getConnection()
+                    .send(new SliderChangePacket(getScreen().getScreen(), getElement(), value));
+            }
         });
+    }
+
+    public Component calculateMessage() {
+        String label = getElement().getLabel();
+        if (label != null) {
+            return Component.literal(label
+                .replace("{value}", Integer.toString((int) getElement().getValue()))
+                .replace("{min}", Integer.toString((int) getElement().getMin()))
+                .replace("{max}", Integer.toString((int) getElement().getMax()))
+            );
+        }
+        return Component.empty();
     }
 }

@@ -48,6 +48,7 @@ jobs:
         if: ${{ success() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          username: Modrinth
           nodetail: true
           title: New build of Guithium is ready!
           description: |
@@ -58,6 +59,7 @@ jobs:
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
+          username: Modrinth
           nodetail: true
           title: Build Failure!
           color: 0xff0000

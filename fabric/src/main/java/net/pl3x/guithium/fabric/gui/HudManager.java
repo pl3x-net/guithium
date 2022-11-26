@@ -13,6 +13,16 @@ import java.util.Map;
 public class HudManager {
     private final Map<Key, RenderableScreen> screens = new HashMap<>();
 
+    private boolean showVanillaStatsHud = true;
+
+    public boolean canShowStatsHud() {
+        return this.showVanillaStatsHud;
+    }
+
+    public void setShowVanillaStatsHud(boolean showVanillaStatsHud) {
+        this.showVanillaStatsHud = showVanillaStatsHud;
+    }
+
     public void add(@NotNull RenderableScreen screen) {
         this.screens.put(screen.getScreen().getKey(), screen);
         screen.refresh();

@@ -20,7 +20,7 @@ import java.util.Objects;
  * Represents a clickable button.
  */
 public class Button extends Rect {
-    private String text;
+    private String label;
     private Component tooltip;
     private OnClick onClick = (screen, button, player) -> {
     };
@@ -35,12 +35,12 @@ public class Button extends Rect {
      * @param rotation Rotation in degrees
      * @param scale    Scale of button
      * @param size     Size of button
-     * @param text     Text label
+     * @param label    Text label
      * @param tooltip  Text on hover tooltip
      */
-    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String text, @Nullable Component tooltip) {
+    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip) {
         super(key, Type.BUTTON, pos, anchor, offset, rotation, scale, size);
-        setText(text);
+        setLabel(label);
         setTooltip(tooltip);
     }
 
@@ -50,17 +50,17 @@ public class Button extends Rect {
      * @return Text label
      */
     @Nullable
-    public String getText() {
-        return this.text;
+    public String getLabel() {
+        return this.label;
     }
 
     /**
      * Set the text label.
      *
-     * @param text Text label
+     * @param label Text label
      */
-    public void setText(@Nullable String text) {
-        this.text = text;
+    public void setLabel(@Nullable String label) {
+        this.label = label;
     }
 
     /**
@@ -105,7 +105,7 @@ public class Button extends Rect {
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
-        json.addProperty("text", getText());
+        json.addProperty("text", getLabel());
         json.addProperty("tooltip", getTooltip());
         return json.getJsonObject();
     }
@@ -144,14 +144,14 @@ public class Button extends Rect {
             return false;
         }
         Button other = (Button) o;
-        return Objects.equals(getText(), other.getText())
+        return Objects.equals(getLabel(), other.getLabel())
             && Objects.equals(getTooltip(), other.getTooltip())
             && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getText(), getTooltip(), super.hashCode());
+        return Objects.hash(getLabel(), getTooltip(), super.hashCode());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class Button extends Rect {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",text=" + getText()
+            + ",text=" + getLabel()
             + ",tooltip=" + getTooltip();
     }
 
@@ -223,7 +223,7 @@ public class Button extends Rect {
          * @return Text on face
          */
         @Nullable
-        public String getText() {
+        public String getLabel() {
             return text;
         }
 
@@ -234,7 +234,7 @@ public class Button extends Rect {
          * @return This builder
          */
         @NotNull
-        public Builder setText(@Nullable String text) {
+        public Builder setLabel(@Nullable String text) {
             this.text = text;
             return this;
         }
@@ -291,7 +291,7 @@ public class Button extends Rect {
         @Override
         @NotNull
         public Button build() {
-            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getText(), getTooltip());
+            Button button = new Button(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getLabel(), getTooltip());
             button.onClick(this.onClick);
             return button;
         }
@@ -307,7 +307,7 @@ public class Button extends Rect {
          *
          * @param screen Active screen where button was clicked
          * @param button Button that was clicked
-         * @param player Player that button the checkbox
+         * @param player Player that clicked the button
          */
         void accept(@NotNull Screen screen, @NotNull Button button, @NotNull WrappedPlayer player);
     }

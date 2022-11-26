@@ -19,4 +19,20 @@ public class MixinGui {
             t.printStackTrace();
         }
     }
+
+    @Inject(method = "renderPlayerHealth", at = @At("HEAD"), cancellable = true)
+    private void renderPlayerHealth(PoseStack poseStack, CallbackInfo ci) {
+        if (Guithium.instance().getHudManager().canShowStatsHud()) {
+            return;
+        }
+        ci.cancel();
+    }
+
+    @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
+    private void renderVehicleHealth(PoseStack poseStack, CallbackInfo ci) {
+        if (Guithium.instance().getHudManager().canShowStatsHud()) {
+            return;
+        }
+        ci.cancel();
+    }
 }

@@ -7,6 +7,7 @@ import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Radio;
+import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
@@ -16,6 +17,7 @@ import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
+import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.player.BukkitPlayer;
@@ -113,6 +115,19 @@ public class BukkitPacketListener implements PacketListener {
                 Radio.OnToggled onToggled = radio.onToggled();
                 if (onToggled != null) {
                     onToggled.accept(screen, radio, player, packet.getSelected());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void handleSliderChange(@NotNull SliderChangePacket packet) {
+        Screen screen = this.player.getCurrentScreen();
+        if (screen != null && screen.getKey().equals(packet.getScreen())) {
+            if (screen.getElements().get(packet.getSlider()) instanceof Slider slider) {
+                Slider.OnChange onChange = slider.onChange();
+                if (onChange != null) {
+                    onChange.accept(screen, slider, player, packet.getValue());
                 }
             }
         }

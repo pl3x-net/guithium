@@ -172,6 +172,7 @@ public interface Element extends JsonSerializable {
             case IMAGE -> Image.fromJson(json);
             case LINE -> Line.fromJson(json);
             case RADIO -> Radio.fromJson(json);
+            case SLIDER -> Slider.fromJson(json);
             case TEXT -> Text.fromJson(json);
             case TEXTBOX -> Textbox.fromJson(json);
         };
@@ -215,6 +216,11 @@ public interface Element extends JsonSerializable {
          * Radio buttons.
          */
         RADIO,
+
+        /**
+         * Slider controls.
+         */
+        SLIDER,
 
         /**
          * Renderable text.

@@ -11,6 +11,7 @@ import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.Packet;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
+import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +34,7 @@ public abstract class NetworkHandler {
         registerHandler(HelloPacket.KEY, HelloPacket::new);
         registerHandler(OpenScreenPacket.KEY, OpenScreenPacket::new);
         registerHandler(RadioTogglePacket.KEY, RadioTogglePacket::new);
+        registerHandler(SliderChangePacket.KEY, SliderChangePacket::new);
         registerHandler(TexturesPacket.KEY, TexturesPacket::new);
     }
 
@@ -60,7 +62,7 @@ public abstract class NetworkHandler {
     public void receive(@NotNull PacketListener listener, @NotNull ByteArrayDataInput in) {
         Packet packet = getPacket(in);
         if (packet == null) {
-            System.out.println("Received unknown packet from server%n");
+            System.out.printf("Received unknown packet from server%n");
             return;
         }
 
