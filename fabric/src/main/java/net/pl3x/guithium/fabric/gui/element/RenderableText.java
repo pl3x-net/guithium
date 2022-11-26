@@ -55,7 +55,7 @@ public class RenderableText extends RenderableElement {
         poseStack.pushPose();
 
         rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, this.cX, this.cY, getElement().getScale());
+        scale(poseStack, (int) this.pos.getX(), (int) this.pos.getY(), getElement().getScale());
 
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         Minecraft.getInstance().font.drawInBatch(

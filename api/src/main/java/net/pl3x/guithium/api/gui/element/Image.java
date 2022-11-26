@@ -147,6 +147,7 @@ public class Image extends Rect {
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
         json.addProperty("texture", getTexture());
+        json.addProperty("uv", getUV());
         json.addProperty("vertexColor", getVertexColor());
         json.addProperty("tileMod", getTileModifier());
         return json.getJsonObject();
