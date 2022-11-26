@@ -40,6 +40,9 @@ public class RenderableSlider extends RenderableWidget {
             size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
         }
 
+        double diff = getElement().getMax() - getElement().getMin();
+        double value = (getElement().getValue() - getElement().getMin()) / diff;
+
         final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
 
         calcScreenPos(size.getX(), size.getY());
@@ -50,7 +53,7 @@ public class RenderableSlider extends RenderableWidget {
             (int) size.getX(),
             (int) size.getY(),
             calculateMessage(),
-            getElement().getValue()
+            value
         ) {
             @Override
             public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
