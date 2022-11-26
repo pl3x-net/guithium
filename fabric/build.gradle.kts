@@ -1,12 +1,21 @@
 plugins {
-    id("guithium.common-java")
+    `java-library`
     id("fabric-loom") version "1.0-SNAPSHOT"
 }
 
+base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.fabric"
+version = rootProject.version
 description = "Guithium Fabric Mod"
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
 repositories {
+    mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://maven.terraformersmc.com/")
 }
@@ -23,6 +32,10 @@ dependencies {
 }
 
 tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(17)
+    }
     processResources {
         filteringCharset = Charsets.UTF_8.name()
         filesMatching("fabric.mod.json") {
