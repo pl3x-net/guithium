@@ -84,8 +84,8 @@ public class RenderableSlider extends RenderableWidget {
         if (label != null) {
             return Component.literal(label
                 .replace("{value}", this.decimalFormat.format(getElement().getValue()))
-                .replace("{min}", Double.toString(this.min))
-                .replace("{max}", Double.toString(this.max))
+                .replace("{min}", this.decimalFormat.format(this.min))
+                .replace("{max}", this.decimalFormat.format(this.max))
             );
         }
         return Component.empty();
