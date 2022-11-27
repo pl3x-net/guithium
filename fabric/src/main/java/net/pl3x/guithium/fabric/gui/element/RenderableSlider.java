@@ -14,9 +14,11 @@ import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RenderableSlider extends RenderableWidget {
+    private DecimalFormat decimalFormat;
     private double min = 0D;
     private double max = 1D;
 
@@ -51,8 +53,18 @@ public class RenderableSlider extends RenderableWidget {
             this.max = getElement().getMax();
         }
 
+        if (getElement().getDecimalFormat() != null) {
+            this.decimalFormat = new DecimalFormat(getElement().getDecimalFormat());
+        }
+
         double diff = this.max - this.min;
-        double value = (getElement().getValue() - this.min) / diff;
+        double value;
+        if (this.decimalFormat != null) {
+            value = Double.parseDouble(this.decimalFormat.format(getElement().getValue()));
+        } else {
+            value = getElement().getValue();
+        }
+        value = (value - this.min) / diff;
 
         calcScreenPos(size.getX(), size.getY());
 
@@ -71,7 +83,7 @@ public class RenderableSlider extends RenderableWidget {
         String label = getElement().getLabel();
         if (label != null) {
             return Component.literal(label
-                .replace("{value}", Double.toString(getElement().getValue()))
+                .replace("{value}", this.decimalFormat.format(getElement().getValue()))
                 .replace("{min}", Double.toString(this.min))
                 .replace("{max}", Double.toString(this.max))
             );
@@ -142,6 +154,10 @@ public class RenderableSlider extends RenderableWidget {
 
             double diff = this.renderableSlider.max - this.renderableSlider.min;
             double value = (diff * this.value) + this.renderableSlider.min;
+
+            if (this.renderableSlider.decimalFormat != null) {
+                value = Double.parseDouble(this.renderableSlider.decimalFormat.format(value));
+            }
 
             if (value == element.getValue()) {
                 return;

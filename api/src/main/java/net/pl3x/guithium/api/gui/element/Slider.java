@@ -25,6 +25,7 @@ public class Slider extends Rect {
     private Double value;
     private Double min;
     private Double max;
+    private String decimal;
     private OnChange onChange = (screen, slider, player, value) -> {
     };
 
@@ -43,14 +44,16 @@ public class Slider extends Rect {
      * @param value    Value of slider
      * @param min      Minimum value
      * @param max      Maximum value
+     * @param decimal  Decimal format
      */
-    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @NotNull Double value, @Nullable Double min, @Nullable Double max) {
+    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @NotNull Double value, @Nullable Double min, @Nullable Double max, @Nullable String decimal) {
         super(key, Type.SLIDER, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
         setValue(value);
         setMin(min);
         setMax(max);
+        setDecimalFormat(decimal);
     }
 
     /**
@@ -150,6 +153,27 @@ public class Slider extends Rect {
     }
 
     /**
+     * Get the decimal format for this slider's value.
+     *
+     * @return Decimal format
+     * @see java.text.DecimalFormat
+     */
+    @Nullable
+    public String getDecimalFormat() {
+        return this.decimal;
+    }
+
+    /**
+     * Set the decimal format for this slider's value.
+     *
+     * @param decimal Decimal format
+     * @see java.text.DecimalFormat
+     */
+    public void setDecimalFormat(@Nullable String decimal) {
+        this.decimal = decimal;
+    }
+
+    /**
      * Get the action to execute when the slider is changed.
      *
      * @return OnClick action
@@ -177,6 +201,7 @@ public class Slider extends Rect {
         json.addProperty("value", getValue());
         json.addProperty("min", getMin());
         json.addProperty("max", getMax());
+        json.addProperty("decimal", getDecimalFormat());
         return json.getJsonObject();
     }
 
@@ -201,7 +226,8 @@ public class Slider extends Rect {
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("value") ? 0D : json.get("value").getAsDouble(),
             !json.has("min") ? 0D : json.get("min").getAsDouble(),
-            !json.has("max") ? 1D : json.get("max").getAsDouble()
+            !json.has("max") ? 1D : json.get("max").getAsDouble(),
+            !json.has("decimal") ? null : json.get("decimal").getAsString()
         );
     }
 
@@ -222,12 +248,13 @@ public class Slider extends Rect {
             && Objects.equals(getValue(), other.getValue())
             && Objects.equals(getMin(), other.getMin())
             && Objects.equals(getMax(), other.getMax())
+            && Objects.equals(getDecimalFormat(), other.getDecimalFormat())
             && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLabel(), getTooltip(), getValue(), getMin(), getMax(), super.hashCode());
+        return Objects.hash(getLabel(), getTooltip(), getValue(), getMin(), getMax(), getDecimalFormat(), super.hashCode());
     }
 
     @Override
@@ -244,7 +271,8 @@ public class Slider extends Rect {
             + ",tooltip=" + getTooltip()
             + ",value=" + getValue()
             + ",min=" + getMin()
-            + ",max=" + getMax();
+            + ",max=" + getMax()
+            + ",decimal=" + getDecimalFormat();
     }
 
     /**
@@ -278,6 +306,7 @@ public class Slider extends Rect {
         private Double value;
         private Double min;
         private Double max;
+        private String decimal;
         private OnChange onChange = (screen, slider, player, value) -> {
         };
 
@@ -409,6 +438,29 @@ public class Slider extends Rect {
         }
 
         /**
+         * Get the decimal format for this slider's value.
+         *
+         * @return Decimal format
+         * @see java.text.DecimalFormat
+         */
+        @Nullable
+        public String getDecimalFormat() {
+            return this.decimal;
+        }
+
+        /**
+         * Set the decimal format for this slider's value.
+         *
+         * @param decimal Decimal format
+         * @return This builder
+         * @see java.text.DecimalFormat
+         */
+        public Builder setDecimalFormat(@Nullable String decimal) {
+            this.decimal = decimal;
+            return this;
+        }
+
+        /**
          * Get the action to execute when the slider is changed.
          *
          * @return OnChanged action
@@ -438,7 +490,7 @@ public class Slider extends Rect {
         @Override
         @NotNull
         public Slider build() {
-            Slider slider = new Slider(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getLabel(), getTooltip(), getValue(), getMin(), getMax());
+            Slider slider = new Slider(getKey(), getPos(), getAnchor(), getOffset(), getRotation(), getScale(), getSize(), getLabel(), getTooltip(), getValue(), getMin(), getMax(), getDecimalFormat());
             slider.onClick(this.onChange);
             return slider;
         }
