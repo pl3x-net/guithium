@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
+/**
+ * Represents some conveniences for using Gson.
+ */
 public class Gson {
     private static final com.google.gson.Gson gson = new GsonBuilder()
         .registerTypeHierarchyAdapter(Element.class, new ElementAdapter())
@@ -18,21 +21,48 @@ public class Gson {
         .setLenient()
         .create();
 
+    /**
+     * Get Guithium's stored Gson instance.
+     *
+     * @return Guithium's Gson instance
+     */
     @NotNull
     public static com.google.gson.Gson gson() {
         return gson;
     }
 
+    /**
+     * Serialize an object to a json string.
+     *
+     * @param src Object to serialize
+     * @return Json string
+     */
     @NotNull
     public static String toJson(@Nullable Object src) {
         return gson().toJson(src);
     }
 
+    /**
+     * Create object from json string.
+     *
+     * @param json     Json string
+     * @param classOfT Type of object
+     * @param <T>      Type of object
+     * @return New object of specified type
+     */
     @Nullable
     public static <T> T fromJson(@Nullable String json, @NotNull Class<T> classOfT) {
         return gson().fromJson(json, classOfT);
     }
 
+    /**
+     * Create object from json string.
+     *
+     * @param json    Json string
+     * @param typeOfT Type of object
+     * @param <T>     Type of object
+     * @return New object of specified type
+     */
     @Nullable
     public static <T> T fromJson(@Nullable String json, @NotNull Type typeOfT) {
         return gson().fromJson(json, typeOfT);

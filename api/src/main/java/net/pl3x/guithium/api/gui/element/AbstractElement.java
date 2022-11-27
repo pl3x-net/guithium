@@ -206,6 +206,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Get the element's position from the anchor point.
+         * <p>
+         * If null, default position <code>0,0</code> will be used.
          *
          * @return Position from anchor
          */
@@ -228,6 +230,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Set this element's position from the anchor point.
+         * <p>
+         * If null, default position <code>0,0</code> will be used.
          *
          * @param pos Position from anchor
          * @return This builder
@@ -243,6 +247,8 @@ public abstract class AbstractElement extends Keyed implements Element {
          * Get this element's anchor point on the screen.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the parent's size.
+         * <p>
+         * If null, default anchor <code>0,0</code> will be used.
          *
          * @return Anchor point
          */
@@ -269,6 +275,8 @@ public abstract class AbstractElement extends Keyed implements Element {
          * Set this element's anchor point on the screen.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the parent's size.
+         * <p>
+         * If null, default anchor <code>0,0</code> will be used.
          *
          * @param anchor Anchor point
          * @return This builder
@@ -284,6 +292,8 @@ public abstract class AbstractElement extends Keyed implements Element {
          * Get this element's position offset.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the element's size.
+         * <p>
+         * If null, default offset <code>0,0</code> will be used.
          *
          * @return Position offset
          */
@@ -310,6 +320,8 @@ public abstract class AbstractElement extends Keyed implements Element {
          * Set this element's position offset.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the element's size.
+         * <p>
+         * If null, default offset <code>0,0</code> will be used.
          *
          * @param offset Position offset
          * @return This builder
@@ -323,6 +335,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Get this element's rotation in degrees.
+         * <p>
+         * If null, default rotation <code>0.0</code> will be used.
          *
          * @return Degrees of rotation
          */
@@ -333,6 +347,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Set this element's rotation in degrees.
+         * <p>
+         * If null, default rotation <code>0.0</code> will be used.
          *
          * @param degrees Degrees of rotation
          * @return This builder
@@ -345,6 +361,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Get this element's scale.
+         * <p>
+         * If null, default scale <code>1.0</code> will be used.
          *
          * @return Element's scale
          */
@@ -355,6 +373,8 @@ public abstract class AbstractElement extends Keyed implements Element {
 
         /**
          * Set this element's scale.
+         * <p>
+         * If null, default scale <code>1.0</code> will be used.
          *
          * @param scale Element's scale
          * @return This builder

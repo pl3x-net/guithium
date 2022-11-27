@@ -7,25 +7,40 @@ import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents the initial handshake/hello packet.
+ */
 public class HelloPacket extends Packet {
+    /**
+     * Unique identifying key
+     */
     public static final Key KEY = Key.of("packet:hello");
 
     private final int protocol;
 
+    /**
+     * Creates a new hello packet.
+     */
     public HelloPacket() {
+        super(KEY);
         this.protocol = Guithium.PROTOCOL;
     }
 
+    /**
+     * Creates a new hello packet.
+     *
+     * @param in Input byte array
+     */
     public HelloPacket(@NotNull ByteArrayDataInput in) {
+        super(KEY);
         this.protocol = in.readInt();
     }
 
-    @Override
-    @NotNull
-    public Key getKey() {
-        return KEY;
-    }
-
+    /**
+     * Get the protocol of the other end of the handshake.
+     *
+     * @return Other end's protocol
+     */
     public int getProtocol() {
         return this.protocol;
     }

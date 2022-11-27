@@ -52,6 +52,8 @@ public class Checkbox extends Rect {
 
     /**
      * Get the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @return Text label
      */
@@ -62,6 +64,8 @@ public class Checkbox extends Rect {
 
     /**
      * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @param label Text label
      */
@@ -71,6 +75,8 @@ public class Checkbox extends Rect {
 
     /**
      * Get the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @return Tooltip text
      */
@@ -81,6 +87,8 @@ public class Checkbox extends Rect {
 
     /**
      * Set the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @param tooltip Tooltip text to set
      */
@@ -90,6 +98,8 @@ public class Checkbox extends Rect {
 
     /**
      * Get the selected state.
+     * <p>
+     * If null, default <code>false</code> state will be used.
      *
      * @return True if selected
      */
@@ -100,6 +110,8 @@ public class Checkbox extends Rect {
 
     /**
      * Set the selected state.
+     * <p>
+     * If null, default <code>false</code> state will be used.
      *
      * @param selected Selected state
      */
@@ -109,6 +121,8 @@ public class Checkbox extends Rect {
 
     /**
      * Get if we should show text label.
+     * <p>
+     * If null, text label will be shown.
      *
      * @return True to show text label
      */
@@ -119,6 +133,8 @@ public class Checkbox extends Rect {
 
     /**
      * Set if we should show text label.
+     * <p>
+     * If null, text label will be shown.
      *
      * @param showLabel True to show text label
      */
@@ -128,6 +144,8 @@ public class Checkbox extends Rect {
 
     /**
      * Get the action to execute when the checkbox is toggled.
+     * <p>
+     * If null, no toggle action will be used.
      *
      * @return Toggled action
      */
@@ -138,6 +156,8 @@ public class Checkbox extends Rect {
 
     /**
      * Set the action to execute when the checkbox is toggled.
+     * <p>
+     * If null, no toggle action will be used.
      *
      * @param onToggled Toggled action
      */
@@ -273,6 +293,8 @@ public class Checkbox extends Rect {
 
         /**
          * Get the text label.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @return Text label
          */
@@ -283,6 +305,8 @@ public class Checkbox extends Rect {
 
         /**
          * Set the text label.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @param label Text label
          * @return This builder
@@ -295,6 +319,8 @@ public class Checkbox extends Rect {
 
         /**
          * Get the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @return Tooltip text
          */
@@ -305,6 +331,8 @@ public class Checkbox extends Rect {
 
         /**
          * Set the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @param tooltip Tooltip text to set
          * @return This builder
@@ -317,6 +345,8 @@ public class Checkbox extends Rect {
 
         /**
          * Get the selected state.
+         * <p>
+         * If null, default <code>false</code> state will be used.
          *
          * @return True if selected
          */
@@ -327,6 +357,8 @@ public class Checkbox extends Rect {
 
         /**
          * Set the selected state.
+         * <p>
+         * If null, default <code>false</code> state will be used.
          *
          * @param selected Selected state
          * @return This builder
@@ -339,6 +371,8 @@ public class Checkbox extends Rect {
 
         /**
          * Get if we should show text label.
+         * <p>
+         * If null, text label will be shown.
          *
          * @return True to show text label
          */
@@ -349,6 +383,8 @@ public class Checkbox extends Rect {
 
         /**
          * Set if we should show text label.
+         * <p>
+         * If null, text label will be shown.
          *
          * @param showLabel True to show text label
          * @return This builder
@@ -361,6 +397,8 @@ public class Checkbox extends Rect {
 
         /**
          * Get the action to execute when the checkbox is toggled.
+         * <p>
+         * If null, no toggle action will be used.
          *
          * @return Toggled action
          */
@@ -371,6 +409,8 @@ public class Checkbox extends Rect {
 
         /**
          * Set the action to execute when the checkbox is toggled.
+         * <p>
+         * If null, no toggle action will be used.
          *
          * @param onToggled Toggled action
          * @return This builder

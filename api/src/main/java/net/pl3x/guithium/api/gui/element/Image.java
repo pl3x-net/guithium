@@ -67,6 +67,8 @@ public class Image extends Rect {
 
     /**
      * Get the texture UV.
+     * <p>
+     * If null, default UV of <code>0,0,1,1</code> will be used.
      *
      * @return Texture UV
      */
@@ -77,6 +79,8 @@ public class Image extends Rect {
 
     /**
      * Set the texture UV.
+     * <p>
+     * If null, default UV of <code>0,0,1,1</code> will be used.
      *
      * @param uv Texture UV
      */
@@ -91,6 +95,8 @@ public class Image extends Rect {
      * shader to control how much of a texture's colors show through.
      * <p>
      * Eg, a modifier of `0xFF00FFFF` will remove all red from the texture.
+     * <p>
+     * If null, default vertex color of <code>0xFFFFFFFF</code> (opaque white) will be used.
      *
      * @return Vertex color modifier
      */
@@ -106,6 +112,8 @@ public class Image extends Rect {
      * shader to control how much of a texture's colors show through.
      * <p>
      * Eg, a modifier of `0xFF00FFFF` will remove all red from the texture.
+     * <p>
+     * If null, default vertex color of <code>0xFFFFFFFF</code> (opaque white) will be used.
      *
      * @param color Vertex color modifier
      */
@@ -120,6 +128,9 @@ public class Image extends Rect {
      * <p>
      * Eg, a value of 32 is used on vanilla option screens with the dirt texture
      * in order to get the tiled effect. This does <em>not</em> mean it is tiled 32 times.
+     * <p>
+     * If null, no tile modifier will be used. If not null and <code>{@link #getUV()}</code> is null,
+     * then width and height of the image will replace the UV before applying the tile modifier.
      *
      * @return Tile modifier
      */
@@ -135,6 +146,9 @@ public class Image extends Rect {
      * <p>
      * Eg, a value of 32 is used on vanilla option screens with the dirt texture
      * in order to get the tiled effect. This does <em>not</em> mean it is tiled 32 times.
+     * <p>
+     * If null, no tile modifier will be used. If not null and <code>{@link #getUV()}</code> is null,
+     * then width and height of the image will replace the UV before applying the tile modifier.
      *
      * @param tileModifier Tile modifier
      */
@@ -292,6 +306,8 @@ public class Image extends Rect {
 
         /**
          * Get the texture UV.
+         * <p>
+         * If null, default UV of <code>0,0,1,1</code> will be used.
          *
          * @return Texture UV
          */
@@ -302,6 +318,8 @@ public class Image extends Rect {
 
         /**
          * Set the texture UV.
+         * <p>
+         * If null, default UV of <code>0,0,1,1</code> will be used.
          *
          * @param uv Texture UV
          * @return This builder
@@ -319,6 +337,8 @@ public class Image extends Rect {
          * shader to control how much of a texture's colors show through.
          * <p>
          * Eg, a modifier of `0xFF00FFFF` will remove all red from the texture.
+         * <p>
+         * If null, default vertex color of <code>0xFFFFFFFF</code> will be used.
          *
          * @return Vertex color modifier
          */
@@ -334,6 +354,8 @@ public class Image extends Rect {
          * shader to control how much of a texture's colors show through.
          * <p>
          * Eg, a modifier of `0xFF00FFFF` will remove all red from the texture.
+         * <p>
+         * If null, default vertex color of <code>0xFFFFFFFF</code> will be used.
          *
          * @param color Vertex color modifier
          * @return This builder
@@ -351,6 +373,9 @@ public class Image extends Rect {
          * <p>
          * Eg, a value of 32 is used on vanilla option screens with the dirt texture
          * in order to get the tiled effect. This does <em>not</em> mean it is tiled 32 times.
+         * <p>
+         * If null, no tile modifier will be used. If not null and <code>{@link #getUV()}</code> is null,
+         * then width and height of the image will replace the UV before applying the tile modifier.
          *
          * @return Tile modifier
          */
@@ -366,6 +391,9 @@ public class Image extends Rect {
          * <p>
          * Eg, a value of 32 is used on vanilla option screens with the dirt texture
          * in order to get the tiled effect. This does <em>not</em> mean it is tiled 32 times.
+         * <p>
+         * If null, no tile modifier will be used. If not null and <code>{@link #getUV()}</code> is null,
+         * then width and height of the image will replace the UV before applying the tile modifier.
          *
          * @param tileModifier Tile modifier
          * @return This builder

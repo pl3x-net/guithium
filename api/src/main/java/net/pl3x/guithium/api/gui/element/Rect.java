@@ -35,6 +35,8 @@ public abstract class Rect extends AbstractElement {
 
     /**
      * Get the size of this element (width and height).
+     * <p>
+     * If null, default depends on the implementing element. See wiki for details.
      *
      * @return Size of element
      */
@@ -55,6 +57,8 @@ public abstract class Rect extends AbstractElement {
 
     /**
      * Set the size of this element.
+     * <p>
+     * If null, default depends on the implementing element. See wiki for details.
      *
      * @param size Size of element
      */
@@ -123,6 +127,8 @@ public abstract class Rect extends AbstractElement {
 
         /**
          * Get the size of this element (width and height).
+         * <p>
+         * If null, default depends on the implementing element. See wiki for details
          *
          * @return Size of element
          */
@@ -145,6 +151,8 @@ public abstract class Rect extends AbstractElement {
 
         /**
          * Set the size of this element.
+         * <p>
+         * If null, default depends on the implementing element. See wiki for details
          *
          * @param size Size of element
          * @return This builder

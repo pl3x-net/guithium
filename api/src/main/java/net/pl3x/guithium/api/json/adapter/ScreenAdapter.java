@@ -12,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
+/**
+ * Represents an adapter for serializing screens to/from Gson.
+ */
 public class ScreenAdapter implements JsonSerializer<Screen>, JsonDeserializer<Screen> {
     @Override
     @NotNull

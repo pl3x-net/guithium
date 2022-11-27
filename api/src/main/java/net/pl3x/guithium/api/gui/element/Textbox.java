@@ -57,6 +57,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the current value for the input.
+     * <p>
+     * If null, default empty {@link String} will be used.
      *
      * @return Current input value
      */
@@ -67,6 +69,8 @@ public class Textbox extends Rect {
 
     /**
      * Set the current value for the input.
+     * <p>
+     * If null, default empty {@link String} will be used.
      *
      * @param value Current input value
      */
@@ -76,6 +80,8 @@ public class Textbox extends Rect {
 
     /**
      * Get current suggestion on the cursor.
+     * <p>
+     * If null, no suggestion will be used.
      *
      * @return Current suggestion
      */
@@ -86,6 +92,8 @@ public class Textbox extends Rect {
 
     /**
      * Set current suggestion on the cursor.
+     * <p>
+     * If null, no suggestion will be used.
      *
      * @param suggestion Current suggestion
      */
@@ -95,6 +103,8 @@ public class Textbox extends Rect {
 
     /**
      * Get whether the input box has a background and border.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @return True if bordered
      */
@@ -105,6 +115,8 @@ public class Textbox extends Rect {
 
     /**
      * Set whether the input box has a background and border.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @param bordered True if bordered
      */
@@ -114,6 +126,8 @@ public class Textbox extends Rect {
 
     /**
      * Get whether the textbox can gain and lose focus.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @return True to gain and lose focus
      */
@@ -124,6 +138,8 @@ public class Textbox extends Rect {
 
     /**
      * Set whether the textbox can gain and lose focus.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @param canLoseFocus True to gain and lose focus
      */
@@ -133,6 +149,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the maximum length of the input value.
+     * <p>
+     * If null, default maximum length of <code>32</code> will be used.
      *
      * @return Max length of input value
      */
@@ -143,6 +161,8 @@ public class Textbox extends Rect {
 
     /**
      * Set the maximum length of the input value.
+     * <p>
+     * If null, default maximum length of <code>32</code> will be used.
      *
      * @param maxLength Max length of input value
      */
@@ -152,6 +172,8 @@ public class Textbox extends Rect {
 
     /**
      * Get whether the textbox can be edited by the player.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @return True to let player edit input value
      */
@@ -162,6 +184,8 @@ public class Textbox extends Rect {
 
     /**
      * Set whether the textbox can be edited by the player.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @param editable True to let player edit input value
      */
@@ -171,6 +195,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the text color if textbox is editable.
+     * <p>
+     * If null, default text color of <code>0xFFFFFFFF</code> will be used.
      *
      * @return Text color
      */
@@ -181,6 +207,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the text color if textbox is editable.
+     * <p>
+     * If null, default text color of <code>0xFFFFFFFF</code> will be used.
      *
      * @param color Text color
      */
@@ -190,6 +218,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the text color if textbox is <em>not</em> editable.
+     * <p>
+     * If null, default text color of <code>0xFF707070</code> will be used.
      *
      * @return Text color
      */
@@ -200,6 +230,8 @@ public class Textbox extends Rect {
 
     /**
      * Get the text color if textbox is <em>not</em> editable.
+     * <p>
+     * If null, default text color of <code>0xFF707070</code> will be used.
      *
      * @param color Text color
      */
@@ -353,6 +385,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the current value for the input.
+         * <p>
+         * If null, default empty {@link String} will be used.
          *
          * @return Current input value
          */
@@ -363,6 +397,8 @@ public class Textbox extends Rect {
 
         /**
          * Set the current value for the input.
+         * <p>
+         * If null, default empty {@link String} will be used.
          *
          * @param value Current input value
          * @return This builder
@@ -375,6 +411,8 @@ public class Textbox extends Rect {
 
         /**
          * Get current suggestion on the cursor.
+         * <p>
+         * If null, no suggestion will be used.
          *
          * @return Current suggestion
          */
@@ -385,6 +423,8 @@ public class Textbox extends Rect {
 
         /**
          * Set current suggestion on the cursor.
+         * <p>
+         * If null, no suggestion will be used.
          *
          * @param suggestion Current suggestion
          * @return This builder
@@ -397,6 +437,8 @@ public class Textbox extends Rect {
 
         /**
          * Get whether the input box has a background and border.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @return True if bordered
          */
@@ -407,6 +449,8 @@ public class Textbox extends Rect {
 
         /**
          * Set whether the input box has a background and border.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @param bordered True if bordered
          * @return This builder
@@ -419,6 +463,8 @@ public class Textbox extends Rect {
 
         /**
          * Get whether the textbox can gain and lose focus.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @return True to gain and lose focus
          */
@@ -429,6 +475,8 @@ public class Textbox extends Rect {
 
         /**
          * Set whether the textbox can gain and lose focus.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @param canLoseFocus True to gain and lose focus
          * @return This builder
@@ -441,6 +489,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the maximum length of the input value.
+         * <p>
+         * If null, default maximum length of <code>32</code> will be used.
          *
          * @return Max length of input value
          */
@@ -451,6 +501,8 @@ public class Textbox extends Rect {
 
         /**
          * Set the maximum length of the input value.
+         * <p>
+         * If null, default maximum length of <code>32</code> will be used.
          *
          * @param maxLength Max length of input value
          * @return This builder
@@ -463,6 +515,8 @@ public class Textbox extends Rect {
 
         /**
          * Get whether the textbox can be edited by the player.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @return True to let player edit input value
          */
@@ -473,6 +527,8 @@ public class Textbox extends Rect {
 
         /**
          * Set whether the textbox can be edited by the player.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @param editable True to let player edit input value
          * @return This builder
@@ -485,6 +541,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the text color if textbox is editable.
+         * <p>
+         * If null, default text color of <code>0xFFFFFFFF</code> will be used.
          *
          * @return Text color
          */
@@ -495,6 +553,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the text color if textbox is editable.
+         * <p>
+         * If null, default text color of <code>0xFFFFFFFF</code> will be used.
          *
          * @param color Text color
          * @return This builder
@@ -507,6 +567,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the text color if textbox is <em>not</em> editable.
+         * <p>
+         * If null, default text color of <code>0xFF707070</code> will be used.
          *
          * @return Text color
          */
@@ -517,6 +579,8 @@ public class Textbox extends Rect {
 
         /**
          * Get the text color if textbox is <em>not</em> editable.
+         * <p>
+         * If null, default text color of <code>0xFF707070</code> will be used.
          *
          * @param color Text color
          * @return This builder

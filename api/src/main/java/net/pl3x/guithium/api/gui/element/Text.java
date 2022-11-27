@@ -24,6 +24,7 @@ public class Text extends AbstractElement {
      * Create a new text element.
      *
      * @param key      Unique identifier for text
+     * @param text     Text component
      * @param pos      Position of text
      * @param anchor   Anchor for text
      * @param offset   Offset of text
@@ -39,6 +40,8 @@ public class Text extends AbstractElement {
 
     /**
      * Get the underlying text component.
+     * <p>
+     * If null, default empty component will be used.
      *
      * @return Text component
      */
@@ -49,6 +52,8 @@ public class Text extends AbstractElement {
 
     /**
      * Set the underlying text component.
+     * <p>
+     * If null, default empty component will be used.
      *
      * @param text Text component
      */
@@ -58,6 +63,8 @@ public class Text extends AbstractElement {
 
     /**
      * Get whether this text has a shadow.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @return True if text has shadow
      */
@@ -68,6 +75,8 @@ public class Text extends AbstractElement {
 
     /**
      * Set whether this text has a shadow.
+     * <p>
+     * If null, default <code>true</code> will be used.
      *
      * @param shadow True if text has shadow
      */
@@ -190,6 +199,8 @@ public class Text extends AbstractElement {
 
         /**
          * Get the underlying text component.
+         * <p>
+         * If null, default empty component will be used.
          *
          * @return Text component
          */
@@ -200,6 +211,8 @@ public class Text extends AbstractElement {
 
         /**
          * Set the underlying text component.
+         * <p>
+         * If null, default empty component will be used.
          *
          * @param text Text component
          * @return This builder
@@ -212,6 +225,8 @@ public class Text extends AbstractElement {
 
         /**
          * Get whether this text has a shadow.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @return True if text has shadow
          */
@@ -222,6 +237,8 @@ public class Text extends AbstractElement {
 
         /**
          * Set whether this text has a shadow.
+         * <p>
+         * If null, default <code>true</code> will be used.
          *
          * @param shadow True if text has shadow
          * @return This builder

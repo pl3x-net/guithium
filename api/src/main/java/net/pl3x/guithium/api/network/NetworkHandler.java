@@ -20,11 +20,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Represents a network handler.
+ */
 public abstract class NetworkHandler {
+    /**
+     * Identifier for Guithium's plugin messaging channel.
+     */
     public final static Key CHANNEL = Key.of(Guithium.MOD_ID + ":" + Guithium.MOD_ID);
 
     private final Map<Key, Function<ByteArrayDataInput, ? extends Packet>> packets = new HashMap<>();
 
+    /**
+     * Creates a new network handler
+     */
     public NetworkHandler() {
         // register incoming packet handlers
         registerHandler(ButtonClickPacket.KEY, ButtonClickPacket::new);
@@ -39,7 +48,7 @@ public abstract class NetworkHandler {
     }
 
     /**
-     * Register the network listeners
+     * Register the network packet listeners
      */
     public abstract void register();
 
@@ -70,6 +79,12 @@ public abstract class NetworkHandler {
         packet.handle(listener);
     }
 
+    /**
+     * Create a new packet from input byte array.
+     *
+     * @param in Input byte array
+     * @return New packet, or null if unknown packet data
+     */
     @Nullable
     protected Packet getPacket(@NotNull ByteArrayDataInput in) {
         // verify protocol

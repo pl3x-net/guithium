@@ -43,6 +43,8 @@ public class Circle extends AbstractElement {
 
     /**
      * Get the radius of this circle.
+     * <p>
+     * If null, will default to half screen's width or height, whichever is smaller.
      *
      * @return The radius
      */
@@ -53,6 +55,8 @@ public class Circle extends AbstractElement {
 
     /**
      * Set the radius of this circle.
+     * <p>
+     * If null, will default to half screen's width or height, whichever is smaller.
      *
      * @param radius The radius
      */
@@ -62,6 +66,8 @@ public class Circle extends AbstractElement {
 
     /**
      * Get the resolution (number of outer points) for this circle.
+     * <p>
+     * If null, default of <code>{@link #getRadius()}</code> will be used.
      *
      * @return Circle resolution
      */
@@ -72,6 +78,8 @@ public class Circle extends AbstractElement {
 
     /**
      * Set the resolution (number of outer points) for this circle.
+     * <p>
+     * If null, default of <code>{@link #getRadius()}</code> will be used.
      *
      * @param resolution Circle resolution
      */
@@ -113,6 +121,18 @@ public class Circle extends AbstractElement {
      */
     public void setOuterColor(int color) {
         this.outerColor = color;
+    }
+
+    /**
+     * Set the color of this circle.
+     * <p>
+     * Both the inner and outer colors will be set to the specified color.
+     *
+     * @param color Circle color
+     */
+    public void setColor(int color) {
+        setInnerColor(color);
+        setOuterColor(color);
     }
 
     @Override
@@ -239,6 +259,8 @@ public class Circle extends AbstractElement {
 
         /**
          * Get the radius of this circle.
+         * <p>
+         * If null, will default to half screen's width or height, whichever is smaller.
          *
          * @return The radius
          */
@@ -249,6 +271,8 @@ public class Circle extends AbstractElement {
 
         /**
          * Set the radius of this circle.
+         * <p>
+         * If null, will default to half screen's width or height, whichever is smaller.
          *
          * @param radius The radius
          * @return This builder
@@ -261,6 +285,8 @@ public class Circle extends AbstractElement {
 
         /**
          * Get the resolution (number of outer points) for this circle.
+         * <p>
+         * If null, default of <code>{@link #getRadius()}</code> will be used.
          *
          * @return Circle resolution
          */
@@ -271,6 +297,8 @@ public class Circle extends AbstractElement {
 
         /**
          * Set the resolution (number of outer points) for this circle.
+         * <p>
+         * If null, default of <code>{@link #getRadius()}</code> will be used.
          *
          * @param resolution Circle resolution
          * @return This builder
@@ -320,6 +348,21 @@ public class Circle extends AbstractElement {
         @NotNull
         public Builder setOuterColor(int color) {
             this.outerColor = color;
+            return this;
+        }
+
+        /**
+         * Set the color of this circle.
+         * <p>
+         * Both the inner and outer colors will be set to the specified color.
+         *
+         * @param color Circle color
+         * @return This builder
+         */
+        @NotNull
+        public Builder setColor(int color) {
+            setInnerColor(color);
+            setOuterColor(color);
             return this;
         }
 

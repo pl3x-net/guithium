@@ -3,6 +3,9 @@ package net.pl3x.guithium.api.network;
 import net.pl3x.guithium.api.network.packet.Packet;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents a network connection.
+ */
 public interface Connection {
     /**
      * Get the packet listener.

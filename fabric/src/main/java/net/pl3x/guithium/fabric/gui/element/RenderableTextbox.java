@@ -28,9 +28,7 @@ public class RenderableTextbox extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Textbox textbox = getElement();
-
-        Vec2 size = textbox.getSize();
+        Vec2 size = getElement().getSize();
         if (size == null) {
             size = Vec2.of(120, 20);
         }
@@ -71,19 +69,19 @@ public class RenderableTextbox extends RenderableWidget {
 
         setWidget(editbox);
 
-        editbox.setValue(textbox.getValue() == null ? "" : textbox.getValue());
-        editbox.setSuggestion(textbox.getSuggestion());
-        editbox.setBordered(textbox.isBordered() == null || Boolean.TRUE.equals(textbox.isBordered()));
-        editbox.setCanLoseFocus(textbox.canLoseFocus() == null || Boolean.TRUE.equals(textbox.canLoseFocus()));
-        editbox.setEditable(textbox.isEditable() == null || Boolean.TRUE.equals(textbox.isEditable()));
-        if (textbox.getMaxLength() != null) {
-            editbox.setMaxLength(textbox.getMaxLength());
+        editbox.setValue(getElement().getValue() == null ? "" : getElement().getValue());
+        editbox.setSuggestion(getElement().getSuggestion());
+        editbox.setBordered(getElement().isBordered() == null || Boolean.TRUE.equals(getElement().isBordered()));
+        editbox.setCanLoseFocus(getElement().canLoseFocus() == null || Boolean.TRUE.equals(getElement().canLoseFocus()));
+        editbox.setEditable(getElement().isEditable() == null || Boolean.TRUE.equals(getElement().isEditable()));
+        if (getElement().getMaxLength() != null) {
+            editbox.setMaxLength(getElement().getMaxLength());
         }
-        if (textbox.getTextColor() != null) {
-            editbox.setTextColor(textbox.getTextColor());
+        if (getElement().getTextColor() != null) {
+            editbox.setTextColor(getElement().getTextColor());
         }
-        if (textbox.getTextColorUneditable() != null) {
-            editbox.setTextColorUneditable(textbox.getTextColorUneditable());
+        if (getElement().getTextColorUneditable() != null) {
+            editbox.setTextColorUneditable(getElement().getTextColorUneditable());
         }
     }
 }

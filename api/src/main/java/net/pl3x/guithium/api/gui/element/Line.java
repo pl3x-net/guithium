@@ -45,6 +45,8 @@ public class Line extends AbstractElement {
 
     /**
      * Get this line's end position from the end anchor point.
+     * <p>
+     * If null, default end position <code>0,0</code> will be used.
      *
      * @return End position from end anchor
      */
@@ -65,6 +67,8 @@ public class Line extends AbstractElement {
 
     /**
      * Set this line's end position from the end anchor point.
+     * <p>
+     * If null, default end position <code>0,0</code> will be used.
      *
      * @param pos End position
      */
@@ -76,6 +80,8 @@ public class Line extends AbstractElement {
      * Get this line's end anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
+     * <p>
+     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @return End anchor point
      */
@@ -100,6 +106,8 @@ public class Line extends AbstractElement {
      * Set this line's end anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
+     * <p>
+     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @param anchor End anchor point
      */
@@ -109,6 +117,8 @@ public class Line extends AbstractElement {
 
     /**
      * Get this line's width in scaled pixels.
+     * <p>
+     * If null, default width <code>1.0</code> will be used.
      *
      * @return Line width
      */
@@ -119,6 +129,8 @@ public class Line extends AbstractElement {
 
     /**
      * Set this line's width in scaled pixels.
+     * <p>
+     * If null, default width <code>1.0</code> will be used.
      *
      * @param width Line width
      */
@@ -160,6 +172,18 @@ public class Line extends AbstractElement {
      */
     public void setEndColor(int color) {
         this.endColor = color;
+    }
+
+    /**
+     * Set the color for this line.
+     * <p>
+     * Both the start and end colors will be set to the specified color.
+     *
+     * @param color Line color
+     */
+    public void setColor(int color) {
+        setStartColor(color);
+        setEndColor(color);
     }
 
     @Override
@@ -290,6 +314,8 @@ public class Line extends AbstractElement {
 
         /**
          * Get this line's end position from the end anchor point.
+         * <p>
+         * If null, default end position <code>0,0</code> will be used.
          *
          * @return End position from end anchor
          */
@@ -313,6 +339,8 @@ public class Line extends AbstractElement {
 
         /**
          * Set this line's end position from the end anchor point.
+         * <p>
+         * If null, default end position <code>0,0</code> will be used.
          *
          * @param pos End position
          * @return This builder
@@ -327,6 +355,8 @@ public class Line extends AbstractElement {
          * Get this line's end anchor point on the screen.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the parent's size.
+         * <p>
+         * If null, default end anchor <code>0,0</code> will be used.
          *
          * @return End anchor point
          */
@@ -354,6 +384,8 @@ public class Line extends AbstractElement {
          * Set this line's end anchor point on the screen.
          * <p>
          * This is represented as a percentage (0.0-1.0) of the parent's size.
+         * <p>
+         * If null, default end anchor <code>0,0</code> will be used.
          *
          * @param anchor End anchor point
          * @return This builder
@@ -366,6 +398,8 @@ public class Line extends AbstractElement {
 
         /**
          * Get this line's width in scaled pixels.
+         * <p>
+         * If null, default width <code>1.0</code> will be used.
          *
          * @return Line width
          */
@@ -376,6 +410,8 @@ public class Line extends AbstractElement {
 
         /**
          * Set this line's width in scaled pixels.
+         * <p>
+         * If null, default width <code>1.0</code> will be used.
          *
          * @param width Line width
          * @return This builder
@@ -425,6 +461,21 @@ public class Line extends AbstractElement {
         @NotNull
         public Builder setEndColor(int color) {
             this.endColor = color;
+            return this;
+        }
+
+        /**
+         * Set the color for this line.
+         * <p>
+         * Both the start and end colors will be set to the specified color.
+         *
+         * @param color Line color
+         * @return This builder
+         */
+        @NotNull
+        public Builder setColor(int color) {
+            setStartColor(color);
+            setEndColor(color);
             return this;
         }
 

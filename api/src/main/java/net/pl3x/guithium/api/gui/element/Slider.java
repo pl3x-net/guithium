@@ -58,6 +58,8 @@ public class Slider extends Rect {
 
     /**
      * Get the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @return Text label
      */
@@ -68,6 +70,8 @@ public class Slider extends Rect {
 
     /**
      * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @param label Text label
      */
@@ -77,6 +81,8 @@ public class Slider extends Rect {
 
     /**
      * Get the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @return Tooltip text
      */
@@ -87,6 +93,8 @@ public class Slider extends Rect {
 
     /**
      * Set the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @param tooltip Tooltip text to set
      */
@@ -116,6 +124,8 @@ public class Slider extends Rect {
 
     /**
      * Get the minimum value of this slider.
+     * <p>
+     * If null, default minimum of <code>0.0</code> will be used.
      *
      * @return Slider's minimum value
      */
@@ -126,6 +136,8 @@ public class Slider extends Rect {
 
     /**
      * Set the minimum value of this slider.
+     * <p>
+     * If null, default minimum of <code>0.0</code> will be used.
      *
      * @param min Slider's minimum value
      */
@@ -135,6 +147,8 @@ public class Slider extends Rect {
 
     /**
      * Get the maximum value of this slider.
+     * <p>
+     * If null, default maximum of <code>1.0</code> will be used.
      *
      * @return Slider's maximum value
      */
@@ -145,6 +159,8 @@ public class Slider extends Rect {
 
     /**
      * Set the maximum value of this slider.
+     * <p>
+     * If null, default maximum of <code>1.0</code> will be used.
      *
      * @param max Slider's maximum value
      */
@@ -154,6 +170,8 @@ public class Slider extends Rect {
 
     /**
      * Get the decimal format for this slider's value.
+     * <p>
+     * If null, no decimal format will be used.
      *
      * @return Decimal format
      * @see java.text.DecimalFormat
@@ -165,6 +183,8 @@ public class Slider extends Rect {
 
     /**
      * Set the decimal format for this slider's value.
+     * <p>
+     * If null, no decimal format will be used.
      *
      * @param decimal Decimal format
      * @see java.text.DecimalFormat
@@ -175,6 +195,8 @@ public class Slider extends Rect {
 
     /**
      * Get the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
      *
      * @return OnClick action
      */
@@ -185,6 +207,8 @@ public class Slider extends Rect {
 
     /**
      * Set the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
      *
      * @param onChange OnChange action
      */
@@ -330,6 +354,8 @@ public class Slider extends Rect {
 
         /**
          * Get the text label on the slider.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @return Text on face
          */
@@ -340,6 +366,8 @@ public class Slider extends Rect {
 
         /**
          * Set the text label on the slider.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @param text Text to set
          * @return This builder
@@ -352,6 +380,8 @@ public class Slider extends Rect {
 
         /**
          * Get the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @return Tooltip text
          */
@@ -362,6 +392,8 @@ public class Slider extends Rect {
 
         /**
          * Set the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @param tooltip Tooltip text to set
          * @return This builder
@@ -397,6 +429,8 @@ public class Slider extends Rect {
 
         /**
          * Get the minimum value of this slider.
+         * <p>
+         * If null, default minimum of <code>0.0</code> will be used.
          *
          * @return Slider's minimum value
          */
@@ -407,6 +441,8 @@ public class Slider extends Rect {
 
         /**
          * Set the minimum value of this slider.
+         * <p>
+         * If null, default minimum of <code>0.0</code> will be used.
          *
          * @param min Slider's minimum value
          * @return This builder
@@ -418,6 +454,8 @@ public class Slider extends Rect {
 
         /**
          * Get the maximum value of this slider.
+         * <p>
+         * If null, default maximum <code>1.0</code> will be used.
          *
          * @return Slider's maximum value
          */
@@ -428,6 +466,8 @@ public class Slider extends Rect {
 
         /**
          * Set the maximum value of this slider.
+         * <p>
+         * If null, default maximum of <code>1.0</code> will be used.
          *
          * @param max Slider's maximum value
          * @return This builder
@@ -439,6 +479,8 @@ public class Slider extends Rect {
 
         /**
          * Get the decimal format for this slider's value.
+         * <p>
+         * If null, no decimal format will be used.
          *
          * @return Decimal format
          * @see java.text.DecimalFormat
@@ -450,6 +492,8 @@ public class Slider extends Rect {
 
         /**
          * Set the decimal format for this slider's value.
+         * <p>
+         * If null, no decimal format will be used.
          *
          * @param decimal Decimal format
          * @return This builder
@@ -462,6 +506,8 @@ public class Slider extends Rect {
 
         /**
          * Get the action to execute when the slider is changed.
+         * <p>
+         * If null, no change action will be used.
          *
          * @return OnChanged action
          */
@@ -472,6 +518,8 @@ public class Slider extends Rect {
 
         /**
          * Set the action to execute when the slider is changed.
+         * <p>
+         * If null, no change action will be used.
          *
          * @param onChange OnChange action
          * @return This builder

@@ -46,6 +46,8 @@ public class Button extends Rect {
 
     /**
      * Get the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @return Text label
      */
@@ -56,6 +58,8 @@ public class Button extends Rect {
 
     /**
      * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
      *
      * @param label Text label
      */
@@ -65,6 +69,8 @@ public class Button extends Rect {
 
     /**
      * Get the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @return Tooltip text
      */
@@ -75,6 +81,8 @@ public class Button extends Rect {
 
     /**
      * Set the text for hover tooltip.
+     * <p>
+     * If null, no tooltip will be used.
      *
      * @param tooltip Tooltip text to set
      */
@@ -84,6 +92,8 @@ public class Button extends Rect {
 
     /**
      * Get the action to execute when the button is clicked.
+     * <p>
+     * If null, no click action will be used.
      *
      * @return OnClick action
      */
@@ -94,6 +104,8 @@ public class Button extends Rect {
 
     /**
      * Set the action to execute when the button is clicked.
+     * <p>
+     * If null, no click action will be used.
      *
      * @param onClick OnClick action
      */
@@ -218,7 +230,9 @@ public class Button extends Rect {
         }
 
         /**
-         * Get the text on the button's face.
+         * Get the text label.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @return Text on face
          */
@@ -228,7 +242,9 @@ public class Button extends Rect {
         }
 
         /**
-         * Set the text on the button's face.
+         * Set the text label.
+         * <p>
+         * If null, default empty label will be used.
          *
          * @param text Text to set
          * @return This builder
@@ -241,6 +257,8 @@ public class Button extends Rect {
 
         /**
          * Get the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @return Tooltip text
          */
@@ -251,6 +269,8 @@ public class Button extends Rect {
 
         /**
          * Set the text for hover tooltip.
+         * <p>
+         * If null, no tooltip will be used.
          *
          * @param tooltip Tooltip text to set
          * @return This builder
@@ -263,6 +283,8 @@ public class Button extends Rect {
 
         /**
          * Get the action to execute when the button is clicked.
+         * <p>
+         * If null, no click action will be used.
          *
          * @return OnClick action
          */
@@ -273,6 +295,8 @@ public class Button extends Rect {
 
         /**
          * Set the action to execute when the button is clicked.
+         * <p>
+         * If null, no click action will be used.
          *
          * @param onClick OnClick action
          * @return This builder

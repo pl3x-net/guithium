@@ -16,6 +16,9 @@ import java.util.Objects;
  * Represents an image texture.
  */
 public class Texture extends Keyed implements JsonSerializable {
+    /**
+     * Mojang's default dirt texture used in options screens.
+     */
     public static final Texture DIRT = Texture.of("minecraft:dirt", "textures/gui/options_background.png");
 
     private final String url;
@@ -37,6 +40,7 @@ public class Texture extends Keyed implements JsonSerializable {
      *
      * @param id  Unique identifying key
      * @param url URL or resource location
+     * @return new Texture
      */
     @NotNull
     public static Texture of(@NotNull String id, @NotNull String url) {
@@ -48,6 +52,7 @@ public class Texture extends Keyed implements JsonSerializable {
      *
      * @param key Unique identifying key
      * @param url URL or resource location
+     * @return new Texture
      */
     @NotNull
     public static Texture of(@NotNull Key key, @NotNull String url) {

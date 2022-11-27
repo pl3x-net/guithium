@@ -13,7 +13,13 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a textures packet containing a list of textures to preload.
+ */
 public class TexturesPacket extends Packet {
+    /**
+     * Unique identifying key
+     */
     public static final Key KEY = Key.of("packet:textures");
 
     private static final Type TYPE_TOKEN = new TypeToken<Map<String, String>>() {
@@ -22,13 +28,25 @@ public class TexturesPacket extends Packet {
     private final Map<Key, Texture> textures;
     private final Map<String, String> rawTex;
 
+    /**
+     * Create a new texture packet.
+     *
+     * @param textures Textures to preload
+     */
     public TexturesPacket(@NotNull Map<Key, Texture> textures) {
+        super(KEY);
         this.textures = textures;
         this.rawTex = new HashMap<>();
         textures.forEach((key, texture) -> this.rawTex.put(key.toString(), texture.getUrl()));
     }
 
+    /**
+     * Creates a new texture packet.
+     *
+     * @param in Input byte array
+     */
     public TexturesPacket(@NotNull ByteArrayDataInput in) {
+        super(KEY);
         this.textures = new HashMap<>();
         this.rawTex = Gson.fromJson(in.readUTF(), TYPE_TOKEN);
         if (this.rawTex != null) {
@@ -39,12 +57,11 @@ public class TexturesPacket extends Packet {
         }
     }
 
-    @Override
-    @NotNull
-    public Key getKey() {
-        return KEY;
-    }
-
+    /**
+     * Get the textures to preload.
+     *
+     * @return Texture to preload
+     */
     @NotNull
     public Map<Key, Texture> getTextures() {
         return this.textures;

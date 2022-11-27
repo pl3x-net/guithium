@@ -33,6 +33,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Get this element's position from the anchor point.
+     * <p>
+     * If null, default position <code>0,0</code> will be used.
      *
      * @return Position from anchor
      */
@@ -49,6 +51,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Set this element's position from the anchor point.
+     * <p>
+     * If null, default position <code>0,0</code> will be used.
      *
      * @param pos Position
      */
@@ -58,6 +62,8 @@ public interface Element extends JsonSerializable {
      * Get this element's anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
+     * <p>
+     * If null, default anchor <code>0,0</code> will be used.
      *
      * @return Anchor point
      */
@@ -78,6 +84,8 @@ public interface Element extends JsonSerializable {
      * Set this element's anchor point on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
+     * <p>
+     * If null, default anchor <code>0,0</code> will be used.
      *
      * @param anchor Anchor point
      */
@@ -87,6 +95,8 @@ public interface Element extends JsonSerializable {
      * Get this element's position offset.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the element's size.
+     * <p>
+     * If null, default offset <code>0,0</code> will be used.
      *
      * @return Position offset
      */
@@ -107,6 +117,8 @@ public interface Element extends JsonSerializable {
      * Set this element's position offset.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the element's size.
+     * <p>
+     * If null, default offset <code>0,0</code> will be used.
      *
      * @param offset Position offset
      */
@@ -114,6 +126,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Get this element's rotation in degrees.
+     * <p>
+     * If null, default rotation <code>0.0</code> will be used.
      *
      * @return Degrees of rotation
      */
@@ -122,6 +136,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Set this element's rotation in degrees.
+     * <p>
+     * If null, default rotation <code>0.0</code> will be used.
      *
      * @param degrees Degrees of rotation
      */
@@ -129,6 +145,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Get this element's scale.
+     * <p>
+     * If null, default scale <code>1.0</code> will be used.
      *
      * @return Element's scale
      */
@@ -137,6 +155,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Set this element's scale.
+     * <p>
+     * If null, default scale <code>1.0</code> will be used.
      *
      * @param scale Element's scale
      */

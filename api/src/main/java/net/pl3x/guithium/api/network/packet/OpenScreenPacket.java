@@ -8,25 +8,42 @@ import net.pl3x.guithium.api.json.Gson;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an open screen packet.
+ */
 public class OpenScreenPacket extends Packet {
+    /**
+     * Unique identifying key
+     */
     public static final Key KEY = Key.of("packet:open_screen");
 
     private final Screen screen;
 
+    /**
+     * Creates an open screen packet.
+     *
+     * @param screen Screen to open
+     */
     public OpenScreenPacket(@NotNull Screen screen) {
+        super(KEY);
         this.screen = screen;
     }
 
+    /**
+     * Creates an open screen packet.
+     *
+     * @param in Input byte array
+     */
     public OpenScreenPacket(@NotNull ByteArrayDataInput in) {
+        super(KEY);
         this.screen = Gson.fromJson(in.readUTF(), Screen.class);
     }
 
-    @Override
-    @NotNull
-    public Key getKey() {
-        return KEY;
-    }
-
+    /**
+     * Get the screen to open
+     *
+     * @return Screen to open
+     */
     @NotNull
     public Screen getScreen() {
         return this.screen;

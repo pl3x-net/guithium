@@ -13,7 +13,14 @@ import java.util.Objects;
  * Represents a 2D vector.
  */
 public class Vec2 implements JsonSerializable {
+    /**
+     * Vec2 of 0,0
+     */
     public static final Vec2 ZERO = new Vec2(0, 0);
+
+    /**
+     * Vec2 of 1,1
+     */
     public static final Vec2 ONE = new Vec2(1, 1);
 
     private final float x;
@@ -35,6 +42,7 @@ public class Vec2 implements JsonSerializable {
      *
      * @param x X component
      * @param y Y component
+     * @return New Vec2
      */
     @NotNull
     public static Vec2 of(float x, float y) {

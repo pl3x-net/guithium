@@ -12,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
+/**
+ * Represents an adapter for serializing elements to/from Gson.
+ */
 public class ElementAdapter implements JsonSerializer<Element>, JsonDeserializer<Element> {
     @Override
     @NotNull

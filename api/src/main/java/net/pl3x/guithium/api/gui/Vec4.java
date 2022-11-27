@@ -40,6 +40,7 @@ public class Vec4 implements JsonSerializable {
      * @param y0 Y0 component
      * @param x1 X1 component
      * @param y1 Y1 component
+     * @return New Vec4
      */
     @NotNull
     public static Vec4 of(float x0, float y0, float x1, float y1) {
