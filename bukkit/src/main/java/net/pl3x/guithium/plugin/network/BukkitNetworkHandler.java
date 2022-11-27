@@ -20,7 +20,7 @@ public class BukkitNetworkHandler extends NetworkHandler {
         Bukkit.getMessenger().registerIncomingPluginChannel(this.plugin, CHANNEL.toString(),
             (channel, sender, bytes) -> {
                 // verify player
-                WrappedPlayer player = this.plugin.getPlayerManager().get(sender.getUniqueId());
+                WrappedPlayer player = this.plugin.getPlayerManager().get(sender);
                 if (player == null) {
                     System.out.printf("Received packet from unknown player (%s)%n", sender.getName());
                     return;

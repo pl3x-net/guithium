@@ -59,6 +59,13 @@ public class Slider extends Rect {
     /**
      * Get the text label.
      * <p>
+     * Note: You can use variables wrapped in squiggly braces:
+     * <ul>
+     * <li><code>{value}</code> - shows the current value</li>
+     * <li><code>{min}</code> - shows the minimum value</li>
+     * <li><code>{max}</code> - shows the maximum value</li>
+     * </ul>
+     * <p>
      * If null, default empty label will be used.
      *
      * @return Text label

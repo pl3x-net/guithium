@@ -45,12 +45,12 @@ public class Gradient extends Rect {
     /**
      * Get the colors for all four corners.
      * <p>
-     * Array index as follows:
+     * Array indexes as follows:
      * <ul>
-     * <li>top left</li>
-     * <li>top right</li>
-     * <li>bottom left</li>
-     * <li>bottom right</li>
+     * <li><code>[0]</code> - top left color</li>
+     * <li><code>[1]</code> - top right color</li>
+     * <li><code>[2]</code> - bottom left color</li>
+     * <li><code>[3]</code> - bottom right color</li>
      * </ul>
      *
      * @return Array of colors of all four corners
