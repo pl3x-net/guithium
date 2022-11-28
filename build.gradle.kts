@@ -6,7 +6,7 @@ plugins {
 
 var buildNum = System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"
 
-project.version = "${extra["mod_version"]}-SNAPSHOT"
+project.version = "${extra["guithium_version"]}-SNAPSHOT"
 project.group = "net.pl3x.guithium"
 
 val mergedJar by configurations.creating<Configuration> {

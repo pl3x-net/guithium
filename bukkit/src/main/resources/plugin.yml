@@ -1,6 +1,6 @@
 name: "${name}"
-main: "${group}.Guithium"
+main: "${group}.${name}"
 version: "${version}"
-api-version: "1.19"
+api-version: "${api_version}"
 description: "${description}"
 author: "BillyGalbreath"

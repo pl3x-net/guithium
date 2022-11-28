@@ -36,6 +36,7 @@ tasks {
                 "name" to rootProject.name,
                 "group" to project.group,
                 "version" to project.version,
+                "api_version" to project.extra["bukkit_api_version"],
                 "description" to project.description
             )
         }
