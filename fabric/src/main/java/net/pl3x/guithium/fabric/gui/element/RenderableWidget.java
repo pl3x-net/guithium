@@ -107,7 +107,7 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 blit(poseStack, this.x, this.y, isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
 
                 if (this.showLabel) {
-                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFFFF);
+                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 0xFFE0E0E0);
                 }
             }
 
