@@ -49,13 +49,13 @@ public class RenderableImage extends RenderableElement {
 
         calcScreenPos(size.getX(), size.getY());
 
-        this.x0 = this.pos.getX();
-        this.y0 = this.pos.getY();
+        this.x0 = this.posX;
+        this.y0 = this.posY;
         this.x1 = this.x0 + size.getX();
         this.y1 = this.y0 + size.getY();
 
-        this.cX = (int) (this.x0 + size.getX() / 2);
-        this.cY = (int) (this.y0 + size.getY() / 2);
+        this.centerX = (int) (this.x0 + size.getX() / 2);
+        this.centerY = (int) (this.y0 + size.getY() / 2);
 
         Vec4 uv = getElement().getUV();
         Float tileMod = getElement().getTileModifier();
@@ -91,8 +91,8 @@ public class RenderableImage extends RenderableElement {
 
         poseStack.pushPose();
 
-        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, this.cX, this.cY, getElement().getScale());
+        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
+        scale(poseStack, this.centerX, this.centerY, getElement().getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();

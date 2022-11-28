@@ -46,8 +46,8 @@ public class RenderableButton extends RenderableWidget {
         calcScreenPos(size.getX(), size.getY());
 
         setWidget(new net.minecraft.client.gui.components.Button(
-            (int) this.pos.getX(),
-            (int) this.pos.getY(),
+            this.posX,
+            this.posY,
             (int) size.getX(),
             (int) size.getY(),
             Component.translatable(getElement().getLabel()),

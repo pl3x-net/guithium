@@ -16,10 +16,7 @@ import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableGradient extends RenderableElement {
-    private float x0;
-    private float y0;
-    private float x1;
-    private float y1;
+    private float x0, y0, x1, y1;
 
     public RenderableGradient(@NotNull RenderableScreen screen, @NotNull Gradient gradient) {
         super(screen, gradient);
@@ -43,13 +40,13 @@ public class RenderableGradient extends RenderableElement {
 
         calcScreenPos(size.getX(), size.getY());
 
-        this.x0 = this.pos.getX();
-        this.y0 = this.pos.getY();
+        this.x0 = this.posX;
+        this.y0 = this.posY;
         this.x1 = this.x0 + width;
         this.y1 = this.y0 + height;
 
-        this.cX = (int) (this.x0 + width / 2);
-        this.cY = (int) (this.y0 + height / 2);
+        this.centerX = (int) (this.x0 + width / 2);
+        this.centerY = (int) (this.y0 + height / 2);
     }
 
     @Override
@@ -58,8 +55,8 @@ public class RenderableGradient extends RenderableElement {
 
         poseStack.pushPose();
 
-        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, this.cX, this.cY, getElement().getScale());
+        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
+        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();

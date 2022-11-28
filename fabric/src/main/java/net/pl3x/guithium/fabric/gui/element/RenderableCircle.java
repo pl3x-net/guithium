@@ -42,6 +42,10 @@ public class RenderableCircle extends RenderableElement {
         float size = radius * 2;
         calcScreenPos(size, size);
 
+        this.x = this.posX + radius;
+        this.y = this.posY + radius;
+        this.radius = radius;
+
         if (getElement().getResolution() == null) {
             this.resolution = (int) radius;
         } else {
@@ -51,20 +55,16 @@ public class RenderableCircle extends RenderableElement {
         this.innerColor = getElement().getInnerColor();
         this.outerColor = getElement().getOuterColor();
 
-        this.x = this.pos.getX() + radius;
-        this.y = this.pos.getY() + radius;
-        this.radius = radius;
-
-        this.cX = (int) this.x;
-        this.cY = (int) this.y;
+        this.centerX = (int) this.x;
+        this.centerY = (int) this.y;
     }
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         poseStack.pushPose();
 
-        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, this.cX, this.cY, getElement().getScale());
+        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
+        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();

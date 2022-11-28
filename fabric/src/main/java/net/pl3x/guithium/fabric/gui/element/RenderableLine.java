@@ -22,7 +22,8 @@ public class RenderableLine extends RenderableElement {
     private int startColor;
     private int endColor;
 
-    private Vec2 endPos = Vec2.ZERO;
+    private int endPosX = 0;
+    private int endPosY = 0;
 
     public RenderableLine(@NotNull RenderableScreen screen, @NotNull Line line) {
         super(screen, line);
@@ -45,13 +46,13 @@ public class RenderableLine extends RenderableElement {
 
         calcScreenPos(width, height);
 
-        this.x0 = this.pos.getX();
-        this.y0 = this.pos.getY();
-        this.x1 = this.endPos.getX();
-        this.y1 = this.endPos.getY();
+        this.x0 = this.posX;
+        this.y0 = this.posY;
+        this.x1 = this.endPosX;
+        this.y1 = this.endPosY;
 
-        this.cX = (int) (this.x0 + ((this.x1 - this.x0) / 2));
-        this.cY = (int) (this.y0 + ((this.y1 - this.y0) / 2));
+        this.centerX = (int) (this.x0 + ((this.x1 - this.x0) / 2));
+        this.centerY = (int) (this.y0 + ((this.y1 - this.y0) / 2));
 
         this.startColor = getElement().getStartColor();
         this.endColor = getElement().getEndColor();
@@ -61,8 +62,8 @@ public class RenderableLine extends RenderableElement {
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         poseStack.pushPose();
 
-        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, this.cX, this.cY, getElement().getScale());
+        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
+        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
         // I'm not sure what this is about, but it puts it in the correct "zIndex"
         poseStack.translate(0, 0, -7.8431);
@@ -124,13 +125,9 @@ public class RenderableLine extends RenderableElement {
         float offsetX = getScreen().width * (1 / 256F);
         float offsetY = getScreen().height * (1 / 256F);
 
-        this.pos = Vec2.of(
-            (int) (anchorX + pos.getX() + offsetX),
-            (int) (anchorY + pos.getY() + offsetY)
-        );
-        this.endPos = Vec2.of(
-            (int) (endAnchorX + endPos.getX() + offsetX),
-            (int) (endAnchorY + endPos.getY() + offsetY)
-        );
+        this.posX = (int) (anchorX + pos.getX() + offsetX);
+        this.posY = (int) (anchorY + pos.getY() + offsetY);
+        this.endPosX = (int) (endAnchorX + endPos.getX() + offsetX);
+        this.endPosY = (int) (endAnchorY + endPos.getY() + offsetY);
     }
 }

@@ -22,9 +22,17 @@ public abstract class RenderableElement {
     private final RenderableScreen screen;
     private Element element;
 
-    protected int cX;
-    protected int cY;
-    protected Vec2 pos = Vec2.ZERO;
+    protected int anchorX = 0;
+    protected int anchorY = 0;
+    protected int posX = 0;
+    protected int posY = 0;
+    protected int offsetX = 0;
+    protected int offsetY = 0;
+
+    protected int centerX;
+    protected int centerY;
+    protected int scaleX;
+    protected int scaleY;
 
     public RenderableElement(@NotNull RenderableScreen screen, @NotNull Element element) {
         this.screen = screen;
@@ -89,24 +97,21 @@ public abstract class RenderableElement {
             pos = Vec2.ZERO;
         }
 
-        double anchorX = 0;
-        double anchorY = 0;
         if (getElement().getAnchor() != null) {
-            anchorX = Math.ceil(this.screen.width * getElement().getAnchor().getX());
-            anchorY = Math.ceil(this.screen.height * getElement().getAnchor().getY());
+            this.anchorX = (int) Math.ceil(this.screen.width * getElement().getAnchor().getX());
+            this.anchorY = (int) Math.ceil(this.screen.height * getElement().getAnchor().getY());
         }
 
-        int offsetX = 0;
-        int offsetY = 0;
         if (getElement().getOffset() != null) {
-            offsetX = (int) (width * getElement().getOffset().getX());
-            offsetY = (int) (height * getElement().getOffset().getY());
+            this.offsetX = (int) (width * getElement().getOffset().getX());
+            this.offsetY = (int) (height * getElement().getOffset().getY());
         }
 
-        this.pos = Vec2.of(
-            (int) (anchorX + pos.getX() - offsetX),
-            (int) (anchorY + pos.getY() - offsetY)
-        );
+        this.posX = (int) (this.anchorX + pos.getX() - this.offsetX);
+        this.posY = (int) (this.anchorY + pos.getY() - this.offsetY);
+
+        this.scaleX = this.posX + this.offsetX;
+        this.scaleY = this.posY + this.offsetY;
     }
 
     public static RenderableElement createRenderableElement(@NotNull Element element, @NotNull RenderableScreen screen) {

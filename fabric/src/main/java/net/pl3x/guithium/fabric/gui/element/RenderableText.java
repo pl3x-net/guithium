@@ -42,8 +42,8 @@ public class RenderableText extends RenderableElement {
 
         calcScreenPos(textWidth, textHeight);
 
-        this.cX = (int) (this.pos.getX() + textWidth / 2);
-        this.cY = (int) (this.pos.getY() + textHeight / 2);
+        this.centerX = this.posX + textWidth / 2;
+        this.centerY = this.posY + textHeight / 2;
     }
 
     @Override
@@ -54,14 +54,14 @@ public class RenderableText extends RenderableElement {
 
         poseStack.pushPose();
 
-        rotate(poseStack, this.cX, this.cY, getElement().getRotation());
-        scale(poseStack, (int) this.pos.getX(), (int) this.pos.getY(), getElement().getScale());
+        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
+        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         Minecraft.getInstance().font.drawInBatch(
             this.text,
-            this.pos.getX(),
-            this.pos.getY(),
+            this.posX,
+            this.posY,
             0xFFFFFF,
             Boolean.TRUE.equals(getElement().hasShadow()),
             poseStack.last().pose(),

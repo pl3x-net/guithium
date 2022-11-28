@@ -69,8 +69,8 @@ public class RenderableSlider extends RenderableWidget {
         calcScreenPos(size.getX(), size.getY());
 
         getWidget().init(
-            (int) this.pos.getX(),
-            (int) this.pos.getY(),
+            this.posX,
+            this.posY,
             (int) size.getX(),
             (int) size.getY(),
             calculateMessage(),

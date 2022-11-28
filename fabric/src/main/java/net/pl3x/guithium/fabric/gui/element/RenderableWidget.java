@@ -72,8 +72,8 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
 
     protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable String label, @Nullable Boolean showLabel, @Nullable Boolean selected, List<FormattedCharSequence> tooltip) {
         return new net.minecraft.client.gui.components.Checkbox(
-            (int) this.pos.getX(),
-            (int) this.pos.getY(),
+            this.posX,
+            this.posY,
             (int) size.getX(),
             (int) size.getY(),
             Component.translatable(label),

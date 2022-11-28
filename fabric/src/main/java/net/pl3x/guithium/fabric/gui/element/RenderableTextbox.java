@@ -40,13 +40,13 @@ public class RenderableTextbox extends RenderableWidget {
             size.getY()
         );
 
-        this.cX = (int) (this.pos.getX() + size.getX() / 2);
-        this.cY = (int) (this.pos.getY() + size.getY() / 2);
+        this.centerX = (int) (this.posX + size.getX() / 2);
+        this.centerX = (int) (this.posY + size.getY() / 2);
 
         EditBox editbox = new EditBox(
             minecraft.font,
-            (int) this.pos.getX() + 1,
-            (int) this.pos.getY() + 1,
+            this.posX + 1,
+            this.posY + 1,
             (int) size.getX(),
             (int) size.getY(),
             Component.translatable(getElement().getSuggestion())

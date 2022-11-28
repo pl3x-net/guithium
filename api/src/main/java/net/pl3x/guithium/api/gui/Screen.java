@@ -9,6 +9,7 @@ import net.pl3x.guithium.api.Keyed;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Image;
+import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
@@ -108,6 +109,18 @@ public class Screen extends Keyed implements JsonSerializable {
      * @param element Element to add
      */
     public void addElement(@NotNull Element element) {
+        if (element instanceof Radio radio && Boolean.TRUE.equals(radio.isSelected())) {
+            Key group = radio.getGroup();
+            if (group != null) {
+                this.elements.forEach((key, element1) -> {
+                    if (element1 instanceof Radio radio1 && Boolean.TRUE.equals(radio1.isSelected())) {
+                        if (group.equals(radio1.getGroup())) {
+                            throw new RuntimeException(String.format("Cannot add more than one selected radio button (%s and %s are both selected)", radio.getKey(), radio1.getKey()));
+                        }
+                    }
+                });
+            }
+        }
         this.elements.put(element.getKey(), element);
     }
 
