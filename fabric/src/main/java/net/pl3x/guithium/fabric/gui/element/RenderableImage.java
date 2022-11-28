@@ -89,8 +89,6 @@ public class RenderableImage extends RenderableElement {
             return;
         }
 
-        poseStack.pushPose();
-
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.centerX, this.centerY, getElement().getScale());
 
@@ -108,9 +106,5 @@ public class RenderableImage extends RenderableElement {
         buf.vertex(model, this.x0, this.y1, 0).uv(this.u0, this.v1).color(this.vertexColor).endVertex();
         buf.vertex(model, this.x1, this.y1, 0).uv(this.u1, this.v1).color(this.vertexColor).endVertex();
         BufferUploader.drawWithShader(buf.end());
-
-        RenderSystem.disableBlend();
-
-        poseStack.popPose();
     }
 }

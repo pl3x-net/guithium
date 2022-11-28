@@ -56,14 +56,10 @@ public class RenderableTextbox extends RenderableWidget {
                 if (!this.visible) {
                     return;
                 }
-                poseStack.pushPose();
-
                 rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
                 scale(poseStack, this.x, this.y, this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 renderButton(poseStack, mouseX, mouseY, delta);
-
-                poseStack.popPose();
             }
         };
 

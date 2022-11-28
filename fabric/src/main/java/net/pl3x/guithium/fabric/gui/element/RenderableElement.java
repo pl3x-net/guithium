@@ -70,9 +70,9 @@ public abstract class RenderableElement {
         if (degrees == null) {
             return;
         }
-        poseStack.translate(x, y, 0D);
+        poseStack.translate(x, y, 0);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(degrees));
-        poseStack.translate(-x, -y, 0D);
+        poseStack.translate(-x, -y, 0);
     }
 
     protected void scale(PoseStack poseStack, int x, int y, int width, int height, Float scale) {
@@ -86,9 +86,9 @@ public abstract class RenderableElement {
         if (scale == null) {
             return;
         }
-        poseStack.translate(x, y, 0D);
-        poseStack.scale(scale, scale, scale);
-        poseStack.translate(-x, -y, 0D);
+        poseStack.translate(x, y, 0);
+        poseStack.scale(scale, scale, 0);
+        poseStack.translate(-x, -y, 0);
     }
 
     protected void calcScreenPos(float width, float height) {

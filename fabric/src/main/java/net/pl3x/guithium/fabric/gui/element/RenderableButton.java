@@ -7,15 +7,12 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class RenderableButton extends RenderableWidget {
     public RenderableButton(@NotNull RenderableScreen screen, @NotNull Button button) {
@@ -41,7 +38,7 @@ public class RenderableButton extends RenderableWidget {
             size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
         }
 
-        final List<FormattedCharSequence> tooltip = processTooltip(getElement().getTooltip());
+        this.tooltip = processTooltip(getElement().getTooltip());
 
         calcScreenPos(size.getX(), size.getY());
 
@@ -62,17 +59,9 @@ public class RenderableButton extends RenderableWidget {
                 if (!this.visible) {
                     return;
                 }
-                poseStack.pushPose();
-
                 rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
                 this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 renderButton(poseStack, mouseX, mouseY, delta);
-
-                poseStack.popPose();
-
-                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
-                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
-                }
             }
 
             @Override

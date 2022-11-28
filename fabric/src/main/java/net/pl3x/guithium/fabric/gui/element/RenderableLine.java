@@ -60,8 +60,6 @@ public class RenderableLine extends RenderableElement {
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        poseStack.pushPose();
-
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
@@ -70,7 +68,6 @@ public class RenderableLine extends RenderableElement {
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.lineWidth(this.width);
@@ -89,11 +86,7 @@ public class RenderableLine extends RenderableElement {
         }
         BufferUploader.drawWithShader(buf.end());
 
-        RenderSystem.lineWidth(1);
         RenderSystem.enableTexture();
-        RenderSystem.disableBlend();
-
-        poseStack.popPose();
     }
 
     @Override

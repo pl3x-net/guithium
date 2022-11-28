@@ -53,12 +53,9 @@ public class RenderableGradient extends RenderableElement {
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
         Gradient gradient = getElement();
 
-        poseStack.pushPose();
-
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
-        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -72,10 +69,5 @@ public class RenderableGradient extends RenderableElement {
         buf.vertex(model, this.x0, this.y1, 0).color(gradient.getColorBottomLeft()).endVertex();
         buf.vertex(model, this.x1, this.y1, 0).color(gradient.getColorBottomRight()).endVertex();
         BufferUploader.drawWithShader(buf.end());
-
-        RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
-
-        poseStack.popPose();
     }
 }

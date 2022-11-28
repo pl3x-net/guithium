@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.network.packet.SliderChangePacket;
@@ -15,7 +14,6 @@ import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class RenderableSlider extends RenderableWidget {
     private DecimalFormat decimalFormat;
@@ -66,6 +64,8 @@ public class RenderableSlider extends RenderableWidget {
         }
         value = (value - this.min) / diff;
 
+        this.tooltip = processTooltip(getElement().getTooltip());
+
         calcScreenPos(size.getX(), size.getY());
 
         getWidget().init(
@@ -74,8 +74,7 @@ public class RenderableSlider extends RenderableWidget {
             (int) size.getX(),
             (int) size.getY(),
             calculateMessage(),
-            value,
-            processTooltip(getElement().getTooltip())
+            value
         );
     }
 
@@ -93,21 +92,19 @@ public class RenderableSlider extends RenderableWidget {
 
     public static class SliderButton extends AbstractSliderButton {
         private final RenderableSlider renderableSlider;
-        private List<FormattedCharSequence> tooltip;
 
         public SliderButton(RenderableSlider renderableSlider) {
             super(0, 0, 0, 0, Component.empty(), 0);
             this.renderableSlider = renderableSlider;
         }
 
-        public void init(int x, int y, int width, int height, Component label, double value, List<FormattedCharSequence> tooltip) {
+        public void init(int x, int y, int width, int height, Component label, double value) {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.value = value;
             setMessage(label);
-            this.tooltip = tooltip;
         }
 
         @Override
@@ -115,17 +112,9 @@ public class RenderableSlider extends RenderableWidget {
             if (!this.visible) {
                 return;
             }
-            poseStack.pushPose();
-
             this.renderableSlider.rotate(poseStack, this.x, this.y, this.width, this.height, this.renderableSlider.getElement().getRotation());
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             renderButton(poseStack, mouseX, mouseY, delta);
-
-            poseStack.popPose();
-
-            if (this.tooltip != null && this.isHovered && this.renderableSlider.getTooltipDelay() > 10) {
-                this.renderableSlider.getScreen().renderTooltip(poseStack, this.tooltip, mouseX, mouseY);
-            }
         }
 
         @Override

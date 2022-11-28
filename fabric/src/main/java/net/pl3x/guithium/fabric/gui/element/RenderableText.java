@@ -52,8 +52,6 @@ public class RenderableText extends RenderableElement {
             return;
         }
 
-        poseStack.pushPose();
-
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
@@ -71,7 +69,5 @@ public class RenderableText extends RenderableElement {
             0xF000F0
         );
         immediate.endBatch();
-
-        poseStack.popPose();
     }
 }

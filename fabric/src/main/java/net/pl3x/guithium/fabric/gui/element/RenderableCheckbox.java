@@ -35,6 +35,8 @@ public class RenderableCheckbox extends RenderableWidget {
             size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
         }
 
+        this.tooltip = processTooltip(getElement().getTooltip());
+
         calcScreenPos(size.getX(), size.getY());
 
         setWidget(createCheckbox(
@@ -42,8 +44,7 @@ public class RenderableCheckbox extends RenderableWidget {
             size,
             getElement().getLabel(),
             getElement().isShowLabel(),
-            getElement().isSelected(),
-            processTooltip(getElement().getTooltip())
+            getElement().isSelected()
         ));
     }
 

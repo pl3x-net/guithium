@@ -59,7 +59,24 @@ public class RenderableScreen extends AbstractScreen {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        this.elements.forEach((key, element) -> element.render(poseStack, mouseX, mouseY, delta));
+        // render elements
+        this.elements.forEach((key, element) -> {
+            poseStack.pushPose();
+            element.render(poseStack, mouseX, mouseY, delta);
+            poseStack.popPose();
+        });
+
+        // render tooltips last
+        for (Map.Entry<Key, RenderableElement> entry : this.elements.entrySet()) {
+            if (entry.getValue() instanceof RenderableWidget widget) {
+                if (widget.getTooltip() != null && widget.getWidget().isHovered && widget.getTooltipDelay() > 10) {
+                    poseStack.pushPose();
+                    renderTooltip(poseStack, widget.getTooltip(), mouseX, mouseY);
+                    poseStack.popPose();
+                    break;
+                }
+            }
+        }
     }
 
     @Override

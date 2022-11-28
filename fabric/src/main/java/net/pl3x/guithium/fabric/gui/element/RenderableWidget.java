@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public abstract class RenderableWidget extends RenderableElement implements Tickable {
+    protected List<FormattedCharSequence> tooltip;
     private AbstractWidget widget;
     private int tooltipDelay;
 
@@ -34,6 +35,10 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
 
     protected void setWidget(@NotNull AbstractWidget widget) {
         this.widget = widget;
+    }
+
+    public List<FormattedCharSequence> getTooltip() {
+        return this.tooltip;
     }
 
     public int getTooltipDelay() {
@@ -70,7 +75,7 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
         return component == null ? null : Minecraft.getInstance().font.split(component, 200);
     }
 
-    protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable String label, @Nullable Boolean showLabel, @Nullable Boolean selected, List<FormattedCharSequence> tooltip) {
+    protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable String label, @Nullable Boolean showLabel, @Nullable Boolean selected) {
         return new net.minecraft.client.gui.components.Checkbox(
             this.posX,
             this.posY,
@@ -85,18 +90,10 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 if (!this.visible) {
                     return;
                 }
-                poseStack.pushPose();
-
                 rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
                 scale(poseStack, this.x, this.y, this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 renderButton(poseStack, mouseX, mouseY, delta);
-
-                poseStack.popPose();
-
-                if (tooltip != null && this.isHovered && getTooltipDelay() > 10) {
-                    getScreen().renderTooltip(poseStack, tooltip, mouseX, mouseY);
-                }
             }
 
             @Override
@@ -110,7 +107,7 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 blit(poseStack, this.x, this.y, isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
 
                 if (this.showLabel) {
-                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632);
+                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFFFF);
                 }
             }
 

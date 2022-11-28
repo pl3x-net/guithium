@@ -61,14 +61,11 @@ public class RenderableCircle extends RenderableElement {
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        poseStack.pushPose();
-
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
@@ -83,10 +80,5 @@ public class RenderableCircle extends RenderableElement {
             buf.vertex(model, this.x + x, this.y + y, 0).color(this.outerColor).endVertex();
         }
         BufferUploader.drawWithShader(buf.end());
-
-        RenderSystem.enableTexture();
-        RenderSystem.disableBlend();
-
-        poseStack.popPose();
     }
 }
