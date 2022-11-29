@@ -1,15 +1,7 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.Vec4;
 import net.pl3x.guithium.api.gui.element.Image;
@@ -92,19 +84,6 @@ public class RenderableImage extends RenderableElement {
         rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
         scale(poseStack, this.centerX, this.centerY, getElement().getScale());
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.setShaderTexture(0, getTexture().getIdentifier());
-        RenderSystem.setShaderColor(1, 1, 1, 1);
-
-        Matrix4f model = poseStack.last().pose();
-        BufferBuilder buf = Tesselator.getInstance().getBuilder();
-        buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        buf.vertex(model, this.x1, this.y0, 0).uv(this.u1, this.v0).color(this.vertexColor).endVertex();
-        buf.vertex(model, this.x0, this.y0, 0).uv(this.u0, this.v0).color(this.vertexColor).endVertex();
-        buf.vertex(model, this.x0, this.y1, 0).uv(this.u0, this.v1).color(this.vertexColor).endVertex();
-        buf.vertex(model, this.x1, this.y1, 0).uv(this.u1, this.v1).color(this.vertexColor).endVertex();
-        BufferUploader.drawWithShader(buf.end());
+        getTexture().render(poseStack, this.x0, this.y0, this.x1, this.y1, this.u0, this.v0, this.u1, this.v1, this.vertexColor);
     }
 }
