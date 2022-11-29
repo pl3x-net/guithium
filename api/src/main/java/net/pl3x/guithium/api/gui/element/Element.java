@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonObject;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonSerializable;
@@ -171,6 +172,21 @@ public interface Element extends JsonSerializable {
      */
     default void send(@NotNull WrappedPlayer player) {
         player.getConnection().send(new ElementPacket(this));
+    }
+
+    /**
+     * Send this element to a player.
+     * <p>
+     * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
+     *
+     * @param player Player to send to
+     * @param <T>    Native player type
+     */
+    default <T> void send(T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            send(wrapped);
+        }
     }
 
     /**

@@ -20,7 +20,7 @@ import java.util.Objects;
  * Represents a slider control.
  */
 public class Slider extends Rect {
-    private String label;
+    private Component label;
     private Component tooltip;
     private Double value;
     private Double min;
@@ -46,7 +46,7 @@ public class Slider extends Rect {
      * @param max      Maximum value
      * @param decimal  Decimal format
      */
-    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @NotNull Double value, @Nullable Double min, @Nullable Double max, @Nullable String decimal) {
+    protected Slider(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Component label, @Nullable Component tooltip, @NotNull Double value, @Nullable Double min, @Nullable Double max, @Nullable String decimal) {
         super(key, Type.SLIDER, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
@@ -71,7 +71,7 @@ public class Slider extends Rect {
      * @return Text label
      */
     @Nullable
-    public String getLabel() {
+    public Component getLabel() {
         return this.label;
     }
 
@@ -80,10 +80,21 @@ public class Slider extends Rect {
      * <p>
      * If null, default empty label will be used.
      *
-     * @param label Text label
+     * @param label Text label to set
+     */
+    public void setLabel(@Nullable Component label) {
+        this.label = label;
+    }
+
+    /**
+     * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
+     *
+     * @param label Text label to set
      */
     public void setLabel(@Nullable String label) {
-        this.label = label;
+        this.label = label == null ? null : Component.translatable(label);
     }
 
     /**
@@ -227,7 +238,7 @@ public class Slider extends Rect {
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
-        json.addProperty("text", getLabel());
+        json.addProperty("label", getLabel());
         json.addProperty("tooltip", getTooltip());
         json.addProperty("value", getValue());
         json.addProperty("min", getMin());
@@ -253,7 +264,7 @@ public class Slider extends Rect {
             !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
             !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("value") ? 0D : json.get("value").getAsDouble(),
             !json.has("min") ? 0D : json.get("min").getAsDouble(),
@@ -332,7 +343,7 @@ public class Slider extends Rect {
      * Builder for sliders.
      */
     public static class Builder extends Rect.Builder<Builder> {
-        private String text;
+        private Component label;
         private Component tooltip;
         private Double value;
         private Double min;
@@ -364,11 +375,11 @@ public class Slider extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @return Text on face
+         * @return Text label
          */
         @Nullable
-        public String getLabel() {
-            return text;
+        public Component getLabel() {
+            return label;
         }
 
         /**
@@ -376,12 +387,26 @@ public class Slider extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @param text Text to set
+         * @param label Text label to set
          * @return This builder
          */
         @NotNull
-        public Builder setLabel(@Nullable String text) {
-            this.text = text;
+        public Builder setLabel(@Nullable Component label) {
+            this.label = label;
+            return this;
+        }
+
+        /**
+         * Set the text label on the slider.
+         * <p>
+         * If null, default empty label will be used.
+         *
+         * @param label Text label to set
+         * @return This builder
+         */
+        @NotNull
+        public Builder setLabel(@Nullable String label) {
+            this.label = label == null ? null : Component.translatable(label);
             return this;
         }
 

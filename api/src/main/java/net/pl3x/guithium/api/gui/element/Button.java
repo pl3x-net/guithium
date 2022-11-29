@@ -20,7 +20,7 @@ import java.util.Objects;
  * Represents a clickable button.
  */
 public class Button extends Rect {
-    private String label;
+    private Component label;
     private Component tooltip;
     private OnClick onClick = (screen, button, player) -> {
     };
@@ -38,7 +38,7 @@ public class Button extends Rect {
      * @param label    Text label
      * @param tooltip  Text on hover tooltip
      */
-    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip) {
+    protected Button(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Component label, @Nullable Component tooltip) {
         super(key, Type.BUTTON, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
@@ -52,7 +52,7 @@ public class Button extends Rect {
      * @return Text label
      */
     @Nullable
-    public String getLabel() {
+    public Component getLabel() {
         return this.label;
     }
 
@@ -61,10 +61,21 @@ public class Button extends Rect {
      * <p>
      * If null, default empty label will be used.
      *
-     * @param label Text label
+     * @param label Text label to set
+     */
+    public void setLabel(@Nullable Component label) {
+        this.label = label;
+    }
+
+    /**
+     * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
+     *
+     * @param label Text label to set
      */
     public void setLabel(@Nullable String label) {
-        this.label = label;
+        this.label = label == null ? null : Component.translatable(label);
     }
 
     /**
@@ -117,7 +128,7 @@ public class Button extends Rect {
     @NotNull
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
-        json.addProperty("text", getLabel());
+        json.addProperty("label", getLabel());
         json.addProperty("tooltip", getTooltip());
         return json.getJsonObject();
     }
@@ -139,7 +150,7 @@ public class Button extends Rect {
             !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
             !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("text") ? null : json.get("text").getAsString(),
+            !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString())
         );
     }
@@ -206,7 +217,7 @@ public class Button extends Rect {
      * Builder for buttons.
      */
     public static class Builder extends Rect.Builder<Builder> {
-        private String text;
+        private Component label;
         private Component tooltip;
         private OnClick onClick = (screen, button, player) -> {
         };
@@ -234,11 +245,11 @@ public class Button extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @return Text on face
+         * @return Text label
          */
         @Nullable
-        public String getLabel() {
-            return text;
+        public Component getLabel() {
+            return label;
         }
 
         /**
@@ -246,12 +257,25 @@ public class Button extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @param text Text to set
+         * @param label Text label to set
          * @return This builder
          */
         @NotNull
-        public Builder setLabel(@Nullable String text) {
-            this.text = text;
+        public Builder setLabel(@Nullable Component label) {
+            this.label = label;
+            return this;
+        }
+
+        /**
+         * Set the text label.
+         * <p>
+         * If null, default empty label will be used.
+         *
+         * @param label Text label to set
+         * @return This builder
+         */
+        public Builder setLabel(@Nullable String label) {
+            this.label = label == null ? null : Component.translatable(label);
             return this;
         }
 

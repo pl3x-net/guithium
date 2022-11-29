@@ -16,7 +16,7 @@ public class BukkitPlayer implements WrappedPlayer {
     private final Connection connection;
 
     private Screen currentScreen;
-    private int protocol;
+    private int protocol = -1;
 
     public BukkitPlayer(@NotNull Player player) {
         this.player = player;
@@ -65,6 +65,7 @@ public class BukkitPlayer implements WrappedPlayer {
         return getProtocol() == Guithium.PROTOCOL;
     }
 
+    @Override
     public int getProtocol() {
         return this.protocol;
     }

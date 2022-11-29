@@ -2,12 +2,10 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Vec2;
@@ -20,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public abstract class RenderableWidget extends RenderableElement implements Tickable {
+    protected Component label;
     protected List<FormattedCharSequence> tooltip;
     private AbstractWidget widget;
     private int tooltipDelay;
@@ -62,26 +61,13 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
     protected void onPress(boolean selected) {
     }
 
-    protected List<FormattedCharSequence> processTooltip(net.kyori.adventure.text.Component tooltip) {
-        MutableComponent component = null;
-        if (tooltip != null) {
-            String json = GsonComponentSerializer.gson().serialize(tooltip);
-            try {
-                component = Component.Serializer.fromJson(json);
-            } catch (Throwable t) {
-                component = Component.translatable(json);
-            }
-        }
-        return component == null ? null : Minecraft.getInstance().font.split(component, 200);
-    }
-
-    protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable String label, @Nullable Boolean showLabel, @Nullable Boolean selected) {
+    protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable Component label, @Nullable Boolean showLabel, @Nullable Boolean selected) {
         return new net.minecraft.client.gui.components.Checkbox(
             this.posX,
             this.posY,
             (int) size.getX(),
             (int) size.getY(),
-            Component.translatable(label),
+            label,
             Boolean.TRUE.equals(selected),
             showLabel == null || Boolean.TRUE.equals(showLabel)
         ) {

@@ -32,19 +32,20 @@ public class RenderableRadio extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
+        this.label = processComponent(getElement().getLabel());
+        this.tooltip = processTooltip(getElement().getTooltip());
+
         Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
+            size = Vec2.of(30 + minecraft.font.width(this.label), 20);
         }
-
-        this.tooltip = processTooltip(getElement().getTooltip());
 
         calcScreenPos(size.getX(), size.getY());
 
         setWidget(createCheckbox(
             TEXTURE,
             size,
-            getElement().getLabel(),
+            this.label,
             getElement().isShowLabel(),
             getElement().isSelected()
         ));

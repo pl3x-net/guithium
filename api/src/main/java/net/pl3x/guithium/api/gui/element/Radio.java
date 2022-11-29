@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class Radio extends Rect {
     private Key group;
-    private String label;
+    private Component label;
     private Component tooltip;
     private Boolean selected;
     private Boolean showLabel;
@@ -44,7 +44,7 @@ public class Radio extends Rect {
      * @param selected  Selected state
      * @param showLabel Show text label
      */
-    protected Radio(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Key group, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
+    protected Radio(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Key group, @Nullable Component label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
         super(key, Type.RADIO, pos, anchor, offset, rotation, scale, size);
         setGroup(group);
         setLabel(label);
@@ -88,7 +88,7 @@ public class Radio extends Rect {
      * @return Text label
      */
     @Nullable
-    public String getLabel() {
+    public Component getLabel() {
         return this.label;
     }
 
@@ -97,10 +97,21 @@ public class Radio extends Rect {
      * <p>
      * If null, default empty label will be used.
      *
-     * @param label Text label
+     * @param label Text label to set
+     */
+    public void setLabel(@Nullable Component label) {
+        this.label = label;
+    }
+
+    /**
+     * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
+     *
+     * @param label Text label to set
      */
     public void setLabel(@Nullable String label) {
-        this.label = label;
+        this.label = label == null ? null : Component.translatable(label);
     }
 
     /**
@@ -229,7 +240,7 @@ public class Radio extends Rect {
             !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
             !json.has("group") ? null : Key.of(json.get("group").getAsString()),
-            !json.has("label") ? null : json.get("label").getAsString(),
+            !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("selected") ? null : json.get("selected").getAsBoolean(),
             !json.has("showLabel") ? null : json.get("showLabel").getAsBoolean()
@@ -305,7 +316,7 @@ public class Radio extends Rect {
      */
     public static class Builder extends Rect.Builder<Builder> {
         private Key group;
-        private String label;
+        private Component label;
         private Component tooltip;
         private Boolean selected;
         private Boolean showLabel;
@@ -366,7 +377,7 @@ public class Radio extends Rect {
          * @return Text label
          */
         @Nullable
-        public String getLabel() {
+        public Component getLabel() {
             return this.label;
         }
 
@@ -375,12 +386,26 @@ public class Radio extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @param label Text label
+         * @param label Text label to set
+         * @return This builder
+         */
+        @NotNull
+        public Builder setLabel(@Nullable Component label) {
+            this.label = label;
+            return this;
+        }
+
+        /**
+         * Set the text label.
+         * <p>
+         * If null, default empty label will be used.
+         *
+         * @param label Text label to set
          * @return This builder
          */
         @NotNull
         public Builder setLabel(@Nullable String label) {
-            this.label = label;
+            this.label = label == null ? null : Component.translatable(label);
             return this;
         }
 

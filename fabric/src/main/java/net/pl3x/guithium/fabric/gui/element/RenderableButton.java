@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
@@ -33,12 +32,13 @@ public class RenderableButton extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
+        this.label = processComponent(getElement().getLabel());
+        this.tooltip = processTooltip(getElement().getTooltip());
+
         Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
+            size = Vec2.of(30 + minecraft.font.width(this.label), 20);
         }
-
-        this.tooltip = processTooltip(getElement().getTooltip());
 
         calcScreenPos(size.getX(), size.getY());
 
@@ -47,7 +47,7 @@ public class RenderableButton extends RenderableWidget {
             this.posY,
             (int) size.getX(),
             (int) size.getY(),
-            Component.translatable(getElement().getLabel()),
+            this.label,
             (button) -> {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 ButtonClickPacket packet = new ButtonClickPacket(getScreen().getScreen(), getElement());

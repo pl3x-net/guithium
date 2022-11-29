@@ -20,7 +20,7 @@ import java.util.Objects;
  * Represents a toggleable checkbox.
  */
 public class Checkbox extends Rect {
-    private String label;
+    private Component label;
     private Component tooltip;
     private Boolean selected;
     private Boolean showLabel;
@@ -42,7 +42,7 @@ public class Checkbox extends Rect {
      * @param selected  Selected state
      * @param showLabel Show text label
      */
-    protected Checkbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
+    protected Checkbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable Component label, @Nullable Component tooltip, @Nullable Boolean selected, @Nullable Boolean showLabel) {
         super(key, Type.CHECKBOX, pos, anchor, offset, rotation, scale, size);
         setLabel(label);
         setTooltip(tooltip);
@@ -58,7 +58,7 @@ public class Checkbox extends Rect {
      * @return Text label
      */
     @Nullable
-    public String getLabel() {
+    public Component getLabel() {
         return this.label;
     }
 
@@ -67,10 +67,21 @@ public class Checkbox extends Rect {
      * <p>
      * If null, default empty label will be used.
      *
-     * @param label Text label
+     * @param label Text label to set
+     */
+    public void setLabel(@Nullable Component label) {
+        this.label = label;
+    }
+
+    /**
+     * Set the text label.
+     * <p>
+     * If null, default empty label will be used.
+     *
+     * @param label Text label to set
      */
     public void setLabel(@Nullable String label) {
-        this.label = label;
+        this.label = label == null ? null : Component.translatable(label);
     }
 
     /**
@@ -193,7 +204,7 @@ public class Checkbox extends Rect {
             !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
             !json.has("scale") ? null : json.get("scale").getAsFloat(),
             !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("label") ? null : json.get("label").getAsString(),
+            !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
             !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
             !json.has("selected") ? null : json.get("selected").getAsBoolean(),
             !json.has("showLabel") ? null : json.get("showLabel").getAsBoolean()
@@ -266,7 +277,7 @@ public class Checkbox extends Rect {
      * Builder for checkboxes.
      */
     public static class Builder extends Rect.Builder<Builder> {
-        private String label;
+        private Component label;
         private Component tooltip;
         private Boolean selected;
         private Boolean showLabel;
@@ -299,7 +310,7 @@ public class Checkbox extends Rect {
          * @return Text label
          */
         @Nullable
-        public String getLabel() {
+        public Component getLabel() {
             return this.label;
         }
 
@@ -308,12 +319,26 @@ public class Checkbox extends Rect {
          * <p>
          * If null, default empty label will be used.
          *
-         * @param label Text label
+         * @param label Text label to set
+         * @return This builder
+         */
+        @NotNull
+        public Builder setLabel(@Nullable Component label) {
+            this.label = label;
+            return this;
+        }
+
+        /**
+         * Set the text label.
+         * <p>
+         * If null, default empty label will be used.
+         *
+         * @param label Text label to set
          * @return This builder
          */
         @NotNull
         public Builder setLabel(@Nullable String label) {
-            this.label = label;
+            this.label = label == null ? null : Component.translatable(label);
             return this;
         }
 

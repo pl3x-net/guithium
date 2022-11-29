@@ -229,6 +229,29 @@ public class Screen extends Keyed implements JsonSerializable {
     }
 
     /**
+     * Open this screen on player's client.
+     * <p>
+     * If this screen is of type HUD, then the screen will be added to the
+     * client's HUD manager.
+     * <p>
+     * If this screen is not a HUD type, then the player's controls will be
+     * locked and the screen will be displayed to them.
+     * <p>
+     * If the player already has a non-HUD type screen being displayed (even
+     * a screen provided from another mod or vanilla), then that screen will
+     * be replaced with this one.
+     *
+     * @param player Player to open screen for
+     * @param <T>    Native player type
+     */
+    public <T> void open(@NotNull T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            open(wrapped);
+        }
+    }
+
+    /**
      * Close this screen on player's client.
      * <p>
      * If the player is <em>not</em> being displayed this screen, then no
@@ -239,6 +262,22 @@ public class Screen extends Keyed implements JsonSerializable {
     public void close(@NotNull WrappedPlayer player) {
         player.setCurrentScreen(null);
         player.getConnection().send(new CloseScreenPacket(getKey()));
+    }
+
+    /**
+     * Close this screen on player's client.
+     * <p>
+     * If the player is <em>not</em> being displayed this screen, then no
+     * action will be taken.
+     *
+     * @param player Player to close screen for
+     * @param <T>    Native player type
+     */
+    public <T> void close(@NotNull T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            close(wrapped);
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ public abstract class PlayerManager {
      * Add a new player to manage.
      *
      * @param player Player to manage
+     * @param <T>    Type of player
      */
     public abstract <T> void add(@NotNull T player);
 
@@ -32,6 +33,7 @@ public abstract class PlayerManager {
      * Get a managed player.
      *
      * @param player Player to get
+     * @param <T>    Type of player
      * @return Managed player, or null if player is not managed
      */
     public abstract <T> WrappedPlayer get(@NotNull T player);
@@ -50,6 +52,7 @@ public abstract class PlayerManager {
      * Remove player from manager.
      *
      * @param player Player to remove
+     * @param <T>    Type of player
      */
     public abstract <T> void remove(@NotNull T player);
 

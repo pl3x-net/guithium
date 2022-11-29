@@ -2,6 +2,7 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,11 +40,6 @@ public class RenderableSlider extends RenderableWidget {
 
     @Override
     public void init(@NotNull Minecraft minecraft, int width, int height) {
-        Vec2 size = getElement().getSize();
-        if (size == null) {
-            size = Vec2.of(30 + minecraft.font.width(getElement().getLabel()), 20);
-        }
-
         if (getElement().getMin() != null) {
             this.min = getElement().getMin();
         }
@@ -64,7 +60,13 @@ public class RenderableSlider extends RenderableWidget {
         }
         value = (value - this.min) / diff;
 
+        this.label = calculateMessage();
         this.tooltip = processTooltip(getElement().getTooltip());
+
+        Vec2 size = getElement().getSize();
+        if (size == null) {
+            size = Vec2.of(30 + minecraft.font.width(this.label), 20);
+        }
 
         calcScreenPos(size.getX(), size.getY());
 
@@ -73,15 +75,15 @@ public class RenderableSlider extends RenderableWidget {
             this.posY,
             (int) size.getX(),
             (int) size.getY(),
-            calculateMessage(),
+            this.label,
             value
         );
     }
 
     public Component calculateMessage() {
-        String label = getElement().getLabel();
+        net.kyori.adventure.text.Component label = getElement().getLabel();
         if (label != null) {
-            return Component.literal(label
+            return processComponent(GsonComponentSerializer.gson().serialize(label)
                 .replace("{value}", this.decimalFormat.format(getElement().getValue()))
                 .replace("{min}", this.decimalFormat.format(this.min))
                 .replace("{max}", this.decimalFormat.format(this.max))

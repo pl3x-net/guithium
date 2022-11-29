@@ -2,7 +2,11 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
@@ -17,6 +21,9 @@ import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public abstract class RenderableElement {
     private final RenderableScreen screen;
@@ -58,6 +65,29 @@ public abstract class RenderableElement {
     }
 
     public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
+
+    @NotNull
+    protected MutableComponent processComponent(@Nullable net.kyori.adventure.text.Component component) {
+        return processComponent(component == null ? null : GsonComponentSerializer.gson().serialize(component));
+    }
+
+    @NotNull
+    protected MutableComponent processComponent(@Nullable String json) {
+        MutableComponent nmsComponent = null;
+        if (json != null) {
+            try {
+                nmsComponent = Component.Serializer.fromJson(json);
+            } catch (Throwable t) {
+                nmsComponent = Component.translatable(json);
+            }
+        }
+        return nmsComponent == null ? Component.empty() : nmsComponent;
+    }
+
+    @Nullable
+    protected List<FormattedCharSequence> processTooltip(@Nullable net.kyori.adventure.text.Component tooltip) {
+        return tooltip == null ? null : Minecraft.getInstance().font.split(processComponent(tooltip), 200);
+    }
 
     protected void rotate(PoseStack poseStack, int x, int y, int width, int height, Float degrees) {
         if (degrees == null) {

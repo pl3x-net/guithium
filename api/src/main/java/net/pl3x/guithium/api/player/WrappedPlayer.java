@@ -68,4 +68,11 @@ public interface WrappedPlayer {
      * @return True if player has Guithium mod installed
      */
     boolean hasGuithium();
+
+    /**
+     * Get the protocol for the player's Guithium mod.
+     *
+     * @return Player's Guithium protocol, or -1 if not present
+     */
+    int getProtocol();
 }

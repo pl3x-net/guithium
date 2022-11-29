@@ -2,10 +2,8 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -30,12 +28,7 @@ public class RenderableText extends RenderableElement {
             return;
         }
 
-        String json = GsonComponentSerializer.gson().serialize(getElement().getText());
-        try {
-            this.text = Component.Serializer.fromJson(json);
-        } catch (Throwable t) {
-            this.text = Component.translatable(json);
-        }
+        this.text = processComponent(getElement().getText());
 
         int textWidth = Minecraft.getInstance().font.width(this.text);
         int textHeight = Minecraft.getInstance().font.lineHeight;
