@@ -31,7 +31,7 @@ public class Texture {
 
     private float time;
     private int frame;
-    private int[] frames = new int[]{0};
+    private float[] frames = new float[]{0F};
     private boolean isLoaded;
 
     public Texture(@NotNull Key key, @NotNull String url) {
@@ -66,10 +66,13 @@ public class Texture {
             GifDecoder.GifImage gif = GifDecoder.read(bytes);
             int frameCount = gif.getFrameCount();
             BufferedImage image = new BufferedImage(gif.getWidth(), gif.getHeight() * frameCount, BufferedImage.TYPE_INT_ARGB);
-            this.frames = new int[frameCount];
+            this.frames = new float[frameCount];
             for (int i = 0; i < frameCount; i++) {
                 BufferedImage frame = gif.getFrame(i);
-                this.frames[i] = gif.getDelay(i);
+                // delay is number of hundredths (1/100) of a second
+                // divide by 5 to align with minecraft ticks (1/20)
+                // 10/100 = (10/5)/20
+                this.frames[i] = gif.getDelay(i) / 5F;
                 for (int x = 0; x < gif.getWidth(); x++) {
                     for (int y = 0; y < gif.getHeight(); y++) {
                         image.setRGB(x, gif.getHeight() * i + y, frame.getRGB(x, y));
@@ -148,9 +151,10 @@ public class Texture {
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         if (this.frames.length > 0) {
-            this.time += Minecraft.getInstance().getDeltaFrameTime() * 5F;
-            if (this.time >= this.frames[this.frame]) {
-                this.time = 0F;
+            this.time += Minecraft.getInstance().getDeltaFrameTime();
+            float time = this.frames[this.frame];
+            if (this.time >= time) {
+                this.time -= time;
                 if (++this.frame >= this.frames.length) {
                     this.frame = 0;
                 }
