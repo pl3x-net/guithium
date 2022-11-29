@@ -152,9 +152,9 @@ public class Texture {
 
         if (this.frames.length > 0) {
             this.time += Minecraft.getInstance().getDeltaFrameTime();
-            float time = this.frames[this.frame];
-            if (this.time >= time) {
-                this.time -= time;
+            float delay = this.frames[this.frame];
+            if (this.time >= delay) {
+                this.time -= delay;
                 if (++this.frame >= this.frames.length) {
                     this.frame = 0;
                 }
