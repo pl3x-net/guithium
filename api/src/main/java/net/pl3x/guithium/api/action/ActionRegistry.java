@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.action;
 
+import net.pl3x.guithium.api.action.actions.Action;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;

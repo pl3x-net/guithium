@@ -72,7 +72,7 @@ public class RadioTogglePacket extends Packet {
      *
      * @return Radio button's new selected state
      */
-    public boolean getSelected() {
+    public boolean isSelected() {
         return this.selected;
     }
 
@@ -87,7 +87,7 @@ public class RadioTogglePacket extends Packet {
         ByteArrayDataOutput out = out(this);
         out.writeUTF(getScreen().toString());
         out.writeUTF(getRadio().toString());
-        out.writeBoolean(getSelected());
+        out.writeBoolean(isSelected());
         return out;
     }
 }

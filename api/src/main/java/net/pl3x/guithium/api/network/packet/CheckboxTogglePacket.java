@@ -72,7 +72,7 @@ public class CheckboxTogglePacket extends Packet {
      *
      * @return Checkbox's new selected state
      */
-    public boolean getSelected() {
+    public boolean isSelected() {
         return this.selected;
     }
 
@@ -87,7 +87,7 @@ public class CheckboxTogglePacket extends Packet {
         ByteArrayDataOutput out = out(this);
         out.writeUTF(getScreen().toString());
         out.writeUTF(getCheckbox().toString());
-        out.writeBoolean(getSelected());
+        out.writeBoolean(isSelected());
         return out;
     }
 }

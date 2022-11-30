@@ -1,18 +1,17 @@
-package net.pl3x.guithium.api.action.player;
+package net.pl3x.guithium.api.action.actions;
 
 import com.google.common.base.Preconditions;
-import net.pl3x.guithium.api.action.Action;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents an action performed by a player.
+ * Action that fires when a player performs an action.
  */
 public abstract class PlayerAction extends Action {
     private final WrappedPlayer player;
 
     /**
-     * Creates a new player action.
+     * Creates a new action for when a player performs an action.
      *
      * @param player Player that performed the action
      */

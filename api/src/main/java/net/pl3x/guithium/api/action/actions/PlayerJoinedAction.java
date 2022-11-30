@@ -1,4 +1,4 @@
-package net.pl3x.guithium.api.action.player;
+package net.pl3x.guithium.api.action.actions;
 
 import net.pl3x.guithium.api.action.RegisteredHandler;
 import net.pl3x.guithium.api.player.WrappedPlayer;
@@ -17,9 +17,9 @@ public class PlayerJoinedAction extends PlayerAction {
     private static final List<RegisteredHandler> handlers = new ArrayList<>();
 
     /**
-     * Create a new action for when a player joins the server.
+     * Creates a new action for when a player joins the server.
      *
-     * @param player Player that joined
+     * @param player Player that performed the action
      */
     public PlayerJoinedAction(@NotNull WrappedPlayer player) {
         super(player);

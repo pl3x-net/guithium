@@ -2,7 +2,12 @@ package net.pl3x.guithium.plugin.network;
 
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.action.player.PlayerJoinedAction;
+import net.pl3x.guithium.api.action.actions.ButtonClickedAction;
+import net.pl3x.guithium.api.action.actions.CheckboxToggledAction;
+import net.pl3x.guithium.api.action.actions.CloseScreenAction;
+import net.pl3x.guithium.api.action.actions.PlayerJoinedAction;
+import net.pl3x.guithium.api.action.actions.RadioToggledAction;
+import net.pl3x.guithium.api.action.actions.SliderChangedAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
@@ -35,37 +40,56 @@ public class BukkitPacketListener implements PacketListener {
     @Override
     public void handleButtonClick(@NotNull ButtonClickPacket packet) {
         Screen screen = this.player.getCurrentScreen();
-        if (screen != null && screen.getKey().equals(packet.getScreen())) {
-            if (screen.getElements().get(packet.getButton()) instanceof Button button) {
-                Button.OnClick onClick = button.onClick();
-                if (onClick != null) {
-                    onClick.accept(screen, button, player);
-                }
-            }
+        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
+            return;
+        }
+        if (!(screen.getElements().get(packet.getButton()) instanceof Button button)) {
+            return;
+        }
+        ButtonClickedAction action = new ButtonClickedAction(this.player, screen, button);
+        Guithium.api().getActionRegistry().callAction(action);
+        if (action.isCancelled()) {
+            return;
+        }
+        Button.OnClick onClick = button.onClick();
+        if (onClick != null) {
+            onClick.accept(screen, button, this.player);
         }
     }
 
     @Override
     public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
         Screen screen = this.player.getCurrentScreen();
-        if (screen != null && screen.getKey().equals(packet.getScreen())) {
-            if (screen.getElements().get(packet.getCheckbox()) instanceof Checkbox checkbox) {
-                Checkbox.OnToggled onToggled = checkbox.onToggled();
-                if (onToggled != null) {
-                    onToggled.accept(screen, checkbox, player, packet.getSelected());
-                }
-            }
+        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
+            return;
+        }
+        if (!(screen.getElements().get(packet.getCheckbox()) instanceof Checkbox checkbox)) {
+            return;
+        }
+        CheckboxToggledAction action = new CheckboxToggledAction(this.player, screen, checkbox, packet.isSelected());
+        Guithium.api().getActionRegistry().callAction(action);
+        if (action.isCancelled()) {
+            return;
+        }
+        checkbox.setSelected(action.isSelected());
+        if (packet.isSelected() != action.isSelected()) {
+            checkbox.send(this.player);
+        }
+        Checkbox.OnToggled onToggled = checkbox.onToggled();
+        if (onToggled != null) {
+            onToggled.accept(screen, checkbox, this.player, action.isSelected());
         }
     }
 
     @Override
     public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         Screen screen = this.player.getCurrentScreen();
-        if (screen != null) {
-            if (screen.getKey().equals(packet.getScreenKey())) {
-                this.player.setCurrentScreen(null);
-            }
+        if (screen == null || !screen.getKey().equals(packet.getScreenKey())) {
+            return;
         }
+        CloseScreenAction action = new CloseScreenAction(this.player, screen);
+        Guithium.api().getActionRegistry().callAction(action);
+        this.player.setCurrentScreen(null);
     }
 
     @Override
@@ -98,7 +122,8 @@ public class BukkitPacketListener implements PacketListener {
         }
 
         // tell other plugins about this hello
-        Guithium.api().getActionRegistry().callAction(new PlayerJoinedAction(this.player));
+        PlayerJoinedAction action = new PlayerJoinedAction(this.player);
+        Guithium.api().getActionRegistry().callAction(action);
     }
 
     @Override
@@ -110,26 +135,48 @@ public class BukkitPacketListener implements PacketListener {
     @Override
     public void handleRadioToggle(@NotNull RadioTogglePacket packet) {
         Screen screen = this.player.getCurrentScreen();
-        if (screen != null && screen.getKey().equals(packet.getScreen())) {
-            if (screen.getElements().get(packet.getRadio()) instanceof Radio radio) {
-                Radio.OnToggled onToggled = radio.onToggled();
-                if (onToggled != null) {
-                    onToggled.accept(screen, radio, player, packet.getSelected());
-                }
-            }
+        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
+            return;
+        }
+        if (!(screen.getElements().get(packet.getRadio()) instanceof Radio radio)) {
+            return;
+        }
+        RadioToggledAction action = new RadioToggledAction(this.player, screen, radio, packet.isSelected());
+        Guithium.api().getActionRegistry().callAction(action);
+        if (action.isCancelled()) {
+            return;
+        }
+        radio.setSelected(action.isSelected());
+        if (packet.isSelected() != action.isSelected()) {
+            radio.send(this.player);
+        }
+        Radio.OnToggled onToggled = radio.onToggled();
+        if (onToggled != null) {
+            onToggled.accept(screen, radio, this.player, action.isSelected());
         }
     }
 
     @Override
     public void handleSliderChange(@NotNull SliderChangePacket packet) {
         Screen screen = this.player.getCurrentScreen();
-        if (screen != null && screen.getKey().equals(packet.getScreen())) {
-            if (screen.getElements().get(packet.getSlider()) instanceof Slider slider) {
-                Slider.OnChange onChange = slider.onChange();
-                if (onChange != null) {
-                    onChange.accept(screen, slider, player, packet.getValue());
-                }
-            }
+        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
+            return;
+        }
+        if (!(screen.getElements().get(packet.getSlider()) instanceof Slider slider)) {
+            return;
+        }
+        SliderChangedAction action = new SliderChangedAction(this.player, screen, slider, packet.getValue());
+        Guithium.api().getActionRegistry().callAction(action);
+        if (action.isCancelled()) {
+            return;
+        }
+        slider.setValue(action.getValue());
+        if (packet.getValue() != action.getValue()) {
+            slider.send(this.player);
+        }
+        Slider.OnChange onChange = slider.onChange();
+        if (onChange != null) {
+            onChange.accept(screen, slider, this.player, action.getValue());
         }
     }
 
