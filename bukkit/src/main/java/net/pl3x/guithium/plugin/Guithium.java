@@ -24,7 +24,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
 
     private final ActionRegistry actionRegistry;
     private final NetworkHandler networkHandler;
-    private final PlayerManager playerManager;
+    private final BukkitPlayerManager playerManager;
     private final TextureManager textureManager;
 
     public Guithium() {
@@ -72,7 +72,7 @@ public class Guithium extends JavaPlugin implements net.pl3x.guithium.api.Guithi
 
     @Override
     @NotNull
-    public PlayerManager getPlayerManager() {
+    public BukkitPlayerManager getPlayerManager() {
         return this.playerManager;
     }
 
