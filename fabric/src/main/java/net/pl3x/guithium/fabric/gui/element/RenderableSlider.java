@@ -101,8 +101,8 @@ public class RenderableSlider extends RenderableWidget {
         }
 
         public void init(int x, int y, int width, int height, Component label, double value) {
-            this.x = x;
-            this.y = y;
+            this.setX(x);
+            this.setY(y);
             this.width = width;
             this.height = height;
             this.value = value;
@@ -114,8 +114,8 @@ public class RenderableSlider extends RenderableWidget {
             if (!this.visible) {
                 return;
             }
-            this.renderableSlider.rotate(poseStack, this.x, this.y, this.width, this.height, this.renderableSlider.getElement().getRotation());
-            this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            this.renderableSlider.rotate(poseStack, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
+            this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
             renderButton(poseStack, mouseX, mouseY, delta);
         }
 
@@ -128,10 +128,10 @@ public class RenderableSlider extends RenderableWidget {
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             int yOffset = getYImage(isHoveredOrFocused());
-            blit(poseStack, this.x, this.y, 0, 46 + yOffset * 20, this.width / 2, this.height);
-            blit(poseStack, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
+            blit(poseStack, this.getX(), this.getY(), 0, 46 + yOffset * 20, this.width / 2, this.height);
+            blit(poseStack, this.getX() + this.width / 2, this.getY(), 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
             renderBg(poseStack, Minecraft.getInstance(), mouseX, mouseY);
-            drawCenteredString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
+            drawCenteredString(poseStack, Minecraft.getInstance().font, getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
         }
 
         @Override

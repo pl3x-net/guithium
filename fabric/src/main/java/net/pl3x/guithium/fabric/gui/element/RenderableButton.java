@@ -13,6 +13,8 @@ import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public class RenderableButton extends RenderableWidget {
     public RenderableButton(@NotNull RenderableScreen screen, @NotNull Button button) {
         super(screen, button);
@@ -52,15 +54,16 @@ public class RenderableButton extends RenderableWidget {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 ButtonClickPacket packet = new ButtonClickPacket(getScreen().getScreen(), getElement());
                 Guithium.instance().getNetworkHandler().getConnection().send(packet);
-            }
+            },
+            Supplier::get
         ) {
             @Override
             public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
                 if (!this.visible) {
                     return;
                 }
-                rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
-                this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
                 renderButton(poseStack, mouseX, mouseY, delta);
             }
 
@@ -73,10 +76,10 @@ public class RenderableButton extends RenderableWidget {
                 RenderSystem.setShaderColor(1, 1, 1, 1);
 
                 int yOffset = getYImage(isHoveredOrFocused());
-                blit(poseStack, this.x, this.y, 0, 46 + yOffset * 20, this.width / 2, this.height);
-                blit(poseStack, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
+                blit(poseStack, this.getX(), this.getY(), 0, 46 + yOffset * 20, this.width / 2, this.height);
+                blit(poseStack, this.getX() + this.width / 2, this.getY(), 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
                 renderBg(poseStack, minecraft, mouseX, mouseY);
-                drawCenteredString(poseStack, minecraft.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
+                drawCenteredString(poseStack, minecraft.font, getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
             }
         });
     }

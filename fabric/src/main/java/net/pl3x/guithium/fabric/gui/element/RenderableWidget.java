@@ -76,9 +76,9 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 if (!this.visible) {
                     return;
                 }
-                rotate(poseStack, this.x, this.y, this.width, this.height, getElement().getRotation());
-                scale(poseStack, this.x, this.y, this.width, this.height, getElement().getScale());
-                this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                scale(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
+                this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
                 renderButton(poseStack, mouseX, mouseY, delta);
             }
 
@@ -90,10 +90,10 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(1, 1, 1, 1);
 
-                blit(poseStack, this.x, this.y, isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
+                blit(poseStack, this.getX(), this.getY(), isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
 
                 if (this.showLabel) {
-                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 0xFFE0E0E0);
+                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFE0E0E0);
                 }
             }
 

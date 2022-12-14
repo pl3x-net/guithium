@@ -1,7 +1,6 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -22,6 +21,7 @@ import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.List;
 
@@ -101,7 +101,7 @@ public abstract class RenderableElement {
             return;
         }
         poseStack.translate(x, y, 0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(degrees));
+        poseStack.mulPose((new Quaternionf()).rotateZ(degrees * 0.017453292F));
         poseStack.translate(-x, -y, 0);
     }
 

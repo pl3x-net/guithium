@@ -15,9 +15,12 @@ java {
 }
 
 repositories {
-    mavenCentral()
     maven("https://maven.fabricmc.net/")
     maven("https://maven.terraformersmc.com/")
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        mavenContent { snapshotsOnly() }
+    }
+    mavenCentral()
 }
 
 dependencies {
@@ -27,8 +30,8 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${project.extra["fabric_loader_version"]}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.extra["fabric_api_version"]}")
     modImplementation("com.terraformersmc:modmenu:${project.extra["modmenu_version"]}")
-    modImplementation(include("net.kyori:adventure-platform-fabric:5.4.0")!!)
-    modImplementation(include("net.kyori:adventure-text-serializer-gson:4.11.0")!!)
+    modImplementation(include("net.kyori:adventure-platform-fabric:5.6.0")!!)
+    modImplementation(include("net.kyori:adventure-text-serializer-gson:4.12.0")!!)
 }
 
 tasks {

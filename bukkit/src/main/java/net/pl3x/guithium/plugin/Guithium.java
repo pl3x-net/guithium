@@ -3,7 +3,6 @@ package net.pl3x.guithium.plugin;
 import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.NetworkHandler;
-import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.plugin.listener.PlayerListener;
 import net.pl3x.guithium.plugin.network.BukkitNetworkHandler;
 import net.pl3x.guithium.plugin.player.BukkitPlayerManager;
