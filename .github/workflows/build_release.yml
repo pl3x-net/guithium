@@ -52,7 +52,7 @@ jobs:
           nodetail: true
           title: New build of Guithium is ready!
           description: |
-            Version ${{ env.mod_version }} Build ${{ github.run_number }}
+            Version ${{ env.guithium_version }} Build ${{ github.run_number }}
             Click [here](https://modrinth.com/mod/guithium) to download!
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
@@ -64,5 +64,5 @@ jobs:
           title: Build Failure!
           color: 0xff0000
           description: |
-            Version ${{ env.mod_version }} Build ${{ github.run_number }}
+            Version ${{ env.guithium_version }} Build ${{ github.run_number }}
             Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!

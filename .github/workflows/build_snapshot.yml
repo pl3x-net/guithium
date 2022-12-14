@@ -40,7 +40,7 @@ jobs:
           nodetail: true
           title: Dev snapshot built successfully!
           description: |
-            Version ${{ env.mod_version }}-SNAPSHOT Build ${{ github.run_number }}
+            Version ${{ env.guithium_version }}-SNAPSHOT Build ${{ github.run_number }}
             Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
@@ -53,5 +53,5 @@ jobs:
           title: Dev snapshot build failure!
           color: 0xff0000
           description: |
-            Version ${{ env.mod_version }}-SNAPSHOT Build ${{ github.run_number }}
+            Version ${{ env.guithium_version }}-SNAPSHOT Build ${{ github.run_number }}
             Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!
