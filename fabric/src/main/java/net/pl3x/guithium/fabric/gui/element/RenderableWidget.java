@@ -2,6 +2,7 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
@@ -14,8 +15,6 @@ import net.pl3x.guithium.api.gui.element.Tickable;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public abstract class RenderableWidget extends RenderableElement implements Tickable {
     protected Component label;
@@ -63,13 +62,13 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
 
     protected AbstractWidget createCheckbox(@NotNull ResourceLocation texture, @NotNull Vec2 size, @Nullable Component label, @Nullable Boolean showLabel, @Nullable Boolean selected) {
         return new net.minecraft.client.gui.components.Checkbox(
-            this.posX,
-            this.posY,
-            (int) size.getX(),
-            (int) size.getY(),
-            label,
-            Boolean.TRUE.equals(selected),
-            showLabel == null || Boolean.TRUE.equals(showLabel)
+                this.posX,
+                this.posY,
+                (int) size.getX(),
+                (int) size.getY(),
+                label,
+                Boolean.TRUE.equals(selected),
+                showLabel == null || Boolean.TRUE.equals(showLabel)
         ) {
             @Override
             public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
@@ -79,11 +78,11 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
                 scale(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderButton(poseStack, mouseX, mouseY, delta);
+                renderWidget(poseStack, mouseX, mouseY, delta);
             }
 
             @Override
-            public void renderButton(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -103,5 +102,16 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 RenderableWidget.this.onPress(selected());
             }
         };
+    }
+
+    public static int getTextureY(boolean isActive, boolean isHoveredOrFocused) {
+        int i = 1;
+        if (!isActive) {
+            i = 0;
+        } else if (isHoveredOrFocused) {
+            i = 2;
+        }
+
+        return 46 + i * 20;
     }
 }

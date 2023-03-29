@@ -30,8 +30,8 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${project.extra["fabric_loader_version"]}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.extra["fabric_api_version"]}")
     modImplementation("com.terraformersmc:modmenu:${project.extra["modmenu_version"]}")
-    modImplementation(include("net.kyori:adventure-platform-fabric:5.6.0")!!)
-    modImplementation(include("net.kyori:adventure-text-serializer-gson:4.12.0")!!)
+    modImplementation(include("net.kyori:adventure-platform-fabric:5.8.0")!!)
+    modImplementation(include("net.kyori:adventure-text-serializer-gson:4.13.0")!!)
 }
 
 tasks {

@@ -22,11 +22,11 @@ public class OptionsScreen extends AbstractScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack, int vOffset) {
+    public void renderBackground(@NotNull PoseStack poseStack) {
         if (this.minecraft != null && this.minecraft.level != null) {
-            this.fillGradient(poseStack, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+            fillGradient(poseStack, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
         } else {
-            this.renderDirtBackground(vOffset);
+            this.renderDirtBackground(poseStack);
         }
     }
 }

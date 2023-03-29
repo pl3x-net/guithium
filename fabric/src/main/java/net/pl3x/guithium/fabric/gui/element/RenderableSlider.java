@@ -2,19 +2,19 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.text.DecimalFormat;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
-
-import java.text.DecimalFormat;
 
 public class RenderableSlider extends RenderableWidget {
     private DecimalFormat decimalFormat;
@@ -71,12 +71,12 @@ public class RenderableSlider extends RenderableWidget {
         calcScreenPos(size.getX(), size.getY());
 
         getWidget().init(
-            this.posX,
-            this.posY,
-            (int) size.getX(),
-            (int) size.getY(),
-            this.label,
-            value
+                this.posX,
+                this.posY,
+                (int) size.getX(),
+                (int) size.getY(),
+                this.label,
+                value
         );
     }
 
@@ -84,9 +84,9 @@ public class RenderableSlider extends RenderableWidget {
         net.kyori.adventure.text.Component label = getElement().getLabel();
         if (label != null) {
             return processComponent(GsonComponentSerializer.gson().serialize(label)
-                .replace("{value}", this.decimalFormat.format(getElement().getValue()))
-                .replace("{min}", this.decimalFormat.format(this.min))
-                .replace("{max}", this.decimalFormat.format(this.max))
+                    .replace("{value}", this.decimalFormat.format(getElement().getValue()))
+                    .replace("{min}", this.decimalFormat.format(this.min))
+                    .replace("{max}", this.decimalFormat.format(this.max))
             );
         }
         return Component.empty();
@@ -116,22 +116,22 @@ public class RenderableSlider extends RenderableWidget {
             }
             this.renderableSlider.rotate(poseStack, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
             this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-            renderButton(poseStack, mouseX, mouseY, delta);
+            renderWidget(poseStack, mouseX, mouseY, delta);
         }
 
         @Override
-        public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float delta) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
-            int yOffset = getYImage(isHoveredOrFocused());
-            blit(poseStack, this.getX(), this.getY(), 0, 46 + yOffset * 20, this.width / 2, this.height);
-            blit(poseStack, this.getX() + this.width / 2, this.getY(), 200 - this.width / 2, 46 + yOffset * 20, this.width / 2, this.height);
-            renderBg(poseStack, Minecraft.getInstance(), mouseX, mouseY);
-            drawCenteredString(poseStack, Minecraft.getInstance().font, getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, this.active ? 0xFFFFFFFF : 0xFFA0A0A0);
+            int yOffset = getTextureY(isActive(), isHoveredOrFocused());
+            blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
+            blitNineSliced(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20, 4, 200, 20, 0, yOffset);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            renderScrollingString(poseStack, Minecraft.getInstance().font, 2, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
         }
 
         @Override
@@ -156,7 +156,7 @@ public class RenderableSlider extends RenderableWidget {
 
             element.setValue(value);
             Guithium.instance().getNetworkHandler().getConnection()
-                .send(new SliderChangePacket(this.renderableSlider.getScreen().getScreen(), element, value));
+                    .send(new SliderChangePacket(this.renderableSlider.getScreen().getScreen(), element, value));
         }
     }
 }

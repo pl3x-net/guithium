@@ -36,20 +36,20 @@ public class RenderableTextbox extends RenderableWidget {
         size = Vec2.of(size.getX() - 2, size.getY() - 2);
 
         calcScreenPos(
-            size.getX(),
-            size.getY()
+                size.getX(),
+                size.getY()
         );
 
         this.centerX = (int) (this.posX + size.getX() / 2);
         this.centerX = (int) (this.posY + size.getY() / 2);
 
         EditBox editbox = new EditBox(
-            minecraft.font,
-            this.posX + 1,
-            this.posY + 1,
-            (int) size.getX(),
-            (int) size.getY(),
-            Component.translatable(getElement().getSuggestion())
+                minecraft.font,
+                this.posX + 1,
+                this.posY + 1,
+                (int) size.getX(),
+                (int) size.getY(),
+                Component.translatable(getElement().getSuggestion())
         ) {
             @Override
             public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
@@ -59,7 +59,7 @@ public class RenderableTextbox extends RenderableWidget {
                 rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
                 scale(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderButton(poseStack, mouseX, mouseY, delta);
+                renderWidget(poseStack, mouseX, mouseY, delta);
             }
         };
 

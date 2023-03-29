@@ -85,8 +85,6 @@ public class RenderableLine extends RenderableElement {
             buf.vertex(model, this.x0, this.y0, 0).color(this.startColor).normal(normal, 1, 0, 0).endVertex();
         }
         BufferUploader.drawWithShader(buf.end());
-
-        RenderSystem.enableTexture();
     }
 
     @Override
