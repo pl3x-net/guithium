@@ -1,12 +1,12 @@
 plugins {
     `java-library`
-    id("fabric-loom") version "1.0-SNAPSHOT"
+    id("fabric-loom") version "1.2-SNAPSHOT"
 }
 
 base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.fabric"
 version = rootProject.version
-description = "Guithium Fabric Mod"
+description = "${rootProject.name} Fabric Mod"
 
 java {
     withSourcesJar()

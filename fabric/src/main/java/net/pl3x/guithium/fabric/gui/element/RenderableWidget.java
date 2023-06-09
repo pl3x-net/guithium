@@ -1,9 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -53,8 +53,8 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        getWidget().render(poseStack, mouseX, mouseY, delta);
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        getWidget().render(guiGraphics, mouseX, mouseY, delta);
     }
 
     protected void onPress(boolean selected) {
@@ -71,28 +71,28 @@ public abstract class RenderableWidget extends RenderableElement implements Tick
                 showLabel == null || Boolean.TRUE.equals(showLabel)
         ) {
             @Override
-            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
                 if (!this.visible) {
                     return;
                 }
-                rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
-                scale(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
+                rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                scale(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderWidget(poseStack, mouseX, mouseY, delta);
+                renderWidget(guiGraphics, mouseX, mouseY, delta);
             }
 
             @Override
-            public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(1, 1, 1, 1);
 
-                blit(poseStack, this.getX(), this.getY(), isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
+                guiGraphics.blit(texture, this.getX(), this.getY(), isHoveredOrFocused() ? 20.0F : 0.0F, selected() ? 20.0F : 0.0F, 20, this.height, 64, 64);
 
                 if (this.showLabel) {
-                    drawString(poseStack, Minecraft.getInstance().font, getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFE0E0E0);
+                    guiGraphics.drawString(Minecraft.getInstance().font, getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFE0E0E0);
                 }
             }
 

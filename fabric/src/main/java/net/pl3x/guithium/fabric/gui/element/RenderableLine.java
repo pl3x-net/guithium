@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Line;
@@ -59,12 +59,12 @@ public class RenderableLine extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
-        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
+        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
 
         // I'm not sure what this is about, but it puts it in the correct "zIndex"
-        poseStack.translate(0, 0, -7.8431);
+        guiGraphics.pose.translate(0, 0, -7.8431);
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -72,8 +72,8 @@ public class RenderableLine extends RenderableElement {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.lineWidth(this.width);
 
-        Matrix4f model = poseStack.last().pose();
-        Matrix3f normal = poseStack.last().normal();
+        Matrix4f model = guiGraphics.pose.last().pose();
+        Matrix3f normal = guiGraphics.pose.last().normal();
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);

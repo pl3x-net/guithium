@@ -1,8 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.List;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
@@ -22,8 +23,6 @@ import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
-
-import java.util.List;
 
 public abstract class RenderableElement {
     private final RenderableScreen screen;
@@ -64,7 +63,7 @@ public abstract class RenderableElement {
     public void init(@NotNull Minecraft minecraft, int width, int height) {
     }
 
-    public abstract void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta);
+    public abstract void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
 
     @NotNull
     protected MutableComponent processComponent(@Nullable net.kyori.adventure.text.Component component) {
@@ -89,36 +88,36 @@ public abstract class RenderableElement {
         return tooltip == null ? null : Minecraft.getInstance().font.split(processComponent(tooltip), 200);
     }
 
-    protected void rotate(PoseStack poseStack, int x, int y, int width, int height, Float degrees) {
+    protected void rotate(GuiGraphics guiGraphics, int x, int y, int width, int height, Float degrees) {
         if (degrees == null) {
             return;
         }
-        rotate(poseStack, (int) (x + width / 2F), (int) (y + height / 2F), degrees);
+        rotate(guiGraphics, (int) (x + width / 2F), (int) (y + height / 2F), degrees);
     }
 
-    protected void rotate(PoseStack poseStack, int x, int y, Float degrees) {
+    protected void rotate(GuiGraphics guiGraphics, int x, int y, Float degrees) {
         if (degrees == null) {
             return;
         }
-        poseStack.translate(x, y, 0);
-        poseStack.mulPose((new Quaternionf()).rotateZ(degrees * 0.017453292F));
-        poseStack.translate(-x, -y, 0);
+        guiGraphics.pose.translate(x, y, 0);
+        guiGraphics.pose.mulPose((new Quaternionf()).rotateZ(degrees * 0.017453292F));
+        guiGraphics.pose.translate(-x, -y, 0);
     }
 
-    protected void scale(PoseStack poseStack, int x, int y, int width, int height, Float scale) {
+    protected void scale(GuiGraphics guiGraphics, int x, int y, int width, int height, Float scale) {
         if (scale == null) {
             return;
         }
-        scale(poseStack, (int) (x + width / 2F), (int) (y + height / 2F), scale);
+        scale(guiGraphics, (int) (x + width / 2F), (int) (y + height / 2F), scale);
     }
 
-    protected void scale(PoseStack poseStack, int x, int y, Float scale) {
+    protected void scale(GuiGraphics guiGraphics, int x, int y, Float scale) {
         if (scale == null) {
             return;
         }
-        poseStack.translate(x, y, 0);
-        poseStack.scale(scale, scale, 0);
-        poseStack.translate(-x, -y, 0);
+        guiGraphics.pose.translate(x, y, 0);
+        guiGraphics.pose.scale(scale, scale, 0);
+        guiGraphics.pose.translate(-x, -y, 0);
     }
 
     protected void calcScreenPos(float width, float height) {

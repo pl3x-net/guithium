@@ -1,8 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Textbox;
@@ -52,14 +53,18 @@ public class RenderableTextbox extends RenderableWidget {
                 Component.translatable(getElement().getSuggestion())
         ) {
             @Override
-            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
                 if (!this.visible) {
                     return;
                 }
-                rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
-                scale(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
+                rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                scale(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderWidget(poseStack, mouseX, mouseY, delta);
+                renderWidget(guiGraphics, mouseX, mouseY, delta);
+            }
+            @Override
+            public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+                // do nothing
             }
         };
 

@@ -5,7 +5,7 @@ plugins {
 base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.api"
 version = rootProject.version
-description = "Guithium API"
+description = "${rootProject.name} API"
 
 java {
     withSourcesJar()

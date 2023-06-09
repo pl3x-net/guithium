@@ -1,7 +1,7 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.Vec4;
 import net.pl3x.guithium.api.gui.element.Image;
@@ -76,14 +76,14 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         if (!getTexture().isLoaded()) {
             return;
         }
 
-        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
-        scale(poseStack, this.centerX, this.centerY, getElement().getScale());
+        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
+        scale(guiGraphics, this.centerX, this.centerY, getElement().getScale());
 
-        getTexture().render(poseStack, this.x0, this.y0, this.x1, this.y1, this.u0, this.v0, this.u1, this.v1, this.vertexColor);
+        getTexture().render(guiGraphics, this.x0, this.y0, this.x1, this.y1, this.u0, this.v0, this.u1, this.v1, this.vertexColor);
     }
 }

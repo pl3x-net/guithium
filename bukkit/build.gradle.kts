@@ -1,12 +1,12 @@
 plugins {
     `java-library`
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 base.archivesName.set("${rootProject.name}-${project.name}")
 group = "${rootProject.group}.plugin"
 version = rootProject.version
-description = "Guithium Bukkit Plugin"
+description = "${rootProject.name} Bukkit Plugin"
 
 java {
     withSourcesJar()

@@ -2,8 +2,10 @@ package net.pl3x.guithium.fabric.gui.screen;
 
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Tickable;
@@ -12,9 +14,6 @@ import net.pl3x.guithium.fabric.Guithium;
 import net.pl3x.guithium.fabric.gui.element.RenderableElement;
 import net.pl3x.guithium.fabric.gui.element.RenderableWidget;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class RenderableScreen extends AbstractScreen {
     private final Screen screen;
@@ -58,21 +57,21 @@ public class RenderableScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         // render elements
         this.elements.forEach((key, element) -> {
-            poseStack.pushPose();
-            element.render(poseStack, mouseX, mouseY, delta);
-            poseStack.popPose();
+            guiGraphics.pose.pushPose();
+            element.render(guiGraphics, mouseX, mouseY, delta);
+            guiGraphics.pose.popPose();
         });
 
         // render tooltips last
         for (Map.Entry<Key, RenderableElement> entry : this.elements.entrySet()) {
             if (entry.getValue() instanceof RenderableWidget widget) {
                 if (widget.getTooltip() != null && widget.getWidget().isHovered && widget.getTooltipDelay() > 10) {
-                    poseStack.pushPose();
-                    renderTooltip(poseStack, widget.getTooltip(), mouseX, mouseY);
-                    poseStack.popPose();
+                    guiGraphics.pose.pushPose();
+                    guiGraphics.renderTooltip(font, widget.getTooltip(), mouseX, mouseY);
+                    guiGraphics.pose.popPose();
                     break;
                 }
             }

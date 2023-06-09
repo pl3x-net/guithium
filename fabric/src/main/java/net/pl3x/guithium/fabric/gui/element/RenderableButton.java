@@ -1,9 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
@@ -58,17 +58,17 @@ public class RenderableButton extends RenderableWidget {
                 Supplier::get
         ) {
             @Override
-            public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
                 if (!this.visible) {
                     return;
                 }
-                rotate(poseStack, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderWidget(poseStack, mouseX, mouseY, delta);
+                renderWidget(guiGraphics, mouseX, mouseY, delta);
             }
 
             @Override
-            public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+            public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -76,9 +76,9 @@ public class RenderableButton extends RenderableWidget {
                 RenderSystem.setShaderColor(1, 1, 1, 1);
 
                 int yOffset = getTextureY(isActive(), isHoveredOrFocused());
-                blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
+                guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                renderString(poseStack, minecraft.font, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
+                renderString(guiGraphics, minecraft.font, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
             }
         });
     }

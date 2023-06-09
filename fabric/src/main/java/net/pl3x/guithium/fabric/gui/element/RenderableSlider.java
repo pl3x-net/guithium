@@ -1,10 +1,10 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.text.DecimalFormat;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -110,17 +110,17 @@ public class RenderableSlider extends RenderableWidget {
         }
 
         @Override
-        public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
             if (!this.visible) {
                 return;
             }
-            this.renderableSlider.rotate(poseStack, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
+            this.renderableSlider.rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
             this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-            renderWidget(poseStack, mouseX, mouseY, delta);
+            renderWidget(guiGraphics, mouseX, mouseY, delta);
         }
 
         @Override
-        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -128,10 +128,10 @@ public class RenderableSlider extends RenderableWidget {
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             int yOffset = getTextureY(isActive(), isHoveredOrFocused());
-            blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
-            blitNineSliced(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20, 4, 200, 20, 0, yOffset);
+            guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
+            guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20, 4, 200, 20, 0, yOffset);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            renderScrollingString(poseStack, Minecraft.getInstance().font, 2, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
+            renderScrollingString(guiGraphics, Minecraft.getInstance().font, 2, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
         }
 
         @Override

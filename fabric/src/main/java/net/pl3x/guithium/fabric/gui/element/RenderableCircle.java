@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.pl3x.guithium.api.gui.element.Circle;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
@@ -60,16 +60,16 @@ public class RenderableCircle extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
-        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
+        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        Matrix4f model = poseStack.last().pose();
+        Matrix4f model = guiGraphics.pose.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
         buf.vertex(model, this.x, this.y, 0).color(this.innerColor).endVertex();

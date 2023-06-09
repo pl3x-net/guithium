@@ -1,9 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.MutableComponent;
 import net.pl3x.guithium.api.gui.element.Text;
@@ -41,13 +41,13 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         if (this.text == null) {
             return;
         }
 
-        rotate(poseStack, this.centerX, this.centerY, getElement().getRotation());
-        scale(poseStack, this.scaleX, this.scaleY, getElement().getScale());
+        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
+        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
 
         MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         Minecraft.getInstance().font.drawInBatch(
@@ -56,7 +56,7 @@ public class RenderableText extends RenderableElement {
                 this.posY,
                 0xFFFFFF,
                 Boolean.TRUE.equals(getElement().hasShadow()),
-                poseStack.last().pose(),
+                guiGraphics.pose.last().pose(),
                 immediate,
                 Font.DisplayMode.NORMAL,
                 0,

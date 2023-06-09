@@ -3,3 +3,4 @@ accessWidener v1 named
 accessible field net/minecraft/client/gui/components/AbstractWidget isHovered Z
 accessible field net/minecraft/client/gui/components/Checkbox selected Z
 accessible field net/minecraft/client/gui/components/Checkbox showLabel Z
+accessible field net/minecraft/client/gui/GuiGraphics pose Lcom/mojang/blaze3d/vertex/PoseStack;

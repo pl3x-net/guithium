@@ -1,14 +1,13 @@
 package net.pl3x.guithium.fabric.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class HudManager {
     private final Map<Key, RenderableScreen> screens = new HashMap<>();
@@ -47,9 +46,9 @@ public class HudManager {
         this.screens.clear();
     }
 
-    public void render(@NotNull PoseStack poseStack, float delta) {
+    public void render(@NotNull GuiGraphics guiGraphics, float delta) {
         if (!Minecraft.getInstance().options.renderDebug) {
-            this.screens.forEach((key, screen) -> screen.render(poseStack, 0, 0, delta));
+            this.screens.forEach((key, screen) -> screen.render(guiGraphics, 0, 0, delta));
         }
     }
 

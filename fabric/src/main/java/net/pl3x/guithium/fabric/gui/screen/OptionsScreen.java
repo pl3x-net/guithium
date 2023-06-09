@@ -1,6 +1,6 @@
 package net.pl3x.guithium.fabric.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.Guithium;
@@ -15,18 +15,18 @@ public class OptionsScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        drawCenteredString(poseStack, this.font, OPTIONS_TITLE, this.centerX, 15, 0xFFFFFFFF);
-        super.render(poseStack, mouseX, mouseY, delta);
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        guiGraphics.drawCenteredString(this.font, OPTIONS_TITLE, this.centerX, 15, 0xFFFFFFFF);
+        super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
+    public void renderBackground(@NotNull GuiGraphics guiGraphics) {
         if (this.minecraft != null && this.minecraft.level != null) {
-            fillGradient(poseStack, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+            guiGraphics.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
         } else {
-            this.renderDirtBackground(poseStack);
+            this.renderDirtBackground(guiGraphics);
         }
     }
 }

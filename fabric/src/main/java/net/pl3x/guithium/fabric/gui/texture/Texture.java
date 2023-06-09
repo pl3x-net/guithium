@@ -6,10 +6,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -18,12 +23,6 @@ import net.pl3x.guithium.api.Key;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
 
 public class Texture {
     private final ResourceLocation identifier;
@@ -143,7 +142,7 @@ public class Texture {
         return (a << 24) | (b << 16) | (g << 8) | r;
     }
 
-    public void render(PoseStack poseStack, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int color) {
+    public void render(GuiGraphics guiGraphics, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int color) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
@@ -164,7 +163,7 @@ public class Texture {
             v1 = v0 + h;
         }
 
-        Matrix4f model = poseStack.last().pose();
+        Matrix4f model = guiGraphics.pose.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         buf.vertex(model, x1, y0, 0).uv(u1, v0).color(color).endVertex();
