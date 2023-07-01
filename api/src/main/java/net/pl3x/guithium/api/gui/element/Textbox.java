@@ -3,20 +3,21 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * Represents an interactable textbox for user input.
  */
 public class Textbox extends Rect {
     private String value;
-    private String suggestion;
+    private Component suggestion;
     private Boolean bordered;
     private Boolean canLoseFocus;
     private Integer maxLength;
@@ -43,7 +44,7 @@ public class Textbox extends Rect {
      * @param textColor           Color of text
      * @param textColorUneditable Color of text if uneditable
      */
-    protected Textbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String value, @Nullable String suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
+    protected Textbox(@NotNull Key key, @Nullable Vec2 pos, @Nullable Vec2 anchor, @Nullable Vec2 offset, @Nullable Float rotation, @Nullable Float scale, @Nullable Vec2 size, @Nullable String value, @Nullable Component suggestion, @Nullable Boolean bordered, @Nullable Boolean canLoseFocus, @Nullable Integer maxLength, @Nullable Boolean editable, @Nullable Integer textColor, @Nullable Integer textColorUneditable) {
         super(key, Type.TEXTBOX, pos, anchor, offset, rotation, scale, size);
         setValue(value);
         setSuggestion(suggestion);
@@ -86,7 +87,7 @@ public class Textbox extends Rect {
      * @return Current suggestion
      */
     @Nullable
-    public String getSuggestion() {
+    public Component getSuggestion() {
         return this.suggestion;
     }
 
@@ -97,7 +98,7 @@ public class Textbox extends Rect {
      *
      * @param suggestion Current suggestion
      */
-    public void setSuggestion(@Nullable String suggestion) {
+    public void setSuggestion(@Nullable Component suggestion) {
         this.suggestion = suggestion;
     }
 
@@ -264,21 +265,21 @@ public class Textbox extends Rect {
     public static Textbox fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Textbox(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("value") ? null : json.get("value").getAsString(),
-            !json.has("suggestion") ? null : json.get("suggestion").getAsString(),
-            !json.has("bordered") ? null : json.get("bordered").getAsBoolean(),
-            !json.has("canLoseFocus") ? null : json.get("canLoseFocus").getAsBoolean(),
-            !json.has("maxLength") ? null : json.get("maxLength").getAsInt(),
-            !json.has("editable") ? null : json.get("editable").getAsBoolean(),
-            !json.has("textColor") ? null : json.get("textColor").getAsInt(),
-            !json.has("textColorUneditable") ? null : json.get("textColorUneditable").getAsInt()
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
+                !json.has("value") ? null : json.get("value").getAsString(),
+                !json.has("suggestion") ? null : GsonComponentSerializer.gson().deserialize(json.get("suggestion").getAsString()),
+                !json.has("bordered") ? null : json.get("bordered").getAsBoolean(),
+                !json.has("canLoseFocus") ? null : json.get("canLoseFocus").getAsBoolean(),
+                !json.has("maxLength") ? null : json.get("maxLength").getAsInt(),
+                !json.has("editable") ? null : json.get("editable").getAsBoolean(),
+                !json.has("textColor") ? null : json.get("textColor").getAsInt(),
+                !json.has("textColorUneditable") ? null : json.get("textColorUneditable").getAsInt()
         );
     }
 
@@ -295,14 +296,14 @@ public class Textbox extends Rect {
         }
         Textbox other = (Textbox) o;
         return Objects.equals(getValue(), other.getValue())
-            && Objects.equals(getSuggestion(), other.getSuggestion())
-            && Objects.equals(isBordered(), other.isBordered())
-            && Objects.equals(canLoseFocus(), other.canLoseFocus())
-            && Objects.equals(getMaxLength(), other.getMaxLength())
-            && Objects.equals(isEditable(), other.isEditable())
-            && Objects.equals(getTextColor(), other.getTextColor())
-            && Objects.equals(getTextColorUneditable(), other.getTextColorUneditable())
-            && super.equals(o);
+                && Objects.equals(getSuggestion(), other.getSuggestion())
+                && Objects.equals(isBordered(), other.isBordered())
+                && Objects.equals(canLoseFocus(), other.canLoseFocus())
+                && Objects.equals(getMaxLength(), other.getMaxLength())
+                && Objects.equals(isEditable(), other.isEditable())
+                && Objects.equals(getTextColor(), other.getTextColor())
+                && Objects.equals(getTextColorUneditable(), other.getTextColorUneditable())
+                && super.equals(o);
     }
 
     @Override
@@ -320,14 +321,14 @@ public class Textbox extends Rect {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",value=" + getValue()
-            + ",suggestion=" + getSuggestion()
-            + ",bordered=" + isBordered()
-            + ",canLoseFocus=" + canLoseFocus()
-            + ",maxLength=" + getMaxLength()
-            + ",editable=" + isEditable()
-            + ",textColor=" + getTextColor()
-            + ",textColorUneditable=" + getTextColorUneditable();
+                + ",value=" + getValue()
+                + ",suggestion=" + getSuggestion()
+                + ",bordered=" + isBordered()
+                + ",canLoseFocus=" + canLoseFocus()
+                + ",maxLength=" + getMaxLength()
+                + ",editable=" + isEditable()
+                + ",textColor=" + getTextColor()
+                + ",textColorUneditable=" + getTextColorUneditable();
     }
 
     /**
@@ -357,7 +358,7 @@ public class Textbox extends Rect {
      */
     public static class Builder extends Rect.Builder<Builder> {
         private String value;
-        private String suggestion;
+        private Component suggestion;
         private Boolean bordered;
         private Boolean canLoseFocus;
         private Integer maxLength;
@@ -417,7 +418,7 @@ public class Textbox extends Rect {
          * @return Current suggestion
          */
         @Nullable
-        public String getSuggestion() {
+        public Component getSuggestion() {
             return this.suggestion;
         }
 
@@ -430,7 +431,7 @@ public class Textbox extends Rect {
          * @return This builder
          */
         @NotNull
-        public Builder setSuggestion(@Nullable String suggestion) {
+        public Builder setSuggestion(@Nullable Component suggestion) {
             this.suggestion = suggestion;
             return this;
         }

@@ -29,13 +29,13 @@ public class FabricNetworkHandler extends NetworkHandler {
     @Override
     public void register() {
         ClientPlayNetworking.registerGlobalReceiver(RESOURCE_LOCATION,
-            (client, handler, buf, sender) -> {
-                // receive data from server
-                receive(
-                    this.connection.getPacketListener(),
-                    Packet.in(buf.accessByteBufWithCorrectSize())
-                );
-            }
+                (client, handler, buf, sender) -> {
+                    // receive data from server
+                    receive(
+                            this.connection.getPacketListener(),
+                            Packet.in(buf.accessByteBufWithCorrectSize())
+                    );
+                }
         );
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {

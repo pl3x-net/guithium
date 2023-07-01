@@ -33,9 +33,9 @@ public class BukkitConnection implements Connection {
     public void send(@NotNull Packet packet, boolean force) {
         if (force || this.player.hasGuithium()) {
             this.player.<Player>unwrap().sendPluginMessage(
-                Guithium.instance(),
-                NetworkHandler.CHANNEL.toString(),
-                packet.write().toByteArray()
+                    Guithium.instance(),
+                    NetworkHandler.CHANNEL.toString(),
+                    packet.write().toByteArray()
             );
         }
     }

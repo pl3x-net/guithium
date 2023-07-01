@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
@@ -36,12 +37,12 @@ public class RenderableLine extends RenderableElement {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
         if (getElement().getWidth() == null) {
             this.width = 1.0F;
         } else {
             // compensate for shader weirdness
-            this.width = getElement().getWidth() * (float) Minecraft.getInstance().getWindow().getGuiScale();
+            this.width = getElement().getWidth() * (float) client.getWindow().getGuiScale();
         }
 
         calcScreenPos(width, height);
@@ -59,12 +60,12 @@ public class RenderableLine extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
-        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+        rotate(gfx, this.centerX, this.centerY, getElement().getRotation());
+        scale(gfx, this.scaleX, this.scaleY, getElement().getScale());
 
         // I'm not sure what this is about, but it puts it in the correct "zIndex"
-        guiGraphics.pose.translate(0, 0, -7.8431);
+        gfx.pose.translate(0, 0, -7.8431);
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -72,8 +73,9 @@ public class RenderableLine extends RenderableElement {
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.lineWidth(this.width);
 
-        Matrix4f model = guiGraphics.pose.last().pose();
-        Matrix3f normal = guiGraphics.pose.last().normal();
+        PoseStack.Pose pose = gfx.pose.last();
+        Matrix4f model = pose.pose();
+        Matrix3f normal = pose.normal();
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);

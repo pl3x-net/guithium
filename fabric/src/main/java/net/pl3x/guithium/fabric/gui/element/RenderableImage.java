@@ -33,7 +33,7 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
         Vec2 size = getElement().getSize();
         if (size == null) {
             size = Vec2.of(width, height);
@@ -76,14 +76,14 @@ public class RenderableImage extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         if (!getTexture().isLoaded()) {
             return;
         }
 
-        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
-        scale(guiGraphics, this.centerX, this.centerY, getElement().getScale());
+        rotate(gfx, this.centerX, this.centerY, getElement().getRotation());
+        scale(gfx, this.centerX, this.centerY, getElement().getScale());
 
-        getTexture().render(guiGraphics, this.x0, this.y0, this.x1, this.y1, this.u0, this.v0, this.u1, this.v1, this.vertexColor);
+        getTexture().render(gfx, this.x0, this.y0, this.x1, this.y1, this.u0, this.v0, this.u1, this.v1, this.vertexColor);
     }
 }

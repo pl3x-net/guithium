@@ -1,5 +1,6 @@
-package net.pl3x.guithium.api.action.actions;
+package net.pl3x.guithium.api.action.actions.player.screen;
 
+import net.pl3x.guithium.api.action.actions.player.PlayerAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;

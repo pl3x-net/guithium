@@ -3,15 +3,14 @@ package net.pl3x.guithium.api.network.packet;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.json.Gson;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents a textures packet containing a list of textures to preload.

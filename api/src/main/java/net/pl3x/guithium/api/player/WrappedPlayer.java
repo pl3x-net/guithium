@@ -1,11 +1,10 @@
 package net.pl3x.guithium.api.player;
 
+import java.util.UUID;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.network.Connection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Represents a wrapped player.

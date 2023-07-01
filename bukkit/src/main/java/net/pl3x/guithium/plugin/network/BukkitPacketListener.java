@@ -1,13 +1,14 @@
 package net.pl3x.guithium.plugin.network;
 
+import java.util.Map;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.action.actions.ButtonClickedAction;
-import net.pl3x.guithium.api.action.actions.CheckboxToggledAction;
-import net.pl3x.guithium.api.action.actions.CloseScreenAction;
-import net.pl3x.guithium.api.action.actions.PlayerJoinedAction;
-import net.pl3x.guithium.api.action.actions.RadioToggledAction;
-import net.pl3x.guithium.api.action.actions.SliderChangedAction;
+import net.pl3x.guithium.api.action.actions.player.PlayerJoinedAction;
+import net.pl3x.guithium.api.action.actions.player.screen.CloseScreenAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.ButtonClickedAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.CheckboxToggledAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.RadioToggledAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.SliderChangedAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
@@ -27,8 +28,6 @@ import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.player.BukkitPlayer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 public class BukkitPacketListener implements PacketListener {
     private final WrappedPlayer player;

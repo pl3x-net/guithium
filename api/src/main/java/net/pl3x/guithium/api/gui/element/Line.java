@@ -2,13 +2,12 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a gradient colored line.
@@ -207,16 +206,16 @@ public class Line extends AbstractElement {
     @NotNull
     public static Line fromJson(JsonObject json) {
         return new Line(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()),
-            !json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("width") ? null : json.get("width").getAsFloat(),
-            !json.has("startColor") ? 0 : json.get("startColor").getAsInt(),
-            !json.has("endColor") ? 0 : json.get("endColor").getAsInt()
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()),
+                !json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("width") ? null : json.get("width").getAsFloat(),
+                !json.has("startColor") ? 0 : json.get("startColor").getAsInt(),
+                !json.has("endColor") ? 0 : json.get("endColor").getAsInt()
         );
     }
 
@@ -233,11 +232,11 @@ public class Line extends AbstractElement {
         }
         Line other = (Line) o;
         return Objects.equals(getEndPos(), other.getEndPos())
-            && Objects.equals(getEndAnchor(), other.getEndAnchor())
-            && Objects.equals(getWidth(), other.getWidth())
-            && getStartColor() == other.getStartColor()
-            && getEndColor() == other.getEndColor()
-            && super.equals(o);
+                && Objects.equals(getEndAnchor(), other.getEndAnchor())
+                && Objects.equals(getWidth(), other.getWidth())
+                && getStartColor() == other.getStartColor()
+                && getEndColor() == other.getEndColor()
+                && super.equals(o);
     }
 
     @Override
@@ -255,11 +254,11 @@ public class Line extends AbstractElement {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",endPos=" + getEndPos()
-            + ",endAnchor=" + getEndAnchor()
-            + ",width=" + getWidth()
-            + ",startColor=" + getStartColor()
-            + ",endColor=" + getEndColor();
+                + ",endPos=" + getEndPos()
+                + ",endAnchor=" + getEndAnchor()
+                + ",width=" + getWidth()
+                + ",startColor=" + getStartColor()
+                + ",endColor=" + getEndColor();
     }
 
     /**

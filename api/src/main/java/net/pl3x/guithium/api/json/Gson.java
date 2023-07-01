@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.json;
 
 import com.google.gson.GsonBuilder;
+import java.lang.reflect.Type;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.json.adapter.ElementAdapter;
@@ -8,18 +9,16 @@ import net.pl3x.guithium.api.json.adapter.ScreenAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Type;
-
 /**
  * Represents some conveniences for using Gson.
  */
 public class Gson {
     private static final com.google.gson.Gson gson = new GsonBuilder()
-        .registerTypeHierarchyAdapter(Element.class, new ElementAdapter())
-        .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
-        .disableHtmlEscaping()
-        .setLenient()
-        .create();
+            .registerTypeHierarchyAdapter(Element.class, new ElementAdapter())
+            .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
+            .disableHtmlEscaping()
+            .setLenient()
+            .create();
 
     /**
      * Get Guithium's stored Gson instance.

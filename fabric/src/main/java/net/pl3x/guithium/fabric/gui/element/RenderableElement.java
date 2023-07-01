@@ -60,18 +60,18 @@ public abstract class RenderableElement {
         this.screen.refresh();
     }
 
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
     }
 
-    public abstract void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+    public abstract void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta);
 
     @NotNull
-    protected MutableComponent processComponent(@Nullable net.kyori.adventure.text.Component component) {
-        return processComponent(component == null ? null : GsonComponentSerializer.gson().serialize(component));
+    protected MutableComponent adventureToVanilla(@Nullable net.kyori.adventure.text.Component component) {
+        return adventureToVanilla(component == null ? null : GsonComponentSerializer.gson().serialize(component));
     }
 
     @NotNull
-    protected MutableComponent processComponent(@Nullable String json) {
+    protected MutableComponent adventureToVanilla(@Nullable String json) {
         MutableComponent nmsComponent = null;
         if (json != null) {
             try {
@@ -85,39 +85,39 @@ public abstract class RenderableElement {
 
     @Nullable
     protected List<FormattedCharSequence> processTooltip(@Nullable net.kyori.adventure.text.Component tooltip) {
-        return tooltip == null ? null : Minecraft.getInstance().font.split(processComponent(tooltip), 200);
+        return tooltip == null ? null : Minecraft.getInstance().font.split(adventureToVanilla(tooltip), 200);
     }
 
-    protected void rotate(GuiGraphics guiGraphics, int x, int y, int width, int height, Float degrees) {
+    protected void rotate(GuiGraphics gfx, int x, int y, int width, int height, Float degrees) {
         if (degrees == null) {
             return;
         }
-        rotate(guiGraphics, (int) (x + width / 2F), (int) (y + height / 2F), degrees);
+        rotate(gfx, (int) (x + width / 2F), (int) (y + height / 2F), degrees);
     }
 
-    protected void rotate(GuiGraphics guiGraphics, int x, int y, Float degrees) {
+    protected void rotate(GuiGraphics gfx, int x, int y, Float degrees) {
         if (degrees == null) {
             return;
         }
-        guiGraphics.pose.translate(x, y, 0);
-        guiGraphics.pose.mulPose((new Quaternionf()).rotateZ(degrees * 0.017453292F));
-        guiGraphics.pose.translate(-x, -y, 0);
+        gfx.pose.translate(x, y, 0);
+        gfx.pose.mulPose((new Quaternionf()).rotateZ(degrees * 0.017453292F));
+        gfx.pose.translate(-x, -y, 0);
     }
 
-    protected void scale(GuiGraphics guiGraphics, int x, int y, int width, int height, Float scale) {
+    protected void scale(GuiGraphics gfx, int x, int y, int width, int height, Float scale) {
         if (scale == null) {
             return;
         }
-        scale(guiGraphics, (int) (x + width / 2F), (int) (y + height / 2F), scale);
+        scale(gfx, (int) (x + width / 2F), (int) (y + height / 2F), scale);
     }
 
-    protected void scale(GuiGraphics guiGraphics, int x, int y, Float scale) {
+    protected void scale(GuiGraphics gfx, int x, int y, Float scale) {
         if (scale == null) {
             return;
         }
-        guiGraphics.pose.translate(x, y, 0);
-        guiGraphics.pose.scale(scale, scale, 0);
-        guiGraphics.pose.translate(-x, -y, 0);
+        gfx.pose.translate(x, y, 0);
+        gfx.pose.scale(scale, scale, 0);
+        gfx.pose.translate(-x, -y, 0);
     }
 
     protected void calcScreenPos(float width, float height) {
@@ -147,13 +147,13 @@ public abstract class RenderableElement {
         Element.Type type = element.getType();
         if (type == Element.Type.BUTTON) return new RenderableButton(screen, (Button) element);
         if (type == Element.Type.CHECKBOX) return new RenderableCheckbox(screen, (Checkbox) element);
-        if (type == Element.Type.CIRCLE) return new RenderableCircle(screen, (Circle) element);
-        if (type == Element.Type.GRADIENT) return new RenderableGradient(screen, (Gradient) element);
+        if (type == Element.Type.CIRCLE) return new RenderableCircle(screen, (Circle) element); // done
+        if (type == Element.Type.GRADIENT) return new RenderableGradient(screen, (Gradient) element); // done
         if (type == Element.Type.IMAGE) return new RenderableImage(screen, (Image) element);
-        if (type == Element.Type.LINE) return new RenderableLine(screen, (Line) element);
+        if (type == Element.Type.LINE) return new RenderableLine(screen, (Line) element); // done
         if (type == Element.Type.RADIO) return new RenderableRadio(screen, (Radio) element);
         if (type == Element.Type.SLIDER) return new RenderableSlider(screen, (Slider) element);
-        if (type == Element.Type.TEXT) return new RenderableText(screen, (Text) element);
+        if (type == Element.Type.TEXT) return new RenderableText(screen, (Text) element); // done
         if (type == Element.Type.TEXTBOX) return new RenderableTextbox(screen, (Textbox) element);
         return null;
     }

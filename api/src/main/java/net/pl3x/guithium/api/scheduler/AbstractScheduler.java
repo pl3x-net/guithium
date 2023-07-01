@@ -1,10 +1,9 @@
 package net.pl3x.guithium.api.scheduler;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a tick scheduler.

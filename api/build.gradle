@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+group = "${rootProject.group}.api"
+version = rootProject.version
+description = "${rootProject.name} API"
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    compileOnly "net.kyori:adventure-api:${adventure_api_version}"
+    compileOnly "net.kyori:adventure-text-serializer-gson:${adventure_text_serializer_gson}"
+    compileOnly "com.google.code.gson:gson:${gson_version}"
+    compileOnly "com.google.guava:guava:${guava_version}"
+    compileOnly "org.jetbrains:annotations:${annotations_version}"
+}
+
+base {
+    archivesName = "${rootProject.name}-${project.name}"
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.addBooleanOption('html5', true)
+    title = "${rootProject.name}-${project.version} API"
+}

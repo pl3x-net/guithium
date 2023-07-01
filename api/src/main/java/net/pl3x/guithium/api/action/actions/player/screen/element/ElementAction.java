@@ -1,5 +1,6 @@
-package net.pl3x.guithium.api.action.actions;
+package net.pl3x.guithium.api.action.actions.player.screen.element;
 
+import net.pl3x.guithium.api.action.actions.player.screen.ScreenAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.player.WrappedPlayer;

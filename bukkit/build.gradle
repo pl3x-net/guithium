@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = "${rootProject.group}.plugin"
+version = rootProject.version
+description = "${description}"
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly "io.papermc.paper:paper-api:${minecraft_version}-R0.1-SNAPSHOT"
+}
+
+base {
+    archivesName = "${rootProject.name}-${project.name}"
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand(
+                'version': project.version,
+                'api_version': "${bukkit_api_version}",
+                'description': project.description,
+                'website': website,
+        )
+    }
+}

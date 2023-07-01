@@ -46,9 +46,9 @@ public class HudManager {
         this.screens.clear();
     }
 
-    public void render(@NotNull GuiGraphics guiGraphics, float delta) {
+    public void render(@NotNull GuiGraphics gfx, float delta) {
         if (!Minecraft.getInstance().options.renderDebug) {
-            this.screens.forEach((key, screen) -> screen.render(guiGraphics, 0, 0, delta));
+            this.screens.forEach((key, screen) -> screen.render(gfx, 0, 0, delta));
         }
     }
 

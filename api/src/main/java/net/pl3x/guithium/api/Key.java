@@ -1,10 +1,9 @@
 package net.pl3x.guithium.api;
 
 import com.google.common.base.Preconditions;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.regex.Pattern;
 
 /**
  * Simple string wrapper used to identify things.

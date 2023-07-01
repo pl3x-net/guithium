@@ -1,11 +1,10 @@
-package net.pl3x.guithium.api.action.actions;
-
-import net.pl3x.guithium.api.action.RegisteredHandler;
-import net.pl3x.guithium.api.player.WrappedPlayer;
-import org.jetbrains.annotations.NotNull;
+package net.pl3x.guithium.api.action.actions.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.pl3x.guithium.api.action.RegisteredHandler;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Action that fires when a player joins the server.

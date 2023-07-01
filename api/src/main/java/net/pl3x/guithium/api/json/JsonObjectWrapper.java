@@ -5,15 +5,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Represents a wrapped {@link JsonObject} with extra '<code>addProperty</code>' methods,
@@ -52,7 +51,7 @@ public class JsonObjectWrapper {
         return this.wrapped;
     }
 
-    // Let's add some stuff..
+    // Let's add some stuff...
 
     /**
      * Convenience method to add a primitive member. The specified value is serialized to a

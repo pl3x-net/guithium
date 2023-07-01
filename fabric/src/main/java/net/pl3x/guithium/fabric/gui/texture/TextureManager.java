@@ -1,12 +1,11 @@
 package net.pl3x.guithium.fabric.gui.texture;
 
-import net.pl3x.guithium.api.Key;
-import net.pl3x.guithium.api.gui.element.Image;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import net.pl3x.guithium.api.Key;
+import net.pl3x.guithium.api.gui.element.Image;
+import org.jetbrains.annotations.NotNull;
 
 public class TextureManager extends net.pl3x.guithium.api.gui.texture.TextureManager {
     private final Map<Key, Texture> textures = new HashMap<>();

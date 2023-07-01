@@ -1,10 +1,9 @@
 package net.pl3x.guithium.api.action;
 
-import net.pl3x.guithium.api.action.actions.Action;
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import net.pl3x.guithium.api.action.actions.Action;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a registered action handler.
@@ -60,8 +59,8 @@ public class RegisteredHandler {
     @Override
     @NotNull
     public String toString() {
-        return "Handler{" +
-            ",listener=" + getListener().getClass().getName() +
-            ",method=" + getMethod().getName() + "}";
+        return "RegisteredHandler{" +
+                ",listener=" + getListener().getClass().getName() +
+                ",method=" + getMethod().getName() + "}";
     }
 }

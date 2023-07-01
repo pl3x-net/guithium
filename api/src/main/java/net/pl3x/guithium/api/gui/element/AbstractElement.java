@@ -2,14 +2,13 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Keyed;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a base keyed element.
@@ -147,12 +146,12 @@ public abstract class AbstractElement extends Keyed implements Element {
         }
         Element other = (Element) o;
         return Objects.equals(getKey(), other.getKey())
-            && Objects.equals(getType(), other.getType())
-            && Objects.equals(getPos(), other.getPos())
-            && Objects.equals(getAnchor(), other.getAnchor())
-            && Objects.equals(getOffset(), other.getOffset())
-            && Objects.equals(getRotation(), other.getRotation())
-            && Objects.equals(getScale(), other.getScale());
+                && Objects.equals(getType(), other.getType())
+                && Objects.equals(getPos(), other.getPos())
+                && Objects.equals(getAnchor(), other.getAnchor())
+                && Objects.equals(getOffset(), other.getOffset())
+                && Objects.equals(getRotation(), other.getRotation())
+                && Objects.equals(getScale(), other.getScale());
     }
 
     @Override
@@ -175,12 +174,12 @@ public abstract class AbstractElement extends Keyed implements Element {
     @NotNull
     protected String getPropertiesAsString() {
         return "key=" + getKey()
-            + ",type=" + getType()
-            + ",pos=" + getPos()
-            + ",anchor=" + getAnchor()
-            + ",offset=" + getOffset()
-            + ",rotation=" + getRotation()
-            + ",scale=" + getScale();
+                + ",type=" + getType()
+                + ",pos=" + getPos()
+                + ",anchor=" + getAnchor()
+                + ",offset=" + getOffset()
+                + ",rotation=" + getRotation()
+                + ",scale=" + getScale();
     }
 
     /**

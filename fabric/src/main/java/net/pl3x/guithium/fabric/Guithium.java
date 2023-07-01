@@ -1,5 +1,6 @@
 package net.pl3x.guithium.fabric;
 
+import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
 import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.player.PlayerManager;
@@ -8,8 +9,6 @@ import net.pl3x.guithium.fabric.gui.texture.TextureManager;
 import net.pl3x.guithium.fabric.net.FabricNetworkHandler;
 import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
 
 public class Guithium implements ClientModInitializer, net.pl3x.guithium.api.Guithium {
     private static Guithium instance;

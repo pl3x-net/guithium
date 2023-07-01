@@ -2,13 +2,12 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a gradient filled circle.
@@ -155,16 +154,16 @@ public class Circle extends AbstractElement {
     @NotNull
     public static Circle fromJson(JsonObject json) {
         return new Circle(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("radius") ? null : json.get("radius").getAsFloat(),
-            !json.has("resolution") ? null : json.get("resolution").getAsInt(),
-            !json.has("innerColor") ? 0 : json.get("innerColor").getAsInt(),
-            !json.has("outerColor") ? 0 : json.get("outerColor").getAsInt()
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("radius") ? null : json.get("radius").getAsFloat(),
+                !json.has("resolution") ? null : json.get("resolution").getAsInt(),
+                !json.has("innerColor") ? 0 : json.get("innerColor").getAsInt(),
+                !json.has("outerColor") ? 0 : json.get("outerColor").getAsInt()
         );
     }
 
@@ -181,10 +180,10 @@ public class Circle extends AbstractElement {
         }
         Circle other = (Circle) o;
         return Objects.equals(getRadius(), other.getRadius())
-            && Objects.equals(getResolution(), other.getResolution())
-            && getInnerColor() == other.getInnerColor()
-            && getOuterColor() == other.getOuterColor()
-            && super.equals(o);
+                && Objects.equals(getResolution(), other.getResolution())
+                && getInnerColor() == other.getInnerColor()
+                && getOuterColor() == other.getOuterColor()
+                && super.equals(o);
     }
 
     @Override
@@ -202,10 +201,10 @@ public class Circle extends AbstractElement {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",radius=" + getRadius()
-            + ",resolution=" + getResolution()
-            + ",innerColor=" + getInnerColor()
-            + ",outerColor=" + getOuterColor();
+                + ",radius=" + getRadius()
+                + ",resolution=" + getResolution()
+                + ",innerColor=" + getInnerColor()
+                + ",outerColor=" + getOuterColor();
     }
 
     /**

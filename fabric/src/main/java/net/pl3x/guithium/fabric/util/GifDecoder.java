@@ -1,15 +1,3 @@
-package at.dhyan.open_imaging;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.System.arraycopy;
-
 /*
  * Copyright 2014 Dhyan Blum
  *
@@ -25,6 +13,17 @@ import static java.lang.System.arraycopy;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package net.pl3x.guithium.fabric.util;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import static java.lang.System.arraycopy;
 
 /**
  * A decoder capable of processing a GIF data stream to render the graphics

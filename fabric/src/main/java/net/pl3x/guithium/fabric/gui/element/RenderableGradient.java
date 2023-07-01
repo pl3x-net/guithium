@@ -29,7 +29,7 @@ public class RenderableGradient extends RenderableElement {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
         Vec2 size = getElement().getSize();
         if (size == null) {
             size = Vec2.ONE;
@@ -50,18 +50,18 @@ public class RenderableGradient extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         Gradient gradient = getElement();
 
-        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
-        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
+        rotate(gfx, this.centerX, this.centerY, gradient.getRotation());
+        scale(gfx, this.scaleX, this.scaleY, gradient.getScale());
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        Matrix4f model = guiGraphics.pose.last().pose();
+        Matrix4f model = gfx.pose.last().pose();
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         buf.vertex(model, this.x1, this.y0, 0).color(gradient.getColorTopRight()).endVertex();

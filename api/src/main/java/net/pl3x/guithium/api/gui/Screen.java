@@ -3,6 +3,12 @@ package net.pl3x.guithium.api.gui;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Keyed;
@@ -19,13 +25,6 @@ import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-
 /**
  * Represents a screen to draw on the client.
  * <p>
@@ -38,18 +37,18 @@ public class Screen extends Keyed implements JsonSerializable {
      * The default gradient background used on a lot of in-game screens, such as inventory menus.
      */
     public static final Gradient GRADIENT_BACKGROUND = Gradient.builder(Guithium.MOD_ID + ":gradient")
-        .setColorTop(0xC0101010)
-        .setColorBottom(0xD0101010)
-        .build();
+            .setColorTop(0xC0101010)
+            .setColorBottom(0xD0101010)
+            .build();
 
     /**
      * The default tiled dirt background used on a lot of options type screens.
      */
     public static final Image TILED_DIRT_BACKGROUND = Image.builder(Guithium.MOD_ID + ":tiled_dirt")
-        .setTexture(Texture.DIRT)
-        .setVertexColor(0xFF404040)
-        .setTileModifier(32.0F)
-        .build();
+            .setTexture(Texture.DIRT)
+            .setVertexColor(0xFF404040)
+            .setTileModifier(32.0F)
+            .build();
 
     private final Type type;
     private final Map<Key, Element> elements = new LinkedHashMap<>();
@@ -300,8 +299,8 @@ public class Screen extends Keyed implements JsonSerializable {
     public static Screen fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Screen screen = new Screen(
-            Key.of(json.get("key").getAsString()),
-            !json.has("type") ? null : Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT))
+                Key.of(json.get("key").getAsString()),
+                !json.has("type") ? null : Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT))
         );
         if (json.has("elements")) {
             json.get("elements").getAsJsonArray().forEach(jsonElement -> {
@@ -329,8 +328,8 @@ public class Screen extends Keyed implements JsonSerializable {
         }
         Screen other = (Screen) o;
         return Objects.equals(getKey(), other.getKey())
-            && Objects.equals(getType(), other.getType())
-            && getElements().equals(other.getElements());
+                && Objects.equals(getType(), other.getType())
+                && getElements().equals(other.getElements());
     }
 
     @Override
@@ -342,10 +341,10 @@ public class Screen extends Keyed implements JsonSerializable {
     @NotNull
     public String toString() {
         return "Screen{"
-            + "key=" + getKey()
-            + ",type=" + getType()
-            + ",elements=" + getElements()
-            + "}";
+                + "key=" + getKey()
+                + ",type=" + getType()
+                + ",elements=" + getElements()
+                + "}";
     }
 
     /**

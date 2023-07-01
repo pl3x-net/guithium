@@ -1,9 +1,8 @@
 package net.pl3x.guithium.api.action.actions;
 
+import java.util.List;
 import net.pl3x.guithium.api.action.RegisteredHandler;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Represents an action. This is similar to Bukkit events.

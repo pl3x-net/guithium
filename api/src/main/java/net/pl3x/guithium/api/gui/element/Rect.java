@@ -2,13 +2,12 @@ package net.pl3x.guithium.api.gui.element;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a rectangular element with a size property.
@@ -87,7 +86,7 @@ public abstract class Rect extends AbstractElement {
         }
         Gradient other = (Gradient) o;
         return Objects.equals(getSize(), other.getSize())
-            && super.equals(o);
+                && super.equals(o);
     }
 
     @Override
@@ -105,7 +104,7 @@ public abstract class Rect extends AbstractElement {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",size=" + getSize();
+                + ",size=" + getSize();
     }
 
     /**

@@ -2,12 +2,11 @@ package net.pl3x.guithium.api.gui;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a 4D vector.
@@ -103,10 +102,10 @@ public class Vec4 implements JsonSerializable {
     @NotNull
     public static Vec4 fromJson(@NotNull JsonObject json) {
         return new Vec4(
-            !json.has("x0") ? 0 : json.get("x0").getAsFloat(),
-            !json.has("y0") ? 0 : json.get("y0").getAsFloat(),
-            !json.has("x1") ? 0 : json.get("x1").getAsFloat(),
-            !json.has("y1") ? 0 : json.get("y1").getAsFloat()
+                !json.has("x0") ? 0 : json.get("x0").getAsFloat(),
+                !json.has("y0") ? 0 : json.get("y0").getAsFloat(),
+                !json.has("x1") ? 0 : json.get("x1").getAsFloat(),
+                !json.has("y1") ? 0 : json.get("y1").getAsFloat()
         );
     }
 
@@ -123,9 +122,9 @@ public class Vec4 implements JsonSerializable {
         }
         Vec4 other = (Vec4) o;
         return Float.compare(getX0(), other.getX0()) == 0
-            && Float.compare(getY0(), other.getY0()) == 0
-            && Float.compare(getX1(), other.getX1()) == 0
-            && Float.compare(getY1(), other.getY1()) == 0;
+                && Float.compare(getY0(), other.getY0()) == 0
+                && Float.compare(getX1(), other.getX1()) == 0
+                && Float.compare(getY1(), other.getY1()) == 0;
     }
 
     @Override
@@ -137,10 +136,10 @@ public class Vec4 implements JsonSerializable {
     @NotNull
     public String toString() {
         return "Vec4{"
-            + "x0=" + getX0()
-            + ",y0=" + getY0()
-            + ",x1=" + getX1()
-            + ",y1=" + getY1()
-            + "}";
+                + "x0=" + getX0()
+                + ",y0=" + getY0()
+                + ",x1=" + getX1()
+                + ",y1=" + getY1()
+                + "}";
     }
 }

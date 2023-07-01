@@ -1,6 +1,9 @@
 package net.pl3x.guithium.api.network;
 
 import com.google.common.io.ByteArrayDataInput;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
@@ -15,10 +18,6 @@ import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Represents a network handler.

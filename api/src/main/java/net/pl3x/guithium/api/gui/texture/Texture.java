@@ -3,14 +3,13 @@ package net.pl3x.guithium.api.gui.texture;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.Keyed;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents an image texture.
@@ -95,8 +94,8 @@ public class Texture extends Keyed implements JsonSerializable {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Preconditions.checkArgument(json.has("url"), "Url cannot be null");
         return new Texture(
-            Key.of(json.get("key").getAsString()),
-            json.get("url").getAsString()
+                Key.of(json.get("key").getAsString()),
+                json.get("url").getAsString()
         );
     }
 
@@ -113,7 +112,7 @@ public class Texture extends Keyed implements JsonSerializable {
         }
         Texture other = (Texture) o;
         return getKey().equals(other.getKey())
-            && getUrl().equals(other.getUrl());
+                && getUrl().equals(other.getUrl());
     }
 
     @Override
@@ -125,8 +124,8 @@ public class Texture extends Keyed implements JsonSerializable {
     @NotNull
     public String toString() {
         return "Texture{"
-            + "key=" + getKey()
-            + ",url=" + getUrl()
-            + "}";
+                + "key=" + getKey()
+                + ",url=" + getUrl()
+                + "}";
     }
 }

@@ -1,12 +1,11 @@
 package net.pl3x.guithium.api.gui.texture;
 
-import net.pl3x.guithium.api.Key;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.pl3x.guithium.api.Key;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Texture manager that manages textures. Hmm.

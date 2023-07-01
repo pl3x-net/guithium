@@ -4,14 +4,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.Arrays;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Represents a gradient filled rectangle.
@@ -209,14 +208,14 @@ public class Gradient extends Rect {
             colors[i] = arr.get(i).getAsInt();
         }
         return new Gradient(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            colors[0], colors[1], colors[2], colors[3]
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
+                colors[0], colors[1], colors[2], colors[3]
         );
     }
 
@@ -233,10 +232,10 @@ public class Gradient extends Rect {
         }
         Gradient other = (Gradient) o;
         return getColorTopLeft() == other.getColorTopLeft()
-            && getColorTopRight() == other.getColorTopRight()
-            && getColorBottomLeft() == other.getColorBottomLeft()
-            && getColorBottomRight() == other.getColorBottomRight()
-            && super.equals(o);
+                && getColorTopRight() == other.getColorTopRight()
+                && getColorBottomLeft() == other.getColorBottomLeft()
+                && getColorBottomRight() == other.getColorBottomRight()
+                && super.equals(o);
     }
 
     @Override
@@ -254,7 +253,7 @@ public class Gradient extends Rect {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",colors=" + Arrays.toString(getColors());
+                + ",colors=" + Arrays.toString(getColors());
     }
 
     /**

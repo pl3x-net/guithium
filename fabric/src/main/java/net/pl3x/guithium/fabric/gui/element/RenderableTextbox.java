@@ -5,12 +5,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableTextbox extends RenderableWidget {
+    private MutableComponent suggestion;
+
     public RenderableTextbox(@NotNull RenderableScreen screen, @NotNull Textbox textbox) {
         super(screen, textbox);
     }
@@ -28,7 +31,9 @@ public class RenderableTextbox extends RenderableWidget {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
+        this.suggestion = adventureToVanilla(getElement().getSuggestion());
+
         Vec2 size = getElement().getSize();
         if (size == null) {
             size = Vec2.of(120, 20);
@@ -45,23 +50,24 @@ public class RenderableTextbox extends RenderableWidget {
         this.centerX = (int) (this.posY + size.getY() / 2);
 
         EditBox editbox = new EditBox(
-                minecraft.font,
+                client.font,
                 this.posX + 1,
                 this.posY + 1,
                 (int) size.getX(),
                 (int) size.getY(),
-                Component.translatable(getElement().getSuggestion())
+                Component.empty()
         ) {
             @Override
-            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+            public void render(GuiGraphics gfx, int mouseX, int mouseY, float delta) {
                 if (!this.visible) {
                     return;
                 }
-                rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
-                scale(guiGraphics, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
+                rotate(gfx, this.getX(), this.getY(), this.width, this.height, getElement().getRotation());
+                scale(gfx, this.getX(), this.getY(), this.width, this.height, getElement().getScale());
                 this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-                renderWidget(guiGraphics, mouseX, mouseY, delta);
+                renderWidget(gfx, mouseX, mouseY, delta);
             }
+
             @Override
             public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
                 // do nothing
@@ -71,7 +77,7 @@ public class RenderableTextbox extends RenderableWidget {
         setWidget(editbox);
 
         editbox.setValue(getElement().getValue() == null ? "" : getElement().getValue());
-        editbox.setSuggestion(getElement().getSuggestion());
+        editbox.setHint(this.suggestion);
         editbox.setBordered(getElement().isBordered() == null || Boolean.TRUE.equals(getElement().isBordered()));
         editbox.setCanLoseFocus(getElement().canLoseFocus() == null || Boolean.TRUE.equals(getElement().canLoseFocus()));
         editbox.setEditable(getElement().isEditable() == null || Boolean.TRUE.equals(getElement().isEditable()));

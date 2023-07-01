@@ -1,17 +1,15 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.MutableComponent;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableText extends RenderableElement {
-    private MutableComponent text;
+    private MutableComponent vanillaComponent;
 
     public RenderableText(@NotNull RenderableScreen screen, @NotNull Text text) {
         super(screen, text);
@@ -24,15 +22,15 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
         if (getElement().getText() == null) {
             return;
         }
 
-        this.text = processComponent(getElement().getText());
+        this.vanillaComponent = adventureToVanilla(getElement().getText());
 
-        int textWidth = Minecraft.getInstance().font.width(this.text);
-        int textHeight = Minecraft.getInstance().font.lineHeight;
+        int textWidth = client.font.width(this.vanillaComponent);
+        int textHeight = client.font.lineHeight;
 
         calcScreenPos(textWidth, textHeight);
 
@@ -41,27 +39,25 @@ public class RenderableText extends RenderableElement {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        if (this.text == null) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+        if (this.vanillaComponent == null) {
             return;
         }
 
-        rotate(guiGraphics, this.centerX, this.centerY, getElement().getRotation());
-        scale(guiGraphics, this.scaleX, this.scaleY, getElement().getScale());
+        rotate(gfx, this.centerX, this.centerY, getElement().getRotation());
+        scale(gfx, this.scaleX, this.scaleY, getElement().getScale());
 
-        MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-        Minecraft.getInstance().font.drawInBatch(
-                this.text,
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+
+        gfx.drawString(
+                Minecraft.getInstance().font,
+                this.vanillaComponent,
                 this.posX,
                 this.posY,
                 0xFFFFFF,
-                Boolean.TRUE.equals(getElement().hasShadow()),
-                guiGraphics.pose.last().pose(),
-                immediate,
-                Font.DisplayMode.NORMAL,
-                0,
-                0xF000F0
+                Boolean.TRUE.equals(getElement().hasShadow())
         );
-        immediate.endBatch();
     }
 }

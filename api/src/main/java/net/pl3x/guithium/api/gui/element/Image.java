@@ -3,6 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.gui.Vec4;
@@ -10,8 +11,6 @@ import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents an image.
@@ -178,17 +177,17 @@ public class Image extends Rect {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Preconditions.checkArgument(json.has("texture"), "Texture cannot be null");
         return new Image(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            Texture.fromJson(json.get("texture").getAsJsonObject()),
-            !json.has("uv") ? null : Vec4.fromJson(json.get("uv").getAsJsonObject()),
-            !json.has("vertexColor") ? null : json.get("vertexColor").getAsInt(),
-            !json.has("tileMod") ? null : json.get("tileMod").getAsFloat()
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
+                Texture.fromJson(json.get("texture").getAsJsonObject()),
+                !json.has("uv") ? null : Vec4.fromJson(json.get("uv").getAsJsonObject()),
+                !json.has("vertexColor") ? null : json.get("vertexColor").getAsInt(),
+                !json.has("tileMod") ? null : json.get("tileMod").getAsFloat()
         );
     }
 
@@ -205,10 +204,10 @@ public class Image extends Rect {
         }
         Image other = (Image) o;
         return getTexture().equals(other.getTexture())
-            && Objects.equals(getUV(), other.getUV())
-            && Objects.equals(getVertexColor(), other.getVertexColor())
-            && Objects.equals(getTileModifier(), other.getTileModifier())
-            && super.equals(o);
+                && Objects.equals(getUV(), other.getUV())
+                && Objects.equals(getVertexColor(), other.getVertexColor())
+                && Objects.equals(getTileModifier(), other.getTileModifier())
+                && super.equals(o);
     }
 
     @Override
@@ -226,10 +225,10 @@ public class Image extends Rect {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",texture=" + getTexture()
-            + ",uv=" + getUV()
-            + ",vertexColor=" + getVertexColor()
-            + ",tileMod=" + getTileModifier();
+                + ",texture=" + getTexture()
+                + ",uv=" + getUV()
+                + ",vertexColor=" + getVertexColor()
+                + ",tileMod=" + getTileModifier();
     }
 
     /**

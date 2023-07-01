@@ -2,12 +2,11 @@ package net.pl3x.guithium.api.gui;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a 2D vector.
@@ -85,8 +84,8 @@ public class Vec2 implements JsonSerializable {
     @NotNull
     public static Vec2 fromJson(@NotNull JsonObject json) {
         return new Vec2(
-            !json.has("x") ? 0 : json.get("x").getAsFloat(),
-            !json.has("y") ? 0 : json.get("y").getAsFloat()
+                !json.has("x") ? 0 : json.get("x").getAsFloat(),
+                !json.has("y") ? 0 : json.get("y").getAsFloat()
         );
     }
 
@@ -103,7 +102,7 @@ public class Vec2 implements JsonSerializable {
         }
         Vec2 other = (Vec2) o;
         return Float.compare(getX(), other.getX()) == 0
-            && Float.compare(getY(), other.getY()) == 0;
+                && Float.compare(getY(), other.getY()) == 0;
     }
 
     @Override

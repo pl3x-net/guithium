@@ -20,7 +20,7 @@ public class RenderableScreen extends AbstractScreen {
     private final Map<Key, RenderableElement> elements = new LinkedHashMap<>();
 
     public RenderableScreen(@NotNull Screen screen) {
-        super(Minecraft.getInstance() == null ? null : Minecraft.getInstance().screen);
+        super(Minecraft.getInstance().screen);
 
         Preconditions.checkNotNull(screen, "Screen cannot be null");
         this.screen = screen;
@@ -57,21 +57,21 @@ public class RenderableScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         // render elements
         this.elements.forEach((key, element) -> {
-            guiGraphics.pose.pushPose();
-            element.render(guiGraphics, mouseX, mouseY, delta);
-            guiGraphics.pose.popPose();
+            gfx.pose.pushPose();
+            element.render(gfx, mouseX, mouseY, delta);
+            gfx.pose.popPose();
         });
 
         // render tooltips last
         for (Map.Entry<Key, RenderableElement> entry : this.elements.entrySet()) {
             if (entry.getValue() instanceof RenderableWidget widget) {
                 if (widget.getTooltip() != null && widget.getWidget().isHovered && widget.getTooltipDelay() > 10) {
-                    guiGraphics.pose.pushPose();
-                    guiGraphics.renderTooltip(font, widget.getTooltip(), mouseX, mouseY);
-                    guiGraphics.pose.popPose();
+                    gfx.pose.pushPose();
+                    gfx.renderTooltip(font, widget.getTooltip(), mouseX, mouseY);
+                    gfx.pose.popPose();
                     break;
                 }
             }

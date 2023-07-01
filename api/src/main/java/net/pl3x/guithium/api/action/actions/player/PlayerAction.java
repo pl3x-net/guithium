@@ -1,6 +1,7 @@
-package net.pl3x.guithium.api.action.actions;
+package net.pl3x.guithium.api.action.actions.player;
 
 import com.google.common.base.Preconditions;
+import net.pl3x.guithium.api.action.actions.Action;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 

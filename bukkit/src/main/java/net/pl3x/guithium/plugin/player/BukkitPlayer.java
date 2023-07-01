@@ -1,5 +1,6 @@
 package net.pl3x.guithium.plugin.player;
 
+import java.util.UUID;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.player.WrappedPlayer;
@@ -8,8 +9,6 @@ import net.pl3x.guithium.plugin.network.BukkitConnection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class BukkitPlayer implements WrappedPlayer {
     private final Player player;

@@ -3,6 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
@@ -13,8 +14,6 @@ import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents a toggleable checkbox.
@@ -197,17 +196,17 @@ public class Checkbox extends Rect {
     public static Checkbox fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Checkbox(
-            Key.of(json.get("key").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
-            !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
-            !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
-            !json.has("selected") ? null : json.get("selected").getAsBoolean(),
-            !json.has("showLabel") ? null : json.get("showLabel").getAsBoolean()
+                Key.of(json.get("key").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()),
+                !json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()),
+                !json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()),
+                !json.has("selected") ? null : json.get("selected").getAsBoolean(),
+                !json.has("showLabel") ? null : json.get("showLabel").getAsBoolean()
         );
     }
 
@@ -224,10 +223,10 @@ public class Checkbox extends Rect {
         }
         Checkbox other = (Checkbox) o;
         return Objects.equals(getLabel(), other.getLabel())
-            && Objects.equals(getTooltip(), other.getTooltip())
-            && Objects.equals(isSelected(), other.isSelected())
-            && Objects.equals(isShowLabel(), other.isShowLabel())
-            && super.equals(o);
+                && Objects.equals(getTooltip(), other.getTooltip())
+                && Objects.equals(isSelected(), other.isSelected())
+                && Objects.equals(isShowLabel(), other.isShowLabel())
+                && super.equals(o);
     }
 
     @Override
@@ -245,10 +244,10 @@ public class Checkbox extends Rect {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",label=" + getLabel()
-            + ",tooltip=" + getTooltip()
-            + ",selected=" + isSelected()
-            + ",showLabel=" + isShowLabel();
+                + ",label=" + getLabel()
+                + ",tooltip=" + getTooltip()
+                + ",selected=" + isSelected()
+                + ",showLabel=" + isShowLabel();
     }
 
     /**

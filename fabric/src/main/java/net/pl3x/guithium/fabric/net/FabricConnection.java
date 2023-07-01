@@ -35,8 +35,8 @@ public class FabricConnection implements Connection {
         }
         ByteBuf buf = Unpooled.wrappedBuffer(packet.write().toByteArray());
         ClientPlayNetworking.send(
-            FabricNetworkHandler.RESOURCE_LOCATION,
-            new FriendlyByteBuf(buf)
+                FabricNetworkHandler.RESOURCE_LOCATION,
+                new FriendlyByteBuf(buf)
         );
     }
 }

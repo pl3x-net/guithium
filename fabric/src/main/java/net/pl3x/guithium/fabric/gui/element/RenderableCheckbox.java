@@ -29,23 +29,23 @@ public class RenderableCheckbox extends RenderableWidget {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
-        this.label = processComponent(getElement().getLabel());
+    public void init(@NotNull Minecraft client, int width, int height) {
+        this.label = adventureToVanilla(getElement().getLabel());
         this.tooltip = processTooltip(getElement().getTooltip());
 
         Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Vec2.of(30 + minecraft.font.width(this.label), 20);
+            size = Vec2.of(30 + client.font.width(this.label), 20);
         }
 
         calcScreenPos(size.getX(), size.getY());
 
         setWidget(createCheckbox(
-            TEXTURE,
-            size,
-            this.label,
-            getElement().isShowLabel(),
-            getElement().isSelected()
+                TEXTURE,
+                size,
+                this.label,
+                getElement().isShowLabel(),
+                getElement().isSelected()
         ));
     }
 
@@ -59,6 +59,6 @@ public class RenderableCheckbox extends RenderableWidget {
         // toggle this checkbox and tell the server
         getElement().setSelected(selected);
         Guithium.instance().getNetworkHandler().getConnection()
-            .send(new CheckboxTogglePacket(getScreen().getScreen(), getElement(), selected));
+                .send(new CheckboxTogglePacket(getScreen().getScreen(), getElement(), selected));
     }
 }

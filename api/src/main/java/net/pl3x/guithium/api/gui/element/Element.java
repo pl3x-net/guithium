@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonObject;
+import java.util.Locale;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Key;
 import net.pl3x.guithium.api.gui.Vec2;
@@ -9,8 +10,6 @@ import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Locale;
 
 /**
  * Represents an element to be displayed on a {@link net.pl3x.guithium.api.gui.Screen}.

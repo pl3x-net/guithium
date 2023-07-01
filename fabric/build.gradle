@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'fabric-loom' version "$fabric_loom_version"
+}
+
+group = "${rootProject.group}.fabric"
+version = rootProject.version
+description = "$description"
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.terraformersmc.com/' }
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    implementation project(':api')
+
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
+    modImplementation include("net.kyori:adventure-platform-fabric:${adventure_fabric_version}")
+    modImplementation include("net.kyori:adventure-text-serializer-gson:${adventure_text_serializer_gson}")
+}
+
+base {
+    archivesName = "${rootProject.name}-${project.name}"
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    filesMatching('fabric.mod.json') {
+        expand(
+                'version': project.version,
+                'minecraft_version': "${minecraft_version}",
+                'fabric_loader_version': "${fabric_loader_version}",
+                'description': project.description,
+                'website': website,
+                'sources': sources,
+                'issues': issues,
+        )
+    }
+}
+
+loom {
+    mixin {
+        defaultRefmapName = 'guithium.refmap.json'
+    }
+    accessWidenerPath = file('src/main/resources/guithium.accesswidener')
+    runConfigs.configureEach {
+        ideConfigGenerated(true)
+    }
+}

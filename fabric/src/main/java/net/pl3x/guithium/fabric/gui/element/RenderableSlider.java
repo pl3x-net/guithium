@@ -6,7 +6,6 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.pl3x.guithium.api.gui.Vec2;
@@ -39,7 +38,7 @@ public class RenderableSlider extends RenderableWidget {
     }
 
     @Override
-    public void init(@NotNull Minecraft minecraft, int width, int height) {
+    public void init(@NotNull Minecraft client, int width, int height) {
         if (getElement().getMin() != null) {
             this.min = getElement().getMin();
         }
@@ -65,7 +64,7 @@ public class RenderableSlider extends RenderableWidget {
 
         Vec2 size = getElement().getSize();
         if (size == null) {
-            size = Vec2.of(30 + minecraft.font.width(this.label), 20);
+            size = Vec2.of(30 + client.font.width(this.label), 20);
         }
 
         calcScreenPos(size.getX(), size.getY());
@@ -83,7 +82,7 @@ public class RenderableSlider extends RenderableWidget {
     public Component calculateMessage() {
         net.kyori.adventure.text.Component label = getElement().getLabel();
         if (label != null) {
-            return processComponent(GsonComponentSerializer.gson().serialize(label)
+            return adventureToVanilla(GsonComponentSerializer.gson().serialize(label)
                     .replace("{value}", this.decimalFormat.format(getElement().getValue()))
                     .replace("{min}", this.decimalFormat.format(this.min))
                     .replace("{max}", this.decimalFormat.format(this.max))
@@ -110,28 +109,28 @@ public class RenderableSlider extends RenderableWidget {
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float delta) {
             if (!this.visible) {
                 return;
             }
-            this.renderableSlider.rotate(guiGraphics, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
+            this.renderableSlider.rotate(gfx, this.getX(), this.getY(), this.width, this.height, this.renderableSlider.getElement().getRotation());
             this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-            renderWidget(guiGraphics, mouseX, mouseY, delta);
+            renderWidget(gfx, mouseX, mouseY, delta);
         }
 
         @Override
-        public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        public void renderWidget(GuiGraphics gfx, int mouseX, int mouseY, float delta) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             int yOffset = getTextureY(isActive(), isHoveredOrFocused());
-            guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
-            guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20, 4, 200, 20, 0, yOffset);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            renderScrollingString(guiGraphics, Minecraft.getInstance().font, 2, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
+            gfx.blitNineSliced(WIDGETS_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, yOffset);
+            gfx.blitNineSliced(WIDGETS_LOCATION, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 8, 20, 20, 4, 200, 20, 0, yOffset);
+
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+
+            renderScrollingString(gfx, Minecraft.getInstance().font, 2, (this.active ? 0xFFFFFFFF : 0xFFA0A0A0) | Mth.ceil(this.alpha * 255.0F) << 24);
         }
 
         @Override

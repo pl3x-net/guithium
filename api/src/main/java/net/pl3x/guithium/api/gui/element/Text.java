@@ -3,6 +3,7 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Key;
@@ -10,8 +11,6 @@ import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Represents some drawable text.
@@ -103,14 +102,14 @@ public class Text extends AbstractElement {
     public static Text fromJson(@NotNull JsonObject json) {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         return new Text(
-            Key.of(json.get("key").getAsString()),
-            !json.has("text") ? null : GsonComponentSerializer.gson().deserialize(json.get("text").getAsString()),
-            !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
-            !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
-            !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
-            !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
-            !json.has("scale") ? null : json.get("scale").getAsFloat(),
-            !json.has("shadow") ? null : json.get("shadow").getAsBoolean()
+                Key.of(json.get("key").getAsString()),
+                !json.has("text") ? null : GsonComponentSerializer.gson().deserialize(json.get("text").getAsString()),
+                !json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()),
+                !json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()),
+                !json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()),
+                !json.has("rotation") ? null : json.get("rotation").getAsFloat(),
+                !json.has("scale") ? null : json.get("scale").getAsFloat(),
+                !json.has("shadow") ? null : json.get("shadow").getAsBoolean()
         );
     }
 
@@ -127,8 +126,8 @@ public class Text extends AbstractElement {
         }
         Text other = (Text) o;
         return Objects.equals(getText(), other.getText())
-            && Objects.equals(hasShadow(), other.hasShadow())
-            && super.equals(o);
+                && Objects.equals(hasShadow(), other.hasShadow())
+                && super.equals(o);
     }
 
     @Override
@@ -146,8 +145,8 @@ public class Text extends AbstractElement {
     @NotNull
     protected String getPropertiesAsString() {
         return super.getPropertiesAsString()
-            + ",text=" + getText()
-            + ",shadow=" + hasShadow();
+                + ",text=" + getText()
+                + ",shadow=" + hasShadow();
     }
 
     /**

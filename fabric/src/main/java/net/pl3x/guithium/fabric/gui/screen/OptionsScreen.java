@@ -15,18 +15,18 @@ public class OptionsScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics);
-        guiGraphics.drawCenteredString(this.font, OPTIONS_TITLE, this.centerX, 15, 0xFFFFFFFF);
-        super.render(guiGraphics, mouseX, mouseY, delta);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+        renderBackground(gfx);
+        gfx.drawCenteredString(this.font, OPTIONS_TITLE, this.centerX, 15, 0xFFFFFFFF);
+        super.render(gfx, mouseX, mouseY, delta);
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics guiGraphics) {
+    public void renderBackground(@NotNull GuiGraphics gfx) {
         if (this.minecraft != null && this.minecraft.level != null) {
-            guiGraphics.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+            gfx.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
         } else {
-            this.renderDirtBackground(guiGraphics);
+            this.renderDirtBackground(gfx);
         }
     }
 }

@@ -1,6 +1,5 @@
 package net.pl3x.guithium.fabric.mixin;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.pl3x.guithium.fabric.Guithium;
@@ -13,16 +12,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public class MixinGui {
     @Inject(method = "renderHotbar", at = @At("HEAD"))
-    private void renderHotbar(float delta, @NotNull GuiGraphics guiGraphics, @NotNull CallbackInfo ci) {
+    private void renderHotbar(float delta, @NotNull GuiGraphics gfx, @NotNull CallbackInfo ci) {
         try {
-            Guithium.instance().getHudManager().render(guiGraphics, delta);
+            Guithium.instance().getHudManager().render(gfx, delta);
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
     @Inject(method = "renderPlayerHealth", at = @At("HEAD"), cancellable = true)
-    private void renderPlayerHealth(GuiGraphics guiGraphics, CallbackInfo ci) {
+    private void renderPlayerHealth(@NotNull GuiGraphics gfx, @NotNull CallbackInfo ci) {
         if (Guithium.instance().getHudManager().canShowStatsHud()) {
             return;
         }
@@ -30,7 +29,7 @@ public class MixinGui {
     }
 
     @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
-    private void renderVehicleHealth(GuiGraphics guiGraphics, CallbackInfo ci) {
+    private void renderVehicleHealth(@NotNull GuiGraphics gfx, @NotNull CallbackInfo ci) {
         if (Guithium.instance().getHudManager().canShowStatsHud()) {
             return;
         }

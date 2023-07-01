@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.modrinth.minotaur' version '2.+'
+}
+
+var buildNum = System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"
+project.group = "net.pl3x.guithium"
+project.version = "${guithium_version}-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.terraformersmc.com/' }
+}
+
+dependencies {
+    compileOnly project(':api')
+    compileOnly project(':bukkit')
+    compileOnly project(':fabric')
+}
+
+def copyJavadocAndSources = tasks.register('copyJavadocAndSources', Copy) {
+    from("$rootDir/api/build/libs") {
+        include "*-*-*-*-*.jar"
+    }
+    into layout.buildDirectory.dir('libs')
+    rename "${rootProject.name}-api-${version}-javadoc.jar", "${rootProject.name}-${version}-javadoc.jar"
+    rename "${rootProject.name}-api-${version}-sources.jar", "${rootProject.name}-${version}-sources.jar"
+}
+
+def combineJars = tasks.register('combineJars', Jar) {
+    mustRunAfter build
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(files(subprojects.collect {
+        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
+    }).filter { it.name != 'MANIFEST.MF' }.collect { if (it.isDirectory()) it else zipTree(it) })
+    manifest {
+        def commit = 'git rev-parse --short HEAD'.execute()
+        commit.waitFor()
+        attributes['Guithium-Version'] = "${version}"
+        attributes['Implementation-Version'] = "${version}"
+        attributes['Git-Commit'] = commit.text.trim()
+    }
+    finalizedBy copyJavadocAndSources
+}
+
+assemble {
+    subprojects.forEach { project -> dependsOn ":${project.name}:build" }
+    finalizedBy combineJars
+}
+
+modrinth {
+    autoAddDependsOn = false
+    token = System.getenv('MODRINTH_TOKEN')
+    projectId = 'guithium'
+    versionName = "${project.version}"
+    versionNumber = "${project.version}"
+    versionType = 'alpha'
+    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get()
+    gameVersions.addAll(["${minecraft_version}"])
+    loaders.addAll(['spigot', 'paper', 'purpur', 'fabric', 'quilt'])
+    changelog.set(System.getenv('COMMIT_MESSAGE'))
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    publishing {
+        repositories {
+            maven {
+                name = 'public'
+                url = uri('https://repo.pl3x.net/public')
+                credentials(PasswordCredentials)
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+        publications {
+            maven(MavenPublication) {
+                groupId = "${rootProject.group}"
+                artifactId = "guithium-${project.name}"
+                version = "${rootProject.version}"
+                from components.java
+            }
+        }
+    }
+}
