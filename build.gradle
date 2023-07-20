@@ -61,6 +61,9 @@ modrinth {
     gameVersions.addAll(["${minecraft_version}"])
     loaders.addAll(['spigot', 'paper', 'purpur', 'fabric', 'quilt'])
     changelog.set(System.getenv('COMMIT_MESSAGE'))
+    dependencies {
+        required.project 'fabric-api'
+    }
 }
 
 subprojects {
