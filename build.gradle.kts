@@ -1,13 +1,9 @@
 plugins {
     `java-library`
-    `maven-publish`
     id("com.modrinth.minotaur") version "2.+"
 }
 
-var buildNum = System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"
-
-project.version = "${extra["mod_version"]}-SNAPSHOT"
-project.group = "net.pl3x.guithium"
+version = "1.21.5-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
 
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true
@@ -16,9 +12,7 @@ val mergedJar by configurations.creating<Configuration> {
 }
 
 repositories {
-    mavenCentral()
     maven("https://maven.fabricmc.net/")
-    maven("https://maven.terraformersmc.com/")
 }
 
 dependencies {
@@ -33,21 +27,20 @@ tasks {
         archiveBaseName.set(rootProject.name)
         from({ mergedJar.filter { it.name.endsWith("jar") && it.path.contains(rootDir.path) }.map { zipTree(it) } })
         manifest {
-            attributes["Implementation-Version"] = "${project.version} $buildNum"
+            attributes["Implementation-Version"] = version
         }
     }
-    publish {
-        enabled = false
-    }
-    modrinth {
-        token.set(System.getenv("MODRINTH_TOKEN"))
-        projectId.set("guithium")
-        versionName.set("${project.extra["minecraft_version"]} ${project.version}")
-        versionNumber.set("${project.version}")
-        versionType.set("alpha")
-        uploadFile.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get())
-        gameVersions.addAll(listOf("${project.extra["minecraft_version"]}"))
-        loaders.addAll(listOf("spigot", "paper", "purpur", "fabric", "quilt"))
-        changelog.set(System.getenv("COMMIT_MESSAGE"))
-    }
+}
+
+modrinth {
+    autoAddDependsOn = false
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "guithium"
+    versionName = "$version"
+    versionNumber = "$version"
+    versionType = "alpha"
+    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-$version.jar").get()
+    gameVersions.addAll(listOf("1.21.5"))
+    loaders.addAll(listOf("paper", "purpur", "fabric"))
+    changelog = System.getenv("COMMIT_MESSAGE")
 }
