@@ -1,27 +1,27 @@
 {
-  "schemaVersion": 1,
-  "id": "guithium",
-  "version": "${version}",
-  "name": "Guithium",
-  "description": "Allows bukkit servers to add GUIs to your client",
-  "authors": [
+  "schemaVersion" : 1,
+  "id" : "guithium",
+  "version" : "${version}",
+  "name" : "Guithium",
+  "description" : "Allows bukkit servers to add GUIs to your client",
+  "authors" : [
     "BillyGalbreath"
   ],
-  "contact": {
-    "homepage": "https://github.com/BillyGalbreath/Guithium",
-    "sources": "https://github.com/BillyGalbreath/Guithium",
-    "issues": "https://github.com/BillyGalbreath/Guithium/issues"
+  "contact" : {
+    "homepage" : "https://github.com/BillyGalbreath/Guithium",
+    "sources" : "https://github.com/BillyGalbreath/Guithium",
+    "issues" : "https://github.com/BillyGalbreath/Guithium/issues"
   },
-  "license": "MIT",
-  "icon": "assets/icon.png",
-  "environment": "client",
-  "entrypoints": {
-    "client": [
+  "license" : "MIT",
+  "icon" : "assets/icon.png",
+  "environment" : "client",
+  "entrypoints" : {
+    "client" : [
       "net.pl3x.guithium.fabric.GuithiumMod"
     ]
   },
-  "depends": {
-    "fabricloader": ">=0.16.10",
-    "minecraft": "1.21.5"
+  "depends" : {
+    "fabricloader" : ">=0.16.10",
+    "minecraft" : "1.21.5"
   }
 }

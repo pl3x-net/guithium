@@ -1,9 +1,8 @@
 package net.pl3x.guithium.plugin;
 
+import java.lang.reflect.Field;
 import net.pl3x.guithium.api.Guithium;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.lang.reflect.Field;
 
 public class GuithiumPlugin extends JavaPlugin implements Guithium {
     private static GuithiumPlugin instance;
