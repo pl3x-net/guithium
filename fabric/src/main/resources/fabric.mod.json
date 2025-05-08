@@ -3,7 +3,7 @@
   "id": "guithium",
   "version": "${version}",
   "name": "Guithium",
-  "description": "Allows servers to add GUIs to your client",
+  "description": "Allows bukkit servers to add GUIs to your client",
   "authors": [
     "BillyGalbreath"
   ],
@@ -17,26 +17,11 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.pl3x.guithium.fabric.Guithium"
-    ],
-    "modmenu": [
-      "net.pl3x.guithium.fabric.configuration.ModMenu"
+      "net.pl3x.guithium.fabric.GuithiumMod"
     ]
   },
-  "mixins": [
-    "guithium.mixins.json"
-  ],
-  "accessWidener": "guithium.accesswidener",
   "depends": {
-    "fabricloader": ">=0.14.9",
-    "fabric": "*",
-    "minecraft": "1.19.2"
-  },
-  "custom": {
-    "modmenu": {
-      "links": {
-        "modmenu.discord": "https://discord.gg/nhGzEkwXQX"
-      }
-    }
+    "fabricloader": ">=0.16.10",
+    "minecraft": "1.21.5"
   }
 }
