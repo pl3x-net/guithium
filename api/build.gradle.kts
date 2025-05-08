@@ -11,7 +11,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:23.0.0")
+    compileOnly("com.google.code.gson:gson:2.11.0")
+    compileOnly("com.google.guava:guava:33.3.1-jre")
+    compileOnly("org.jetbrains:annotations:26.0.1")
 }
 
 base {
