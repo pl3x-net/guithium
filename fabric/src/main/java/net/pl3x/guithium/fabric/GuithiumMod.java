@@ -1,25 +1,15 @@
 package net.pl3x.guithium.fabric;
 
-import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
 import net.pl3x.guithium.api.Guithium;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
-    private static GuithiumMod instance;
-
-    public static GuithiumMod getInstance() {
-        return instance;
+    public static GuithiumMod instance() {
+        return (GuithiumMod) Guithium.api();
     }
 
     public GuithiumMod() {
-        instance = this;
-
-        try {
-            Field api = Guithium.Provider.class.getDeclaredField("api");
-            api.setAccessible(true);
-            api.set(null, this);
-        } catch (NoSuchFieldException | IllegalAccessException ignore) {
-        }
+        Guithium.Provider.set(this);
     }
 
     @Override

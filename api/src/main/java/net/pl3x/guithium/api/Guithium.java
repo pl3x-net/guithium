@@ -19,9 +19,9 @@ public interface Guithium {
     int PROTOCOL = 1;
 
     /**
-     * The API instance provider
+     * The Guithium instance provider
      * <br>
-     * For internal use only
+     * For internal use
      */
     final class Provider {
         static Guithium api;
@@ -31,22 +31,33 @@ public interface Guithium {
         }
 
         /**
-         * Get the instance to the API
+         * Get the Guithium API instance
          * <br>
-         * For internal use only
+         * For internal use
          *
-         * @return API instance
+         * @return instance of Guithium API
          */
         @NotNull
         public static Guithium api() {
             return Provider.api;
         }
+
+        /**
+         * Set the Guithium API instance
+         * <br>
+         * For internal use
+         *
+         * @param guithium instance of Guithium API
+         */
+        public static void set(Guithium guithium) {
+            api = guithium;
+        }
     }
 
     /**
-     * Get the instance to the API
+     * Get the Guithium API instance
      *
-     * @return API instance
+     * @return instance of Guithium API
      */
     @NotNull
     static Guithium api() {
