@@ -1,0 +1,167 @@
+package net.pl3x.guithium.api.gui;
+
+import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.key.Keyed;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Represents a screen of gui elements
+ */
+public class Screen extends Keyed {
+    private final List<Element> elements = new ArrayList<>();
+
+    /**
+     * Create a new screen
+     *
+     * @param key unique identifier
+     */
+    public Screen(@NotNull Key key) {
+        super(key);
+    }
+
+    /**
+     * Get a list of this screen's elements
+     *
+     * @return list of elements
+     */
+    @NotNull
+    public List<Element> getElements() {
+        return this.elements;
+    }
+
+    /**
+     * Get element by unique identifier
+     *
+     * @param key unique identifier
+     * @return element or null
+     */
+    @Nullable
+    public Element getElement(@NotNull Key key) {
+        return this.elements.stream().filter(key::equals).findAny().orElse(null);
+    }
+
+    /**
+     * Get element by unique identifier
+     *
+     * @param key unique identifier
+     * @return element or null
+     */
+    @Nullable
+    public Element getElement(@NotNull String key) {
+        return getElement(Key.of(key));
+    }
+
+    /**
+     * Add multiple elements to screen
+     *
+     * @param elements elements to add
+     */
+    public void addElements(@NotNull Collection<Element> elements) {
+        elements.forEach(this::addElement);
+    }
+
+    /**
+     * Add element to screen
+     *
+     * @param element element to add
+     */
+    public void addElement(@NotNull Element element) {
+        Preconditions.checkNotNull(element, "Cannot add null element to screen");
+        Preconditions.checkArgument(!hasElement(element), "Screen already has element with key '%s'", element.getKey());
+        this.elements.add(element);
+    }
+
+    /**
+     * Remove element from screen
+     *
+     * @param element element to remove
+     */
+    public void removeElement(@NotNull Element element) {
+        removeElement(element.getKey());
+    }
+
+    /**
+     * Remove element from screen by unique identifier
+     *
+     * @param key unique identifier of element to remove
+     */
+    public void removeElement(@NotNull String key) {
+        removeElement(Key.of(key));
+    }
+
+    /**
+     * Remove element from screen by unique identifier
+     *
+     * @param key unique identifier of element to remove
+     */
+    public void removeElement(@NotNull Key key) {
+        this.elements.removeIf(key::equals);
+    }
+
+    /**
+     * Check if screen has element
+     *
+     * @param element element to check
+     * @return true if screen has element
+     */
+    public boolean hasElement(@NotNull Element element) {
+        return hasElement(element.getKey());
+    }
+
+    /**
+     * Check if screen has element by unique identifier
+     *
+     * @param key unique identifier to check
+     * @return true if screen has element with specified unique identifier
+     */
+    public boolean hasElement(@NotNull String key) {
+        return hasElement(Key.of(key));
+    }
+
+    /**
+     * Check if screen has element by unique identifier
+     *
+     * @param key unique identifier to check
+     * @return true if screen has element with specified unique identifier
+     */
+    public boolean hasElement(@NotNull Key key) {
+        return this.elements.stream().anyMatch(key::equals);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Screen other = (Screen) obj;
+        return Objects.equals(getKey(), other.getKey())
+                && getElements().equals(other.getElements());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getKey(), getElements());
+    }
+
+    @Override
+    @NotNull
+    public String toString() {
+        return "Screen{"
+                + "key=" + getKey()
+                + ",elements=" + getElements()
+                + "}";
+    }
+}
