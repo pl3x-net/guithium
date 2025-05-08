@@ -1,9 +1,8 @@
 package net.pl3x.guithium.fabric;
 
+import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
 import net.pl3x.guithium.api.Guithium;
-
-import java.lang.reflect.Field;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
     private static GuithiumMod instance;
