@@ -4,25 +4,25 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 /**
- * The Guithium API
+ * The Guithium API.
  */
 public interface Guithium {
     /**
-     * The identifier for this mod
+     * The identifier for this mod.
      */
     String MOD_ID = "guithium";
 
     /**
-     * The protocol version
-     * <br>
-     * This is used to ensure client and server can correctly talk to each other
+     * The protocol version.
+     * <p>
+     * This is used to ensure client and server can correctly talk to each other.
      */
     int PROTOCOL = 1;
 
     /**
-     * The Guithium instance provider
-     * <br>
-     * For internal use
+     * The Guithium instance provider.
+     * <p>
+     * For internal use.
      */
     final class Provider {
         static Guithium api;
@@ -32,11 +32,13 @@ public interface Guithium {
         }
 
         /**
-         * Get the Guithium API instance
-         * <br>
-         * For internal use
+         * Get the Guithium API instance.
+         * <p>
+         * <u>For internal use.</u>
+         * <p>
+         * Use {@link Guithium#api()} instead.
          *
-         * @return instance of Guithium API
+         * @return Instance of Guithium API
          */
         @NotNull
         public static Guithium api() {
@@ -44,11 +46,11 @@ public interface Guithium {
         }
 
         /**
-         * Set the Guithium API instance
-         * <br>
-         * For internal use
+         * Set the Guithium API instance.
+         * <p>
+         * For internal use.
          *
-         * @param guithium instance of Guithium API
+         * @param guithium Instance of Guithium API
          */
         public static void set(Guithium guithium) {
             api = guithium;
@@ -56,9 +58,9 @@ public interface Guithium {
     }
 
     /**
-     * Get the Guithium API instance
+     * Get the Guithium API instance.
      *
-     * @return instance of Guithium API
+     * @return Instance of Guithium API
      */
     @NotNull
     static Guithium api() {
@@ -66,9 +68,11 @@ public interface Guithium {
     }
 
     /**
-     * Get Guithium's logger
+     * Get Guithium's logger.
+     * <p>
+     * For internal use. Please use your own logger.
      *
-     * @return logger instance
+     * @return Instance of Guithium's logger
      */
     @NotNull
     Logger logger();
