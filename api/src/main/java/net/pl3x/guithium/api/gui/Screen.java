@@ -12,24 +12,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents a screen of gui elements
+ * Represents a screen of gui elements.
  */
 public class Screen extends Keyed {
     private final List<Element> elements = new ArrayList<>();
 
     /**
-     * Create a new screen
+     * Create a new screen.
      *
-     * @param key unique identifier
+     * @param key Unique identifier
      */
     public Screen(@NotNull Key key) {
         super(key);
     }
 
     /**
-     * Get a list of this screen's elements
+     * Get a list of this screen's elements.
      *
-     * @return list of elements
+     * @return List of elements
      */
     @NotNull
     public List<Element> getElements() {
@@ -37,10 +37,10 @@ public class Screen extends Keyed {
     }
 
     /**
-     * Get element by unique identifier
+     * Get element by key.
      *
-     * @param key unique identifier
-     * @return element or null
+     * @param key Unique identifier
+     * @return Element or null
      */
     @Nullable
     public Element getElement(@NotNull Key key) {
@@ -48,10 +48,10 @@ public class Screen extends Keyed {
     }
 
     /**
-     * Get element by unique identifier
+     * Get element by key.
      *
-     * @param key unique identifier
-     * @return element or null
+     * @param key Unique identifier
+     * @return Element or null
      */
     @Nullable
     public Element getElement(@NotNull String key) {
@@ -59,18 +59,18 @@ public class Screen extends Keyed {
     }
 
     /**
-     * Add multiple elements to screen
+     * Add multiple elements to screen.
      *
-     * @param elements elements to add
+     * @param elements Elements to add
      */
     public void addElements(@NotNull Collection<Element> elements) {
         elements.forEach(this::addElement);
     }
 
     /**
-     * Add element to screen
+     * Add element to screen.
      *
-     * @param element element to add
+     * @param element Element to add
      */
     public void addElement(@NotNull Element element) {
         Preconditions.checkNotNull(element, "Cannot add null element to screen");
@@ -79,60 +79,60 @@ public class Screen extends Keyed {
     }
 
     /**
-     * Remove element from screen
+     * Remove element from screen.
      *
-     * @param element element to remove
+     * @param element Element to remove
      */
     public void removeElement(@NotNull Element element) {
         removeElement(element.getKey());
     }
 
     /**
-     * Remove element from screen by unique identifier
+     * Remove element from screen by key.
      *
-     * @param key unique identifier of element to remove
+     * @param key Unique identifier of element to remove
      */
     public void removeElement(@NotNull String key) {
         removeElement(Key.of(key));
     }
 
     /**
-     * Remove element from screen by unique identifier
+     * Remove element from screen by key.
      *
-     * @param key unique identifier of element to remove
+     * @param key Unique identifier of element to remove
      */
     public void removeElement(@NotNull Key key) {
         this.elements.removeIf(key::equals);
     }
 
     /**
-     * Check if screen has element
+     * Check if screen has element.
      *
-     * @param element element to check
-     * @return true if screen has element
+     * @param element Element to check
+     * @return {@code true} if screen has element, otherwise {@code false}
      */
     public boolean hasElement(@NotNull Element element) {
         return hasElement(element.getKey());
     }
 
     /**
-     * Check if screen has element by unique identifier
+     * Check if screen has element by key.
      *
-     * @param key unique identifier to check
-     * @return true if screen has element with specified unique identifier
+     * @param key Unique identifier to check
+     * @return {@code true} if screen has element with specified key, otherwise {@code false}
      */
     public boolean hasElement(@NotNull String key) {
         return hasElement(Key.of(key));
     }
 
     /**
-     * Check if screen has element by unique identifier
+     * Check if screen has element by key.
      *
-     * @param key unique identifier to check
-     * @return true if screen has element with specified unique identifier
+     * @param key Unique identifier to check
+     * @return {@code true} if screen has element with specified key, otherwise {@code false}
      */
     public boolean hasElement(@NotNull Key key) {
-        return this.elements.stream().anyMatch(key::equals);
+        return this.elements.stream().anyMatch(element -> key.equals(element.getKey()));
     }
 
     @Override

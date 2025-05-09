@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents an object with a unique identifier
+ * Represents an object with a unique identifier.
  */
 public abstract class Keyed {
     private final Key key;
@@ -13,7 +13,7 @@ public abstract class Keyed {
     /**
      * Create a new key identified object.
      *
-     * @param key key for object
+     * @param key Unique identifier
      */
     public Keyed(@NotNull Key key) {
         Preconditions.checkNotNull(key, "Key cannot be null");
@@ -23,7 +23,7 @@ public abstract class Keyed {
     /**
      * Get the identifying key for this object.
      *
-     * @return the key
+     * @return Unique identifier
      */
     @NotNull
     public Key getKey() {
@@ -31,10 +31,10 @@ public abstract class Keyed {
     }
 
     /**
-     * Indicates whether some other object is "equal to" this one
+     * Indicates whether some other object is "equal to" this one.
      *
      * @param obj the reference object with which to compare
-     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise
      * @see Key#equals(Object)
      */
     public boolean equals(@Nullable Key obj) {
