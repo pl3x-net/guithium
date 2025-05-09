@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 /**
  * The Guithium API
@@ -63,4 +64,12 @@ public interface Guithium {
     static Guithium api() {
         return Provider.api();
     }
+
+    /**
+     * Get Guithium's logger
+     *
+     * @return logger instance
+     */
+    @NotNull
+    Logger logger();
 }
