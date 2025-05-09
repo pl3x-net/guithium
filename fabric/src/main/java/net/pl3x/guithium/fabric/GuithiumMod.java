@@ -1,6 +1,10 @@
 package net.pl3x.guithium.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.Guithium;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -20,6 +24,15 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
 
     @Override
     public void onInitializeClient() {
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+                    dispatcher.register(ClientCommandManager.literal("screen").executes(context -> {
+                        Minecraft client = Minecraft.getInstance();
+                        client.schedule(() -> client.setScreen(new TestScreen()));
+                        context.getSource().sendFeedback(Component.literal("Called /screen"));
+                        return 1;
+                    }));
+                }
+        );
     }
 
     @Override
