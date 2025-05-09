@@ -43,4 +43,7 @@ modrinth {
     gameVersions.addAll(listOf("1.21.5"))
     loaders.addAll(listOf("paper", "purpur", "fabric"))
     changelog = System.getenv("COMMIT_MESSAGE")
+    dependencies {
+        required.project("fabric-api")
+    }
 }
