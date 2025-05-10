@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.fabric.gui.screen.TestScreen;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +25,13 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
 
     @Override
     public void onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-                    dispatcher.register(ClientCommandManager.literal("screen").executes(context -> {
-                        Minecraft client = Minecraft.getInstance();
-                        client.schedule(() -> client.setScreen(new TestScreen()));
-                        context.getSource().sendFeedback(Component.literal("Called /screen"));
-                        return 1;
-                    }));
-                }
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
+                dispatcher.register(ClientCommandManager.literal("screen").executes(context -> {
+                    Minecraft client = Minecraft.getInstance();
+                    client.schedule(() -> client.setScreen(new TestScreen()));
+                    context.getSource().sendFeedback(Component.literal("Called /screen"));
+                    return 1;
+                }))
         );
     }
 

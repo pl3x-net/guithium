@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,29 +23,27 @@ public class Screen extends Keyed {
      *
      * @param key Unique identifier
      */
+    public Screen(@NotNull String key) {
+        super(Key.of(key));
+    }
+
+    /**
+     * Create a new screen.
+     *
+     * @param key Unique identifier
+     */
     public Screen(@NotNull Key key) {
         super(key);
     }
 
     /**
-     * Get a list of this screen's elements.
+     * Get an unmodifiable list of this screen's elements.
      *
      * @return List of elements
      */
     @NotNull
     public List<Element> getElements() {
-        return this.elements;
-    }
-
-    /**
-     * Get element by key.
-     *
-     * @param key Unique identifier
-     * @return Element or null
-     */
-    @Nullable
-    public Element getElement(@NotNull Key key) {
-        return this.elements.stream().filter(key::equals).findAny().orElse(null);
+        return ImmutableList.copyOf(this.elements);
     }
 
     /**
@@ -59,50 +58,72 @@ public class Screen extends Keyed {
     }
 
     /**
+     * Get element by key.
+     *
+     * @param key Unique identifier
+     * @return Element or null
+     */
+    @Nullable
+    public Element getElement(@NotNull Key key) {
+        return this.elements.stream().filter(element -> key.equals(element.getKey())).findAny().orElse(null);
+    }
+
+    /**
      * Add multiple elements to screen.
      *
      * @param elements Elements to add
+     * @return {@code true} if at least one element was added, otherwise {@code false}
+     * @throws IllegalArgumentException if screen already contains any element with a matching key
      */
-    public void addElements(@NotNull Collection<Element> elements) {
-        elements.forEach(this::addElement);
+    public boolean addElements(@NotNull Collection<Element> elements) {
+        boolean changed = false;
+        for (Element element : elements) {
+            changed |= addElement(element);
+        }
+        return changed;
     }
 
     /**
      * Add element to screen.
      *
      * @param element Element to add
+     * @return {@code true} if element was added, otherwise {@code false}
+     * @throws IllegalArgumentException if screen already contains element with matching key
      */
-    public void addElement(@NotNull Element element) {
+    public boolean addElement(@NotNull Element element) {
         Preconditions.checkNotNull(element, "Cannot add null element to screen");
         Preconditions.checkArgument(!hasElement(element), "Screen already has element with key '%s'", element.getKey());
-        this.elements.add(element);
+        return this.elements.add(element);
     }
 
     /**
      * Remove element from screen.
      *
      * @param element Element to remove
+     * @return {@code true} if element was removed, otherwise {@code false}
      */
-    public void removeElement(@NotNull Element element) {
-        removeElement(element.getKey());
+    public boolean removeElement(@NotNull Element element) {
+        return removeElement(element.getKey());
     }
 
     /**
      * Remove element from screen by key.
      *
      * @param key Unique identifier of element to remove
+     * @return {@code true} if element with specified key was removed, otherwise {@code false}
      */
-    public void removeElement(@NotNull String key) {
-        removeElement(Key.of(key));
+    public boolean removeElement(@NotNull String key) {
+        return removeElement(Key.of(key));
     }
 
     /**
      * Remove element from screen by key.
      *
      * @param key Unique identifier of element to remove
+     * @return {@code true} if element with specified key was removed, otherwise {@code false}
      */
-    public void removeElement(@NotNull Key key) {
-        this.elements.removeIf(key::equals);
+    public boolean removeElement(@NotNull Key key) {
+        return this.elements.removeIf(element -> key.equals(element.getKey()));
     }
 
     /**
@@ -159,9 +180,6 @@ public class Screen extends Keyed {
     @Override
     @NotNull
     public String toString() {
-        return "Screen{"
-                + "key=" + getKey()
-                + ",elements=" + getElements()
-                + "}";
+        return String.format("Screen{key=%s,elements=%s}", getKey(), getElements());
     }
 }

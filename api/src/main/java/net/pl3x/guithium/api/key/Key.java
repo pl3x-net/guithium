@@ -18,6 +18,8 @@ public final class Key {
 
     /**
      * Create a new key.
+     * <p>
+     * Valid key values {@code [a-zA-Z0-9:/._-]+}
      *
      * @param key Unique identifier
      */
@@ -38,17 +40,6 @@ public final class Key {
     @NotNull
     public static Key of(@NotNull String key) {
         return new Key(key);
-    }
-
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param obj the reference object with which to compare
-     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
-     * @see Key#equals(Object)
-     */
-    public boolean equals(@Nullable Keyed obj) {
-        return equals(obj == null ? null : obj.getKey());
     }
 
     @Override
