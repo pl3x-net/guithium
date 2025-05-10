@@ -41,7 +41,7 @@ modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "guithium"
     versionName = "$version"
-    versionNumber = "${libs.versions.minecraft.get()} $version"
+    versionNumber = "$version"
     versionType = "alpha"
     uploadFile = tasks.jar.get().archiveFile.get()
     gameVersions.addAll(listOf(libs.versions.minecraft.get()))
