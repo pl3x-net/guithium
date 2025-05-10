@@ -28,6 +28,6 @@ class PointTest {
 
     @Test
     void testToString() {
-        assertEquals("Point{x=1.0,y=1.0}", Point.of(1, 1).toString());
+        assertEquals("Point{x=0.0,y=0.0}", Point.ZERO.toString());
     }
 }
