@@ -1,18 +1,15 @@
 plugins {
     `java-library`
-    id("com.modrinth.minotaur") version "2.+"
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.indra.git)
 }
 
-version = "1.21.5-${System.getenv("GITHUB_RUN_NUMBER") ?: "SNAPSHOT"}"
+version = libs.versions.guithium.get()
 
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true
     isCanBeConsumed = false
     isVisible = false
-}
-
-repositories {
-    maven("https://maven.fabricmc.net/")
 }
 
 dependencies {
@@ -21,13 +18,20 @@ dependencies {
     mergedJar(project(":fabric"))
 }
 
-tasks {
-    jar {
-        dependsOn(mergedJar)
-        archiveBaseName.set(rootProject.name)
-        from({ mergedJar.filter { it.name.endsWith("jar") && it.path.contains(rootDir.path) }.map { zipTree(it) } })
-        manifest {
-            attributes["Implementation-Version"] = version
+tasks.withType<Jar> {
+    dependsOn(mergedJar)
+    val jars = mergedJar.map { zipTree(it) }
+    from(jars)
+    manifest {
+        attributes["Implementation-Version"] = version
+        attributes["Git-Commit"] = indraGit.commit()?.name()
+    }
+    doFirst {
+        jars.forEach { jar ->
+            jar.matching { include("META-INF/MANIFEST.MF") }
+                .files.forEach { file ->
+                    manifest.from(file)
+                }
         }
     }
 }
@@ -37,10 +41,10 @@ modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "guithium"
     versionName = "$version"
-    versionNumber = "$version"
+    versionNumber = "${libs.versions.minecraft.get()} $version"
     versionType = "alpha"
-    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-$version.jar").get()
-    gameVersions.addAll(listOf("1.21.5"))
+    uploadFile = tasks.jar.get().archiveFile.get()
+    gameVersions.addAll(listOf(libs.versions.minecraft.get()))
     loaders.addAll(listOf("bukkit", "spigot", "paper", "purpur", "fabric"))
     changelog = System.getenv("COMMIT_MESSAGE")
     dependencies {

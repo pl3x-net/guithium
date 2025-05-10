@@ -1,6 +1,12 @@
 plugins {
     `java-library`
-    id("fabric-loom") version "1.10-SNAPSHOT"
+    alias(libs.plugins.fabric.loom)
+}
+
+version = rootProject.version
+
+base {
+    archivesName = "${rootProject.name}-${project.name}"
 }
 
 repositories {
@@ -8,15 +14,11 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":api"))
-    minecraft("com.mojang:minecraft:1.21.5")
+    compileOnly(project(":api"))
+    minecraft("com.mojang:minecraft:${libs.versions.minecraft.get()}")
     mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:0.16.10")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.119.5+1.21.5")
-}
-
-base {
-    archivesName = "${rootProject.name}-${project.name}"
+    modCompileOnly("net.fabricmc:fabric-loader:${libs.versions.fabricLoader.get()}")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${libs.versions.fabricApi.get()}")
 }
 
 tasks {
@@ -24,7 +26,9 @@ tasks {
         filteringCharset = Charsets.UTF_8.name()
         filesMatching("fabric.mod.json") {
             expand(
-                "version" to rootProject.version
+                "version" to version,
+                "minecraft" to libs.versions.minecraft.get(),
+                "fabricloader" to libs.versions.fabricLoader.get(),
             )
         }
     }

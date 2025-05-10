@@ -42,7 +42,7 @@ Guithium is a jar file that works on both Fabric clients as a mod and Bukkit ser
 
 Just install it like you would any other mod or plugin.
 
-[![Download on Modrinth](https://i.imgur.com/5C4fVJC.png)](https://modrinth.com/mod/guithium)
+[![Download on Modrinth](https://i.imgur.com/5C4fVJC.png)](https://modrinth.com/plugin/guithium)
 
 > [!IMPORTANT]  
 > Guithium does nothing on its own. You will need plugins that hook into Guithium in order to take advantage of it.

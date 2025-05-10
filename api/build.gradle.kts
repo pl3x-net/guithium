@@ -2,6 +2,8 @@ plugins {
     `java-library`
 }
 
+version = "${rootProject.version}"
+
 java {
     withJavadocJar()
 }
@@ -33,7 +35,7 @@ tasks {
     javadoc {
         options.encoding = "UTF-8"
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-        title = "${rootProject.name}-${rootProject.version} API"
+        title = "${rootProject.name}-${version} API"
     }
 
     test {

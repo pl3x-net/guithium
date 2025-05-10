@@ -6,9 +6,6 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.gui.Point;
-import net.pl3x.guithium.api.gui.Size;
 import net.pl3x.guithium.fabric.gui.element.RectWidget;
 
 public class TestScreen extends Screen {
@@ -18,12 +15,6 @@ public class TestScreen extends Screen {
 
     protected void init() {
         super.init();
-
-        Guithium.api().logger().warn(Size.of(1, 1).toString());
-        Guithium.api().logger().warn(Size.of(1, 1).hashCode() + "");
-
-        Guithium.api().logger().warn(Point.of(1, 1).toString());
-        Guithium.api().logger().warn(Point.of(1, 1).hashCode() + "");
 
         GridLayout layout = new GridLayout();
         layout.defaultCellSetting().padding(4, 4, 4, 0);
