@@ -41,7 +41,7 @@ modrinth {
     versionType = "alpha"
     uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-$version.jar").get()
     gameVersions.addAll(listOf("1.21.5"))
-    loaders.addAll(listOf("paper", "purpur", "fabric"))
+    loaders.addAll(listOf("bukkit", "spigot", "paper", "purpur", "fabric"))
     changelog = System.getenv("COMMIT_MESSAGE")
     dependencies {
         required.project("fabric-api")
