@@ -44,7 +44,8 @@ Just install it like you would any other mod or plugin.
 
 [![Download on Modrinth](https://i.imgur.com/5C4fVJC.png)](https://modrinth.com/mod/guithium)
 
-Note: Guithium does nothing on its own. You will need plugins that hook into Guithium in order to take advantage of it.
+> [!IMPORTANT]  
+> Guithium does nothing on its own. You will need plugins that hook into Guithium in order to take advantage of it.
 
 Here is a list of known plugins that use Guithium:
 * [GuithiumExample](https://github.com/BillyGalbreath/GuithiumExample)
