@@ -23,23 +23,18 @@ clients.</b></big>
 
 </div>
 
-## Features
-
-* one
-* two
-
 ## Supported Platforms
 
 Server side plugin:
 
-![](.github/docs/bukkit.png) [CraftBukkit](https://dev.bukkit.org/)<br>
-![](.github/docs/spigot.png) [Spigot](https://spigotmc.org/)<br>
-![](.github/docs/paper.png) [Paper](https://papermc.io/)<br>
-![](.github/docs/purpur.png) [Purpur](https://purpurmc.org/)
+![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/bukkit.png) [CraftBukkit](https://dev.bukkit.org/)<br>
+![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/spigot.png) [Spigot](https://spigotmc.org/)<br>
+![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/paper.png) [Paper](https://papermc.io/)<br>
+![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/purpur.png) [Purpur](https://purpurmc.org/)
 
 Client side mod:
 
-![](.github/docs/fabric.png) [Fabric](https://fabricmc.net/) (requires [Fabric API](https://modrinth.com/mod/fabric-api))
+![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/fabric.png) [Fabric](https://fabricmc.net/) (requires [Fabric API](https://modrinth.com/mod/fabric-api))
 
 ## How To (Players and Server Admins)
 
