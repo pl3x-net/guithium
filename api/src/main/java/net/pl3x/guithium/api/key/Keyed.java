@@ -30,17 +30,6 @@ public abstract class Keyed {
         return this.key;
     }
 
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     *
-     * @param obj the reference object with which to compare
-     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise
-     * @see Key#equals(Object)
-     */
-    public boolean equals(@Nullable Key obj) {
-        return getKey().equals(obj);
-    }
-
     @Override
     public boolean equals(@Nullable Object obj) {
         if (this == obj) {

@@ -1,16 +1,15 @@
-package net.pl3x.guithium.fabric;
+package net.pl3x.guithium.fabric.gui.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.StringWidget;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Size;
+import net.pl3x.guithium.fabric.gui.element.RectWidget;
 
 public class TestScreen extends Screen {
     public TestScreen() {
@@ -19,6 +18,12 @@ public class TestScreen extends Screen {
 
     protected void init() {
         super.init();
+
+        Guithium.api().logger().warn(Size.of(1, 1).toString());
+        Guithium.api().logger().warn(Size.of(1, 1).hashCode() + "");
+
+        Guithium.api().logger().warn(Point.of(1, 1).toString());
+        Guithium.api().logger().warn(Point.of(1, 1).hashCode() + "");
 
         GridLayout layout = new GridLayout();
         layout.defaultCellSetting().padding(4, 4, 4, 0);
@@ -31,22 +36,11 @@ public class TestScreen extends Screen {
         row.addChild(new StringWidget(Component.literal("test string 2"), this.font));
         row.addChild(new StringWidget(Component.literal("test string 3"), this.font));
 
+        row.addChild(new RectWidget(100, 25, new int[]{0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffff00}));
+
         row.addChild(Button.builder(CommonComponents.GUI_DONE, (btn) -> onClose()).width(200).build());
 
         layout.visitWidgets(this::addRenderableWidget);
         layout.arrangeElements();
-    }
-
-    @NotNull
-    protected <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T guiEventListener) {
-        return super.addRenderableWidget(guiEventListener);
-    }
-
-    public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        super.render(guiGraphics, i, j, f);
-    }
-
-    public void onClose() {
-        super.onClose();
     }
 }
