@@ -19,6 +19,7 @@ gson = "2.11.0"        # https://github.com/PaperMC/Paper/blob/main/paper-api/bu
 guava = "33.3.1-jre"   # https://github.com/PaperMC/Paper/blob/main/paper-api/build.gradle.kts#L44
 slf4j = "2.0.16"       # https://github.com/PaperMC/Paper/blob/main/paper-api/build.gradle.kts#L16
 annotations = "26.0.2" # https://github.com/PaperMC/Paper/blob/main/paper-api/build.gradle.kts#L12
+
 junit = "5.12.2"       # https://github.com/PaperMC/Paper/blob/main/paper-api/build.gradle.kts#L85
 asm = "9.8"            # https://github.com/PaperMC/Paper/blob/main/paper-api/build.gradle.kts#L88
 
@@ -40,6 +41,7 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+
 junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junitPlatform = { group = "org.junit.platform", name = "junit-platform-launcher" }
 asm = { group = "org.ow2.asm", name = "asm-tree", version.ref = "asm" }
