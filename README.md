@@ -67,7 +67,7 @@ Repository (Maven)
     <dependency>
         <groupId>maven.modrinth</groupId>
         <artifactId>guithium</artifactId>
-        <version>1.21.5-7</version>
+        <version>0.0.1</version>
         <scope>provided</scope>
     </dependency>
 </project>
@@ -84,7 +84,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'maven.modrinth:guithium:1.21.5-7'
+    compileOnly 'maven.modrinth:guithium:0.0.1'
 }
 ```
 
