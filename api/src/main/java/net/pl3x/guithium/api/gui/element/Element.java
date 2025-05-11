@@ -33,6 +33,7 @@ public interface Element {
      * @param y Y (vertical) position
      * @return This element
      */
+    @NotNull
     Element setPos(float x, float y);
 
     /**
@@ -41,6 +42,7 @@ public interface Element {
      * @param pos Position
      * @return This element
      */
+    @NotNull
     Element setPos(@Nullable Point pos);
 
     /**
@@ -62,6 +64,7 @@ public interface Element {
      * @param y Y (vertical) anchor
      * @return This element
      */
+    @NotNull
     Element setAnchor(float x, float y);
 
     /**
@@ -72,6 +75,7 @@ public interface Element {
      * @param anchor Anchor point
      * @return This element
      */
+    @NotNull
     Element setAnchor(@Nullable Point anchor);
 
     /**
@@ -93,6 +97,7 @@ public interface Element {
      * @param y Y (vertical) position offset
      * @return This element
      */
+    @NotNull
     Element setOffset(float x, float y);
 
     /**
@@ -103,5 +108,6 @@ public interface Element {
      * @param offset Position offset
      * @return This element
      */
+    @NotNull
     Element setOffset(@Nullable Point offset);
 }

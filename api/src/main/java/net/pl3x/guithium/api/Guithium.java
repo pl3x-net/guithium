@@ -52,7 +52,7 @@ public interface Guithium {
          *
          * @param guithium Instance of Guithium API
          */
-        public static void set(Guithium guithium) {
+        public static void set(@NotNull Guithium guithium) {
             api = guithium;
         }
     }

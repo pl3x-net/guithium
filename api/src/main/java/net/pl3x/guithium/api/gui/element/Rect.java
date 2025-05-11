@@ -60,6 +60,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param height Height to set
      * @return This rect
      */
+    @NotNull
     public Rect setSize(float width, float height) {
         return setSize(Size.of(width, height));
     }
@@ -70,6 +71,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param size Size to set
      * @return This rect
      */
+    @NotNull
     public Rect setSize(@Nullable Size size) {
         this.size = size;
         return this;
@@ -101,6 +103,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorTopLeft(int color) {
         this.color[0] = color;
         return this;
@@ -121,6 +124,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorBottomLeft(int color) {
         this.color[1] = color;
         return this;
@@ -141,6 +145,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorBottomRight(int color) {
         this.color[2] = color;
         return this;
@@ -161,6 +166,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorTopRight(int color) {
         this.color[3] = color;
         return this;
@@ -172,6 +178,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorTop(int color) {
         setColorTopLeft(color);
         setColorTopRight(color);
@@ -184,6 +191,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorBottom(int color) {
         setColorBottomLeft(color);
         setColorBottomRight(color);
@@ -196,6 +204,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorLeft(int color) {
         setColorTopLeft(color);
         setColorBottomLeft(color);
@@ -208,6 +217,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorRight(int color) {
         setColorTopRight(color);
         setColorBottomRight(color);
@@ -220,6 +230,7 @@ public class Rect extends AbstractElement<Rect> {
      * @param color Color to set
      * @return This rect
      */
+    @NotNull
     public Rect setColorAll(int color) {
         setColorTop(color);
         setColorBottom(color);

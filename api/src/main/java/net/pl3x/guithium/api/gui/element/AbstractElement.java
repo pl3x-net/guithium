@@ -53,12 +53,14 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
      * @return This element
      */
     @Override
+    @NotNull
     public T setPos(float x, float y) {
         setPos(Point.of(x, y));
         return Unsafe.cast(this);
     }
 
     @Override
+    @NotNull
     public T setPos(@Nullable Point pos) {
         this.pos = pos;
         return Unsafe.cast(this);
@@ -71,12 +73,14 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     }
 
     @Override
+    @NotNull
     public T setAnchor(float x, float y) {
         setAnchor(Point.of(x, y));
         return Unsafe.cast(this);
     }
 
     @Override
+    @NotNull
     public T setAnchor(@Nullable Point anchor) {
         this.anchor = anchor;
         return Unsafe.cast(this);
@@ -89,12 +93,14 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     }
 
     @Override
+    @NotNull
     public T setOffset(float x, float y) {
         setOffset(Point.of(x, y));
         return Unsafe.cast(this);
     }
 
     @Override
+    @NotNull
     public T setOffset(@Nullable Point offset) {
         this.offset = offset;
         return Unsafe.cast(this);
