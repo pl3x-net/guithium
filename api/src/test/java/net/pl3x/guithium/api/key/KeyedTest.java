@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.key;
 
+import net.pl3x.guithium.api.gui.element.Rect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,30 +11,29 @@ class KeyedTest {
 
     @Test
     void getKey() {
-        Keyed keyed = new KeyedImpl(key1);
+        Rect.Builder builder = Rect.builder(key1);
+        assertEquals(key1, builder.getKey());
+        assertNotEquals(key2, builder.getKey());
+        Rect keyed = builder.build();
         assertEquals(key1, keyed.getKey());
         assertNotEquals(key2, keyed.getKey());
     }
 
     @Test
     void testEquals() {
-        assertEquals(new KeyedImpl(key1), new KeyedImpl(key1));
-        assertNotEquals(new KeyedImpl(key1), new KeyedImpl(key2));
+        assertEquals(Rect.builder(key1).build(), Rect.builder(key1).build());
+        assertNotEquals(Rect.builder(key1).build(), Rect.builder(key2).build());
     }
 
     @Test
     void testHashCode() {
-        assertEquals(1038653595, new KeyedImpl(key1).hashCode());
+        Rect keyed = Rect.builder(key1).build();
+        assertEquals(1585772743, keyed.hashCode());
     }
 
     @Test
     void testToString() {
-        assertEquals("Keyed{key=test:keyed1}", new KeyedImpl(key1).toString());
-    }
-
-    private static class KeyedImpl extends Keyed {
-        public KeyedImpl(Key key) {
-            super(key);
-        }
+        Rect keyed = Rect.builder(key1).build();
+        assertEquals("Rect{key=test:keyed1,pos=null,anchor=null,offset=null,size=null,color=[0, 0, 0, 0]}", keyed.toString());
     }
 }
