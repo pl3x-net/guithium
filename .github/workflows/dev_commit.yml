@@ -16,3 +16,8 @@ jobs:
           java-version: 21
       - name: Build
         run: ./gradlew build --stacktrace
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: guithium-snapshot
+          path: build/libs/*.jar
