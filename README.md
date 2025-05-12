@@ -18,7 +18,7 @@
 
 <br/>
 
-<big><b>Guithium allows [Bukkit](https://dev.bukkit.org/) plugins to add GUIs to [Fabric](https://fabricmc.net/)
+<big><b>Guithium allows [Paper](https://papermc.io/) plugins to add GUIs to [Fabric](https://fabricmc.net/)
 clients.</b></big>
 
 </div>
@@ -27,8 +27,6 @@ clients.</b></big>
 
 Server side plugin:
 
-![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/bukkit.png) [CraftBukkit](https://dev.bukkit.org/)<br>
-![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/spigot.png) [Spigot](https://spigotmc.org/)<br>
 ![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/paper.png) [Paper](https://papermc.io/)<br>
 ![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/purpur.png) [Purpur](https://purpurmc.org/)
 
@@ -38,7 +36,7 @@ Client side mod:
 
 ## How To (Players and Server Admins)
 
-Guithium is a jar file that works on both Fabric clients as a mod and Bukkit servers as a plugin.
+Guithium is a jar file that works on both Fabric clients as a mod and Paper servers as a plugin.
 
 Just install it like you would any other mod or plugin.
 
@@ -98,4 +96,4 @@ The compiled jar will be in `build/libs/`
 
 ## bStats
 
-[![bStats Graph Data](https://bstats.org/signatures/bukkit/Guithium.svg)](https://bstats.org/plugin/bukkit/Guithium)
+[![bStats Graph Data](https://bstats.org/signatures/bukkit/Guithium.svg)](https://bstats.org/plugin/bukkit/Guithium/25813)

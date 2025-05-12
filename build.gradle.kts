@@ -18,8 +18,8 @@ val mergedJar by configurations.creating<Configuration> {
 
 dependencies {
     mergedJar(project(":api"))
-    mergedJar(project(":bukkit"))
     mergedJar(project(":fabric"))
+    mergedJar(project(":paper"))
 }
 
 subprojects {
@@ -114,7 +114,7 @@ modrinth {
     versionType = "alpha"
     uploadFile = tasks.jar.get().archiveFile.get()
     gameVersions.addAll(listOf(libs.versions.minecraft.get()))
-    loaders.addAll(listOf("bukkit", "spigot", "paper", "purpur", "fabric"))
+    loaders.addAll(listOf("paper", "purpur", "fabric"))
     changelog = System.getenv("COMMIT_MESSAGE")
     dependencies {
         required.project("fabric-api")

@@ -8,5 +8,5 @@ pluginManagement {
 rootProject.name = "guithium"
 
 include("api")
-include("bukkit")
 include("fabric")
+include("paper")
