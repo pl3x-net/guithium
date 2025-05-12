@@ -1,6 +1,8 @@
 package net.pl3x.guithium.api.gui.element;
 
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Point;
+import net.pl3x.guithium.api.gui.Size;
 import net.pl3x.guithium.api.key.Key;
 import org.junit.jupiter.api.Test;
 
@@ -16,51 +18,26 @@ class RectTest {
     private static final Key key2 = Key.of("test:rect2");
 
     @Test
-    void getPos() {
-    }
-
-    @Test
-    void setPosByFloats() {
-    }
-
-    @Test
-    void setPosByPoint() {
-    }
-
-    @Test
-    void getAnchor() {
-    }
-
-    @Test
-    void setAnchorByFloats() {
-    }
-
-    @Test
-    void setAnchorByPoint() {
-    }
-
-    @Test
-    void getOffset() {
-    }
-
-    @Test
-    void setOffsetByFloats() {
-    }
-
-    @Test
-    void setOffsetByPoint() {
-    }
-
-    @Test
     void getSize() {
+        Rect rect = Rect.builder(key1).build();
+        assertNull(rect.getSize());
+        rect.setSize(new Size(1, 2));
+        assertEquals(1, rect.getSize().width());
+        assertEquals(2, rect.getSize().height());
     }
 
     @Test
     void setSizeByFloats() {
+        Size size = Size.of(1, 2);
+        assertEquals(size, Rect.builder(key1).setSize(1, 2).getSize());
+        assertEquals(size, Rect.builder(key1).build().setSize(1, 2).getSize());
     }
 
     @Test
     void setSizeBySize() {
+        Size size = Size.of(1, 2);
+        assertEquals(size, Rect.builder(key1).setSize(size).getSize());
+        assertEquals(size, Rect.builder(key1).build().setSize(size).getSize());
     }
 
     @Test
@@ -409,6 +386,10 @@ class RectTest {
         rect1.setPos(Point.of(1, 1));
         assertNotEquals(rect1, rect2);
         assertNotEquals(rect2, rect3);
+        assertEquals(Rect.GRADIENT, Rect.builder(Guithium.MOD_ID + ":gradient")
+                .setColorTop(0xC0101010)
+                .setColorBottom(0xD0101010)
+                .build());
     }
 
     @Test
