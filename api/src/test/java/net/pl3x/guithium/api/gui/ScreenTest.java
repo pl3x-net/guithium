@@ -116,8 +116,7 @@ class ScreenTest {
     void testEquals() {
         Screen screen1 = screen();
         Screen screen2 = screen();
-        Screen screen3 = new Screen(Key.of("test:different-key"));
-        screen3.addElements(List.of(rect1, rect2, rect3));
+        Screen screen3 = screen("test:different-key");
         assertEquals(screen1, screen2);
         assertNotEquals(screen1, screen3);
         screen1.removeElement(rect1);

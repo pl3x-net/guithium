@@ -33,6 +33,10 @@ public class AnnotationTest {
             "Lorg/jetbrains/annotations/NotNull;"
     };
 
+    private static final String[] EXCLUDED_CLASSES = {
+            ""
+    };
+
     @Test
     public void testAll() throws IOException, URISyntaxException {
         URL loc = Guithium.class.getProtectionDomain().getCodeSource().getLocation();
@@ -114,7 +118,23 @@ public class AnnotationTest {
 
     private static boolean isClassIncluded(@NotNull ClassNode clazz, @NotNull Map<String, ClassNode> allClasses) {
         // Exclude private, synthetic or deprecated classes and annotations, since their members can't be null
-        return (clazz.access & (Opcodes.ACC_PRIVATE | Opcodes.ACC_SYNTHETIC | Opcodes.ACC_DEPRECATED | Opcodes.ACC_ANNOTATION)) == 0;
+        if ((clazz.access & (Opcodes.ACC_PRIVATE | Opcodes.ACC_SYNTHETIC | Opcodes.ACC_DEPRECATED | Opcodes.ACC_ANNOTATION)) != 0) {
+            return false;
+        }
+
+        if (isSubclassOf(clazz, "java/lang/Exception", allClasses)
+                || isSubclassOf(clazz, "java/lang/RuntimeException", allClasses)) {
+            // Exceptions are excluded
+            return false;
+        }
+
+        for (String excludedClass : EXCLUDED_CLASSES) {
+            if (excludedClass.equals(clazz.name)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static boolean isMethodIncluded(@NotNull ClassNode clazz, @NotNull MethodNode method, @NotNull Map<String, ClassNode> allClasses) {
