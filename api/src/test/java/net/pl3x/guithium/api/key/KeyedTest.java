@@ -1,6 +1,5 @@
 package net.pl3x.guithium.api.key;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +32,7 @@ class KeyedTest {
     }
 
     private static class KeyedImpl extends Keyed {
-        public KeyedImpl(@NotNull Key key) {
+        public KeyedImpl(Key key) {
             super(key);
         }
     }
