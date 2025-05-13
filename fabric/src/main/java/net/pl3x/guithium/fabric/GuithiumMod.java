@@ -33,6 +33,7 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
 
         getScheduler().register();
 
+        // tell server hello when joining so it knows we have guithium installed
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             // ensure we are not connecting to a single player game
             if (!client.isLocalServer()) {
