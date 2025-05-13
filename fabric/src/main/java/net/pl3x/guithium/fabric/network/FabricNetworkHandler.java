@@ -34,16 +34,15 @@ public class FabricNetworkHandler extends NetworkHandler {
 
     //Wrap our serialized packet into this custom payload that mimics paper's plugin messaging channel
     record Payload(ResourceLocation id, byte[] data) implements CustomPacketPayload {
-        private static final ResourceLocation CHANNEL = ResourceLocation.parse(NetworkHandler.CHANNEL);
-        private static final Type<Payload> TYPE = new Type<>(CHANNEL);
-        private static final StreamCodec<ByteBuf, Payload> CODEC = CustomPacketPayload.codec(Payload::serialize, Payload::new);
+        private static final Type<Payload> TYPE = new Type<>(ResourceLocation.parse(NetworkHandler.CHANNEL));
+        private static final StreamCodec<ByteBuf, Payload> CODEC = StreamCodec.ofMember(Payload::serialize, Payload::new);
 
         Payload(Packet packet) {
-            this(CHANNEL, packet.write().toByteArray());
+            this(TYPE.id(), packet.write().toByteArray());
         }
 
         private Payload(ByteBuf buf) {
-            this(CHANNEL, new byte[buf.readableBytes()]);
+            this(TYPE.id(), new byte[buf.readableBytes()]);
             buf.readBytes(this.data);
         }
 
