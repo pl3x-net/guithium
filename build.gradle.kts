@@ -59,7 +59,7 @@ subprojects {
         test {
             useJUnitPlatform()
             testLogging {
-                events("passed", "skipped", "failed")
+                //events("passed", "skipped", "failed")
                 showStandardStreams = true
             }
         }
@@ -67,8 +67,7 @@ subprojects {
         withType<AbstractTestTask> {
             afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
                 if (desc.parent == null) {
-                    println()
-                    println("Test Results: ${result.resultType}")
+                    println("  \u2514> Results: ${result.resultType}")
                     println("       Tests: ${result.testCount}")
                     println("      Passed: ${result.successfulTestCount}")
                     println("      Failed: ${result.failedTestCount}")

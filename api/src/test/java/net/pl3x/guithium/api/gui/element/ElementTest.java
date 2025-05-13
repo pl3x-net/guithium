@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElementTest {
-    Key key1 = Key.of("test:key1");
-    Key key2 = Key.of("test:key2");
+    final Key key1 = Key.of("test:key1");
+    final Key key2 = Key.of("test:key2");
 
     @Test
     void getKey() {
@@ -30,7 +30,7 @@ class ElementTest {
 
         Rect.Builder builder = Rect.builder(key1);
         assertNull(builder.getPos());
-        builder.setPos(1, 2);
+        builder = builder.setPos(1, 2); // reassign to silence "unused" warning
         assertEquals(pos, builder.getPos());
 
         Rect element = builder.build();
@@ -64,7 +64,7 @@ class ElementTest {
 
         Rect.Builder builder = Rect.builder(key1);
         assertNull(builder.getAnchor());
-        builder.setAnchor(1, 2);
+        builder = builder.setAnchor(1, 2); // reassign to silence "unused" warning
         assertEquals(anchor, builder.getAnchor());
 
         Rect element = builder.build();
@@ -98,7 +98,7 @@ class ElementTest {
 
         Rect.Builder builder = Rect.builder(key1);
         assertNull(builder.getOffset());
-        builder.setOffset(1, 2);
+        builder = builder.setOffset(1, 2); // reassign to silence "unused" warning
         assertEquals(offset, builder.getOffset());
 
         Rect element = builder.build();

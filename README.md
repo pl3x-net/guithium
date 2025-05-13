@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTarget, HtmlDeprecatedAttribute -->
 <div align="center">
 
 <picture>
@@ -46,6 +47,7 @@ Just install it like you would any other mod or plugin.
 > Guithium does nothing on its own. You will need plugins that hook into Guithium in order to take advantage of it.
 
 Here is a list of known plugins that use Guithium:
+
 * [GuithiumExample](https://github.com/BillyGalbreath/GuithiumExample)
 
 ## How To (Plugin Developers)
@@ -57,6 +59,7 @@ Javadoc: https://billygalbreath.github.io/Guithium
 Repository (Maven)
 
 ```xml
+
 <project>
     <repository>
         <id>modrinth-repo</id>
