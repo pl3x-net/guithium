@@ -2,22 +2,20 @@ package net.pl3x.guithium.fabric;
 
 import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.fabric.network.FabricNetworkHandler;
 import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
-    public static GuithiumMod instance() {
-        return (GuithiumMod) Guithium.api();
-    }
-
     private final FabricNetworkHandler networkHandler;
     private final Scheduler scheduler;
 
     public GuithiumMod() {
-        this.networkHandler = new FabricNetworkHandler(this);
+        this.networkHandler = new FabricNetworkHandler();
         this.scheduler = new Scheduler();
 
         try {
@@ -32,7 +30,16 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
     @Override
     public void onInitializeClient() {
         getNetworkHandler().registerListeners();
+
         getScheduler().register();
+
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            // ensure we are not connecting to a single player game
+            if (!client.isLocalServer()) {
+                // send hello on first client tick to ensure everything is ready to receive a reply
+                getScheduler().addTask(() -> getNetworkHandler().getConnection().send(new HelloPacket()));
+            }
+        });
     }
 
     @Override
@@ -42,7 +49,7 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
 
     @Override
     public @NotNull PlayerManager getPlayerManager() {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedOperationException("Not supported on client mod.");
     }
 
     @NotNull

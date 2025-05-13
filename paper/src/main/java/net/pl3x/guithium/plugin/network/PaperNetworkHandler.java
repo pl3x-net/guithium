@@ -8,27 +8,22 @@ import net.pl3x.guithium.plugin.GuithiumPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 
 public class PaperNetworkHandler extends NetworkHandler {
-    private final GuithiumPlugin plugin;
-
-    public PaperNetworkHandler(final GuithiumPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public void registerListeners() {
-        Messenger messenger = this.plugin.getServer().getMessenger();
-        messenger.registerOutgoingPluginChannel(this.plugin, CHANNEL.toString());
-        messenger.registerIncomingPluginChannel(this.plugin, CHANNEL.toString(),
+        GuithiumPlugin plugin = (GuithiumPlugin) Guithium.api();
+        Messenger messenger = plugin.getServer().getMessenger();
+        messenger.registerOutgoingPluginChannel(plugin, CHANNEL);
+        messenger.registerIncomingPluginChannel(plugin, CHANNEL,
                 (channel, sender, bytes) -> {
                     // verify player
-                    WrappedPlayer player = this.plugin.getPlayerManager().get(sender.getUniqueId());
+                    WrappedPlayer player = plugin.getPlayerManager().get(sender.getUniqueId());
                     if (player == null) {
                         Guithium.logger.warn("Received packet from unknown player ({})", sender.getName());
                         return;
                     }
 
                     // receive data from player
-                    receive(player.getConnection().getPacketListener(), Packet.in(bytes));
+                    receive(player.getConnection(), Packet.in(bytes));
                 }
         );
     }

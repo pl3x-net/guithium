@@ -1,5 +1,6 @@
 package net.pl3x.guithium.plugin.network;
 
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.network.packet.Packet;
@@ -32,8 +33,8 @@ public class PaperConnection implements Connection {
     public void send(@NotNull Packet packet, boolean force) {
         if (force || this.player.hasGuithium()) {
             this.player.<Player>unwrap().sendPluginMessage(
-                    GuithiumPlugin.instance(),
-                    NetworkHandler.CHANNEL.toString(),
+                    (GuithiumPlugin) Guithium.api(),
+                    NetworkHandler.CHANNEL,
                     packet.write().toByteArray()
             );
         }

@@ -18,7 +18,7 @@ public abstract class NetworkHandler {
     /**
      * A unique identifier for the network channel between client and server.
      */
-    public final static Key CHANNEL = Key.of(Guithium.MOD_ID + ":" + Guithium.MOD_ID);
+    public final static String CHANNEL = String.format("%1$s:%1$s", Guithium.MOD_ID);
 
     private final Map<Key, Function<ByteArrayDataInput, ? extends Packet>> packets = new HashMap<>();
 
@@ -47,13 +47,13 @@ public abstract class NetworkHandler {
     /**
      * Receive data.
      *
-     * @param listener Packet listener
-     * @param in       Data received
+     * @param connection Connection to receive on
+     * @param in         Data received
      */
-    public void receive(@NotNull PacketListener listener, @NotNull ByteArrayDataInput in) {
+    public void receive(@NotNull Connection connection, @NotNull ByteArrayDataInput in) {
         Packet packet = getPacket(in);
         if (packet != null) {
-            packet.handle(listener);
+            packet.handle(connection.getPacketListener());
         }
     }
 

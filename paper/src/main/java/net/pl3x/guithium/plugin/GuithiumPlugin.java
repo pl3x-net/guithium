@@ -12,12 +12,8 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
     private final PaperNetworkHandler networkHandler;
     private final PlayerManager playerManager;
 
-    public static GuithiumPlugin instance() {
-        return (GuithiumPlugin) Guithium.api();
-    }
-
     public GuithiumPlugin() {
-        this.networkHandler = new PaperNetworkHandler(this);
+        this.networkHandler = new PaperNetworkHandler();
         this.playerManager = new PlayerManager();
 
         try {

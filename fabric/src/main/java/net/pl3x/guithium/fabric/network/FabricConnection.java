@@ -28,11 +28,7 @@ public class FabricConnection implements Connection {
     @Override
     public void send(@NotNull Packet packet, boolean force) {
         if (force || Minecraft.getInstance().getConnection() != null) {
-            ClientPlayNetworking.send(new FabricNetworkHandler.Payload(
-                    FabricNetworkHandler.CHANNEL_ID,
-                    packet.write().toByteArray()
-            ));
+            ClientPlayNetworking.send(new FabricNetworkHandler.Payload(packet));
         }
-
     }
 }
