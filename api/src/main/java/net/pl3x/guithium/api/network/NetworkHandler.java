@@ -48,10 +48,10 @@ public abstract class NetworkHandler {
      * Receive data.
      *
      * @param connection Connection to receive on
-     * @param in         Data received
+     * @param data       Raw data received
      */
-    public void receive(@NotNull Connection connection, @NotNull ByteArrayDataInput in) {
-        Packet packet = getPacket(in);
+    public void receive(@NotNull Connection connection, byte[] data) {
+        Packet packet = getPacket(Packet.in(data));
         if (packet != null) {
             packet.handle(connection.getPacketListener());
         }

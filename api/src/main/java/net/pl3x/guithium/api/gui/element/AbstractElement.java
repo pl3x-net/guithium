@@ -27,31 +27,24 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
      * @param anchor Anchor for element
      * @param offset Offset of element
      */
-    protected AbstractElement(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset) {
+    protected AbstractElement(
+            @NotNull Key key,
+            @Nullable Point pos,
+            @Nullable Point anchor,
+            @Nullable Point offset
+    ) {
         super(key);
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
     }
 
-    /**
-     * Get the element's position from the anchor point.
-     *
-     * @return Position from anchor
-     */
     @Override
     @Nullable
     public Point getPos() {
         return this.pos;
     }
 
-    /**
-     * Set this element's position from the anchor point.
-     *
-     * @param x X (horizontal) position from anchor
-     * @param y Y (vertical) position from anchor
-     * @return This element
-     */
     @Override
     @NotNull
     public T setPos(float x, float y) {
@@ -123,29 +116,6 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
                 && Objects.equals(getPos(), other.getPos())
                 && Objects.equals(getAnchor(), other.getAnchor())
                 && Objects.equals(getOffset(), other.getOffset());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getKey(), getPos(), getAnchor(), getOffset());
-    }
-
-    @Override
-    @NotNull
-    public String toString() {
-        return String.format("AbstractElement{%s}", getPropertiesAsString());
-    }
-
-    /**
-     * Gets this element's properties as a comma separated list.
-     * <p>
-     * For internal use.
-     *
-     * @return Comma separated list of properties
-     */
-    @NotNull
-    protected String getPropertiesAsString() {
-        return String.format("key=%s,pos=%s,anchor=%s,offset=%s", getKey(), getPos(), getAnchor(), getOffset());
     }
 
     /**

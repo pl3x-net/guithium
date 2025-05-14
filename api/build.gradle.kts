@@ -23,7 +23,7 @@ tasks {
         stdopts.links(
             "https://guava.dev/releases/${libs.versions.guava.get()}/api/docs/",
             "https://javadoc.io/doc/org.slf4j/slf4j-api/${libs.versions.slf4j.get()}/",
-            "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations.get()}/"
+            "https://jspecify.dev/docs/api/"
         )
     }
 

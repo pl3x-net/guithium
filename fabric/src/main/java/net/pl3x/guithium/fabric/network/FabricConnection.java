@@ -3,12 +3,11 @@ package net.pl3x.guithium.fabric.network;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.network.Connection;
-import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.Packet;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricConnection implements Connection {
-    private final PacketListener packetListener;
+    private final FabricPacketListener packetListener;
 
     public FabricConnection() {
         this.packetListener = new FabricPacketListener();
@@ -16,7 +15,7 @@ public class FabricConnection implements Connection {
 
     @Override
     @NotNull
-    public PacketListener getPacketListener() {
+    public FabricPacketListener getPacketListener() {
         return this.packetListener;
     }
 

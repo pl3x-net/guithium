@@ -28,20 +28,21 @@ public class FabricNetworkHandler extends NetworkHandler {
         PayloadTypeRegistry.playS2C().register(Payload.TYPE, Payload.CODEC);
 
         ClientPlayNetworking.registerGlobalReceiver(Payload.TYPE,
-                (payload, ctx) -> receive(getConnection(), Packet.in(payload.data()))
+                (payload, ctx) -> receive(getConnection(), payload.data())
         );
     }
 
-    // Wrap our serialized packet into this custom payload that mimics paper's plugin messaging channel
-    record Payload(ResourceLocation id, byte[] data) implements CustomPacketPayload {
+    // Wrap our data into this packet that mimics paper's DiscardedPayload packet
+    // I'm not sure why Fabric's is so different (it's missing the 'data' field)
+    record Payload(@NotNull ResourceLocation id, byte[] data) implements CustomPacketPayload {
         private static final Type<Payload> TYPE = new Type<>(ResourceLocation.parse(NetworkHandler.CHANNEL));
         private static final StreamCodec<ByteBuf, Payload> CODEC = StreamCodec.ofMember(Payload::serialize, Payload::new);
 
-        Payload(Packet packet) {
+        Payload(@NotNull Packet packet) {
             this(TYPE.id(), packet.write().toByteArray());
         }
 
-        private Payload(ByteBuf buf) {
+        private Payload(@NotNull ByteBuf buf) {
             this(TYPE.id(), new byte[buf.readableBytes()]);
             buf.readBytes(this.data);
         }
@@ -51,7 +52,7 @@ public class FabricNetworkHandler extends NetworkHandler {
             return TYPE;
         }
 
-        private static void serialize(Payload value, ByteBuf output) {
+        private static void serialize(@NotNull Payload value, @NotNull ByteBuf output) {
             output.writeBytes(value.data);
         }
     }

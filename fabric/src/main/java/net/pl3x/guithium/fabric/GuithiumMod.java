@@ -44,13 +44,15 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
     }
 
     @Override
-    public @NotNull FabricNetworkHandler getNetworkHandler() {
+    @NotNull
+    public FabricNetworkHandler getNetworkHandler() {
         return this.networkHandler;
     }
 
     @Override
-    public @NotNull PlayerManager getPlayerManager() {
-        throw new UnsupportedOperationException("Not supported on client mod.");
+    @NotNull
+    public PlayerManager getPlayerManager() {
+        throw new UnsupportedOperationException("Not supported on client.");
     }
 
     @NotNull

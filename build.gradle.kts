@@ -6,10 +6,6 @@ plugins {
 
 version = libs.versions.guithium.get()
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
-}
-
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true
     isCanBeConsumed = false
@@ -22,9 +18,20 @@ dependencies {
     mergedJar(project(":paper"))
 }
 
-subprojects {
+allprojects {
     apply(plugin = "java-library")
 
+    java {
+        toolchain.languageVersion = JavaLanguageVersion.of(21)
+    }
+
+    tasks.compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = 21
+    }
+}
+
+subprojects {
     project.version = rootProject.version
 
     base {
@@ -40,9 +47,13 @@ subprojects {
             compileOnly(project(":api"))
         }
 
+        compileOnly(rootProject.libs.adventure.api.get())
+        compileOnly(rootProject.libs.adventure.gson.get())
+
+        compileOnly(rootProject.libs.apache.get())
         compileOnly(rootProject.libs.gson.get())
         compileOnly(rootProject.libs.guava.get())
-        compileOnly(rootProject.libs.annotations.get())
+        compileOnly(rootProject.libs.jspecify.get())
         compileOnly(rootProject.libs.slf4j.get())
 
         testImplementation(rootProject.libs.junit.get())
@@ -59,32 +70,15 @@ subprojects {
         test {
             useJUnitPlatform()
             testLogging {
-                //events("passed", "skipped", "failed")
+                // we want to see system.out from tests
                 showStandardStreams = true
             }
-        }
-
-        withType<AbstractTestTask> {
-            afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
-                if (desc.parent == null) {
-                    println("  \u2514> Results: ${result.resultType}")
-                    println("       Tests: ${result.testCount}")
-                    println("      Passed: ${result.successfulTestCount}")
-                    println("      Failed: ${result.failedTestCount}")
-                    println("     Skipped: ${result.skippedTestCount}")
-                }
-            }))
         }
     }
 }
 
 // this must be after subprojects block
 tasks {
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release = libs.versions.java.get().toInt()
-    }
-
     withType<Jar> {
         dependsOn(mergedJar)
         val jars = mergedJar.map { zipTree(it) }

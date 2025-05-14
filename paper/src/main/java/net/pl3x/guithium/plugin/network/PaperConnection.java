@@ -4,16 +4,16 @@ import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.network.packet.Packet;
-import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.GuithiumPlugin;
+import net.pl3x.guithium.plugin.player.PaperPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class PaperConnection implements Connection {
-    private final WrappedPlayer player;
+    private final PaperPlayer player;
     private final PaperPacketListener packetListener;
 
-    public PaperConnection(@NotNull WrappedPlayer player) {
+    public PaperConnection(@NotNull PaperPlayer player) {
         this.player = player;
         this.packetListener = new PaperPacketListener(player);
     }

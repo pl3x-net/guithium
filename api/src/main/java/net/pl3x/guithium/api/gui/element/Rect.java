@@ -1,10 +1,12 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonSyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Size;
+import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +36,14 @@ public class Rect extends AbstractElement<Rect> {
      * @param size   Size of element
      * @param color  Corner colors of element
      */
-    protected Rect(@NotNull Key key, @Nullable Point pos, @Nullable Point anchor, @Nullable Point offset, @Nullable Size size, int[] color) {
+    protected Rect(
+            @NotNull Key key,
+            @Nullable Point pos,
+            @Nullable Point anchor,
+            @Nullable Point offset,
+            @Nullable Size size,
+            int[] color
+    ) {
         super(key, pos, anchor, offset);
         this.size = size;
         this.color[0] = color.length > 0 ? color[0] : 0;
@@ -254,21 +263,17 @@ public class Rect extends AbstractElement<Rect> {
                 && super.equals(o);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getSize(), super.hashCode());
-    }
-
-    @Override
-    @NotNull
-    public String toString() {
-        return String.format("Rect{%s}", getPropertiesAsString());
-    }
-
-    @Override
-    @NotNull
-    protected String getPropertiesAsString() {
-        return super.getPropertiesAsString() + String.format(",size=%s,color=%s", getSize(), Arrays.toString(getColors()));
+    /**
+     * This method deserializes the specified JSON string into a rect object.
+     *
+     * @param json The string from which this rect is to be deserialized
+     * @return a rect object from the string
+     * @throws JsonSyntaxException      if json is not a valid representation for a rect object
+     * @throws IllegalArgumentException if json is {@code null} or empty
+     */
+    @Nullable
+    public static Rect fromJson(@NotNull String json) {
+        return JsonSerializable.fromJson(json, Rect.class);
     }
 
     /**
@@ -520,7 +525,14 @@ public class Rect extends AbstractElement<Rect> {
         @Override
         @NotNull
         public Rect build() {
-            return new Rect(getKey(), getPos(), getAnchor(), getOffset(), getSize(), getColors());
+            return new Rect(
+                    getKey(),
+                    getPos(),
+                    getAnchor(),
+                    getOffset(),
+                    getSize(),
+                    getColors()
+            );
         }
     }
 }

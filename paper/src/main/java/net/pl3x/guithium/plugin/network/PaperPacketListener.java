@@ -3,14 +3,13 @@ package net.pl3x.guithium.plugin.network;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
-import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.plugin.player.PaperPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public class PaperPacketListener implements PacketListener {
-    private final WrappedPlayer player;
+    private final PaperPlayer player;
 
-    public PaperPacketListener(@NotNull WrappedPlayer player) {
+    public PaperPacketListener(@NotNull PaperPlayer player) {
         this.player = player;
     }
 

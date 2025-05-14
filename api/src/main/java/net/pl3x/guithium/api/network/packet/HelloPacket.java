@@ -3,6 +3,7 @@ package net.pl3x.guithium.api.network.packet;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.element.Rect;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,7 @@ public class HelloPacket extends Packet {
     @Override
     public void handle(@NotNull PacketListener listener) {
         listener.handleHello(this);
+        Rect.fromJson("");
     }
 
     @Override

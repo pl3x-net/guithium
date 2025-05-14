@@ -1,13 +1,14 @@
 package net.pl3x.guithium.api.key;
 
 import com.google.common.base.Preconditions;
+import net.pl3x.guithium.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an object with a unique identifier.
  */
-public abstract class Keyed {
+public abstract class Keyed implements JsonSerializable {
     private final Key key;
 
     /**
@@ -47,14 +48,12 @@ public abstract class Keyed {
 
     @Override
     public int hashCode() {
-        return getKey().hashCode();
+        return toJson().hashCode();
     }
 
     @Override
     @NotNull
     public String toString() {
-        return "Keyed{"
-                + "key=" + getKey()
-                + "}";
+        return String.format("%s%s", getClass().getSimpleName(), toJson());
     }
 }

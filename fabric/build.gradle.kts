@@ -8,6 +8,13 @@ dependencies {
 
     modCompileOnly(libs.fabric.loader.get())
     modCompileOnly(libs.fabric.api.get())
+
+    compileOnly(libs.adventure.fabric) {
+        exclude("net.kyori", "ansi") // TODO: temporary
+    }
+    include(libs.adventure.fabric) {
+        exclude("net.kyori", "ansi") // TODO: temporary
+    }
 }
 
 tasks.processResources {
