@@ -13,7 +13,17 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A custom JSON (de)serializer for the GSON library specifically for adventure components.
+ */
 public class ComponentAdapter implements JsonSerializer<Component>, JsonDeserializer<Component> {
+    /**
+     * Create a new component adapter for gson.
+     */
+    public ComponentAdapter() {
+        // Empty constructor to pacify javadoc lint
+    }
+
     @Override
     @NotNull
     public JsonElement serialize(@NotNull Component component, @NotNull Type type, @NotNull JsonSerializationContext context) {

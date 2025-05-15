@@ -16,7 +16,7 @@ public class PlayerManager {
      * Create a new player manager instance
      */
     public PlayerManager() {
-        // Empty constructor to make javadoc lint happy
+        // Empty constructor to pacify javadoc lint
     }
 
     /**

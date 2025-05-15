@@ -64,7 +64,7 @@ public interface Guithium {
         static Guithium api;
 
         private Provider() {
-            // Empty constructor to make javadoc lint happy
+            // Empty constructor to pacify javadoc lint
         }
 
         @NotNull

@@ -36,63 +36,130 @@ public class Text extends AbstractElement<Text> {
         setShadow(shadow);
     }
 
+    /**
+     * Get the text component.
+     *
+     * @return Text component
+     */
     @NotNull
     public Component getText() {
         return this.text;
     }
 
+    /**
+     * Set the text component.
+     *
+     * @param text Component to set
+     */
     public void setText(@NotNull Component text) {
         Preconditions.checkNotNull(text, "Text cannot have null text component.");
         this.text = text;
     }
 
+    /**
+     * Whether to draw a drop shadow behind the text.
+     *
+     * @return {@code true} to draw a drop shadow behind the text, otherwise {@code false}
+     */
     @Nullable
     public Boolean hasShadow() {
         return this.shadow;
     }
 
+    /**
+     * Set whether to draw a drop shadow behind the text.
+     *
+     * @param shadow {@code true} if text should have shadow, otherwise {@code false}
+     */
     public void setShadow(@Nullable Boolean shadow) {
         this.shadow = shadow;
     }
 
+    /**
+     * Create a new text builder.
+     *
+     * @param key Unique identifying key for the text
+     * @return New text builder
+     */
     @NotNull
     public static Builder builder(@NotNull String key) {
         return new Builder(key);
     }
 
+    /**
+     * Create a new text builder.
+     *
+     * @param key Unique identifying key for the text
+     * @return New text builder
+     */
     @NotNull
     public static Builder builder(@NotNull Key key) {
         return new Builder(key);
     }
 
+    /**
+     * Builder for texts.
+     */
     public static class Builder extends AbstractBuilder<Builder> {
         private Component text = Component.empty();
         private Boolean shadow;
 
+        /**
+         * Create a new text builder.
+         *
+         * @param key Unique identifying key for the text
+         */
         public Builder(@NotNull String key) {
             this(Key.of(key));
         }
 
+        /**
+         * Create a new text builder.
+         *
+         * @param key Unique identifying key for the text
+         */
         public Builder(@NotNull Key key) {
             super(key);
         }
 
+        /**
+         * Get the text component.
+         *
+         * @return Text component
+         */
         @NotNull
         public Component getText() {
             return text;
         }
 
+        /**
+         * Set the text component.
+         *
+         * @param text Component to set
+         * @return This builder
+         */
         @NotNull
         public Builder setText(@NotNull Component text) {
             this.text = text;
             return this;
         }
 
+        /**
+         * Whether to draw a drop shadow behind the text.
+         *
+         * @return {@code true} to draw a drop shadow behind the text, otherwise {@code false}
+         */
         @Nullable
         public Boolean hasShadow() {
             return shadow;
         }
 
+        /**
+         * Set whether to draw a drop shadow behind the text.
+         *
+         * @param shadow {@code true} if text should have shadow, otherwise {@code false}
+         * @return This builder
+         */
         @NotNull
         public Builder setShadow(@Nullable Boolean shadow) {
             this.shadow = shadow;

@@ -15,7 +15,7 @@ public abstract class AbstractScheduler {
      * Create a new scheduler.
      */
     public AbstractScheduler() {
-        // Empty constructor to make javadoc lint happy
+        // Empty constructor to pacify javadoc lint
     }
 
     /**
