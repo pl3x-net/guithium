@@ -44,7 +44,7 @@ public class Rect extends AbstractElement<Rect> {
             @Nullable Size size,
             int[] color
     ) {
-        super(key, pos, anchor, offset);
+        super(key, Type.RECT, pos, anchor, offset);
         this.size = size;
         this.color[0] = color.length > 0 ? color[0] : 0;
         this.color[1] = color.length > 1 ? color[1] : 0;
@@ -247,33 +247,20 @@ public class Rect extends AbstractElement<Rect> {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
-        if (this == o) {
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null) {
+        if (obj == null) {
             return false;
         }
-        if (this.getClass() != o.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
-        Rect other = (Rect) o;
-        return Objects.equals(getSize(), other.getSize())
-                && Arrays.equals(getColors(), other.getColors())
-                && super.equals(o);
-    }
-
-    /**
-     * This method deserializes the specified JSON string into a rect object.
-     *
-     * @param json The string from which this rect is to be deserialized
-     * @return a rect object from the string
-     * @throws JsonSyntaxException      if json is not a valid representation for a rect object
-     * @throws IllegalArgumentException if json is {@code null} or empty
-     */
-    @Nullable
-    public static Rect fromJson(@NotNull String json) {
-        return JsonSerializable.fromJson(json, Rect.class);
+        Rect other = (Rect) obj;
+        return super.equals(obj)
+                && Objects.equals(getSize(), other.getSize())
+                && Arrays.equals(getColors(), other.getColors());
     }
 
     /**
@@ -515,6 +502,23 @@ public class Rect extends AbstractElement<Rect> {
             setColorTop(color);
             setColorBottom(color);
             return this;
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (this.getClass() != obj.getClass()) {
+                return false;
+            }
+            Builder other = (Builder) obj;
+            return super.equals(obj)
+                    && Objects.equals(getSize(), other.getSize())
+                    && Arrays.equals(getColors(), other.getColors());
         }
 
         /**

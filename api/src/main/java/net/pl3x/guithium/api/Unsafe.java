@@ -1,12 +1,13 @@
 package net.pl3x.guithium.api;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Unsafe utils
  */
 public abstract class Unsafe {
     private Unsafe() {
+        // Empty constructor to pacify javadoc lint
     }
 
     /**
@@ -16,9 +17,9 @@ public abstract class Unsafe {
      * @param <T> Type to cast to
      * @return Object as T
      */
-    @Nullable
+    @NotNull
     @SuppressWarnings("unchecked")
-    public static <T> T cast(@Nullable Object obj) {
+    public static <T> T cast(@NotNull Object obj) {
         return (T) obj;
     }
 }

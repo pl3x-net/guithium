@@ -1,7 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonObject;
+import java.util.Locale;
+import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +21,14 @@ public interface Element {
      */
     @NotNull
     Key getKey();
+
+    /**
+     * Get this element's type.
+     *
+     * @return Type of element
+     */
+    @NotNull
+    Type getType();
 
     /**
      * Get this element's position from the anchor point.
@@ -110,4 +122,43 @@ public interface Element {
      */
     @NotNull
     Element setOffset(@Nullable Point offset);
+
+    /**
+     * Represents an element type.
+     */
+    enum Type {
+        /**
+         * Represent a rectangle element.
+         */
+        RECT(Rect.class),
+
+        /**
+         * Represents a text element.
+         */
+        TEXT(Text.class);
+
+        private final Class<? extends Element> clazz;
+
+        /**
+         * Create new element type
+         *
+         * @param clazz Class of element
+         */
+        Type(@NotNull Class<? extends Element> clazz) {
+            this.clazz = clazz;
+        }
+
+        /**
+         * Create element of this type from JSON representation.
+         *
+         * @param json JSON representation of element
+         * @param <T>  Type of element
+         * @return New element of type
+         */
+        @NotNull
+        public static <T extends Element> T createElement(@NotNull JsonObject json) {
+            String name = json.get("type").getAsString().toUpperCase(Locale.ROOT);
+            return Unsafe.cast(JsonSerializable.GSON.fromJson(json, Type.valueOf(name).clazz));
+        }
+    }
 }

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> An abstract element
  */
 public abstract class AbstractElement<T extends AbstractElement<T>> extends Keyed implements Element {
+    private final Type type;
     private Point pos;
     private Point anchor;
     private Point offset;
@@ -23,20 +24,29 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
      * Create a new keyed element.
      *
      * @param key    Unique identifier for element
+     * @param type   Type of element
      * @param pos    Position of element
      * @param anchor Anchor for element
      * @param offset Offset of element
      */
     protected AbstractElement(
             @NotNull Key key,
+            @NotNull Type type,
             @Nullable Point pos,
             @Nullable Point anchor,
             @Nullable Point offset
     ) {
         super(key);
+        this.type = type;
         setPos(pos);
         setAnchor(anchor);
         setOffset(offset);
+    }
+
+    @Override
+    @NotNull
+    public Type getType() {
+        return this.type;
     }
 
     @Override
@@ -100,19 +110,18 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
-        if (this == o) {
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null) {
+        if (obj == null) {
             return false;
         }
-        if (this.getClass() != o.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
-        T other = Unsafe.cast(o);
-        return super.equals(o)
-                && Objects.equals(getKey(), other.getKey())
+        T other = Unsafe.cast(obj);
+        return super.equals(obj)
                 && Objects.equals(getPos(), other.getPos())
                 && Objects.equals(getAnchor(), other.getAnchor())
                 && Objects.equals(getOffset(), other.getOffset());
@@ -127,6 +136,15 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
         private Point pos;
         private Point anchor;
         private Point offset;
+
+        /**
+         * Create a new builder.
+         *
+         * @param key Unique identifying key for element
+         */
+        public AbstractBuilder(@NotNull String key) {
+            this(Key.of(key));
+        }
 
         /**
          * Creates a new builder.
@@ -249,6 +267,24 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
         public T setOffset(@Nullable Point offset) {
             this.offset = offset;
             return Unsafe.cast(this);
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (this.getClass() != obj.getClass()) {
+                return false;
+            }
+            T other = Unsafe.cast(obj);
+            return super.equals(obj)
+                    && Objects.equals(getPos(), other.getPos())
+                    && Objects.equals(getAnchor(), other.getAnchor())
+                    && Objects.equals(getOffset(), other.getOffset());
         }
 
         /**

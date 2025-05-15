@@ -4,12 +4,22 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.Strictness;
+import java.lang.reflect.Type;
 import net.kyori.adventure.text.Component;
+import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.gui.element.Rect;
+import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.api.json.adapter.ComponentAdapter;
-import org.apache.commons.lang3.StringUtils;
+import net.pl3x.guithium.api.json.adapter.ElementAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,33 +37,35 @@ public interface JsonSerializable {
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
             .registerTypeAdapter(Component.class, new ComponentAdapter())
+            .registerTypeAdapter(Element.class, new ElementAdapter())
+            .registerTypeAdapter(Screen.class, new Adapter<Screen>())
+            .registerTypeAdapter(Rect.class, new Adapter<Rect>())
+            .registerTypeAdapter(Text.class, new Adapter<Text>())
             .create();
 
     /**
-     * This method serializes this object into its equivalent JSON string representation.
+     * A custom JSON (de)serializer for the GSON library specifically for json serializable objects.
      *
-     * @return JSON representation of this object
+     * @param <T> Type of json serializable object
      */
-    @NotNull
-    default String toJson() {
-        return GSON.toJson(this);
-    }
-
-    /**
-     * This method deserializes the specified JSON string into an object of the specified class.
-     *
-     * @param json  The string from which the object is to be deserialized
-     * @param clazz The class of T
-     * @param <T>   The type of the desired object
-     * @return an object of type T from the string
-     * @throws JsonSyntaxException      if json is not a valid representation for an object of type clazz
-     * @throws IllegalArgumentException if json is {@code null} or empty
-     */
-    @Nullable
-    static <T extends JsonSerializable> T fromJson(@NotNull String json, @NotNull Class<T> clazz) {
-        if (StringUtils.isEmpty(json)) {
-            throw new IllegalArgumentException("json cannot be null or empty");
+    class Adapter<T extends JsonSerializable> implements JsonSerializer<T>, JsonDeserializer<T> {
+        /**
+         * Create a new json serializable adapter for gson.
+         */
+        public Adapter() {
+            // Empty constructor to pacify javadoc lint
         }
-        return GSON.fromJson(json, clazz);
+
+        @Override
+        @NotNull
+        public JsonElement serialize(@NotNull T src, @NotNull Type type, @NotNull JsonSerializationContext context) {
+            return GSON.toJsonTree(src, type);
+        }
+
+        @Override
+        @Nullable
+        public T deserialize(@NotNull JsonElement json, @NotNull Type type, @NotNull JsonDeserializationContext context) throws JsonParseException {
+            return GSON.fromJson(json, type);
+        }
     }
 }

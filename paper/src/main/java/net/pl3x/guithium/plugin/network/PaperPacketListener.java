@@ -20,7 +20,7 @@ public class PaperPacketListener implements PacketListener {
         Guithium.logger.info("{} is using Guithium with protocol {}", this.player.getName(), protocol);
 
         // set the player's client protocol
-        ((PaperPlayer) this.player).setProtocol(protocol);
+        this.player.setProtocol(protocol);
 
         // reply to the player with server's protocol
         this.player.getConnection().send(new HelloPacket(), true);

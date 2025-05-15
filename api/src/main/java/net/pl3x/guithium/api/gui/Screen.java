@@ -2,13 +2,10 @@ package net.pl3x.guithium.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
 import org.jetbrains.annotations.NotNull;
@@ -170,20 +167,7 @@ public class Screen extends Keyed {
             return false;
         }
         Screen other = (Screen) obj;
-        return Objects.equals(getKey(), other.getKey())
+        return super.equals(obj)
                 && getElements().equals(other.getElements());
-    }
-
-    /**
-     * This method deserializes the specified JSON string into a screen object.
-     *
-     * @param json The string from which this screen is to be deserialized
-     * @return a screen object from the string
-     * @throws JsonSyntaxException      if json is not a valid representation for a screen object
-     * @throws IllegalArgumentException if json is {@code null} or empty
-     */
-    @Nullable
-    public static Screen fromJson(@NotNull String json) {
-        return JsonSerializable.fromJson(json, Screen.class);
     }
 }

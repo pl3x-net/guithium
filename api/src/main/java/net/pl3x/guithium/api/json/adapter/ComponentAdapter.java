@@ -32,7 +32,7 @@ public class ComponentAdapter implements JsonSerializer<Component>, JsonDeserial
 
     @Override
     @Nullable
-    public Component deserialize(@NotNull JsonElement json, @NotNull Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
+    public Component deserialize(@NotNull JsonElement json, @NotNull Type type, @NotNull JsonDeserializationContext context) throws JsonParseException {
         return GsonComponentSerializer.gson().deserialize(json.getAsString());
     }
 }

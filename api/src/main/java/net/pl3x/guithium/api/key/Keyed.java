@@ -48,12 +48,12 @@ public abstract class Keyed implements JsonSerializable {
 
     @Override
     public int hashCode() {
-        return toJson().hashCode();
+        return GSON.toJson(this).hashCode();
     }
 
     @Override
     @NotNull
     public String toString() {
-        return String.format("%s%s", getClass().getSimpleName(), toJson());
+        return String.format("%s%s", getClass().getSimpleName(), GSON.toJson(this));
     }
 }

@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.common.base.Preconditions;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.key.Key;
@@ -31,7 +32,7 @@ public class Text extends AbstractElement<Text> {
                 @Nullable Point offset,
                 @Nullable Boolean shadow
     ) {
-        super(key, pos, anchor, offset);
+        super(key, Type.TEXT, pos, anchor, offset);
         setText(text);
         setShadow(shadow);
     }
@@ -73,6 +74,23 @@ public class Text extends AbstractElement<Text> {
      */
     public void setShadow(@Nullable Boolean shadow) {
         this.shadow = shadow;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Text other = (Text) obj;
+        return super.equals(obj)
+                && Objects.equals(getText(), other.getText())
+                && Objects.equals(hasShadow(), other.hasShadow());
     }
 
     /**
@@ -164,6 +182,23 @@ public class Text extends AbstractElement<Text> {
         public Builder setShadow(@Nullable Boolean shadow) {
             this.shadow = shadow;
             return this;
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (this.getClass() != obj.getClass()) {
+                return false;
+            }
+            Builder other = (Builder) obj;
+            return super.equals(obj)
+                    && Objects.equals(getText(), other.getText())
+                    && Objects.equals(hasShadow(), other.hasShadow());
         }
 
         @Override
