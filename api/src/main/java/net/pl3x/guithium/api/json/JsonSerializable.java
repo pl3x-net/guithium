@@ -44,13 +44,13 @@ public interface JsonSerializable {
             .create();
 
     /**
-     * A custom JSON (de)serializer for the GSON library specifically for json serializable objects.
+     * A custom JSON (de)serializer for the GSON library specifically for JsonSerializable objects.
      *
-     * @param <T> Type of json serializable object
+     * @param <T> Type of JsonSerializable object
      */
     class Adapter<T extends JsonSerializable> implements JsonSerializer<T>, JsonDeserializer<T> {
         /**
-         * Create a new json serializable adapter for gson.
+         * Create a new JsonSerializable adapter for gson.
          */
         public Adapter() {
             // Empty constructor to pacify javadoc lint

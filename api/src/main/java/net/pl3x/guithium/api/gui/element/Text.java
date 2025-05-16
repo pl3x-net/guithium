@@ -1,15 +1,13 @@
 package net.pl3x.guithium.api.gui.element;
 
-import com.google.common.base.Preconditions;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
-import net.pl3x.guithium.api.gui.Point;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents some text to be displayed on the screen.
+ * Represents a text element.
  */
 public class Text extends AbstractElement<Text> {
     private Component text;
@@ -18,23 +16,41 @@ public class Text extends AbstractElement<Text> {
     /**
      * Create a new text element.
      *
-     * @param key    Unique identifier
-     * @param text   Text component to draw
-     * @param pos    Position of text from anchor (pixel units)
-     * @param anchor Anchor for text on screen (percentage 0.0-1.0)
-     * @param offset Offset of text from position (percentage 0.0-1.0)
-     * @param shadow Whether to draw a drop shadow behind the text
+     * @param key Unique identifier
      */
-    public Text(@NotNull Key key,
-                @NotNull Component text,
-                @Nullable Point pos,
-                @Nullable Point anchor,
-                @Nullable Point offset,
-                @Nullable Boolean shadow
-    ) {
-        super(key, Type.TEXT, pos, anchor, offset);
-        setText(text);
-        setShadow(shadow);
+    public Text(@NotNull String key) {
+        this(Key.of(key));
+    }
+
+    /**
+     * Create a new text element.
+     *
+     * @param key Unique identifier
+     */
+    public Text(@NotNull Key key) {
+        super(key, Type.TEXT);
+    }
+
+    /**
+     * Create a new text element.
+     *
+     * @param key Unique identifier
+     * @return New text element
+     */
+    @NotNull
+    public static Text of(@NotNull String key) {
+        return of(Key.of(key));
+    }
+
+    /**
+     * Create a new text element.
+     *
+     * @param key Unique identifier
+     * @return New text element
+     */
+    @NotNull
+    public static Text of(@NotNull Key key) {
+        return new Text(key);
     }
 
     /**
@@ -42,7 +58,7 @@ public class Text extends AbstractElement<Text> {
      *
      * @return Text component
      */
-    @NotNull
+    @Nullable
     public Component getText() {
         return this.text;
     }
@@ -51,10 +67,12 @@ public class Text extends AbstractElement<Text> {
      * Set the text component.
      *
      * @param text Component to set
+     * @return This text
      */
-    public void setText(@NotNull Component text) {
-        Preconditions.checkNotNull(text, "Text cannot have null text component.");
+    @NotNull
+    public Text setText(@Nullable Component text) {
         this.text = text;
+        return this;
     }
 
     /**
@@ -71,147 +89,21 @@ public class Text extends AbstractElement<Text> {
      * Set whether to draw a drop shadow behind the text.
      *
      * @param shadow {@code true} if text should have shadow, otherwise {@code false}
+     * @return This text
      */
-    public void setShadow(@Nullable Boolean shadow) {
+    @NotNull
+    public Text setShadow(@Nullable Boolean shadow) {
         this.shadow = shadow;
+        return this;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
+        if (!super.equals(obj)) {
             return false;
         }
         Text other = (Text) obj;
-        return super.equals(obj)
-                && Objects.equals(getText(), other.getText())
+        return Objects.equals(getText(), other.getText())
                 && Objects.equals(hasShadow(), other.hasShadow());
-    }
-
-    /**
-     * Create a new text builder.
-     *
-     * @param key Unique identifying key for the text
-     * @return New text builder
-     */
-    @NotNull
-    public static Builder builder(@NotNull String key) {
-        return new Builder(key);
-    }
-
-    /**
-     * Create a new text builder.
-     *
-     * @param key Unique identifying key for the text
-     * @return New text builder
-     */
-    @NotNull
-    public static Builder builder(@NotNull Key key) {
-        return new Builder(key);
-    }
-
-    /**
-     * Builder for texts.
-     */
-    public static class Builder extends AbstractBuilder<Builder> {
-        private Component text = Component.empty();
-        private Boolean shadow;
-
-        /**
-         * Create a new text builder.
-         *
-         * @param key Unique identifying key for the text
-         */
-        public Builder(@NotNull String key) {
-            this(Key.of(key));
-        }
-
-        /**
-         * Create a new text builder.
-         *
-         * @param key Unique identifying key for the text
-         */
-        public Builder(@NotNull Key key) {
-            super(key);
-        }
-
-        /**
-         * Get the text component.
-         *
-         * @return Text component
-         */
-        @NotNull
-        public Component getText() {
-            return text;
-        }
-
-        /**
-         * Set the text component.
-         *
-         * @param text Component to set
-         * @return This builder
-         */
-        @NotNull
-        public Builder setText(@NotNull Component text) {
-            this.text = text;
-            return this;
-        }
-
-        /**
-         * Whether to draw a drop shadow behind the text.
-         *
-         * @return {@code true} to draw a drop shadow behind the text, otherwise {@code false}
-         */
-        @Nullable
-        public Boolean hasShadow() {
-            return shadow;
-        }
-
-        /**
-         * Set whether to draw a drop shadow behind the text.
-         *
-         * @param shadow {@code true} if text should have shadow, otherwise {@code false}
-         * @return This builder
-         */
-        @NotNull
-        public Builder setShadow(@Nullable Boolean shadow) {
-            this.shadow = shadow;
-            return this;
-        }
-
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null) {
-                return false;
-            }
-            if (this.getClass() != obj.getClass()) {
-                return false;
-            }
-            Builder other = (Builder) obj;
-            return super.equals(obj)
-                    && Objects.equals(getText(), other.getText())
-                    && Objects.equals(hasShadow(), other.hasShadow());
-        }
-
-        @Override
-        @NotNull
-        public Text build() {
-            return new Text(
-                    getKey(),
-                    getText(),
-                    getPos(),
-                    getAnchor(),
-                    getOffset(),
-                    hasShadow()
-            );
-        }
     }
 }
