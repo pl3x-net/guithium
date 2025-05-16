@@ -3,7 +3,12 @@ on: [ pull_request ]
 
 jobs:
   run:
-    if: github.head_ref != 'master' || github.event.pull_request.head.repo.owner.type == 'User'
+    if: |
+      github.repository != github.event.pull_request.head.repo.full_name &&
+      (
+        github.head_ref != 'master' ||
+        github.event.pull_request.head.repo.owner.type == 'User'
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
