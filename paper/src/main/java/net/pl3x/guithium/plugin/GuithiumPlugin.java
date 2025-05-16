@@ -5,12 +5,15 @@ import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.plugin.listener.PaperListener;
 import net.pl3x.guithium.plugin.network.PaperNetworkHandler;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class GuithiumPlugin extends JavaPlugin implements Guithium {
     private final PaperNetworkHandler networkHandler;
     private final PlayerManager playerManager;
+
+    private Metrics metrics;
 
     public GuithiumPlugin() {
         this.networkHandler = new PaperNetworkHandler();
@@ -29,6 +32,15 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
         getNetworkHandler().registerListeners();
 
         getServer().getPluginManager().registerEvents(new PaperListener(this), this);
+
+        this.metrics = new Metrics(this, 25813);
+    }
+
+    public void onDisable() {
+        if (this.metrics != null) {
+            this.metrics.shutdown();
+            this.metrics = null;
+        }
     }
 
     @Override
