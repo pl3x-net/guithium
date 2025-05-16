@@ -12,11 +12,6 @@ val mergedJar by configurations.creating<Configuration> {
     isVisible = false
 }
 
-repositories {
-    mavenCentral()
-    maven("https://maven.fabricmc.net/")
-}
-
 dependencies {
     mergedJar(project(":api"))
     mergedJar(project(":fabric"))
