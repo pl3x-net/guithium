@@ -2,6 +2,7 @@ package net.pl3x.guithium.api;
 
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public interface Guithium {
      * <p>
      * <u>For internal use</u>. Please use your own logger.
      */
-    Logger logger = LoggerFactory.getLogger(Guithium.MOD_ID);
+    Logger logger = LoggerFactory.getLogger(StringUtils.capitalize(Guithium.MOD_ID));
 
     /**
      * Get the Guithium API instance.
