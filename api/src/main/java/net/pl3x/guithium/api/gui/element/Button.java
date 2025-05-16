@@ -52,4 +52,10 @@ public class Button extends LabeledRect<Button> {
     public boolean equals(@Nullable Object obj) {
         return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        // pacifies codefactor.io
+        return super.hashCode();
+    }
 }

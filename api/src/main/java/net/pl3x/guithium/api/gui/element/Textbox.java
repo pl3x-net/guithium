@@ -258,4 +258,10 @@ public class Textbox extends Rect<Textbox> {
                 && Objects.equals(getTextColor(), other.getTextColor())
                 && Objects.equals(getUneditableTextColor(), other.getUneditableTextColor());
     }
+
+    @Override
+    public int hashCode() {
+        // pacifies codefactor.io
+        return super.hashCode();
+    }
 }

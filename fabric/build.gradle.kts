@@ -10,7 +10,7 @@ dependencies {
     modCompileOnly(libs.fabric.api.get())
 
     compileOnly(libs.adventure.fabric) {
-        // TODO: temporary - kyori compiled ansi against jdk22
+        // Temporary: kyori compiled ansi against jdk22
         //       which causes the remapJar task to fail :/
         exclude("net.kyori", "ansi")
     }

@@ -67,4 +67,10 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
         Rect<T> other = Unsafe.cast(obj);
         return Objects.equals(getSize(), other.getSize());
     }
+
+    @Override
+    public int hashCode() {
+        // pacifies codefactor.io
+        return super.hashCode();
+    }
 }

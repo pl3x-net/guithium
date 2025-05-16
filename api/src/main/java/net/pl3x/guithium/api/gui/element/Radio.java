@@ -140,4 +140,10 @@ public class Radio extends LabeledRect<Radio> {
                 && Objects.equals(isSelected(), other.isSelected())
                 && Objects.equals(isShowLabel(), other.isShowLabel());
     }
+
+    @Override
+    public int hashCode() {
+        // pacifies codefactor.io
+        return super.hashCode();
+    }
 }

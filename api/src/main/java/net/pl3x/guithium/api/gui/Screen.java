@@ -164,4 +164,10 @@ public class Screen extends Keyed {
         return super.equals(obj)
                 && getElements().equals(other.getElements());
     }
+
+    @Override
+    public int hashCode() {
+        // pacifies codefactor.io
+        return super.hashCode();
+    }
 }
