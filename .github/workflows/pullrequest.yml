@@ -2,7 +2,8 @@ name: Pull Requests
 on: [ pull_request ]
 
 jobs:
-  build:
+  run:
+    if: github.head_ref != 'master' || github.event.pull_request.head.repo.owner.type == 'User'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
