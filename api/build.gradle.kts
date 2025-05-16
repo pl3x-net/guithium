@@ -16,6 +16,7 @@ dependencies {
     compileOnly(rootProject.libs.apache.get())
     compileOnly(rootProject.libs.gson.get())
     compileOnly(rootProject.libs.guava.get())
+    compileOnly(rootProject.libs.annotations.get())
     compileOnly(rootProject.libs.slf4j.get())
 }
 

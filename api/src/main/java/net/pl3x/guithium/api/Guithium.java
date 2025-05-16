@@ -23,6 +23,11 @@ public interface Guithium {
     int PROTOCOL = 1;
 
     /**
+     * bStats ID number for Guithium.
+     */
+    int BSTATS_ID = 25813;
+
+    /**
      * Guithium's internal logger.
      * <p>
      * <u>For internal use</u>. Please use your own logger.

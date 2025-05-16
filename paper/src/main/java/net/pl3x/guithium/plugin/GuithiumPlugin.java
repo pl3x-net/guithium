@@ -33,7 +33,7 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
 
         getServer().getPluginManager().registerEvents(new PaperListener(this), this);
 
-        this.metrics = new Metrics(this, 25813);
+        this.metrics = new Metrics(this, BSTATS_ID);
     }
 
     public void onDisable() {
