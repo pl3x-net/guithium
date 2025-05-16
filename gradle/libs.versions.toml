@@ -54,6 +54,7 @@ bstats = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bstats" 
 apache = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apache" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junitPlatform = { group = "org.junit.platform", name = "junit-platform-launcher" }
