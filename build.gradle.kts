@@ -12,6 +12,11 @@ val mergedJar by configurations.creating<Configuration> {
     isVisible = false
 }
 
+repositories {
+    mavenCentral()
+    maven("https://maven.fabricmc.net/")
+}
+
 dependencies {
     mergedJar(project(":api"))
     mergedJar(project(":fabric"))
@@ -53,7 +58,6 @@ subprojects {
         compileOnly(rootProject.libs.apache.get())
         compileOnly(rootProject.libs.gson.get())
         compileOnly(rootProject.libs.guava.get())
-        compileOnly(rootProject.libs.jspecify.get())
         compileOnly(rootProject.libs.slf4j.get())
 
         testImplementation(rootProject.libs.junit.get())
@@ -80,6 +84,7 @@ subprojects {
 // this must be after subprojects block
 tasks {
     withType<Jar> {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         dependsOn(mergedJar)
         val jars = mergedJar.map { zipTree(it) }
         from(jars)

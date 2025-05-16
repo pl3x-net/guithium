@@ -3,6 +3,8 @@
 guithium = "0.0.1"
 minecraft = "1.21.5"
 
+paperweight = "2.0.0-beta.16" # https://github.com/PaperMC/paperweight
+
 # https://fabricmc.net/develop/
 fabricApi = "0.123.2+1.21.5"
 fabricLoader = "0.16.14"
@@ -20,13 +22,14 @@ fix-javadoc = "1.19"        # https://github.com/mfnalex/gradle-fix-javadoc-plug
 apache = "3.17.0"
 gson = "2.11.0"
 guava = "33.3.1-jre"
-jspecify = "1.0.0"
+annotations = "26.0.2"
 slf4j = "2.0.16"
 junit = "5.12.2"
 asm = "9.8"
 
 [plugins]
 
+paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 fabric-loom = { id = "fabric-loom", version.ref = "fabricLoom" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 indra-git = { id = "net.kyori.indra.git", version.ref = "indra-git" }
@@ -46,7 +49,6 @@ adventure-gson = { group = "net.kyori", name = "adventure-text-serializer-gson",
 apache = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apache" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
-jspecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify" }
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junitPlatform = { group = "org.junit.platform", name = "junit-platform-launcher" }

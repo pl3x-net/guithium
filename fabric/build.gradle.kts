@@ -10,20 +10,27 @@ dependencies {
     modCompileOnly(libs.fabric.api.get())
 
     compileOnly(libs.adventure.fabric) {
-        exclude("net.kyori", "ansi") // TODO: temporary
+        // TODO: temporary - kyori compiled ansi against jdk22
+        //       which causes the remapJar task to fail :/
+        exclude("net.kyori", "ansi")
     }
-    include(libs.adventure.fabric) {
-        exclude("net.kyori", "ansi") // TODO: temporary
-    }
+
+    // this escapes >= in fabric.mod.json to \u003e\u003d
+    // but its the only sane way to include adventure jar
+    // without also pulling in all the other b.s.
+    include(libs.adventure.fabric)
 }
 
 tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     filteringCharset = Charsets.UTF_8.name()
-    filesMatching("fabric.mod.json") {
-        expand(
-            "version" to "$version",
-            "minecraft" to libs.versions.minecraft.get(),
-            "fabricloader" to libs.versions.fabricLoader.get(),
-        )
-    }
+    with(copySpec {
+        from("src/main/resources/fabric.mod.json") {
+            mapOf(
+                "version" to "$version",
+                "minecraft" to libs.versions.minecraft.get(),
+                "fabricloader" to libs.versions.fabricLoader.get()
+            ).forEach { k, v -> filter { it.replace("\${$k}", v) } }
+        }
+    })
 }

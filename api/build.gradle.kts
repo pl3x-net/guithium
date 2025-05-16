@@ -1,5 +1,5 @@
 plugins {
-    alias { libs.plugins.fix.javadoc }
+    alias(libs.plugins.fix.javadoc)
 }
 
 java {
@@ -10,7 +10,7 @@ tasks {
     javadoc {
         val name = rootProject.name.replaceFirstChar { it.uppercase() }
         val stdopts = options as StandardJavadocDocletOptions
-        stdopts.encoding = "UTF-8"
+        stdopts.encoding = Charsets.UTF_8.name()
         stdopts.overview = "src/main/javadoc/overview.html"
         stdopts.use()
         stdopts.isDocFilesSubDirs = true
@@ -23,7 +23,7 @@ tasks {
         stdopts.links(
             "https://guava.dev/releases/${libs.versions.guava.get()}/api/docs/",
             "https://javadoc.io/doc/org.slf4j/slf4j-api/${libs.versions.slf4j.get()}/",
-            "https://jspecify.dev/docs/api/"
+            "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations.get()}/"
         )
     }
 
