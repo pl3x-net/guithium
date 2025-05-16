@@ -3,7 +3,7 @@
   "id" : "guithium",
   "version" : "${version}",
   "name" : "Guithium",
-  "description" : "Allows bukkit servers to add GUIs to your client",
+  "description" : "Allows paper servers to add GUIs to your fabric client",
   "authors" : [
     "BillyGalbreath"
   ],

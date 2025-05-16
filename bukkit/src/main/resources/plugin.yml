@@ -1,6 +1,0 @@
-name: "Guithium"
-main: "net.pl3x.guithium.plugin.GuithiumPlugin"
-version: "${version}"
-api-version: "${minecraft}"
-description: "Allows bukkit servers to add GUIs to your client"
-author: "BillyGalbreath"

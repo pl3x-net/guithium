@@ -1,60 +1,49 @@
 plugins {
-    `java-library`
+    alias(libs.plugins.fix.javadoc)
 }
-
-version = "${rootProject.version}"
 
 java {
     withJavadocJar()
 }
 
 repositories {
+    // not sure what's different about this one,
+    // but it won't work from settings.gradle.kts
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.11.0")
-    compileOnly("com.google.guava:guava:33.3.1-jre")
-    compileOnly("org.jetbrains:annotations:26.0.1")
-    compileOnly("org.slf4j:slf4j-api:2.0.16")
-
-    testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-configurations {
-    // ensure junit tests get the same dependencies as compileOnly
-    testImplementation.get().extendsFrom(compileOnly.get())
-}
-
-base {
-    archivesName = "${rootProject.name}-${project.name}"
+    compileOnly(rootProject.libs.apache.get())
+    compileOnly(rootProject.libs.gson.get())
+    compileOnly(rootProject.libs.guava.get())
+    compileOnly(rootProject.libs.slf4j.get())
 }
 
 tasks {
     javadoc {
-        options.encoding = "UTF-8"
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-        title = "${rootProject.name}-${version} API"
+        val name = rootProject.name.replaceFirstChar { it.uppercase() }
+        val stdopts = options as StandardJavadocDocletOptions
+        stdopts.encoding = Charsets.UTF_8.name()
+        stdopts.overview = "src/main/javadoc/overview.html"
+        stdopts.use()
+        stdopts.isDocFilesSubDirs = true
+        stdopts.windowTitle = "$name $version API Documentation"
+        stdopts.docTitle = "<h1>$name $version API</h1>"
+        stdopts.header = """<img src="https://raw.githubusercontent.com/BillyGalbreath/Guithium/master/fabric/src/main/resources/assets/guithium/icon.png" style="height:100%">"""
+        stdopts.bottom = "Copyright © 2025 William Blake Galbreath"
+        stdopts.linkSource(true)
+        stdopts.addBooleanOption("html5", true)
+        stdopts.links(
+            "https://guava.dev/releases/${libs.versions.guava.get()}/api/docs/",
+            "https://javadoc.io/doc/org.slf4j/slf4j-api/${libs.versions.slf4j.get()}/",
+            "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations.get()}/"
+        )
     }
 
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
+    withType<com.jeff_media.fixjavadoc.FixJavadoc> {
+        configureEach {
+            newLineOnMethodParameters.set(false)
+            keepOriginal.set(false)
         }
-    }
-
-    withType<AbstractTestTask> {
-        afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
-            if (desc.parent == null) {
-                println()
-                println("Test Results: ${result.resultType}")
-                println("       Tests: ${result.testCount}")
-                println("      Passed: ${result.successfulTestCount}")
-                println("      Failed: ${result.failedTestCount}")
-                println("     Skipped: ${result.skippedTestCount}")
-            }
-        }))
     }
 }

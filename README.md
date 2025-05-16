@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTarget, HtmlDeprecatedAttribute -->
 <div align="center">
 
 <picture>
@@ -18,7 +19,7 @@
 
 <br/>
 
-<big><b>Guithium allows [Bukkit](https://dev.bukkit.org/) plugins to add GUIs to [Fabric](https://fabricmc.net/)
+<big><b>Guithium allows [Paper](https://papermc.io/) plugins to add GUIs to [Fabric](https://fabricmc.net/)
 clients.</b></big>
 
 </div>
@@ -27,8 +28,6 @@ clients.</b></big>
 
 Server side plugin:
 
-![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/bukkit.png) [CraftBukkit](https://dev.bukkit.org/)<br>
-![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/spigot.png) [Spigot](https://spigotmc.org/)<br>
 ![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/paper.png) [Paper](https://papermc.io/)<br>
 ![](https://github.com/BillyGalbreath/Guithium/raw/master/.github/docs/purpur.png) [Purpur](https://purpurmc.org/)
 
@@ -38,7 +37,7 @@ Client side mod:
 
 ## How To (Players and Server Admins)
 
-Guithium is a jar file that works on both Fabric clients as a mod and Bukkit servers as a plugin.
+Guithium is a jar file that works on both Fabric clients as a mod and Paper servers as a plugin.
 
 Just install it like you would any other mod or plugin.
 
@@ -48,6 +47,7 @@ Just install it like you would any other mod or plugin.
 > Guithium does nothing on its own. You will need plugins that hook into Guithium in order to take advantage of it.
 
 Here is a list of known plugins that use Guithium:
+
 * [GuithiumExample](https://github.com/BillyGalbreath/GuithiumExample)
 
 ## How To (Plugin Developers)
@@ -59,6 +59,7 @@ Javadoc: https://billygalbreath.github.io/Guithium
 Repository (Maven)
 
 ```xml
+
 <project>
     <repository>
         <id>modrinth-repo</id>
@@ -67,7 +68,7 @@ Repository (Maven)
     <dependency>
         <groupId>maven.modrinth</groupId>
         <artifactId>guithium</artifactId>
-        <version>1.21.5-7</version>
+        <version>0.0.1</version>
         <scope>provided</scope>
     </dependency>
 </project>
@@ -84,7 +85,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'maven.modrinth:guithium:1.21.5-7'
+    compileOnly 'maven.modrinth:guithium:0.0.1'
 }
 ```
 
@@ -98,4 +99,4 @@ The compiled jar will be in `build/libs/`
 
 ## bStats
 
-[![bStats Graph Data](https://bstats.org/signatures/bukkit/Guithium.svg)](https://bstats.org/plugin/bukkit/Guithium)
+[![bStats Graph Data](https://bstats.org/signatures/bukkit/Guithium.svg)](https://bstats.org/plugin/bukkit/Guithium/25813)
