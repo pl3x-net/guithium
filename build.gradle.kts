@@ -9,12 +9,6 @@ allprojects {
 
     version = rootProject.libs.versions.guithium.get()
 
-    repositories {
-        // not sure what's different about this one,
-        // but it won't work from settings.gradle.kts
-        mavenCentral()
-    }
-
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
