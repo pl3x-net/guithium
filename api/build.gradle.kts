@@ -6,6 +6,12 @@ java {
     withJavadocJar()
 }
 
+repositories {
+    // not sure what's different about this one,
+    // but it won't work from settings.gradle.kts
+    mavenCentral()
+}
+
 dependencies {
     compileOnly(rootProject.libs.apache.get())
     compileOnly(rootProject.libs.gson.get())
