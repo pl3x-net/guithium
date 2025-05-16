@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api;
 
+import net.pl3x.guithium.api.network.NetworkHandler;
+import net.pl3x.guithium.api.player.PlayerManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Guithium API.
@@ -20,42 +23,11 @@ public interface Guithium {
     int PROTOCOL = 1;
 
     /**
-     * The Guithium instance provider.
+     * Guithium's internal logger.
      * <p>
-     * For internal use.
+     * <u>For internal use</u>. Please use your own logger.
      */
-    final class Provider {
-        static Guithium api;
-
-        private Provider() {
-            // Empty constructor to make javadoc lint happy
-        }
-
-        /**
-         * Get the Guithium API instance.
-         * <p>
-         * <u>For internal use.</u>
-         * <p>
-         * Use {@link Guithium#api()} instead.
-         *
-         * @return Instance of Guithium API
-         */
-        @NotNull
-        public static Guithium api() {
-            return Provider.api;
-        }
-
-        /**
-         * Set the Guithium API instance.
-         * <p>
-         * For internal use.
-         *
-         * @param guithium Instance of Guithium API
-         */
-        public static void set(Guithium guithium) {
-            api = guithium;
-        }
-    }
+    Logger logger = LoggerFactory.getLogger(Guithium.MOD_ID);
 
     /**
      * Get the Guithium API instance.
@@ -68,12 +40,36 @@ public interface Guithium {
     }
 
     /**
-     * Get Guithium's logger.
-     * <p>
-     * For internal use. Please use your own logger.
+     * Get the network handler instance.
      *
-     * @return Instance of Guithium's logger
+     * @return Network handler
      */
     @NotNull
-    Logger logger();
+    NetworkHandler getNetworkHandler();
+
+    /**
+     * Get the player manager instance.
+     *
+     * @return Player manager
+     */
+    @NotNull
+    PlayerManager getPlayerManager();
+
+    /**
+     * The Guithium instance provider.
+     * <p>
+     * <u>For internal use</u>.
+     */
+    final class Provider {
+        static Guithium api;
+
+        private Provider() {
+            // Empty constructor to pacify javadoc lint
+        }
+
+        @NotNull
+        private static Guithium api() {
+            return Provider.api;
+        }
+    }
 }
