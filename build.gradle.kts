@@ -4,22 +4,16 @@ plugins {
     alias(libs.plugins.indra.git)
 }
 
-val mergedJar by configurations.creating<Configuration> {
-    isCanBeResolved = true
-    isCanBeConsumed = false
-    isVisible = false
-}
-
-dependencies {
-    mergedJar(project(":api"))
-    mergedJar(project(":fabric"))
-    mergedJar(project(":paper"))
-}
-
 allprojects {
     apply(plugin = "java-library")
 
     version = rootProject.libs.versions.guithium.get()
+
+    repositories {
+        // not sure what's different about this one,
+        // but it won't work from settings.gradle.kts
+        mavenCentral()
+    }
 
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -69,15 +63,28 @@ subprojects {
 // this must be after subprojects block
 tasks {
     withType<Jar> {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        dependsOn(mergedJar)
-        val jars = mergedJar.map { zipTree(it) }
-        from(jars)
+        subprojects {
+            dependsOn(project.tasks.build)
+        }
+
+        // build our manifest
         manifest {
             attributes["Implementation-Version"] = version
             attributes["Git-Commit"] = indraGit.commit()?.name()
         }
+
+        // get subproject's built jars
+        val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
+
+        // merge them into main jar (except their manifests)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        from(jars) {
+            exclude("META-INF/MANIFEST.MF")
+        }
+
+        // put behind an action because files don't exist at configuration time
         doFirst {
+            // merge all subproject's manifests into main manifest
             jars.forEach { jar ->
                 jar.matching { include("META-INF/MANIFEST.MF") }
                     .files.forEach { file ->

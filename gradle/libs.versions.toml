@@ -13,8 +13,10 @@ fabricLoom = "1.10-SNAPSHOT"
 adventureApi = "4.21.0"     # https://github.com/KyoriPowered/adventure
 adventureFabric = "6.4.0"   # https://github.com/KyoriPowered/adventure-platform-mod
 
+bstats = "3.1.0"            # https://github.com/Bastian/bstats-metrics
 minotaur = "2.+"            # https://github.com/modrinth/minotaur
 indra-git = "3.1.3"         # https://github.com/KyoriPowered/indra
+shadowjar = "8.3.5"            # https://github.com/GradleUp/shadow
 fix-javadoc = "1.19"        # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 
 # make these match versions Paper API uses
@@ -33,6 +35,7 @@ paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweigh
 fabric-loom = { id = "fabric-loom", version.ref = "fabricLoom" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 indra-git = { id = "net.kyori.indra.git", version.ref = "indra-git" }
+shadowjar = { id = "com.gradleup.shadow", version.ref = "shadowjar" }
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
 
 [libraries]
@@ -45,6 +48,8 @@ fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = 
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventureApi" }
 adventure-fabric = { group = "net.kyori", name = "adventure-platform-fabric", version.ref = "adventureFabric" }
 adventure-gson = { group = "net.kyori", name = "adventure-text-serializer-gson", version.ref = "adventureApi" }
+
+bstats = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bstats" }
 
 apache = { group = "org.apache.commons", name = "commons-lang3", version.ref = "apache" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
