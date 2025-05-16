@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.indra.git)
 }
 
-version = libs.versions.guithium.get()
-
 val mergedJar by configurations.creating<Configuration> {
     isCanBeResolved = true
     isCanBeConsumed = false
@@ -21,6 +19,8 @@ dependencies {
 allprojects {
     apply(plugin = "java-library")
 
+    version = rootProject.libs.versions.guithium.get()
+
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
@@ -32,28 +32,21 @@ allprojects {
 }
 
 subprojects {
-    project.version = rootProject.version
-
     base {
         archivesName = "${rootProject.name}-${project.name}"
     }
 
-    repositories {
-        mavenCentral()
-    }
-
     dependencies {
         if (name != "api") {
+            // api can't include itself
             compileOnly(project(":api"))
         }
 
-        compileOnly(rootProject.libs.adventure.api.get())
-        compileOnly(rootProject.libs.adventure.gson.get())
-
-        compileOnly(rootProject.libs.apache.get())
-        compileOnly(rootProject.libs.gson.get())
-        compileOnly(rootProject.libs.guava.get())
-        compileOnly(rootProject.libs.slf4j.get())
+        if (name != "paper") {
+            // paper already natively ship with adventure
+            compileOnly(rootProject.libs.adventure.api.get())
+            compileOnly(rootProject.libs.adventure.gson.get())
+        }
 
         testImplementation(rootProject.libs.junit.get())
         testImplementation(rootProject.libs.asm.get())
@@ -65,14 +58,11 @@ subprojects {
         testImplementation.get().extendsFrom(compileOnly.get())
     }
 
-    tasks {
-        test {
-            useJUnitPlatform()
-            testLogging {
-                // we want to see system.out from tests
-                showStandardStreams = true
-            }
-        }
+    tasks.test {
+        useJUnitPlatform()
+
+        // we want to see system.out from tests
+        testLogging.showStandardStreams = true
     }
 }
 

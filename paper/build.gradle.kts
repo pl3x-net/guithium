@@ -2,10 +2,6 @@ plugins {
     alias(libs.plugins.paperweight)
 }
 
-repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
-}
-
 dependencies {
     paperweight.paperDevBundle("${libs.versions.minecraft.get()}-R0.1-SNAPSHOT")
 }
