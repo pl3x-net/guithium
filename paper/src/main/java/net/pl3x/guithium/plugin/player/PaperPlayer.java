@@ -17,7 +17,7 @@ public class PaperPlayer implements WrappedPlayer {
     private Screen currentScreen;
     private int protocol = -1;
 
-    public PaperPlayer(@NotNull Player player) {
+    protected PaperPlayer(@NotNull Player player) {
         this.player = player;
         this.connection = new PaperConnection(this);
     }
