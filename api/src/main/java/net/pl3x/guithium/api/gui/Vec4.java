@@ -36,6 +36,42 @@ public record Vec4(float x, float y, float z, float w) implements JsonSerializab
         return new Vec4(x, y, z, w);
     }
 
+    /**
+     * Get the X value.
+     *
+     * @return The X value
+     */
+    public float getX() {
+        return x();
+    }
+
+    /**
+     * Get the Y value.
+     *
+     * @return The Y value
+     */
+    public float getY() {
+        return y();
+    }
+
+    /**
+     * Get the Z value.
+     *
+     * @return The Z value
+     */
+    public float getZ() {
+        return z();
+    }
+
+    /**
+     * Get the W value.
+     *
+     * @return The W value
+     */
+    public float getW() {
+        return w();
+    }
+
     @Override
     @NotNull
     public String toString() {
