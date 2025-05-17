@@ -22,6 +22,14 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "reposilite"
+            url = uri("https://repo.pl3x.net/${if (version.toString().contains("SNAPSHOT")) "snapshots" else "releases"}/")
+            credentials(PasswordCredentials::class)
+            authentication.create<BasicAuthentication>("basic")
+        }
+    }
     publications {
         create<MavenPublication>("mavenJava") {
             groupId = "${project.group}"

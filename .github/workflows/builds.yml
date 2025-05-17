@@ -31,8 +31,21 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION is $VERSION"
 
-      - name: Build
-        run: ./gradlew build --stacktrace --no-daemon
+      - name: Build Release
+        if: ${{ env.SNAPSHOT != 'true' }}
+        run: ./gradlew build publish modrinth --stacktrace --no-daemon
+        env:
+          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
+          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+
+      - name: Build Snapshot
+        if: ${{ env.SNAPSHOT == 'true' }}
+        run: ./gradlew build publish --stacktrace --no-daemon
+        env:
+          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
+          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
 
       - name: Upload Snapshot Artifact
         if: ${{ env.SNAPSHOT == 'true' }}
@@ -40,13 +53,6 @@ jobs:
         with:
           name: "Guithium-${{ env.VERSION }}"
           path: build/libs/*.jar
-
-      - name: Publish to Modrinth
-        if: ${{ env.SNAPSHOT != 'true' }}
-        run: ./gradlew modrinth --stacktrace --no-daemon
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
 
       - name: Deploy Javadoc
         if: ${{ env.SNAPSHOT != 'true' && success() }}
