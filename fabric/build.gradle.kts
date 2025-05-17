@@ -22,17 +22,21 @@ dependencies {
 }
 
 tasks.processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     filteringCharset = Charsets.UTF_8.name()
+
+    inputs.properties(
+        "version" to "${project.version}",
+        "minecraft" to libs.versions.minecraft.get(),
+        "fabricloader" to libs.versions.fabricLoader.get(),
+        "description" to "${project.description}",
+        "website" to "${ext["website"]}"
+    )
+
+    // work around IDEA-296490
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     with(copySpec {
         from("src/main/resources/fabric.mod.json") {
-            mapOf(
-                "version" to "${project.version}",
-                "minecraft" to libs.versions.minecraft.get(),
-                "fabricloader" to libs.versions.fabricLoader.get(),
-                "description" to "${project.description}",
-                "website" to "${ext["website"]}"
-            ).forEach { k, v -> filter { it.replace("\${$k}", v) } }
+            expand(inputs.properties)
         }
     })
 }
