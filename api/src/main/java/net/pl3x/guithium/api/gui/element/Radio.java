@@ -75,9 +75,12 @@ public class Radio extends LabeledRect<Radio> {
      * If null, no group will be used.
      *
      * @param group This radio button's group
+     * @return This radio button
      */
-    public void setGroup(@Nullable Key group) {
+    @NotNull
+    public Radio setGroup(@Nullable Key group) {
         this.group = group;
+        return this;
     }
 
     /**
@@ -102,9 +105,12 @@ public class Radio extends LabeledRect<Radio> {
      * If null, default <code>false</code> state will be used.
      *
      * @param selected Selected state
+     * @return This radio button
      */
-    public void setSelected(@Nullable Boolean selected) {
+    @NotNull
+    public Radio setSelected(@Nullable Boolean selected) {
         this.selected = selected;
+        return this;
     }
 
     /**
@@ -125,9 +131,12 @@ public class Radio extends LabeledRect<Radio> {
      * If null, text label will be shown.
      *
      * @param showLabel True to show text label
+     * @return This radio button
      */
-    public void setShowLabel(@Nullable Boolean showLabel) {
+    @NotNull
+    public Radio setShowLabel(@Nullable Boolean showLabel) {
         this.showLabel = showLabel;
+        return this;
     }
 
     @Override
