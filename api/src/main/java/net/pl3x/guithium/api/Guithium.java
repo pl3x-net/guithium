@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api;
 
+import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,14 @@ public interface Guithium {
      */
     @NotNull
     PlayerManager getPlayerManager();
+
+    /**
+     * Get the texture manager instance.
+     *
+     * @return Texture manager
+     */
+    @NotNull
+    TextureManager getTextureManager();
 
     /**
      * The Guithium instance provider.
