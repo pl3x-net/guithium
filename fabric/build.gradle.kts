@@ -27,9 +27,11 @@ tasks.processResources {
     with(copySpec {
         from("src/main/resources/fabric.mod.json") {
             mapOf(
-                "version" to "$version",
+                "version" to "${project.version}",
                 "minecraft" to libs.versions.minecraft.get(),
-                "fabricloader" to libs.versions.fabricLoader.get()
+                "fabricloader" to libs.versions.fabricLoader.get(),
+                "description" to "${project.description}",
+                "website" to "${ext["website"]}"
             ).forEach { k, v -> filter { it.replace("\${$k}", v) } }
         }
     })
