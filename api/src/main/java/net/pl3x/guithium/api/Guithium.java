@@ -1,7 +1,9 @@
 package net.pl3x.guithium.api;
 
+import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.player.PlayerManager;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,16 @@ public interface Guithium {
     int PROTOCOL = 1;
 
     /**
+     * bStats ID number for Guithium.
+     */
+    int BSTATS_ID = 25813;
+
+    /**
      * Guithium's internal logger.
      * <p>
      * <u>For internal use</u>. Please use your own logger.
      */
-    Logger logger = LoggerFactory.getLogger(Guithium.MOD_ID);
+    Logger logger = LoggerFactory.getLogger(StringUtils.capitalize(Guithium.MOD_ID));
 
     /**
      * Get the Guithium API instance.
@@ -54,6 +61,14 @@ public interface Guithium {
      */
     @NotNull
     PlayerManager getPlayerManager();
+
+    /**
+     * Get the texture manager instance.
+     *
+     * @return Texture manager
+     */
+    @NotNull
+    TextureManager getTextureManager();
 
     /**
      * The Guithium instance provider.

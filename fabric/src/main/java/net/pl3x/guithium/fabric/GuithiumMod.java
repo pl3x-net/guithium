@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.player.PlayerManager;
 import net.pl3x.guithium.fabric.network.FabricNetworkHandler;
@@ -12,10 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
     private final FabricNetworkHandler networkHandler;
+    private final TextureManager textureManager;
     private final Scheduler scheduler;
 
     public GuithiumMod() {
         this.networkHandler = new FabricNetworkHandler();
+        this.textureManager = new TextureManager();
         this.scheduler = new Scheduler();
 
         try {
@@ -53,6 +56,12 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
     @NotNull
     public PlayerManager getPlayerManager() {
         throw new UnsupportedOperationException("Not supported on client.");
+    }
+
+    @Override
+    @NotNull
+    public TextureManager getTextureManager() {
+        return this.textureManager;
     }
 
     @NotNull
