@@ -22,12 +22,14 @@ jobs:
           file: "gradle/libs.versions.toml"
           field: "versions.guithium"
 
-      - run: |
+      - name: Set Version Number
+        run: |
           VERSION=${{ steps.version.outputs.value }}
           if [ "$SNAPSHOT" == "true"  ]; then
             VERSION=$VERSION-SNAPSHOT-${{ github.run_number }}
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION is $VERSION"
 
       - name: Build
         run: ./gradlew build --stacktrace --no-daemon
