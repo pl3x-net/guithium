@@ -77,9 +77,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default empty {@link String} will be used.
      *
      * @param value Current input value
+     * @return This textbox
      */
-    public void setValue(@Nullable String value) {
+    @NotNull
+    public Textbox setValue(@Nullable String value) {
         this.value = value;
+        return this;
     }
 
     /**
@@ -100,9 +103,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, no suggestion will be used.
      *
      * @param suggestion Current suggestion
+     * @return This textbox
      */
-    public void setSuggestion(@Nullable Component suggestion) {
+    @NotNull
+    public Textbox setSuggestion(@Nullable Component suggestion) {
         this.suggestion = suggestion;
+        return this;
     }
 
     /**
@@ -123,9 +129,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param bordered True if bordered
+     * @return This textbox
      */
-    public void setBordered(@Nullable Boolean bordered) {
+    @NotNull
+    public Textbox setBordered(@Nullable Boolean bordered) {
         this.bordered = bordered;
+        return this;
     }
 
     /**
@@ -146,9 +155,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param canLoseFocus True to gain and lose focus
+     * @return This textbox
      */
-    public void setCanLoseFocus(@Nullable Boolean canLoseFocus) {
+    @NotNull
+    public Textbox setCanLoseFocus(@Nullable Boolean canLoseFocus) {
         this.canLoseFocus = canLoseFocus;
+        return this;
     }
 
     /**
@@ -169,9 +181,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default maximum length of <code>32</code> will be used.
      *
      * @param maxLength Max length of input value
+     * @return This textbox
      */
-    public void setMaxLength(@Nullable Integer maxLength) {
+    @NotNull
+    public Textbox setMaxLength(@Nullable Integer maxLength) {
         this.maxLength = maxLength;
+        return this;
     }
 
     /**
@@ -192,9 +207,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param editable True to let player edit input value
+     * @return This textbox
      */
-    public void setEditable(@Nullable Boolean editable) {
+    @NotNull
+    public Textbox setEditable(@Nullable Boolean editable) {
         this.editable = editable;
+        return this;
     }
 
     /**
@@ -215,9 +233,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default text color of <code>0xFFFFFFFF</code> will be used.
      *
      * @param color Text color
+     * @return This textbox
      */
-    public void setTextColor(@Nullable Integer color) {
+    @NotNull
+    public Textbox setTextColor(@Nullable Integer color) {
         this.textColor = color;
+        return this;
     }
 
     /**
@@ -238,9 +259,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default text color of <code>0xFF707070</code> will be used.
      *
      * @param color Text color
+     * @return This textbox
      */
-    public void setUneditableTextColor(@Nullable Integer color) {
+    @NotNull
+    public Textbox setUneditableTextColor(@Nullable Integer color) {
         this.uneditableTextColor = color;
+        return this;
     }
 
     @Override

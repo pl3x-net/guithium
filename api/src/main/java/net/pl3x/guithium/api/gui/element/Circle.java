@@ -72,9 +72,12 @@ public class Circle extends AbstractElement<Circle> {
      * If null, will default to half screen's width or height, whichever is smaller.
      *
      * @param radius The radius
+     * @return This circle
      */
-    public void setRadius(@Nullable Float radius) {
+    @NotNull
+    public Circle setRadius(@Nullable Float radius) {
         this.radius = radius;
+        return this;
     }
 
     /**
@@ -95,9 +98,12 @@ public class Circle extends AbstractElement<Circle> {
      * If null, default of <code>{@link #getRadius()}</code> will be used.
      *
      * @param resolution Circle resolution
+     * @return This circle
      */
-    public void setResolution(@Nullable Integer resolution) {
+    @NotNull
+    public Circle setResolution(@Nullable Integer resolution) {
         this.resolution = resolution;
+        return this;
     }
 
     /**
@@ -113,9 +119,12 @@ public class Circle extends AbstractElement<Circle> {
      * Set the inner color of this circle.
      *
      * @param color Inner color
+     * @return This circle
      */
-    public void setInnerColor(int color) {
+    @NotNull
+    public Circle setInnerColor(int color) {
         this.innerColor = color;
+        return this;
     }
 
     /**
@@ -131,9 +140,12 @@ public class Circle extends AbstractElement<Circle> {
      * Set the outer color of this circle.
      *
      * @param color Outer color
+     * @return This circle
      */
-    public void setOuterColor(int color) {
+    @NotNull
+    public Circle setOuterColor(int color) {
         this.outerColor = color;
+        return this;
     }
 
     /**
@@ -142,10 +154,13 @@ public class Circle extends AbstractElement<Circle> {
      * Both the inner and outer colors will be set to the specified color.
      *
      * @param color Circle color
+     * @return This circle
      */
-    public void setColor(int color) {
+    @NotNull
+    public Circle setColor(int color) {
         setInnerColor(color);
         setOuterColor(color);
+        return this;
     }
 
     @Override
