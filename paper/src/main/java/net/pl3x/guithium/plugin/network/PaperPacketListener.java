@@ -2,6 +2,7 @@ package net.pl3x.guithium.plugin.network;
 
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.network.PacketListener;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.plugin.player.PaperPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -24,5 +25,11 @@ public class PaperPacketListener implements PacketListener {
 
         // reply to the player with server's protocol
         this.player.getConnection().send(new HelloPacket(), true);
+    }
+
+    @Override
+    public void handleElement(@NotNull ElementPacket packet) {
+        // client does not send this packet to the server
+        throw new UnsupportedOperationException("Not supported.");
     }
 }

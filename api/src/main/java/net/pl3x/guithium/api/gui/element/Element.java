@@ -3,17 +3,20 @@ package net.pl3x.guithium.api.gui.element;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import java.util.Locale;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an element.
  */
-public interface Element {
+public interface Element extends JsonSerializable {
     /**
      * Get identifying key.
      *
@@ -162,6 +165,32 @@ public interface Element {
      */
     @NotNull
     Element setScale(@Nullable Float scale);
+
+    /**
+     * Send this element to a player.
+     * <p>
+     * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
+     *
+     * @param player Player to send to
+     */
+    default void send(@NotNull WrappedPlayer player) {
+        player.getConnection().send(new ElementPacket(this));
+    }
+
+    /**
+     * Send this element to a player.
+     * <p>
+     * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
+     *
+     * @param player Player to send to
+     * @param <T>    Native player type
+     */
+    default <T> void send(@NotNull T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            send(wrapped);
+        }
+    }
 
     /**
      * Represents an element type.

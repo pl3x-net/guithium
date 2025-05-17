@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.Packet;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,7 @@ public abstract class NetworkHandler {
      * Create a new network handler instance
      */
     public NetworkHandler() {
+        registerListener(ElementPacket.KEY, ElementPacket::new);
         registerListener(HelloPacket.KEY, HelloPacket::new);
     }
 
