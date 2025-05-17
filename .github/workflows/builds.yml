@@ -15,6 +15,13 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Restore gradle.properties
+        run: |
+          mkdir -p ~/.gradle/
+          echo "${GRADLE_PROPERTIES}" > ~/.gradle/gradle.properties
+        env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+
       - name: Read Version Catalog
         uses: SebRollen/toml-action@v1.2.0
         id: version
@@ -35,17 +42,12 @@ jobs:
         if: ${{ env.SNAPSHOT != 'true' }}
         run: ./gradlew build publish modrinth --stacktrace --no-daemon
         env:
-          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
-          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
 
       - name: Build Snapshot
         if: ${{ env.SNAPSHOT == 'true' }}
         run: ./gradlew build publish --stacktrace --no-daemon
-        env:
-          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
-          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
 
       - name: Upload Snapshot Artifact
         if: ${{ env.SNAPSHOT == 'true' }}
