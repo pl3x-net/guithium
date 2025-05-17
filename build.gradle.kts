@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    `maven-publish`
     alias(libs.plugins.minotaur)
     alias(libs.plugins.indra.git)
 }
@@ -8,6 +7,7 @@ plugins {
 allprojects {
     apply(plugin = "java-library")
 
+    group = "net.pl3x.guithium"
     version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
 
     java {

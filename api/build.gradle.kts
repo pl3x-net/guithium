@@ -1,4 +1,5 @@
 plugins {
+    `maven-publish`
     alias(libs.plugins.fix.javadoc)
 }
 
@@ -18,6 +19,17 @@ dependencies {
     compileOnly(rootProject.libs.guava.get())
     compileOnly(rootProject.libs.annotations.get())
     compileOnly(rootProject.libs.slf4j.get())
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "${project.group}"
+            artifactId = "${rootProject.name}-${project.name}"
+            version = "${project.version}"
+            from(components["java"])
+        }
+    }
 }
 
 tasks {
