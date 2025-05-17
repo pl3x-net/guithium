@@ -13,13 +13,6 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.Strictness;
 import java.lang.reflect.Type;
-import net.kyori.adventure.text.Component;
-import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.gui.element.Rect;
-import net.pl3x.guithium.api.gui.element.Text;
-import net.pl3x.guithium.api.json.adapter.ComponentAdapter;
-import net.pl3x.guithium.api.json.adapter.ElementAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,11 +29,7 @@ public interface JsonSerializable {
             .setFormattingStyle(FormattingStyle.COMPACT)
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
-            .registerTypeAdapter(Component.class, new ComponentAdapter())
-            .registerTypeAdapter(Element.class, new ElementAdapter())
-            .registerTypeAdapter(Screen.class, new Adapter<Screen>())
-            .registerTypeAdapter(Rect.class, new Adapter<Rect>())
-            .registerTypeAdapter(Text.class, new Adapter<Text>())
+            .registerTypeAdapter(JsonSerializable.class, new Adapter<>())
             .create();
 
     /**
