@@ -1,29 +1,57 @@
-name: Build Release
-on:
-  push:
-    branches:
-      - master
+name: Build
+on: [ push ]
+
+env:
+  SNAPSHOT: ${{ github.ref_name != 'master' && github.ref_name != 'main' }}
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+
       - name: Read Version Catalog
         uses: SebRollen/toml-action@v1.2.0
-        id: toml_guithium_version
+        id: version
         with:
           file: "gradle/libs.versions.toml"
           field: "versions.guithium"
+
+      - run: |
+          VERSION=${{ steps.version.outputs.value }}
+          if [ "$SNAPSHOT" == "true"  ]; then
+            VERSION=$VERSION-SNAPSHOT-${{ github.run_number }}
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Build
-        run: ./gradlew build --stacktrace
+        run: ./gradlew build --stacktrace --no-daemon
+
+      - name: Upload Snapshot Artifact
+        if: ${{ SNAPSHOT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: guithium-snapshot
+          path: build/libs/*.jar
+
+      - name: Publish to Modrinth
+        if: ${{ !SNAPSHOT }}
+        run: ./gradlew modrinth --stacktrace --no-daemon
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+
       - name: Deploy Javadoc
+        if: ${{ !SNAPSHOT && success() }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -31,29 +59,26 @@ jobs:
           clean: true
           folder: api/build/docs/javadoc
           target-folder: ./
-      - name: Publish to Modrinth
-        run: ./gradlew modrinth --stacktrace
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+
       - name: Notify Discord
+        if: ${{ !SNAPSHOT && success() }}
         uses: sarisia/actions-status-discord@v1
-        if: ${{ success() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
           nodetail: true
           title: New build of Guithium is ready!
           description: |
-            Version ${{ steps.toml_guithium_version.outputs.value }} build ${{ github.run_number }}
+            Version ${{ env.VERSION }}
             Click [here](https://modrinth.com/mod/guithium) to download!
+
       - name: Notify Discord
+        if: ${{ !SNAPSHOT && failure() }}
         uses: sarisia/actions-status-discord@v1
-        if: ${{ failure() }}
         with:
           webhook: ${{ secrets.DISCORD_BUILDS_WEBHOOK }}
           nodetail: true
           title: Build Failure!
           color: 0xff0000
           description: |
-            Version ${{ steps.toml_guithium_version.outputs.value }} build ${{ github.run_number }}
+            Version ${{ env.VERSION }}
             Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run!
