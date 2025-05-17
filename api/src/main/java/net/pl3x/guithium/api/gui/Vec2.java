@@ -32,6 +32,24 @@ public record Vec2(float x, float y) implements JsonSerializable {
         return new Vec2(x, y);
     }
 
+    /**
+     * Get the X value.
+     *
+     * @return The X value
+     */
+    public float getX() {
+        return x();
+    }
+
+    /**
+     * Get the Y value.
+     *
+     * @return The Y value
+     */
+    public float getY() {
+        return y();
+    }
+
     @Override
     @NotNull
     public String toString() {
