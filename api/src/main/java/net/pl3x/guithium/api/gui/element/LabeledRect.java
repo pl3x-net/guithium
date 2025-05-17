@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> Type of labeled rectangle element
  */
-public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<LabeledRect<T>> {
+public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<T> {
     private Component label;
     private Component tooltip;
 

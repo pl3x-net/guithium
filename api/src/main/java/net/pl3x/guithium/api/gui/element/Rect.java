@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> Type of rectangle element
  */
-public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
+public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
     private Vec2 size;
 
     /**
