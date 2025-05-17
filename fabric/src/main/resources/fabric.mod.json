@@ -3,13 +3,13 @@
   "id" : "guithium",
   "version" : "${version}",
   "name" : "Guithium",
-  "description" : "Allows paper servers to add GUIs to your fabric client",
+  "description" : "${description}",
   "authors" : [
     "BillyGalbreath"
   ],
   "contact" : {
-    "homepage" : "https://github.com/BillyGalbreath/Guithium",
-    "sources" : "https://github.com/BillyGalbreath/Guithium",
+    "homepage" : "${website}",
+    "sources" : "${website}",
     "issues" : "https://github.com/BillyGalbreath/Guithium/issues"
   },
   "license" : "MIT",
