@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.network;
 
+import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +11,14 @@ public interface PacketListener {
     /**
      * Handle the hello packet.
      *
-     * @param packet Hello packet
+     * @param packet Hello packet to handle
      */
     void handleHello(@NotNull HelloPacket packet);
+
+    /**
+     * Handle update element packet.
+     *
+     * @param packet Element packet to handle
+     */
+    void handleElement(@NotNull ElementPacket packet);
 }
