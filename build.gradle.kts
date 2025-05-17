@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    `maven-publish`
     alias(libs.plugins.minotaur)
     alias(libs.plugins.indra.git)
 }
