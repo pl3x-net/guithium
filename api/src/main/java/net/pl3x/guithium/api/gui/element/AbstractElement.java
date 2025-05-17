@@ -40,9 +40,9 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     }
 
     @Override
-    @Nullable
+    @NotNull
     public Vec2 getPos() {
-        return this.pos;
+        return this.pos == null ? Vec2.ZERO : this.pos;
     }
 
     @Override
@@ -55,14 +55,14 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     @Override
     @NotNull
     public T setPos(@Nullable Vec2 pos) {
-        this.pos = pos;
+        this.pos = pos == Vec2.ZERO ? null : pos;
         return Unsafe.cast(this);
     }
 
     @Override
-    @Nullable
+    @NotNull
     public Vec2 getAnchor() {
-        return this.anchor;
+        return this.anchor == null ? Vec2.ZERO : this.anchor;
     }
 
     @Override
@@ -75,14 +75,14 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     @Override
     @NotNull
     public T setAnchor(@Nullable Vec2 anchor) {
-        this.anchor = anchor;
+        this.anchor = anchor == Vec2.ZERO ? null : anchor;
         return Unsafe.cast(this);
     }
 
     @Override
-    @Nullable
+    @NotNull
     public Vec2 getOffset() {
-        return this.offset;
+        return this.offset == null ? Vec2.ZERO : this.offset;
     }
 
     @Override
@@ -95,7 +95,7 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     @Override
     @NotNull
     public T setOffset(@Nullable Vec2 offset) {
-        this.offset = offset;
+        this.offset = offset == Vec2.ZERO ? null : offset;
         return Unsafe.cast(this);
     }
 

@@ -32,18 +32,14 @@ public interface Element {
 
     /**
      * Get this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @return Position from anchor
      */
-    @Nullable
+    @NotNull
     Vec2 getPos();
 
     /**
      * Set this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @param x X (horizontal) position
      * @param y Y (vertical) position
@@ -54,8 +50,6 @@ public interface Element {
 
     /**
      * Set this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @param pos Position
      * @return This element
@@ -70,7 +64,7 @@ public interface Element {
      *
      * @return Anchor position
      */
-    @Nullable
+    @NotNull
     Vec2 getAnchor();
 
     /**
@@ -103,7 +97,7 @@ public interface Element {
      *
      * @return Position offset
      */
-    @Nullable
+    @NotNull
     Vec2 getOffset();
 
     /**
@@ -131,8 +125,6 @@ public interface Element {
 
     /**
      * Get this element's rotation in degrees.
-     * <p>
-     * If null, default rotation <code>0.0</code> will be used.
      *
      * @return Degrees of rotation
      */
