@@ -7,7 +7,7 @@ plugins {
 allprojects {
     apply(plugin = "java-library")
 
-    version = rootProject.libs.versions.guithium.get()
+    version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
 
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
