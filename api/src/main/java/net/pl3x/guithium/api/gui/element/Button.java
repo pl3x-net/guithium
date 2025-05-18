@@ -72,9 +72,12 @@ public class Button extends LabeledRect<Button> {
      * If null, no click action will be used.
      *
      * @param onClick OnClick action
+     * @return This button
      */
-    public void onClick(@Nullable OnClick onClick) {
+    @NotNull
+    public Button onClick(@Nullable OnClick onClick) {
         this.onClick = onClick;
+        return this;
     }
 
     @Override

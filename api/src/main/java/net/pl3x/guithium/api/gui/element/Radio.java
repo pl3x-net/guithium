@@ -162,9 +162,12 @@ public class Radio extends LabeledRect<Radio> {
      * If null, no toggle action will be used.
      *
      * @param onToggled Toggled action
+     * @return This radio button
      */
-    public void onToggled(@Nullable OnToggled onToggled) {
+    @NotNull
+    public Radio onToggled(@Nullable OnToggled onToggled) {
         this.onToggled = onToggled;
+        return this;
     }
 
     @Override
