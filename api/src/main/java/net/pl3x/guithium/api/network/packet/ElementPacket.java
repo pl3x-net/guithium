@@ -56,7 +56,7 @@ public class ElementPacket extends Packet {
     @Override
     public @NotNull ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
-        out.writeUTF(GSON.toJson(getElement()));
+        out.writeUTF(getElement().toJson());
         return out;
     }
 }
