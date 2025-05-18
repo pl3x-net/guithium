@@ -56,16 +56,6 @@ jobs:
           name: "Guithium-${{ env.VERSION }}"
           path: build/libs/*.jar
 
-      - name: Deploy Javadoc
-        if: ${{ env.SNAPSHOT != 'true' && success() }}
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: javadoc
-          clean: true
-          folder: api/build/docs/javadoc
-          target-folder: ./
-
       - name: Notify Discord
         if: ${{ env.SNAPSHOT != 'true' && success() }}
         uses: sarisia/actions-status-discord@v1
