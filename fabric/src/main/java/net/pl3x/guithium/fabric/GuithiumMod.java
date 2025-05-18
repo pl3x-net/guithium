@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.action.ActionRegistry;
 import net.pl3x.guithium.api.gui.texture.TextureManager;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.player.PlayerManager;
@@ -12,15 +13,11 @@ import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
-    private final FabricNetworkHandler networkHandler;
-    private final TextureManager textureManager;
-    private final Scheduler scheduler;
+    private final FabricNetworkHandler networkHandler = new FabricNetworkHandler();
+    private final TextureManager textureManager = new TextureManager();
+    private final Scheduler scheduler = new Scheduler();
 
     public GuithiumMod() {
-        this.networkHandler = new FabricNetworkHandler();
-        this.textureManager = new TextureManager();
-        this.scheduler = new Scheduler();
-
         try {
             Field api = Guithium.Provider.class.getDeclaredField("api");
             api.setAccessible(true);
@@ -44,6 +41,12 @@ public class GuithiumMod implements ClientModInitializer, Guithium {
                 getScheduler().addTask(() -> getNetworkHandler().getConnection().send(new HelloPacket()));
             }
         });
+    }
+
+    @Override
+    @NotNull
+    public ActionRegistry getActionRegistry() {
+        throw new UnsupportedOperationException("Not supported on client.");
     }
 
     @Override
