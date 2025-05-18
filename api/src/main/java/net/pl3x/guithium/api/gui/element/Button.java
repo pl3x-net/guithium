@@ -1,6 +1,9 @@
 package net.pl3x.guithium.api.gui.element;
 
+import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,5 +60,20 @@ public class Button extends LabeledRect<Button> {
     public int hashCode() {
         // pacifies codefactor.io
         return super.hashCode();
+    }
+
+    /**
+     * Executable functional interface to fire when a button is clicked.
+     */
+    @FunctionalInterface
+    public interface OnClick extends TriConsumer<Screen, Button, WrappedPlayer> {
+        /**
+         * Called when a button is clicked.
+         *
+         * @param screen Active screen where button was clicked
+         * @param button Button that was clicked
+         * @param player Player that clicked the button
+         */
+        void accept(@NotNull Screen screen, @NotNull Button button, @NotNull WrappedPlayer player);
     }
 }
