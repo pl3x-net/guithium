@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api.gui.element;
 
 import java.util.Objects;
+import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -154,5 +157,21 @@ public class Radio extends LabeledRect<Radio> {
     public int hashCode() {
         // pacifies codefactor.io
         return super.hashCode();
+    }
+
+    /**
+     * Executable functional interface to fire when a radio button is toggled.
+     */
+    @FunctionalInterface
+    public interface OnToggled extends QuadConsumer<Screen, Radio, WrappedPlayer, Boolean> {
+        /**
+         * Called when a radio button is toggled.
+         *
+         * @param screen   Active screen where radio button was toggled
+         * @param radio    Radio button that was toggled
+         * @param player   Player that toggled the radio button
+         * @param selected New selected state of the radio button
+         */
+        void accept(@NotNull Screen screen, @NotNull Radio radio, @NotNull WrappedPlayer player, @NotNull Boolean selected);
     }
 }

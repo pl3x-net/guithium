@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api.gui.element;
 
 import java.util.Objects;
+import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -176,5 +179,21 @@ public class Slider extends LabeledRect<Slider> {
     public int hashCode() {
         // pacifies codefactor.io
         return super.hashCode();
+    }
+
+    /**
+     * Executable functional interface to fire when a slider is changed.
+     */
+    @FunctionalInterface
+    public interface OnChange extends QuadConsumer<Screen, Slider, WrappedPlayer, Double> {
+        /**
+         * Called when a slider is changed.
+         *
+         * @param screen Active screen where slider was changed
+         * @param slider Slider that was changed
+         * @param player Player that changed the slider
+         * @param value  New value of the slider
+         */
+        void accept(@NotNull Screen screen, @NotNull Slider slider, @NotNull WrappedPlayer player, @NotNull Double value);
     }
 }

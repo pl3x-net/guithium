@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api.gui.element;
 
 import java.util.Objects;
+import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -118,5 +121,21 @@ public class Checkbox extends LabeledRect<Checkbox> {
     public int hashCode() {
         // pacifies codefactor.io
         return super.hashCode();
+    }
+
+    /**
+     * Executable functional interface to fire when a checkbox is toggled.
+     */
+    @FunctionalInterface
+    public interface OnToggled extends QuadConsumer<Screen, Checkbox, WrappedPlayer, Boolean> {
+        /**
+         * Called when a checkbox is toggled.
+         *
+         * @param screen   Active screen where checkbox was toggled
+         * @param checkbox Checkbox that was toggled
+         * @param player   Player that toggled the checkbox
+         * @param selected New selected state of the checkbox
+         */
+        void accept(@NotNull Screen screen, @NotNull Checkbox checkbox, @NotNull WrappedPlayer player, @NotNull Boolean selected);
     }
 }
