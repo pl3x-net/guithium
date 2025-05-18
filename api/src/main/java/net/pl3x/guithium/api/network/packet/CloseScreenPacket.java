@@ -18,7 +18,7 @@ public class CloseScreenPacket extends Packet {
     private final Key screenKey;
 
     /**
-     * Creates a new close screen packet.
+     * Create a new close screen packet.
      *
      * @param screenKey Unique identifying key for the screen to close
      */
@@ -28,7 +28,7 @@ public class CloseScreenPacket extends Packet {
     }
 
     /**
-     * Creates a new close screen packet.
+     * Create a new close screen packet.
      *
      * @param in Input byte array
      */
