@@ -15,6 +15,8 @@ public class Radio extends LabeledRect<Radio> {
     private Key group;
     private Boolean selected;
     private Boolean showLabel;
+    private OnToggled onToggled = (screen, radio, player, selected) -> {
+    };
 
     /**
      * Create a new radio box element.
@@ -140,6 +142,29 @@ public class Radio extends LabeledRect<Radio> {
     public Radio setShowLabel(@Nullable Boolean showLabel) {
         this.showLabel = showLabel;
         return this;
+    }
+
+    /**
+     * Get the action to execute when the radio button is toggled.
+     * <p>
+     * If null, no toggle action will be used.
+     *
+     * @return Toggled action
+     */
+    @Nullable
+    public OnToggled onToggled() {
+        return this.onToggled;
+    }
+
+    /**
+     * Set the action to execute when the radio button is toggled.
+     * <p>
+     * If null, no toggle action will be used.
+     *
+     * @param onToggled Toggled action
+     */
+    public void onToggled(@Nullable OnToggled onToggled) {
+        this.onToggled = onToggled;
     }
 
     @Override

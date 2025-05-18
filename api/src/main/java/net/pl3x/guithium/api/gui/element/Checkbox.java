@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 public class Checkbox extends LabeledRect<Checkbox> {
     private Boolean selected;
     private Boolean showLabel;
+    private OnToggled onToggled = (screen, checkbox, player, selected) -> {
+    };
 
     /**
      * Create a new checkbox element.
@@ -105,6 +107,29 @@ public class Checkbox extends LabeledRect<Checkbox> {
     public Checkbox setShowLabel(@Nullable Boolean showLabel) {
         this.showLabel = showLabel;
         return this;
+    }
+
+    /**
+     * Get the action to execute when the checkbox is toggled.
+     * <p>
+     * If null, no toggle action will be used.
+     *
+     * @return Toggled action
+     */
+    @Nullable
+    public OnToggled onToggled() {
+        return this.onToggled;
+    }
+
+    /**
+     * Set the action to execute when the checkbox is toggled.
+     * <p>
+     * If null, no toggle action will be used.
+     *
+     * @param onToggled Toggled action
+     */
+    public void onToggled(@Nullable OnToggled onToggled) {
+        this.onToggled = onToggled;
     }
 
     @Override
