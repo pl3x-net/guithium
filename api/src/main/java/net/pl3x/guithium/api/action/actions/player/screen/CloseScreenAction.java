@@ -24,7 +24,8 @@ public class CloseScreenAction extends ScreenAction {
     }
 
     @Override
-    public @NotNull List<RegisteredHandler> getHandlers() {
+    @NotNull
+    public List<RegisteredHandler> getHandlers() {
         return handlers;
     }
 }

@@ -54,7 +54,8 @@ public class ElementPacket extends Packet {
     }
 
     @Override
-    public @NotNull ByteArrayDataOutput write() {
+    @NotNull
+    public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
         out.writeUTF(getElement().toJson());
         return out;
