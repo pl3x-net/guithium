@@ -62,13 +62,13 @@ Repository (Maven)
 
 <project>
     <repository>
-        <id>modrinth-repo</id>
-        <url>https://api.modrinth.com/maven/</url>
+        <id>pl3x-repo</id>
+        <url>https://repo.pl3x.net/public/</url>
     </repository>
     <dependency>
-        <groupId>maven.modrinth</groupId>
-        <artifactId>guithium</artifactId>
-        <version>0.0.1</version>
+        <groupId>net.pl3x.guithium</groupId>
+        <artifactId>guithium-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
 </project>
@@ -78,14 +78,11 @@ Repository (Gradle)
 
 ```groovy
 repositories {
-    exclusiveContent {
-        forRepository { maven { url = "https://api.modrinth.com/maven" } }
-        filter { includeGroup "maven.modrinth" }
-    }
+    maven { url = 'https://repo.pl3x.net/public/' }
 }
 
 dependencies {
-    compileOnly 'maven.modrinth:guithium:0.0.1'
+    compileOnly 'net.pl3x.guithium:guithium-api:0.0.1-SNAPSHOT'
 }
 ```
 
