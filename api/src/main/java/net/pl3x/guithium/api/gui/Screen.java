@@ -228,10 +228,7 @@ public class Screen extends Keyed {
      * @param <T>    Native player type
      */
     public <T> void open(@NotNull T player) {
-        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
-        if (wrapped != null) {
-            open(wrapped);
-        }
+        open(Guithium.api().getPlayerManager().get(player));
     }
 
     /**
@@ -257,10 +254,7 @@ public class Screen extends Keyed {
      * @param <T>    Native player type
      */
     public <T> void close(@NotNull T player) {
-        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
-        if (wrapped != null) {
-            close(wrapped);
-        }
+        close(Guithium.api().getPlayerManager().get(player));
     }
 
     @Override
