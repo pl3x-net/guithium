@@ -70,7 +70,8 @@ public class CheckboxToggledAction extends ElementAction implements Cancellable 
     }
 
     @Override
-    public @NotNull List<RegisteredHandler> getHandlers() {
+    @NotNull
+    public List<RegisteredHandler> getHandlers() {
         return handlers;
     }
 }
