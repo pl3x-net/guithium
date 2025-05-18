@@ -11,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
  * Represents a button element.
  */
 public class Button extends LabeledRect<Button> {
+    private OnClick onClick = (screen, button, player) -> {
+    };
+
     /**
      * Create a new button element.
      *
@@ -49,6 +52,29 @@ public class Button extends LabeledRect<Button> {
     @NotNull
     public static Button of(@NotNull Key key) {
         return new Button(key);
+    }
+
+    /**
+     * Get the action to execute when the button is clicked.
+     * <p>
+     * If null, no click action will be used.
+     *
+     * @return OnClick action
+     */
+    @Nullable
+    public OnClick onClick() {
+        return this.onClick;
+    }
+
+    /**
+     * Set the action to execute when the button is clicked.
+     * <p>
+     * If null, no click action will be used.
+     *
+     * @param onClick OnClick action
+     */
+    public void onClick(@Nullable OnClick onClick) {
+        this.onClick = onClick;
     }
 
     @Override

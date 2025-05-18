@@ -16,6 +16,8 @@ public class Slider extends LabeledRect<Slider> {
     private Double min;
     private Double max;
     private String decimal;
+    private OnChange onChange = (screen, slider, player, value) -> {
+    };
 
     /**
      * Create a new slider element.
@@ -161,6 +163,29 @@ public class Slider extends LabeledRect<Slider> {
     public Slider setDecimalFormat(@Nullable String decimal) {
         this.decimal = decimal;
         return this;
+    }
+
+    /**
+     * Get the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
+     *
+     * @return OnClick action
+     */
+    @Nullable
+    public OnChange onChange() {
+        return this.onChange;
+    }
+
+    /**
+     * Set the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
+     *
+     * @param onChange OnChange action
+     */
+    public void onClick(@Nullable OnChange onChange) {
+        this.onChange = onChange;
     }
 
     @Override
