@@ -203,7 +203,12 @@ public class Image extends Rect<Image> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getTexture(),
+                getUV(),
+                getVertexColor(),
+                getTileModifier()
+        );
     }
 }

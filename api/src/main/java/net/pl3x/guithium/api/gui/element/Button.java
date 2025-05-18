@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.gui.element;
 
+import java.util.Objects;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.player.WrappedPlayer;
@@ -82,13 +83,16 @@ public class Button extends LabeledRect<Button> {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Button other = (Button) obj;
+        return Objects.equals(onClick(), other.onClick());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), onClick());
     }
 
     /**

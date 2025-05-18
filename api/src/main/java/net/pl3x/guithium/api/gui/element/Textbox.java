@@ -285,7 +285,16 @@ public class Textbox extends Rect<Textbox> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getValue(),
+                getSuggestion(),
+                isBordered(),
+                canLoseFocus(),
+                getMaxLength(),
+                isEditable(),
+                getTextColor(),
+                getUneditableTextColor()
+        );
     }
 }

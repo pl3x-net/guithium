@@ -178,13 +178,19 @@ public class Radio extends LabeledRect<Radio> {
         Radio other = (Radio) obj;
         return Objects.equals(getGroup(), other.getGroup())
                 && Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(isShowLabel(), other.isShowLabel());
+                && Objects.equals(isShowLabel(), other.isShowLabel())
+                && Objects.equals(onToggled(), other.onToggled());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getGroup(),
+                isSelected(),
+                isShowLabel(),
+                onToggled()
+        );
     }
 
     /**

@@ -142,13 +142,18 @@ public class Checkbox extends LabeledRect<Checkbox> {
         }
         Checkbox other = (Checkbox) obj;
         return Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(isShowLabel(), other.isShowLabel());
+                && Objects.equals(isShowLabel(), other.isShowLabel())
+                && Objects.equals(onToggled(), other.onToggled());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                isSelected(),
+                isShowLabel(),
+                onToggled()
+        );
     }
 
     /**

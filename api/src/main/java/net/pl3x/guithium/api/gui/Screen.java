@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.key.Key;
@@ -268,13 +269,16 @@ public class Screen extends Keyed {
             return false;
         }
         Screen other = (Screen) obj;
-        return super.equals(obj)
+        return Objects.equals(isHud(), other.isHud())
                 && getElements().equals(other.getElements());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                isHud(),
+                getElements()
+        );
     }
 }

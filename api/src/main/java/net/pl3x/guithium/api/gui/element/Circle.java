@@ -177,7 +177,12 @@ public class Circle extends AbstractElement<Circle> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getRadius(),
+                getResolution(),
+                getInnerColor(),
+                getOuterColor()
+        );
     }
 }

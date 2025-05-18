@@ -291,7 +291,14 @@ public class Line extends AbstractElement<Line> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getEndPos(),
+                getEndAnchor(),
+                getEndOffset(),
+                getWidth(),
+                getStartColor(),
+                getEndColor()
+        );
     }
 }

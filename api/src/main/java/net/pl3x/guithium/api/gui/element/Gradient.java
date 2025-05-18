@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui.element;
 
 import java.util.Arrays;
+import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
@@ -230,7 +231,9 @@ public class Gradient extends Rect<Gradient> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                Arrays.hashCode(getColors())
+        );
     }
 }

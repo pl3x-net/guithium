@@ -70,7 +70,9 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getSize()
+        );
     }
 }
