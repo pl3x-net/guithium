@@ -68,7 +68,7 @@ public class TexturesPacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        //listener.handleTextures(this);
+        listener.handleTextures(this);
     }
 
     @Override

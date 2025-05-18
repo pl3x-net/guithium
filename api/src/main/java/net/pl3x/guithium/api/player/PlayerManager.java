@@ -28,7 +28,7 @@ public abstract class PlayerManager {
      * @throws IllegalArgumentException if player is not correct type for the environment
      */
     @NotNull
-    protected abstract <T> WrappedPlayer add(@NotNull T player);
+    public abstract <T> WrappedPlayer add(@NotNull T player);
 
     /**
      * Add wrapped player.
@@ -75,7 +75,7 @@ public abstract class PlayerManager {
      * @throws IllegalArgumentException if player is not correct type for the environment
      */
     @Nullable
-    protected abstract <T> WrappedPlayer remove(@NotNull T player);
+    public abstract <T> WrappedPlayer remove(@NotNull T player);
 
     /**
      * Remove player from manager.

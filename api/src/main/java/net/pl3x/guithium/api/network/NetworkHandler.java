@@ -6,9 +6,16 @@ import java.util.Map;
 import java.util.function.Function;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.Packet;
+import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
+import net.pl3x.guithium.api.network.packet.SliderChangePacket;
+import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,8 +34,15 @@ public abstract class NetworkHandler {
      * Create a new network handler instance
      */
     public NetworkHandler() {
+        registerListener(ButtonClickPacket.KEY, ButtonClickPacket::new);
+        registerListener(CheckboxTogglePacket.KEY, CheckboxTogglePacket::new);
+        registerListener(CloseScreenPacket.KEY, CloseScreenPacket::new);
         registerListener(ElementPacket.KEY, ElementPacket::new);
         registerListener(HelloPacket.KEY, HelloPacket::new);
+        registerListener(OpenScreenPacket.KEY, OpenScreenPacket::new);
+        registerListener(RadioTogglePacket.KEY, RadioTogglePacket::new);
+        registerListener(SliderChangePacket.KEY, SliderChangePacket::new);
+        registerListener(TexturesPacket.KEY, TexturesPacket::new);
     }
 
     /**

@@ -23,10 +23,10 @@ public class PaperPlayerManager extends PlayerManager {
             throw new IllegalArgumentException("player is not a bukkit player");
         }
         WrappedPlayer wrappedPlayer = get(bukkit.getUniqueId());
-        if (wrappedPlayer == null) {
-            return add(new PaperPlayer(bukkit));
+        if (wrappedPlayer != null) {
+            return wrappedPlayer;
         }
-        return wrappedPlayer;
+        return add(new PaperPlayer(bukkit));
     }
 
     @Override

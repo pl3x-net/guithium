@@ -78,7 +78,7 @@ public class CheckboxTogglePacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        //listener.handleCheckboxToggle(this);
+        listener.handleCheckboxToggle(this);
     }
 
     @Override

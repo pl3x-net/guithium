@@ -65,7 +65,7 @@ public class ButtonClickPacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        //listener.handleButtonClick(this);
+        listener.handleButtonClick(this);
     }
 
     @Override
