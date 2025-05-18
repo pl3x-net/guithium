@@ -24,26 +24,35 @@ public abstract class PlayerManager {
      *
      * @param player Player to add
      * @param <T>    Type of player to wrap
+     * @return the wrapped player that was added
+     * @throws IllegalArgumentException if player is not correct type for the environment
      */
-    protected abstract <T> void add(@NotNull T player);
+    @NotNull
+    protected abstract <T> WrappedPlayer add(@NotNull T player);
 
     /**
      * Add wrapped player.
      *
      * @param player Wrapped player to add
+     * @return the wrapped player that was added
      */
-    public void add(@NotNull WrappedPlayer player) {
+    @NotNull
+    public WrappedPlayer add(@NotNull WrappedPlayer player) {
         this.players.put(player.getUUID(), player);
+        return player;
     }
 
     /**
      * Get a wrapped player.
+     * <p>
+     * If player is not currently in the manager, they will be wrapped and added.
      *
      * @param player Player to get
      * @param <T>    Type of player
      * @return Wrapped player, or null if not managed
+     * @throws IllegalArgumentException if player is not correct type for the environment
      */
-    @Nullable
+    @NotNull
     public abstract <T> WrappedPlayer get(@NotNull T player);
 
     /**
@@ -62,15 +71,20 @@ public abstract class PlayerManager {
      *
      * @param player Player to remove
      * @param <T>    Type of wrapped player
+     * @return the wrapped player that was removed, or null if there was no player to remove
+     * @throws IllegalArgumentException if player is not correct type for the environment
      */
-    protected abstract <T> void remove(@NotNull T player);
+    @Nullable
+    protected abstract <T> WrappedPlayer remove(@NotNull T player);
 
     /**
      * Remove player from manager.
      *
      * @param uuid Unique identifier of player to remove
+     * @return the wrapped player that was removed, or null if there was no player to remove
      */
-    public void remove(@NotNull UUID uuid) {
-        this.players.remove(uuid);
+    @Nullable
+    public WrappedPlayer remove(@NotNull UUID uuid) {
+        return this.players.remove(uuid);
     }
 }

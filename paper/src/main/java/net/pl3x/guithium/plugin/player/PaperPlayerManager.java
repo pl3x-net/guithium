@@ -8,21 +8,33 @@ import org.jetbrains.annotations.Nullable;
 
 public class PaperPlayerManager extends PlayerManager {
     @Override
-    public <T> void add(@NotNull T player) {
-        if (player instanceof Player bukkit) {
-            add(new PaperPlayer(bukkit));
+    @NotNull
+    public <T> WrappedPlayer add(@NotNull T player) {
+        if (!(player instanceof Player bukkit)) {
+            throw new IllegalArgumentException("player is not a bukkit player");
         }
+        return add(new PaperPlayer(bukkit));
     }
 
     @Override
-    public @Nullable <T> WrappedPlayer get(@NotNull T player) {
-        return player instanceof Player bukkit ? get(bukkit.getUniqueId()) : null;
+    @NotNull
+    public <T> WrappedPlayer get(@NotNull T player) {
+        if (!(player instanceof Player bukkit)) {
+            throw new IllegalArgumentException("player is not a bukkit player");
+        }
+        WrappedPlayer wrappedPlayer = get(bukkit.getUniqueId());
+        if (wrappedPlayer == null) {
+            return add(new PaperPlayer(bukkit));
+        }
+        return wrappedPlayer;
     }
 
     @Override
-    public <T> void remove(@NotNull T player) {
-        if (player instanceof Player bukkit) {
-            remove(bukkit.getUniqueId());
+    @Nullable
+    public <T> WrappedPlayer remove(@NotNull T player) {
+        if (!(player instanceof Player bukkit)) {
+            throw new IllegalArgumentException("player is not a bukkit player");
         }
+        return remove(bukkit.getUniqueId());
     }
 }
