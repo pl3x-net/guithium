@@ -68,7 +68,7 @@ tasks {
         manifest {
             attributes["Implementation-Version"] = version
             attributes["Git-Commit"] = indraGit.commit()?.name()
-            attributes["Build"] = System.getenv("GITHUB_RUN_NUMBER")
+            attributes["Build"] = System.getenv("GITHUB_RUN_NUMBER") ?: -1
         }
 
         // get subproject's built jars
