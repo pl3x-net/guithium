@@ -183,9 +183,12 @@ public class Slider extends LabeledRect<Slider> {
      * If null, no change action will be used.
      *
      * @param onChange OnChange action
+     * @return This slider
      */
-    public void onClick(@Nullable OnChange onChange) {
+    @NotNull
+    public Slider onChange(@Nullable OnChange onChange) {
         this.onChange = onChange;
+        return this;
     }
 
     @Override

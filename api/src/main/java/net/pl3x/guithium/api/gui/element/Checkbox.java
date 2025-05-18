@@ -127,9 +127,12 @@ public class Checkbox extends LabeledRect<Checkbox> {
      * If null, no toggle action will be used.
      *
      * @param onToggled Toggled action
+     * @return This checkbox
      */
-    public void onToggled(@Nullable OnToggled onToggled) {
+    @NotNull
+    public Checkbox onToggled(@Nullable OnToggled onToggled) {
         this.onToggled = onToggled;
+        return this;
     }
 
     @Override
