@@ -116,7 +116,10 @@ public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<T> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getLabel(),
+                getTooltip()
+        );
     }
 }

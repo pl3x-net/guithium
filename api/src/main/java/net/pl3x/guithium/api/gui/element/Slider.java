@@ -200,13 +200,20 @@ public class Slider extends LabeledRect<Slider> {
         return Objects.equals(getValue(), other.getValue())
                 && Objects.equals(getMin(), other.getMin())
                 && Objects.equals(getMax(), other.getMax())
-                && Objects.equals(getDecimalFormat(), other.getDecimalFormat());
+                && Objects.equals(getDecimalFormat(), other.getDecimalFormat())
+                && Objects.equals(onChange(), other.onChange());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getValue(),
+                getMin(),
+                getMax(),
+                getDecimalFormat(),
+                onChange()
+        );
     }
 
     /**

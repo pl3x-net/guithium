@@ -1,6 +1,7 @@
 package net.pl3x.guithium.api.gui.texture;
 
 import com.google.common.base.Preconditions;
+import java.util.Objects;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
@@ -81,7 +82,9 @@ public class Texture extends Keyed implements JsonSerializable {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getUrl()
+        );
     }
 }

@@ -109,7 +109,10 @@ public class Text extends AbstractElement<Text> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getText(),
+                hasShadow()
+        );
     }
 }

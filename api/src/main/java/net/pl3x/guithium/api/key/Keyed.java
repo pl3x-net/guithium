@@ -48,7 +48,7 @@ public abstract class Keyed implements JsonSerializable {
 
     @Override
     public int hashCode() {
-        return GSON.toJson(this).hashCode();
+        return getKey().hashCode();
     }
 
     @Override
