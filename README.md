@@ -54,7 +54,7 @@ Here is a list of known plugins that use Guithium:
 
 Wiki: https://github.com/BillyGalbreath/Guithium/wiki
 
-Javadoc: https://billygalbreath.github.io/Guithium
+Javadoc: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.1-SNAPSHOT
 
 Repository (Maven)
 
