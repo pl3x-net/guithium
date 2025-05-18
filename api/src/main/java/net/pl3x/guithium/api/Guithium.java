@@ -48,6 +48,14 @@ public interface Guithium {
     }
 
     /**
+     * Get the Guithium's version.
+     *
+     * @return Guithium's version
+     */
+    @NotNull
+    String getVersion();
+
+    /**
      * Get the action registry instance.
      *
      * @return Action registry

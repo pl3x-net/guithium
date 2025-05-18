@@ -17,9 +17,14 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
     private final PaperPlayerManager playerManager = new PaperPlayerManager();
     private final TextureManager textureManager = new TextureManager();
 
+    private final String version;
+
     private Metrics metrics;
 
     public GuithiumPlugin() {
+        String version = getClass().getPackage().getImplementationVersion();
+        this.version = version == null ? "unknown" : version;
+
         try {
             Field api = Guithium.Provider.class.getDeclaredField("api");
             api.setAccessible(true);
@@ -32,7 +37,7 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
     public void onEnable() {
         getNetworkHandler().registerListeners();
 
-        getServer().getPluginManager().registerEvents(new PaperListener(this), this);
+        getServer().getPluginManager().registerEvents(new PaperListener(), this);
 
         this.metrics = new Metrics(this, BSTATS_ID);
     }
@@ -42,6 +47,12 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
             this.metrics.shutdown();
             this.metrics = null;
         }
+    }
+
+    @Override
+    @NotNull
+    public String getVersion() {
+        return this.version;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class RadioTogglePacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        //listener.handleRadioToggle(this);
+        listener.handleRadioToggle(this);
     }
 
     @Override

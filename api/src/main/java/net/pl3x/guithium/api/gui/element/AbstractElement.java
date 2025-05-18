@@ -141,7 +141,6 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
         return Objects.hash(
                 super.hashCode(),
                 getType(),

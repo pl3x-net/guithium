@@ -78,7 +78,7 @@ public class SliderChangePacket extends Packet {
 
     @Override
     public void handle(@NotNull PacketListener listener) {
-        //listener.handleSliderChange(this);
+        listener.handleSliderChange(this);
     }
 
     @Override
