@@ -25,7 +25,7 @@ publishing {
     repositories {
         maven {
             name = "reposilite"
-            url = uri("https://repo.pl3x.net/${if (version.toString().contains("SNAPSHOT")) "snapshots" else "releases"}/")
+            url = uri("https://repo.pl3x.net/public/")
             credentials(PasswordCredentials::class)
             authentication.create<BasicAuthentication>("basic")
         }
