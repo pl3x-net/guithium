@@ -5,9 +5,13 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
+import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a screen of gui elements.
  */
 public class Screen extends Keyed {
+    private final boolean hud;
     private final List<Element> elements = new ArrayList<>();
 
     /**
@@ -23,7 +28,7 @@ public class Screen extends Keyed {
      * @param key Unique identifier
      */
     public Screen(@NotNull String key) {
-        super(Key.of(key));
+        this(Key.of(key));
     }
 
     /**
@@ -32,7 +37,37 @@ public class Screen extends Keyed {
      * @param key Unique identifier
      */
     public Screen(@NotNull Key key) {
+        this(key, false);
+    }
+
+    /**
+     * Create a new screen.
+     *
+     * @param key   Unique identifier
+     * @param isHud {#code true} if screen is a HUD, otherwise {#code false}
+     */
+    public Screen(@NotNull String key, boolean isHud) {
+        this(Key.of(key), isHud);
+    }
+
+    /**
+     * Create a new screen.
+     *
+     * @param key   Unique identifier
+     * @param isHud {#code true} if screen is a HUD, otherwise {#code false}
+     */
+    public Screen(@NotNull Key key, boolean isHud) {
         super(key);
+        this.hud = isHud;
+    }
+
+    /**
+     * Whether this screen is a HUD type.
+     *
+     * @return {#code true} if screen is a HUD, otherwise {#code false}
+     */
+    public boolean isHud() {
+        return this.hud;
     }
 
     /**
@@ -153,6 +188,78 @@ public class Screen extends Keyed {
      */
     public boolean hasElement(@NotNull Key key) {
         return this.elements.stream().anyMatch(element -> key.equals(element.getKey()));
+    }
+
+    /**
+     * Open this screen on player's client.
+     * <p>
+     * If this screen is a HUD, then the screen will be added to the
+     * client's HUD manager.
+     * <p>
+     * If this screen is not a HUD, then the player's controls will be
+     * locked and the screen will be displayed to them.
+     * <p>
+     * If the player already has a non-HUD screen being displayed (even
+     * a screen provided from another mod or vanilla), then that screen will
+     * be replaced with this one.
+     *
+     * @param player Player to open screen for
+     */
+    public void open(@NotNull WrappedPlayer player) {
+        player.setCurrentScreen(this);
+        player.getConnection().send(new OpenScreenPacket(this));
+    }
+
+    /**
+     * Open this screen on player's client.
+     * <p>
+     * If this screen is a HUD, then the screen will be added to the
+     * client's HUD manager.
+     * <p>
+     * If this screen is not a HUD, then the player's controls will be
+     * locked and the screen will be displayed to them.
+     * <p>
+     * If the player already has a non-HUD screen being displayed (even
+     * a screen provided from another mod or vanilla), then that screen will
+     * be replaced with this one.
+     *
+     * @param player Player to open screen for
+     * @param <T>    Native player type
+     */
+    public <T> void open(@NotNull T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            open(wrapped);
+        }
+    }
+
+    /**
+     * Close this screen on player's client.
+     * <p>
+     * If the player is <em>not</em> being displayed this screen, then no
+     * action will be taken.
+     *
+     * @param player Player to close screen for
+     */
+    public void close(@NotNull WrappedPlayer player) {
+        player.setCurrentScreen(null);
+        player.getConnection().send(new CloseScreenPacket(getKey()));
+    }
+
+    /**
+     * Close this screen on player's client.
+     * <p>
+     * If the player is <em>not</em> being displayed this screen, then no
+     * action will be taken.
+     *
+     * @param player Player to close screen for
+     * @param <T>    Native player type
+     */
+    public <T> void close(@NotNull T player) {
+        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
+        if (wrapped != null) {
+            close(wrapped);
+        }
     }
 
     @Override
