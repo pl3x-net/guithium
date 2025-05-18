@@ -33,7 +33,7 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.value }}
           if [ "$SNAPSHOT" == "true"  ]; then
-            VERSION=$VERSION-SNAPSHOT-${{ github.run_number }}
+            VERSION=$VERSION-SNAPSHOT
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION is $VERSION"
