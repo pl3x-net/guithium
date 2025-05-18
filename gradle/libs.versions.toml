@@ -16,7 +16,7 @@ adventureFabric = "6.4.0"   # https://github.com/KyoriPowered/adventure-platform
 bstats = "3.1.0"            # https://github.com/Bastian/bstats-metrics
 minotaur = "2.+"            # https://github.com/modrinth/minotaur
 indra-git = "3.1.3"         # https://github.com/KyoriPowered/indra
-shadowjar = "8.3.5"            # https://github.com/GradleUp/shadow
+shadowjar = "8.3.5"         # https://github.com/GradleUp/shadow
 fix-javadoc = "1.19"        # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 
 # make these match versions Paper API uses
