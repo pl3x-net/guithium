@@ -20,7 +20,7 @@ public class OpenScreenPacket extends Packet {
     private final Screen screen;
 
     /**
-     * Creates an open screen packet.
+     * Create an open screen packet.
      *
      * @param screen Screen to open
      */
@@ -30,7 +30,7 @@ public class OpenScreenPacket extends Packet {
     }
 
     /**
-     * Creates an open screen packet.
+     * Create an open screen packet.
      *
      * @param in Input byte array
      */

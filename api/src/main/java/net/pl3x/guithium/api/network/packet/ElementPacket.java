@@ -20,7 +20,7 @@ public class ElementPacket extends Packet {
     private final Element element;
 
     /**
-     * Creates a new update element packet.
+     * Create a new update element packet.
      *
      * @param element Element to update
      */
@@ -30,7 +30,7 @@ public class ElementPacket extends Packet {
     }
 
     /**
-     * Creates a new update element packet.
+     * Create a new update element packet.
      *
      * @param in Input byte array
      */
