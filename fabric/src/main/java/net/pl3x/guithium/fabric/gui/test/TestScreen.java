@@ -1,4 +1,4 @@
-package net.pl3x.guithium.fabric.gui.screen;
+package net.pl3x.guithium.fabric.gui.test;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
@@ -6,7 +6,6 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.fabric.gui.element.RectWidget;
 
 public class TestScreen extends Screen {
     public TestScreen() {

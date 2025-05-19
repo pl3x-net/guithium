@@ -14,6 +14,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.Strictness;
 import java.lang.reflect.Type;
+import net.kyori.adventure.text.Component;
+import net.pl3x.guithium.api.json.adapter.ComponentAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +33,7 @@ public interface JsonSerializable {
             .setFormattingStyle(FormattingStyle.COMPACT)
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
+            .registerTypeAdapter(Component.class, new ComponentAdapter())
             .registerTypeAdapter(JsonSerializable.class, new Adapter<>())
             .create();
 

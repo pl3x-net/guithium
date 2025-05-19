@@ -14,7 +14,7 @@ import net.pl3x.guithium.fabric.scheduler.Scheduler;
 import org.jetbrains.annotations.NotNull;
 
 public class GuithiumMod implements ClientModInitializer, Guithium {
-    private final FabricNetworkHandler networkHandler = new FabricNetworkHandler();
+    private final FabricNetworkHandler networkHandler = new FabricNetworkHandler(this);
     private final FabricTextureManager textureManager = new FabricTextureManager();
 
     private final HudManager hudManager = new HudManager();

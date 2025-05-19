@@ -4,13 +4,14 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.packet.Packet;
+import net.pl3x.guithium.fabric.GuithiumMod;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricConnection implements Connection {
     private final FabricPacketListener packetListener;
 
-    public FabricConnection() {
-        this.packetListener = new FabricPacketListener();
+    public FabricConnection(@NotNull GuithiumMod mod) {
+        this.packetListener = new FabricPacketListener(mod);
     }
 
     @Override

@@ -59,42 +59,35 @@ public class Line extends AbstractElement<Line> {
 
     /**
      * Get this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @return End position from end anchor
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndPos() {
-        return this.endPos;
+        return this.endPos == null ? Vec2.ZERO : this.endPos;
     }
 
     /**
      * Set this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end position
      * @param y Y (vertical) end position
      * @return This line
      */
     @NotNull
-    public Line setEndPos(float x, float y) {
-        setEndPos(Vec2.of(x, y));
-        return this;
+    public Line setEndPos(int x, int y) {
+        return setEndPos(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @param pos End position
      * @return This line
      */
     @NotNull
     public Line setEndPos(@Nullable Vec2 pos) {
-        this.endPos = pos;
+        this.endPos = pos == Vec2.ZERO ? null : pos;
         return this;
     }
 
@@ -102,46 +95,39 @@ public class Line extends AbstractElement<Line> {
      * Get this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @return End anchor position
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndAnchor() {
-        return this.endAnchor;
+        return this.endAnchor == null ? Vec2.ZERO : this.endAnchor;
     }
 
     /**
      * Set this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end anchor
      * @param y Y (vertical) end anchor
      * @return This line
      */
     @NotNull
-    public Line setEndAnchor(float x, float y) {
-        setEndAnchor(Vec2.of(x, y));
-        return this;
+    public Line setEndAnchor(int x, int y) {
+        return setEndAnchor(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @param anchor End anchor position
      * @return This line
      */
     @NotNull
     public Line setEndAnchor(@Nullable Vec2 anchor) {
-        this.endAnchor = anchor;
+        this.endAnchor = anchor == Vec2.ZERO ? null : anchor;
         return this;
     }
 
@@ -149,65 +135,54 @@ public class Line extends AbstractElement<Line> {
      * Get this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @return End offset position
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndOffset() {
-        return this.endOffset;
+        return this.endOffset == null ? Vec2.ZERO : this.endOffset;
     }
 
     /**
      * Set this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end offset
      * @param y Y (vertical) end offset
      * @return This line
      */
     @NotNull
-    public Line setEndOffset(float x, float y) {
-        setEndOffset(Vec2.of(x, y));
-        return this;
+    public Line setEndOffset(int x, int y) {
+        return setEndOffset(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @param offset End offset position
      * @return This line
      */
     @NotNull
     public Line setEndOffset(@Nullable Vec2 offset) {
-        this.endOffset = offset;
+        this.endOffset = offset == Vec2.ZERO ? null : offset;
         return this;
     }
 
     /**
      * Get this line's width in scaled pixels.
-     * <p>
-     * If null, default width <code>1.0</code> will be used.
      *
      * @return Line width
      */
-    @Nullable
+    @NotNull
     public Float getWidth() {
-        return this.width;
+        return this.width == null ? 1.0f : this.width;
     }
 
     /**
      * Set this line's width in scaled pixels.
-     * <p>
-     * If null, default width <code>1.0</code> will be used.
      *
      * @param width Line width
      * @return This line
