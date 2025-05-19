@@ -2,6 +2,12 @@ plugins {
     alias(libs.plugins.fabric.loom)
 }
 
+loom {
+    @Suppress("UnstableApiUsage")
+    mixin.defaultRefmapName = "guithium.refmap.json"
+    accessWidenerPath = file("src/main/resources/guithium.accesswidener")
+}
+
 dependencies {
     minecraft(libs.minecraft.get())
     mappings(loom.officialMojangMappings())

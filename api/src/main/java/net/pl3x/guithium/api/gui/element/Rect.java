@@ -30,9 +30,9 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
      *
      * @return Size of element
      */
-    @Nullable
+    @NotNull
     public Vec2 getSize() {
-        return this.size;
+        return this.size == null ? Vec2.ZERO : this.size;
     }
 
     /**
@@ -43,7 +43,7 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
      * @return This rect
      */
     @NotNull
-    public T setSize(float width, float height) {
+    public T setSize(int width, int height) {
         return setSize(Vec2.of(width, height));
     }
 
@@ -55,7 +55,7 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
      */
     @NotNull
     public T setSize(@Nullable Vec2 size) {
-        this.size = size;
+        this.size = size == Vec2.ZERO ? null : size;
         return Unsafe.cast(this);
     }
 

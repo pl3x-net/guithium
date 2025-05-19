@@ -49,7 +49,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setPos(float x, float y);
+    Element setPos(int x, int y);
 
     /**
      * Set this element's position from the anchor position.
@@ -80,7 +80,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setAnchor(float x, float y);
+    Element setAnchor(int x, int y);
 
     /**
      * Set this element's anchor position on the screen.
@@ -113,7 +113,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setOffset(float x, float y);
+    Element setOffset(int x, int y);
 
     /**
      * Set this element's offset position on the screen.
@@ -186,10 +186,7 @@ public interface Element extends JsonSerializable {
      * @param <T>    Native player type
      */
     default <T> void send(@NotNull T player) {
-        WrappedPlayer wrapped = Guithium.api().getPlayerManager().get(player);
-        if (wrapped != null) {
-            send(wrapped);
-        }
+        send(Guithium.api().getPlayerManager().get(player));
     }
 
     /**

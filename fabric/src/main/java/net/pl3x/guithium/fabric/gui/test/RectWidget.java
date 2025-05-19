@@ -1,4 +1,4 @@
-package net.pl3x.guithium.fabric.gui.element;
+package net.pl3x.guithium.fabric.gui.test;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;

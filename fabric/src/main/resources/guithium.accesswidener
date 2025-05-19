@@ -1,0 +1,8 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/gui/components/Checkbox selected Z
+accessible field net/minecraft/client/gui/components/AbstractWidget x I
+accessible field net/minecraft/client/gui/components/AbstractWidget y I
+
+extendable method net/minecraft/client/gui/components/AbstractWidget render (Lnet/minecraft/client/gui/GuiGraphics;IIF)V
+#extendable method net/minecraft/client/gui/components/Screen init (Lnet/minecraft/client/gui/GuiGraphics;IIF)V

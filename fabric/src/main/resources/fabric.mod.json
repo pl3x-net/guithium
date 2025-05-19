@@ -20,6 +20,10 @@
       "net.pl3x.guithium.fabric.GuithiumMod"
     ]
   },
+  "mixins" : [
+    "guithium.mixins.json"
+  ],
+  "accessWidener" : "guithium.accesswidener",
   "depends" : {
     "fabricloader" : ">=${fabricloader}",
     "minecraft" : "${minecraft}",

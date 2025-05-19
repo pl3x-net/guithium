@@ -47,9 +47,8 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
 
     @Override
     @NotNull
-    public T setPos(float x, float y) {
-        setPos(Vec2.of(x, y));
-        return Unsafe.cast(this);
+    public T setPos(int x, int y) {
+        return setPos(Vec2.of(x, y));
     }
 
     @Override
@@ -67,9 +66,8 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
 
     @Override
     @NotNull
-    public T setAnchor(float x, float y) {
-        setAnchor(Vec2.of(x, y));
-        return Unsafe.cast(this);
+    public T setAnchor(int x, int y) {
+        return setAnchor(Vec2.of(x, y));
     }
 
     @Override
@@ -87,9 +85,8 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
 
     @Override
     @NotNull
-    public T setOffset(float x, float y) {
-        setOffset(Vec2.of(x, y));
-        return Unsafe.cast(this);
+    public T setOffset(int x, int y) {
+        return setOffset(Vec2.of(x, y));
     }
 
     @Override

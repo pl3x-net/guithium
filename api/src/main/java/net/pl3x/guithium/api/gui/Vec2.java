@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @param x X value
  * @param y Y value
  */
-public record Vec2(float x, float y) implements JsonSerializable {
+public record Vec2(int x, int y) implements JsonSerializable {
     /**
      * Vec2 of 0,0
      */
@@ -28,7 +28,7 @@ public record Vec2(float x, float y) implements JsonSerializable {
      * @return A new 2D vector
      */
     @NotNull
-    public static Vec2 of(float x, float y) {
+    public static Vec2 of(int x, int y) {
         return new Vec2(x, y);
     }
 
@@ -37,7 +37,7 @@ public record Vec2(float x, float y) implements JsonSerializable {
      *
      * @return The X value
      */
-    public float getX() {
+    public int getX() {
         return x();
     }
 
@@ -46,7 +46,7 @@ public record Vec2(float x, float y) implements JsonSerializable {
      *
      * @return The Y value
      */
-    public float getY() {
+    public int getY() {
         return y();
     }
 

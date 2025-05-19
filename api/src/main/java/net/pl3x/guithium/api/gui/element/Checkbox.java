@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Checkbox extends LabeledRect<Checkbox> {
     private Boolean selected;
-    private Boolean showLabel;
     private OnToggled onToggled = (screen, checkbox, player, selected) -> {
     };
 
@@ -84,32 +83,6 @@ public class Checkbox extends LabeledRect<Checkbox> {
     }
 
     /**
-     * Get if we should show text label.
-     * <p>
-     * If null, text label will be shown.
-     *
-     * @return True to show text label
-     */
-    @Nullable
-    public Boolean isShowLabel() {
-        return this.showLabel;
-    }
-
-    /**
-     * Set if we should show text label.
-     * <p>
-     * If null, text label will be shown.
-     *
-     * @param showLabel True to show text label
-     * @return This checkbox
-     */
-    @NotNull
-    public Checkbox setShowLabel(@Nullable Boolean showLabel) {
-        this.showLabel = showLabel;
-        return this;
-    }
-
-    /**
      * Get the action to execute when the checkbox is toggled.
      * <p>
      * If null, no toggle action will be used.
@@ -142,7 +115,6 @@ public class Checkbox extends LabeledRect<Checkbox> {
         }
         Checkbox other = (Checkbox) obj;
         return Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(isShowLabel(), other.isShowLabel())
                 && Objects.equals(onToggled(), other.onToggled());
     }
 
@@ -151,7 +123,6 @@ public class Checkbox extends LabeledRect<Checkbox> {
         return Objects.hash(
                 super.hashCode(),
                 isSelected(),
-                isShowLabel(),
                 onToggled()
         );
     }

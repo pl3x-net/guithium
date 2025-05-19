@@ -1,6 +1,8 @@
 package net.pl3x.guithium.fabric.network;
 
+import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
@@ -11,9 +13,18 @@ import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
+import net.pl3x.guithium.fabric.GuithiumMod;
+import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
+import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricPacketListener implements PacketListener {
+    private final GuithiumMod mod;
+
+    public FabricPacketListener(@NotNull GuithiumMod mod) {
+        this.mod = mod;
+    }
+
     @Override
     public void handleButtonClick(@NotNull ButtonClickPacket packet) {
         // server does not send this packet to the client
@@ -29,6 +40,16 @@ public class FabricPacketListener implements PacketListener {
     @Override
     public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         // try to remove from HUD
+        if (this.mod.getHudManager().remove(packet.getScreenKey()) == null) {
+            // not on HUD, so lets get current open screen
+            if (Minecraft.getInstance().screen instanceof AbstractScreen screen) {
+                // check if screen keys match
+                if (screen.getKey().equals(packet.getScreenKey())) {
+                    // close the screen
+                    screen.close();
+                }
+            }
+        }
     }
 
     @Override
@@ -56,7 +77,14 @@ public class FabricPacketListener implements PacketListener {
 
     @Override
     public void handleOpenScreen(@NotNull OpenScreenPacket packet) {
-        //Screen screen = packet.getScreen();
+        Screen screen = packet.getScreen();
+        AbstractScreen test = new RenderableScreen(this.mod, screen);
+
+        if (screen.isHud()) {
+            this.mod.getHudManager().add(test);
+        } else {
+            test.open();
+        }
     }
 
     @Override
