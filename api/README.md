@@ -4,7 +4,9 @@ Wiki: https://github.com/BillyGalbreath/Guithium/wiki
 
 Javadoc: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.1-SNAPSHOT
 
-Repository (Maven)
+<details>
+
+<summary>Repository (Maven)</summary>
 
 ```xml
 
@@ -22,7 +24,11 @@ Repository (Maven)
 </project>
 ```
 
-Repository (Gradle)
+</details>
+
+<details>
+
+<summary>Repository (Gradle)</summary>
 
 ```groovy
 repositories {
@@ -33,3 +39,5 @@ dependencies {
     compileOnly 'net.pl3x.guithium:guithium-api:0.0.1-SNAPSHOT'
 }
 ```
+
+</details>
