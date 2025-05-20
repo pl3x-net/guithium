@@ -15,30 +15,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly(rootProject.libs.apache.get())
-    compileOnly(rootProject.libs.gson.get())
-    compileOnly(rootProject.libs.guava.get())
-    compileOnly(rootProject.libs.annotations.get())
-    compileOnly(rootProject.libs.slf4j.get())
-}
+    compileOnly(libs.adventure.api.get())
+    compileOnly(libs.adventure.gson.get())
 
-publishing {
-    repositories {
-        maven {
-            name = "reposilite"
-            url = uri("https://repo.pl3x.net/public/")
-            credentials(PasswordCredentials::class)
-            authentication.create<BasicAuthentication>("basic")
-        }
-    }
-    publications {
-        create<MavenPublication>("mavenJava") {
-            groupId = "${project.group}"
-            artifactId = "${rootProject.name}-${project.name}"
-            version = "${project.version}"
-            from(components["java"])
-        }
-    }
+    compileOnly(libs.apache.get())
+    compileOnly(libs.gson.get())
+    compileOnly(libs.guava.get())
+    compileOnly(libs.annotations.get())
+    compileOnly(libs.slf4j.get())
 }
 
 tasks {
@@ -66,6 +50,25 @@ tasks {
         configureEach {
             newLineOnMethodParameters.set(false)
             keepOriginal.set(false)
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "reposilite"
+            url = uri("https://repo.pl3x.net/public/")
+            credentials(PasswordCredentials::class)
+            authentication.create<BasicAuthentication>("basic")
+        }
+    }
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "${project.group}"
+            artifactId = "${rootProject.name}-${project.name}"
+            version = "${project.version}"
+            from(components["java"])
         }
     }
 }

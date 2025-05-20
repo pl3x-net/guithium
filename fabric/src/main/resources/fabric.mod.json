@@ -1,33 +1,33 @@
 {
-  "schemaVersion" : 1,
-  "id" : "guithium",
-  "version" : "${version}",
-  "name" : "Guithium",
-  "description" : "${description}",
-  "authors" : [
+  "schemaVersion": 1,
+  "id": "guithium",
+  "version": "${version}",
+  "name": "Guithium",
+  "description": "${description}",
+  "authors": [
     "BillyGalbreath"
   ],
-  "contact" : {
-    "homepage" : "${website}",
-    "sources" : "${website}",
-    "issues" : "https://github.com/BillyGalbreath/Guithium/issues"
+  "contact": {
+    "homepage": "${website}",
+    "sources": "${website}",
+    "issues": "https://github.com/BillyGalbreath/Guithium/issues"
   },
-  "license" : "MIT",
-  "icon" : "assets/guithium/icon.png",
-  "environment" : "client",
-  "entrypoints" : {
-    "client" : [
+  "license": "MIT",
+  "icon": "assets/guithium/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
       "net.pl3x.guithium.fabric.GuithiumMod"
     ]
   },
-  "mixins" : [
+  "mixins": [
     "guithium.mixins.json"
   ],
-  "accessWidener" : "guithium.accesswidener",
-  "depends" : {
-    "fabricloader" : ">=${fabricloader}",
-    "minecraft" : "${minecraft}",
-    "java" : ">=21",
-    "fabric-api" : "*"
+  "accessWidener": "guithium.accesswidener",
+  "depends": {
+    "fabricloader": ">=${fabricloader}",
+    "minecraft": "${minecraft}",
+    "java": ">=21",
+    "fabric-api": "*"
   }
 }

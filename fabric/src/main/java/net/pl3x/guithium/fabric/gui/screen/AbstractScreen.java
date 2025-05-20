@@ -10,16 +10,16 @@ import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.fabric.GuithiumMod;
-import net.pl3x.guithium.fabric.gui.RenderQueue;
 import net.pl3x.guithium.fabric.gui.element.RenderableWidget;
 import net.pl3x.guithium.fabric.gui.element.Tickable;
+import net.pl3x.guithium.fabric.util.RenderQueue;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Screen {
     protected final GuithiumMod mod;
     protected final Screen screen;
     protected final Minecraft client;
-    protected final Map<Key, RenderableWidget> widgets = new LinkedHashMap<>();
+    protected final Map<Key, AbstractWidget> widgets = new LinkedHashMap<>();
 
     private net.minecraft.client.gui.screens.Screen previousScreen;
 
@@ -30,7 +30,7 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         this.client = Minecraft.getInstance();
 
         screen.getElements().forEach(element -> {
-            RenderableWidget widget = RenderableWidget.create(element);
+            AbstractWidget widget = RenderableWidget.create(element);
             this.widgets.put(element.getKey(), widget);
         });
     }
@@ -41,16 +41,18 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
     }
 
     @Override
-    public void init() {
+    protected void init() {
         this.widgets.forEach((key, widget) -> {
-            // all renderable widgets _are_ abstract widgets
-            addRenderableWidget((AbstractWidget) widget);
+            ((RenderableWidget) widget).init(this.client);
+            addRenderableWidget(widget);
         });
     }
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        //
+        gfx.pose().pushPose();
+        super.render(gfx, mouseX, mouseY, delta);
+        gfx.pose().popPose();
     }
 
     @Override
@@ -79,12 +81,13 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         onClose();
     }
 
+    @Override
     public void onClose() {
         this.client.setScreen(this.previousScreen);
         this.previousScreen = null;
     }
 
     public void refresh() {
-        this.widgets.forEach((key, widget) -> widget.init());
+        this.widgets.forEach((key, widget) -> ((RenderableWidget) widget).init(this.client));
     }
 }
