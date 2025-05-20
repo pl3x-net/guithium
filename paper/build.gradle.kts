@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":api"))
+
     paperweight.paperDevBundle("${libs.versions.minecraft.get()}-R0.1-SNAPSHOT")
 
     implementation(libs.bstats.get())
@@ -13,12 +15,14 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
+
     shadowJar {
         archiveClassifier.set("")
         arrayOf(
             "org.bstats",
         ).forEach { it -> relocate(it, "libs.$it") }
     }
+
     processResources {
         filteringCharset = Charsets.UTF_8.name()
 

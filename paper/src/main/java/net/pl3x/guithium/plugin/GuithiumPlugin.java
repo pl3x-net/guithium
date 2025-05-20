@@ -26,7 +26,7 @@ public class GuithiumPlugin extends JavaPlugin implements Guithium {
         this.version = version == null ? "unknown" : version;
 
         try {
-            Field api = Guithium.Provider.class.getDeclaredField("api");
+            Field api = Provider.class.getDeclaredField("api");
             api.setAccessible(true);
             api.set(null, this);
         } catch (NoSuchFieldException | IllegalAccessException e) {

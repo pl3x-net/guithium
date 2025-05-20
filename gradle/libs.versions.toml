@@ -1,9 +1,8 @@
 [versions]
-
 guithium = "0.0.1"
 minecraft = "1.21.5"
 
-paperweight = "2.0.0-beta.16" # https://github.com/PaperMC/paperweight
+paperweight = "2.0.0-beta.17" # https://github.com/PaperMC/paperweight
 
 # https://fabricmc.net/develop/
 fabricApi = "0.123.2+1.21.5"
@@ -30,7 +29,6 @@ junit = "5.12.2"
 asm = "9.8"
 
 [plugins]
-
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 fabric-loom = { id = "fabric-loom", version.ref = "fabricLoom" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
@@ -39,7 +37,6 @@ shadowjar = { id = "com.gradleup.shadow", version.ref = "shadowjar" }
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
 
 [libraries]
-
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
 
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabricApi" }

@@ -1,7 +1,11 @@
 plugins {
-    `java-library`
+    id("java")
     alias(libs.plugins.minotaur)
     alias(libs.plugins.indra.git)
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 allprojects {
@@ -11,15 +15,6 @@ allprojects {
     version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
     description = "Allows paper plugins to add GUIs to your fabric client"
     ext["website"] = "https://github.com/BillyGalbreath/Guithium"
-
-    java {
-        toolchain.languageVersion = JavaLanguageVersion.of(21)
-    }
-
-    tasks.compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release = 21
-    }
 }
 
 subprojects {
@@ -28,17 +23,6 @@ subprojects {
     }
 
     dependencies {
-        if (name != "api") {
-            // api can't include itself
-            compileOnly(project(":api"))
-        }
-
-        if (name != "paper") {
-            // paper already natively ship with adventure
-            compileOnly(rootProject.libs.adventure.api.get())
-            compileOnly(rootProject.libs.adventure.gson.get())
-        }
-
         testImplementation(rootProject.libs.junit.get())
         testImplementation(rootProject.libs.asm.get())
         testRuntimeOnly(rootProject.libs.junitPlatform.get())
@@ -51,7 +35,6 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
-
         // we want to see system.out from tests
         testLogging.showStandardStreams = true
     }
@@ -59,6 +42,11 @@ subprojects {
 
 // this must be after subprojects block
 tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = 21
+    }
+
     withType<Jar> {
         subprojects {
             dependsOn(project.tasks.build)

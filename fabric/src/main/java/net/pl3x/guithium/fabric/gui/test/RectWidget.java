@@ -26,9 +26,9 @@ public class RectWidget extends AbstractWidget {
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         VertexConsumer buf = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.gui());
-        Matrix4f m4f = guiGraphics.pose().last().pose();
+        Matrix4f m4f = gfx.pose().last().pose();
         buf.addVertex(m4f, this.getX(), this.getY(), 0).setColor(this.color[0]);
         buf.addVertex(m4f, this.getX(), this.getBottom(), 0).setColor(this.color[1]);
         buf.addVertex(m4f, this.getRight(), this.getBottom(), 0).setColor(this.color[2]);

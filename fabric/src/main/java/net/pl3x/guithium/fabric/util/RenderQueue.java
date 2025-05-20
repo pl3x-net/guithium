@@ -1,4 +1,4 @@
-package net.pl3x.guithium.fabric.gui;
+package net.pl3x.guithium.fabric.util;
 
 import com.google.common.collect.Queues;
 import java.util.concurrent.ConcurrentLinkedQueue;

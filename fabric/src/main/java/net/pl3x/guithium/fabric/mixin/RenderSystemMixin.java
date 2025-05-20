@@ -1,7 +1,7 @@
 package net.pl3x.guithium.fabric.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.pl3x.guithium.fabric.gui.RenderQueue;
+import net.pl3x.guithium.fabric.util.RenderQueue;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

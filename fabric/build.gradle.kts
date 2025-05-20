@@ -6,16 +6,21 @@ loom {
     @Suppress("UnstableApiUsage")
     mixin.defaultRefmapName = "guithium.refmap.json"
     accessWidenerPath = file("src/main/resources/guithium.accesswidener")
+    runConfigs.configureEach {
+        ideConfigGenerated(true)
+    }
 }
 
 dependencies {
-    minecraft(libs.minecraft.get())
+    implementation(project(":api"))
+
+    minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
 
-    modCompileOnly(libs.fabric.loader.get())
-    modCompileOnly(libs.fabric.api.get())
+    modImplementation(libs.fabric.loader)
+    modImplementation(libs.fabric.api.get())
 
-    compileOnly(libs.adventure.fabric) {
+    modImplementation(libs.adventure.fabric) {
         // Temporary: kyori compiled ansi against jdk22
         //       which causes the remapJar task to fail :/
         exclude("net.kyori", "ansi")
