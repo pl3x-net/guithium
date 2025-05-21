@@ -24,14 +24,14 @@ public class CheckboxTogglePacket extends Packet {
     /**
      * Create a new checkbox toggle packet.
      *
-     * @param screen   Screen checkbox was toggled on
-     * @param checkbox Checkbox that was toggled
+     * @param screen   Key of screen the checkbox was toggled on
+     * @param checkbox Key of checkbox that was toggled
      * @param selected New checkbox selected state
      */
-    public CheckboxTogglePacket(@NotNull Screen screen, @NotNull Checkbox checkbox, boolean selected) {
+    public CheckboxTogglePacket(@NotNull Key screen, @NotNull Key checkbox, boolean selected) {
         super(KEY);
-        this.screen = screen.getKey();
-        this.checkbox = checkbox.getKey();
+        this.screen = screen;
+        this.checkbox = checkbox;
         this.selected = selected;
     }
 

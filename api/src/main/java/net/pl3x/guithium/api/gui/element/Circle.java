@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a circle element.
  */
 public class Circle extends AbstractElement<Circle> {
-    private Float radius;
+    private Integer radius;
     private Integer resolution;
     private int innerColor;
     private int outerColor;
@@ -62,7 +62,7 @@ public class Circle extends AbstractElement<Circle> {
      * @return The radius
      */
     @Nullable
-    public Float getRadius() {
+    public Integer getRadius() {
         return this.radius;
     }
 
@@ -75,7 +75,7 @@ public class Circle extends AbstractElement<Circle> {
      * @return This circle
      */
     @NotNull
-    public Circle setRadius(@Nullable Float radius) {
+    public Circle setRadius(@Nullable Integer radius) {
         this.radius = radius;
         return this;
     }

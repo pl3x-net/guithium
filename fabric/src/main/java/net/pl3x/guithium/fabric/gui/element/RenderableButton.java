@@ -9,7 +9,7 @@ import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.jetbrains.annotations.NotNull;
 
-public class RenderableButton extends net.minecraft.client.gui.components.Button implements RenderableWidget, Tickable {
+public class RenderableButton extends net.minecraft.client.gui.components.Button implements RenderableWidget {
     private final Button button;
 
     public RenderableButton(@NotNull Button button) {
@@ -40,31 +40,26 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(this.button.getTooltip())));
 
         // update pos/size
-        setX(this.button.getPos().getX());
-        setY(this.button.getPos().getY());
-        this.width = this.button.getSize().getX();
-        this.height = this.button.getSize().getY();
+        setX(getElement().getPos().getX());
+        setY(getElement().getPos().getY());
+        setWidth(getElement().getSize().getX());
+        setHeight(getElement().getSize().getY());
 
         // recalculate position on screen
         RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(this.width, this.height);
+        self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        this.tickF = this.tickF + delta * (this.tick - this.tickF);
+        this.testRotVar = (this.testRotVar + 10 * delta) % 360;
 
         RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), /*this.button.getRotation()*/ (float) this.tickF);
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), this.button.getScale());
+        self.rotate(gfx, self.getCenterX(), self.getCenterY(), /*getElement().getRotation()*/ this.testRotVar);
+        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+
         super.renderWidget(gfx, mouseX, mouseY, delta);
     }
 
-    private int tick = 0;
-    private float tickF = 0;
-
-    @Override
-    public void tick() {
-        this.tick += 5;
-    }
+    private float testRotVar = 0;
 }

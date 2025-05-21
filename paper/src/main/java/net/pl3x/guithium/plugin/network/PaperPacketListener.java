@@ -57,22 +57,35 @@ public class PaperPacketListener implements PacketListener {
 
     @Override
     public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
+        // make sure it's the same screen
         Screen screen = this.player.getCurrentScreen();
         if (screen == null || !screen.getKey().equals(packet.getScreen())) {
             return;
         }
+
+        // make sure the screen has the checkbox
         if (!(screen.getElement(packet.getCheckbox()) instanceof Checkbox checkbox)) {
             return;
         }
+
+        // inform other plugins the checkbox was toggled
         CheckboxToggledAction action = new CheckboxToggledAction(this.player, screen, checkbox, packet.isSelected());
         Guithium.api().getActionRegistry().callAction(action);
+
+        // some other plugin says to ignore it
         if (action.isCancelled()) {
             return;
         }
+
+        // update the selected state in our copy of the checkbox
         checkbox.setSelected(action.isSelected());
+
+        // if the action changed the selected state, tell the client
         if (packet.isSelected() != action.isSelected()) {
             checkbox.send(this.player);
         }
+
+        // trigger the radio's action for other plugins
         Checkbox.OnToggled onToggled = checkbox.onToggled();
         if (onToggled != null) {
             onToggled.accept(screen, checkbox, this.player, action.isSelected());
@@ -132,22 +145,35 @@ public class PaperPacketListener implements PacketListener {
 
     @Override
     public void handleRadioToggle(@NotNull RadioTogglePacket packet) {
+        // make sure it's the same screen
         Screen screen = this.player.getCurrentScreen();
         if (screen == null || !screen.getKey().equals(packet.getScreen())) {
             return;
         }
+
+        // make sure the screen has the radio
         if (!(screen.getElement(packet.getRadio()) instanceof Radio radio)) {
             return;
         }
+
+        // inform other plugins the radio was toggled
         RadioToggledAction action = new RadioToggledAction(this.player, screen, radio, packet.isSelected());
         Guithium.api().getActionRegistry().callAction(action);
+
+        // some other plugin says to ignore it
         if (action.isCancelled()) {
             return;
         }
+
+        // update the selected state in our copy of the radio
         radio.setSelected(action.isSelected());
+
+        // if the action changed the selected state, tell the client
         if (packet.isSelected() != action.isSelected()) {
             radio.send(this.player);
         }
+
+        // trigger the radio's action for other plugins
         Radio.OnToggled onToggled = radio.onToggled();
         if (onToggled != null) {
             onToggled.accept(screen, radio, this.player, action.isSelected());
