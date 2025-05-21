@@ -32,7 +32,7 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(checkbox.getTooltip())));
     }
 
-    protected RenderableCheckbox(int i, int j, int k, Component component, Font font, boolean bl, OnValueChange onValueChange) {
+    protected RenderableCheckbox(int i, int j, int k, @NotNull Component component, @NotNull Font font, boolean bl, @NotNull OnValueChange onValueChange) {
         super(i, j, k, component, font, bl, onValueChange);
         this.checkbox = null;
     }
