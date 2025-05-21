@@ -29,7 +29,7 @@ public class Circle extends AbstractElement<Circle> {
      * @param key Unique identifier
      */
     public Circle(@NotNull Key key) {
-        super(key, Type.CIRCLE);
+        super(key);
     }
 
     /**

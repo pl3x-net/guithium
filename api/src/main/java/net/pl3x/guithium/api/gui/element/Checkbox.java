@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Checkbox extends LabeledRect<Checkbox> {
     private Boolean selected;
+
+    @Exclude
     private OnToggled onToggled = (screen, checkbox, player, selected) -> {
     };
 
@@ -31,7 +33,7 @@ public class Checkbox extends LabeledRect<Checkbox> {
      * @param key Unique identifier
      */
     public Checkbox(@NotNull Key key) {
-        super(key, Type.CHECKBOX);
+        super(key);
     }
 
     /**

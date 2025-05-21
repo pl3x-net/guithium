@@ -16,6 +16,8 @@ public class Slider extends LabeledRect<Slider> {
     private Double min;
     private Double max;
     private String decimal;
+
+    @Exclude
     private OnChange onChange = (screen, slider, player, value) -> {
     };
 
@@ -34,7 +36,7 @@ public class Slider extends LabeledRect<Slider> {
      * @param key Unique identifier
      */
     public Slider(@NotNull Key key) {
-        super(key, Type.CHECKBOX);
+        super(key);
     }
 
     /**

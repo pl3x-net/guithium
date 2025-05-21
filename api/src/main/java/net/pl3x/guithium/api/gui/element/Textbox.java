@@ -34,7 +34,7 @@ public class Textbox extends Rect<Textbox> {
      * @param key Unique identifier
      */
     public Textbox(@NotNull Key key) {
-        super(key, Type.TEXTBOX);
+        super(key);
     }
 
     /**

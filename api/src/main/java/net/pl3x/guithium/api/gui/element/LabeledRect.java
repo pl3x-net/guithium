@@ -19,11 +19,10 @@ public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<T> {
     /**
      * Create a new checkbox element.
      *
-     * @param key  Unique identifier
-     * @param type Element type
+     * @param key Unique identifier
      */
-    protected LabeledRect(@NotNull Key key, @NotNull Type type) {
-        super(key, type);
+    protected LabeledRect(@NotNull Key key) {
+        super(key);
     }
 
     /**

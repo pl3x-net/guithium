@@ -41,7 +41,7 @@ public class Image extends Rect<Image> {
      * @param key Unique identifier
      */
     public Image(@NotNull Key key) {
-        super(key, Type.IMAGE);
+        super(key);
     }
 
     /**

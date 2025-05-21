@@ -1,6 +1,14 @@
 package net.pl3x.guithium.api.key;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import java.lang.reflect.Type;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,5 +74,29 @@ public final class Key {
     @NotNull
     public String toString() {
         return this.key;
+    }
+
+    /**
+     * A custom JSON (de)serializer for the GSON library specifically for Key objects.
+     */
+    public static class Adapter implements JsonSerializer<Key>, JsonDeserializer<Key> {
+        /**
+         * Create a new Key adapter for gson.
+         */
+        public Adapter() {
+            // Empty constructor to pacify javadoc lint
+        }
+
+        @Override
+        @NotNull
+        public JsonElement serialize(@NotNull Key key, @NotNull Type type, @NotNull JsonSerializationContext context) {
+            return new JsonPrimitive(key.toString());
+        }
+
+        @Override
+        @Nullable
+        public Key deserialize(@NotNull JsonElement json, @NotNull Type type, @NotNull JsonDeserializationContext context) throws JsonParseException {
+            return Key.of(json.getAsString());
+        }
     }
 }

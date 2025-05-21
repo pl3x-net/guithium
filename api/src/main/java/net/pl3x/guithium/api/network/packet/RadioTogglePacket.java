@@ -2,8 +2,6 @@ package net.pl3x.guithium.api.network.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -24,14 +22,14 @@ public class RadioTogglePacket extends Packet {
     /**
      * Create a new radio toggle packet.
      *
-     * @param screen   Screen radio button was toggled on
-     * @param radio    Radio button that was toggled
+     * @param screen   Key of screen the radio button was toggled on
+     * @param radio    Key of radio button that was toggled
      * @param selected New selected state of radio button
      */
-    public RadioTogglePacket(@NotNull Screen screen, @NotNull Radio radio, boolean selected) {
+    public RadioTogglePacket(@NotNull Key screen, @NotNull Key radio, boolean selected) {
         super(KEY);
-        this.screen = screen.getKey();
-        this.radio = radio.getKey();
+        this.screen = screen;
+        this.radio = radio;
         this.selected = selected;
     }
 

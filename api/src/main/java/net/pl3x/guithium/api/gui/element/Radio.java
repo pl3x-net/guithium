@@ -15,6 +15,8 @@ public class Radio extends LabeledRect<Radio> {
     private Key group;
     private Boolean selected;
     private Boolean showLabel;
+
+    @Exclude
     private OnToggled onToggled = (screen, radio, player, selected) -> {
     };
 
@@ -33,7 +35,7 @@ public class Radio extends LabeledRect<Radio> {
      * @param key Unique identifier
      */
     public Radio(@NotNull Key key) {
-        super(key, Type.RADIO);
+        super(key);
     }
 
     /**

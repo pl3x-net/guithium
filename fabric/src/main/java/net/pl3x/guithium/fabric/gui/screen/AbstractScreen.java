@@ -40,6 +40,11 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         return this.screen.getKey();
     }
 
+    @NotNull
+    public Screen getScreen() {
+        return this.screen;
+    }
+
     @Override
     protected void init() {
         this.widgets.forEach((key, widget) -> {
