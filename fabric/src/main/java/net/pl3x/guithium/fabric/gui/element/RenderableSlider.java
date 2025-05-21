@@ -7,13 +7,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
+import net.pl3x.guithium.fabric.util.Numbers;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class RenderableSlider extends AbstractSliderButton implements RenderableWidget, Tickable {
+public class RenderableSlider extends AbstractSliderButton implements RenderableWidget {
     private final Slider slider;
 
     private DecimalFormat decimalFormat;
@@ -30,17 +29,9 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
                 0.0D
         );
         this.slider = slider;
-        this.min = dbl(slider.getMin(), 0.0D);
-        this.max = dbl(slider.getMax(), 1.0D);
-        this.value = invLerp(dbl(slider.getValue(), 0.0D), this.min, this.max);
-    }
-
-    private static double dbl(@Nullable Double val, double def) {
-        return val == null ? def : val;
-    }
-
-    private static double invLerp(double val, double min, double max) {
-        return (Mth.clamp(val, min, max) - min) / (max - min);
+        this.min = Numbers.unbox(slider.getMin(), 0.0D);
+        this.max = Numbers.unbox(slider.getMax(), 1.0D);
+        this.value = Numbers.invLerp(Numbers.unbox(slider.getValue(), 0.0D), this.min, this.max);
     }
 
     @NotNull
@@ -56,16 +47,16 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
             this.decimalFormat = new DecimalFormat("0.0");
         }
 
-        this.value = dbl(getElement().getValue(), 0.0D);
+        this.value = Numbers.unbox(getElement().getValue(), 0.0D);
         if (this.decimalFormat != null) {
             this.value = Double.parseDouble(this.decimalFormat.format(this.value));
         }
-        this.value = invLerp(this.value, this.min, this.max);
+        this.value = Numbers.invLerp(this.value, this.min, this.max);
 
         // update contents
-        this.min = dbl(slider.getMin(), 0.0D);
-        this.max = dbl(slider.getMax(), 1.0D);
-        this.value = invLerp(dbl(slider.getValue(), 0.0D), this.min, this.max);
+        this.min = Numbers.unbox(slider.getMin(), 0.0D);
+        this.max = Numbers.unbox(slider.getMax(), 1.0D);
+        this.value = Numbers.invLerp(Numbers.unbox(slider.getValue(), 0.0D), this.min, this.max);
         updateMessage();
 
         // update pos/size
@@ -102,10 +93,5 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
     @Override
     protected void applyValue() {
         updateMessage();
-    }
-
-    @Override
-    public void tick() {
-        //
     }
 }

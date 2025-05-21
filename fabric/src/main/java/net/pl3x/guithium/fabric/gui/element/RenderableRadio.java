@@ -2,10 +2,9 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.key.Key;
@@ -17,7 +16,7 @@ import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class RenderableRadio extends RenderableCheckbox implements RenderableWidget, Tickable {
+public class RenderableRadio extends net.minecraft.client.gui.components.Checkbox implements TextureSwappableWidget, RenderableWidget {
     public static final ResourceLocation RADIO_SELECTED_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio_selected_highlighted");
     public static final ResourceLocation RADIO_SELECTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio_selected");
     public static final ResourceLocation RADIO_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio_highlighted");
@@ -46,52 +45,57 @@ public class RenderableRadio extends RenderableCheckbox implements RenderableWid
     }
 
     @Override
+    public float getAlpha() {
+        return this.alpha;
+    }
+
+    @Override
+    @NotNull
+    public MultiLineTextWidget getTextWidget() {
+        return this.textWidget;
+    }
+
+    @Override
+    @NotNull
+    public ResourceLocation getTexture() {
+        if (selected()) {
+            return isHoveredOrFocused() ? RADIO_SELECTED_HIGHLIGHTED_SPRITE : RADIO_SELECTED_SPRITE;
+        } else {
+            return isHoveredOrFocused() ? RADIO_HIGHLIGHTED_SPRITE : RADIO_SPRITE;
+        }
+    }
+
+    @Override
     public void init(@NotNull Minecraft client) {
         // update contents
-        setMessage(ComponentHelper.toVanilla(this.radio.getLabel()));
-        setTooltip(Tooltip.create(ComponentHelper.toVanilla(this.radio.getTooltip())));
+        setMessage(ComponentHelper.toVanilla(getElement().getLabel()));
+        setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
 
         // update pos/size
-        setX(this.radio.getPos().getX());
-        setY(this.radio.getPos().getY());
-        this.width = this.getAdjustedWidth(this.radio.getSize().getX(), this.message, client.font);
-        this.height = this.getAdjustedHeight(client.font);
+        setX(getElement().getPos().getX());
+        setY(getElement().getPos().getY());
+        setWidth(getAdjustedWidth(getElement().getSize().getX(), getMessage(), client.font));
+        setHeight(getAdjustedHeight(client.font));
 
         // recalculate position on screen
         RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(this.width, this.height);
+        self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), this.radio.getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), this.radio.getScale());
-        //super.renderWidget(gfx, mouseX, mouseY, delta);
-
-        ResourceLocation resourceLocation;
-        if (selected()) {
-            resourceLocation = this.isHoveredOrFocused() ? RADIO_SELECTED_HIGHLIGHTED_SPRITE : RADIO_SELECTED_SPRITE;
-        } else {
-            resourceLocation = this.isHoveredOrFocused() ? RADIO_HIGHLIGHTED_SPRITE : RADIO_SPRITE;
-        }
-
-        int size = getBoxSize(Minecraft.getInstance().font);
-        gfx.blitSprite(RenderType::guiTextured, resourceLocation, this.getX(), this.getY(), size, size, ARGB.white(this.alpha));
-        int textX = this.getX() + size + 4;
-        int textY = this.getY() + size / 2 - this.textWidget.getHeight() / 2;
-        this.textWidget.setPosition(textX, textY);
-        this.textWidget.renderWidget(gfx, mouseX, mouseY, delta);
-    }
-
-    @Override
-    public void tick() {
-        //
+        TextureSwappableWidget.super.renderWidget(gfx, mouseX, mouseY, delta);
     }
 
     @Override
     public void onPress() {
         super.onPress();
+
+        // make sure we're still on our screen
+        AbstractScreen screen = (AbstractScreen) Minecraft.getInstance().screen;
+        if (screen == null) {
+            return;
+        }
 
         // make sure the value is actually changed
         if (Boolean.TRUE.equals(getElement().isSelected()) == selected()) {
@@ -101,13 +105,8 @@ public class RenderableRadio extends RenderableCheckbox implements RenderableWid
         // toggle this radio
         getElement().setSelected(selected());
 
-        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        AbstractScreen screen = (AbstractScreen) Minecraft.getInstance().screen;
-        if (screen == null) {
-            return;
-        }
-
         // tell the server
+        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
         conn.send(new RadioTogglePacket(screen.getKey(), getElement().getKey(), selected()));
 
         // if this radio was toggled off, we're done.
@@ -115,7 +114,7 @@ public class RenderableRadio extends RenderableCheckbox implements RenderableWid
             return;
         }
 
-        // check if this radio is in a group
+        // otherwise, check if this radio is in a group
         Key group = getElement().getGroup();
         if (group == null) {
             return;
@@ -129,12 +128,12 @@ public class RenderableRadio extends RenderableCheckbox implements RenderableWid
             }
 
             // ensure is radio
-            if (!(element instanceof RenderableRadio other)) {
+            if (!(element instanceof RenderableRadio otherWidget)) {
                 return;
             }
 
             // ensure group is the same
-            Radio otherRadio = other.getElement();
+            Radio otherRadio = otherWidget.getElement();
             if (!group.equals(otherRadio.getGroup())) {
                 return;
             }
@@ -144,9 +143,11 @@ public class RenderableRadio extends RenderableCheckbox implements RenderableWid
                 return;
             }
 
-            // finally turn off the other radio and tell the server
-            other.selected = false;
+            // turn off the other radio
+            otherWidget.selected = false;
             otherRadio.setSelected(false);
+
+            // tell the server
             conn.send(new RadioTogglePacket(screen.getKey(), otherRadio.getKey(), false));
         });
     }

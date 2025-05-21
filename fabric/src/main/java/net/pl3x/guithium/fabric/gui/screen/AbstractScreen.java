@@ -11,7 +11,6 @@ import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.element.RenderableWidget;
-import net.pl3x.guithium.fabric.gui.element.Tickable;
 import net.pl3x.guithium.fabric.util.RenderQueue;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,15 +57,6 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         gfx.pose().pushPose();
         super.render(gfx, mouseX, mouseY, delta);
         gfx.pose().popPose();
-    }
-
-    @Override
-    public void tick() {
-        this.widgets.forEach((key, widget) -> {
-            if (widget instanceof Tickable tickable) {
-                tickable.tick();
-            }
-        });
     }
 
     public void open() {

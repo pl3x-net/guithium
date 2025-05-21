@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
+import net.pl3x.guithium.api.gui.element.Circle;
 import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.element.Slider;
 import org.jetbrains.annotations.NotNull;
@@ -21,8 +23,8 @@ public interface RenderableWidget {
         return switch (element.getClass().getSimpleName()) {
             case "Button" -> new RenderableButton((Button) element);
             case "Checkbox" -> new RenderableCheckbox((Checkbox) element);
-            //case CIRCLE -> new RenderableCircle(screen, (Circle) element);
-            //case GRADIENT -> new RenderableGradient(screen, (Gradient) element);
+            case "Circle" -> new RenderableCircle((Circle) element);
+            case "Gradient" -> new RenderableGradient((Gradient) element);
             //case IMAGE -> new RenderableImage(screen, (Image) element);
             //case LINE -> new RenderableLine(screen, (Line) element);
             case "Radio" -> new RenderableRadio((Radio) element);

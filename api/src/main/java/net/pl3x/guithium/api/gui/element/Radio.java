@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 public class Radio extends LabeledRect<Radio> {
     private Key group;
     private Boolean selected;
-    private Boolean showLabel;
 
     @Exclude
     private OnToggled onToggled = (screen, radio, player, selected) -> {
@@ -121,32 +120,6 @@ public class Radio extends LabeledRect<Radio> {
     }
 
     /**
-     * Get if we should show text label.
-     * <p>
-     * If null, text label will be shown.
-     *
-     * @return True to show text label
-     */
-    @Nullable
-    public Boolean isShowLabel() {
-        return this.showLabel;
-    }
-
-    /**
-     * Set if we should show text label.
-     * <p>
-     * If null, text label will be shown.
-     *
-     * @param showLabel True to show text label
-     * @return This radio button
-     */
-    @NotNull
-    public Radio setShowLabel(@Nullable Boolean showLabel) {
-        this.showLabel = showLabel;
-        return this;
-    }
-
-    /**
      * Get the action to execute when the radio button is toggled.
      * <p>
      * If null, no toggle action will be used.
@@ -180,7 +153,6 @@ public class Radio extends LabeledRect<Radio> {
         Radio other = (Radio) obj;
         return Objects.equals(getGroup(), other.getGroup())
                 && Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(isShowLabel(), other.isShowLabel())
                 && Objects.equals(onToggled(), other.onToggled());
     }
 
@@ -190,7 +162,6 @@ public class Radio extends LabeledRect<Radio> {
                 super.hashCode(),
                 getGroup(),
                 isSelected(),
-                isShowLabel(),
                 onToggled()
         );
     }
