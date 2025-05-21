@@ -35,7 +35,7 @@ public class Gradient extends Rect<Gradient> {
      * @param key Unique identifier
      */
     public Gradient(@NotNull Key key) {
-        super(key, Type.GRADIENT);
+        super(key);
     }
 
     /**

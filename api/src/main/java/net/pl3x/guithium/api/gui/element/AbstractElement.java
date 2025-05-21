@@ -14,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> The type of element
  */
 public abstract class AbstractElement<T extends AbstractElement<T>> extends Keyed implements Element {
-    private final Type type;
-
     private Vec2 pos;
     private Vec2 anchor;
     private Vec2 offset;
@@ -25,18 +23,10 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     /**
      * Create a new keyed element.
      *
-     * @param key  Unique identifier for element
-     * @param type Type of element
+     * @param key Unique identifier for element
      */
-    protected AbstractElement(@NotNull Key key, @NotNull Type type) {
+    protected AbstractElement(@NotNull Key key) {
         super(key);
-        this.type = type;
-    }
-
-    @Override
-    @NotNull
-    public Type getType() {
-        return this.type;
     }
 
     @Override
@@ -128,8 +118,7 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
             return false;
         }
         T other = Unsafe.cast(obj);
-        return Objects.equals(getType(), other.getType())
-                && Objects.equals(getPos(), other.getPos())
+        return Objects.equals(getPos(), other.getPos())
                 && Objects.equals(getAnchor(), other.getAnchor())
                 && Objects.equals(getOffset(), other.getOffset())
                 && Objects.equals(getRotation(), other.getRotation())
@@ -140,7 +129,6 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
     public int hashCode() {
         return Objects.hash(
                 super.hashCode(),
-                getType(),
                 getPos(),
                 getAnchor(),
                 getOffset(),

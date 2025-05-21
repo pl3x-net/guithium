@@ -1,9 +1,15 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.pl3x.guithium.api.gui.element.Checkbox;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +32,13 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(checkbox.getTooltip())));
     }
 
+    protected RenderableCheckbox(int i, int j, int k, Component component, Font font, boolean bl, OnValueChange onValueChange) {
+        super(i, j, k, component, font, bl, onValueChange);
+        this.checkbox = null;
+    }
+
     @NotNull
-    public Checkbox getElement() {
+    public Element getElement() {
         return this.checkbox;
     }
 
@@ -53,7 +64,21 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         RenderableDuck self = (RenderableDuck) this;
         self.rotate(gfx, self.getCenterX(), self.getCenterY(), this.checkbox.getRotation());
         self.scale(gfx, self.getCenterX(), self.getCenterY(), this.checkbox.getScale());
-        super.renderWidget(gfx, mouseX, mouseY, delta);
+        //super.renderWidget(gfx, mouseX, mouseY, delta);
+
+        ResourceLocation resourceLocation;
+        if (selected()) {
+            resourceLocation = this.isHoveredOrFocused() ? CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE : CHECKBOX_SELECTED_SPRITE;
+        } else {
+            resourceLocation = this.isHoveredOrFocused() ? CHECKBOX_HIGHLIGHTED_SPRITE : CHECKBOX_SPRITE;
+        }
+
+        int size = getBoxSize(Minecraft.getInstance().font);
+        gfx.blitSprite(RenderType::guiTextured, resourceLocation, this.getX(), this.getY(), size, size, ARGB.white(this.alpha));
+        int textX = this.getX() + size + 4;
+        int textY = this.getY() + size / 2 - this.textWidget.getHeight() / 2;
+        this.textWidget.setPosition(textX, textY);
+        this.textWidget.renderWidget(gfx, mouseX, mouseY, delta);
     }
 
     @Override

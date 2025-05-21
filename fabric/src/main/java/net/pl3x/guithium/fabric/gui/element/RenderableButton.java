@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,9 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
                 button.getSize().getX(),
                 button.getSize().getY(),
                 ComponentHelper.toVanilla(button.getLabel()),
-                null,
+                btn -> {
+                    Guithium.logger.warn("CLICK! ({})", button.getKey());
+                },
                 Supplier::get
         );
         this.button = button;
@@ -49,14 +52,19 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+        this.tickF = this.tickF + delta * (this.tick - this.tickF);
+
         RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), this.button.getRotation());
+        self.rotate(gfx, self.getCenterX(), self.getCenterY(), /*this.button.getRotation()*/ (float) this.tickF);
         self.scale(gfx, self.getCenterX(), self.getCenterY(), this.button.getScale());
         super.renderWidget(gfx, mouseX, mouseY, delta);
     }
 
+    private int tick = 0;
+    private float tickF = 0;
+
     @Override
     public void tick() {
-        //
+        this.tick += 5;
     }
 }

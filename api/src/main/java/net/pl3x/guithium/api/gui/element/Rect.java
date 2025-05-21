@@ -18,11 +18,10 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
     /**
      * Create a new rect-type element.
      *
-     * @param key  Unique identifier for element
-     * @param type Type of rect
+     * @param key Unique identifier for element
      */
-    protected Rect(@NotNull Key key, @NotNull Type type) {
-        super(key, type);
+    protected Rect(@NotNull Key key) {
+        super(key);
     }
 
     /**

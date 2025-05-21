@@ -28,7 +28,7 @@ public class Text extends AbstractElement<Text> {
      * @param key Unique identifier
      */
     public Text(@NotNull Key key) {
-        super(key, Type.TEXT);
+        super(key);
     }
 
     /**

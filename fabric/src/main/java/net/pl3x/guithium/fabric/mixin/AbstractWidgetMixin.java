@@ -1,8 +1,12 @@
 package net.pl3x.guithium.fabric.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.fabric.gui.element.RenderableDuck;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,26 +28,31 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
     protected int height;
 
     @Override
+    @Unique
     public int getCenterX() {
         return this.centerX;
     }
 
     @Override
+    @Unique
     public void setCenterX(int x) {
         this.centerX = x;
     }
 
     @Override
+    @Unique
     public int getCenterY() {
         return this.centerY;
     }
 
     @Override
+    @Unique
     public void setCenterY(int y) {
         this.centerY = y;
     }
 
     @Override
+    @Unique
     public void calcScreenPos(int sizeX, int sizeY) {
         int anchorX, anchorY;
         Vec2 anchor = getElement().getAnchor();
@@ -75,7 +84,14 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
         this.x = anchorX + pos.getX() - offsetX;
         this.y = anchorY + pos.getY() - offsetY;
 
-        setCenterX(this.x + offsetX);
-        setCenterY(this.y + offsetY);
+        setCenterX(this.x + this.width / 2);
+        setCenterY(this.y + this.height / 2);
+    }
+
+    @WrapMethod(method = "render")
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta, @NotNull Operation<Void> original) {
+        gfx.pose().pushPose();
+        original.call(gfx, mouseX, mouseY, delta);
+        gfx.pose().popPose();
     }
 }

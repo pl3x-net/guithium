@@ -32,7 +32,7 @@ public class Line extends AbstractElement<Line> {
      * @param key Unique identifier
      */
     public Line(@NotNull Key key) {
-        super(key, Type.LINE);
+        super(key);
     }
 
     /**

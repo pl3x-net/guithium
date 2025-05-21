@@ -1,5 +1,7 @@
 package net.pl3x.guithium.api.json;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
@@ -7,15 +9,23 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.Strictness;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Type;
 import net.kyori.adventure.text.Component;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.json.adapter.ComponentAdapter;
+import net.pl3x.guithium.api.key.Key;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +44,10 @@ public interface JsonSerializable {
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
             .registerTypeAdapter(Component.class, new ComponentAdapter())
+            .registerTypeAdapter(Key.class, new Key.Adapter())
+            .registerTypeAdapter(Element.class, new Adapter<>())
             .registerTypeAdapter(JsonSerializable.class, new Adapter<>())
+            .addSerializationExclusionStrategy(new Exclude.Strategy())
             .create();
 
     /**
@@ -44,7 +57,7 @@ public interface JsonSerializable {
      */
     @NotNull
     default String toJson() {
-        return GSON.toJson(this, this.getClass());
+        return GSON.toJson(this);
     }
 
     /**
@@ -62,9 +75,14 @@ public interface JsonSerializable {
         if (StringUtils.isEmpty(json)) {
             throw new IllegalArgumentException("json cannot be null or empty");
         }
-        T obj = GSON.fromJson(json, clazz);
+        T obj;
+        try {
+            obj = GSON.fromJson(json, clazz);
+        } catch (Throwable e) {
+            throw new JsonSyntaxException("Cannot deserialize " + clazz.getSimpleName() + ": " + json, e);
+        }
         if (obj == null) {
-            throw new JsonSyntaxException("Cannot deserialize " + clazz.getSimpleName() + ": " + json);
+            throw new JsonSyntaxException("Cannot deserialize null " + clazz.getSimpleName() + ": " + json);
         }
         return obj;
     }
@@ -85,13 +103,51 @@ public interface JsonSerializable {
         @Override
         @NotNull
         public JsonElement serialize(@NotNull T src, @NotNull Type type, @NotNull JsonSerializationContext context) {
-            return GSON.toJsonTree(src, type);
+            JsonObject json = new JsonObject();
+            json.add("class", new JsonPrimitive(src.getClass().getName()));
+            json.add("data", context.serialize(src, src.getClass()));
+            return json;
         }
 
         @Override
         @Nullable
         public T deserialize(@NotNull JsonElement json, @NotNull Type type, @NotNull JsonDeserializationContext context) throws JsonParseException {
-            return GSON.fromJson(json, type);
+            try {
+                JsonObject obj = json.getAsJsonObject();
+                Type clazz = obj.has("class") ? Class.forName(obj.get("class").getAsString()) : type;
+                return context.deserialize(obj.get("data"), clazz);
+            } catch (ClassNotFoundException e) {
+                throw new JsonParseException("unknown class type", e);
+            }
+        }
+    }
+
+    /**
+     * Annotation for marking fields to exclude from json serialization.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface Exclude {
+        /**
+         * Strategy to register with gson to handle exclude annotation.
+         */
+        class Strategy implements ExclusionStrategy {
+            /**
+             * Create a new exclude strategy for gson.
+             */
+            Strategy() {
+                // Empty constructor to pacify javadoc lint
+            }
+
+            @Override
+            public boolean shouldSkipClass(@NotNull Class<?> clazz) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldSkipField(@NotNull FieldAttributes field) {
+                return field.getAnnotation(Exclude.class) != null;
+            }
         }
     }
 }

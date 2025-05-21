@@ -80,7 +80,7 @@ public class FabricPacketListener implements PacketListener {
         Screen screen = packet.getScreen();
         AbstractScreen test = new RenderableScreen(this.mod, screen);
 
-        if (screen.isHud()) {
+        if (false && screen.isHud()) {
             this.mod.getHudManager().add(test);
         } else {
             test.open();

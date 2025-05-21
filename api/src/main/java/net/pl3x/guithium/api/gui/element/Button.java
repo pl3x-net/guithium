@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a button element.
  */
 public class Button extends LabeledRect<Button> {
+    @Exclude
     private OnClick onClick = (screen, button, player) -> {
     };
 
@@ -30,7 +31,7 @@ public class Button extends LabeledRect<Button> {
      * @param key Unique identifier for element
      */
     public Button(@NotNull Key key) {
-        super(key, Type.BUTTON);
+        super(key);
     }
 
     /**
