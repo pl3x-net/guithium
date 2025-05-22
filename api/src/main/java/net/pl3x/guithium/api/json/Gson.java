@@ -34,9 +34,9 @@ public abstract class Gson {
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
             .registerTypeAdapter(Component.class, new ComponentAdapter())
-            .registerTypeAdapter(Element.class, new ElementAdapter())
             .registerTypeAdapter(Key.class, new Key.Adapter())
-            .registerTypeAdapter(Screen.class, new ScreenAdapter())
+            .registerTypeHierarchyAdapter(Element.class, new ElementAdapter())
+            .registerTypeHierarchyAdapter(Screen.class, new ScreenAdapter())
             .create();
 
     /**

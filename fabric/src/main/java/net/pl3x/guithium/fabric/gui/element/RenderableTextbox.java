@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
@@ -14,7 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class RenderableTextbox extends EditBox implements RenderableWidget {
     private final RenderableDuck self;
-    private final Textbox textbox;
+
+    private Textbox textbox;
 
     public RenderableTextbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Textbox textbox) {
         super(client.font, 0, 0, Component.empty());
@@ -26,6 +28,12 @@ public class RenderableTextbox extends EditBox implements RenderableWidget {
     @NotNull
     public Textbox getElement() {
         return this.textbox;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.textbox = (Textbox) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Checkbox;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
@@ -17,7 +18,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class RenderableCheckbox extends net.minecraft.client.gui.components.Checkbox implements TextureSwappableWidget, RenderableWidget {
     private final RenderableDuck self;
-    private final Checkbox checkbox;
+
+    private Checkbox checkbox;
 
     public RenderableCheckbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Checkbox checkbox) {
         super(
@@ -32,6 +34,12 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
     @NotNull
     public Checkbox getElement() {
         return this.checkbox;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.checkbox = (Checkbox) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

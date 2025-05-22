@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
@@ -13,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class RenderableText extends AbstractWidget implements RenderableWidget {
     private final RenderableDuck self;
-    private final Text text;
+
+    private Text text;
 
     public RenderableText(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Text text) {
         super(0, 0, 0, 0, Component.empty());
@@ -26,6 +28,12 @@ public class RenderableText extends AbstractWidget implements RenderableWidget {
     @NotNull
     public Text getElement() {
         return this.text;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.text = (Text) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

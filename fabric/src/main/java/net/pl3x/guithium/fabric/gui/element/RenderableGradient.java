@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,8 @@ import org.joml.Matrix4f;
 
 public class RenderableGradient extends AbstractWidget implements RenderableWidget {
     private final RenderableDuck self;
-    private final Gradient gradient;
+
+    private Gradient gradient;
 
     private int x0, y0, x1, y1;
     private int[] color;
@@ -30,6 +32,12 @@ public class RenderableGradient extends AbstractWidget implements RenderableWidg
     @NotNull
     public Gradient getElement() {
         return this.gradient;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.gradient = (Gradient) element;
+        this.self.getScreen().refresh();
     }
 
     @Override
