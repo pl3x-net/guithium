@@ -54,7 +54,7 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
     @Override
     @Unique
     public void calcScreenPos(int sizeX, int sizeY) {
-        int anchorX, anchorY;
+        float anchorX, anchorY;
         Vec2 anchor = getElement().getAnchor();
         if (anchor == Vec2.ZERO) {
             anchorX = 0;
@@ -67,7 +67,7 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
             anchorY = this.height * anchor.getY();
         }
 
-        int offsetX, offsetY;
+        float offsetX, offsetY;
         Vec2 offset = getElement().getOffset();
         if (offset == Vec2.ZERO) {
             offsetX = 0;
@@ -81,8 +81,8 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
         }
 
         Vec2 pos = getElement().getPos();
-        this.x = anchorX + pos.getX() - offsetX;
-        this.y = anchorY + pos.getY() - offsetY;
+        this.x = (int) (anchorX + pos.getX() - offsetX);
+        this.y = (int) (anchorY + pos.getY() - offsetY);
 
         setCenterX(this.x + this.width / 2);
         setCenterY(this.y + this.height / 2);

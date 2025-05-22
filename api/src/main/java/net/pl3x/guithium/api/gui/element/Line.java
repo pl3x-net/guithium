@@ -13,7 +13,7 @@ public class Line extends AbstractElement<Line> {
     private Vec2 endPos;
     private Vec2 endAnchor;
     private Vec2 endOffset;
-    private Float width;
+    private Integer width;
     private int startColor;
     private int endColor;
 
@@ -177,8 +177,8 @@ public class Line extends AbstractElement<Line> {
      * @return Line width
      */
     @NotNull
-    public Float getWidth() {
-        return this.width == null ? 1.0f : this.width;
+    public Integer getWidth() {
+        return this.width == null ? 1 : this.width;
     }
 
     /**
@@ -188,7 +188,7 @@ public class Line extends AbstractElement<Line> {
      * @return This line
      */
     @NotNull
-    public Line setWidth(@Nullable Float width) {
+    public Line setWidth(@Nullable Integer width) {
         this.width = width;
         return this;
     }

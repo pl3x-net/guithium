@@ -1,11 +1,9 @@
 package net.pl3x.guithium.fabric.gui.element;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Checkbox;
@@ -18,26 +16,19 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableCheckbox extends net.minecraft.client.gui.components.Checkbox implements TextureSwappableWidget, RenderableWidget {
+    private final Minecraft client;
+    private final AbstractScreen screen;
     private final Checkbox checkbox;
 
-    public RenderableCheckbox(@NotNull Checkbox checkbox) {
+    public RenderableCheckbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Checkbox checkbox) {
         super(
-                checkbox.getPos().getX(),
-                checkbox.getPos().getY(),
-                checkbox.getSize().getX(), // max width
+                0, 0, (int) checkbox.getSize().getX(),
                 ComponentHelper.toVanilla(checkbox.getLabel()),
-                Minecraft.getInstance().font,
-                BooleanUtils.isTrue(checkbox.isSelected()),
-                (chk, bl) -> {
-                }
+                client.font, false, null
         );
+        this.client = client;
+        this.screen = screen;
         this.checkbox = checkbox;
-        setTooltip(Tooltip.create(ComponentHelper.toVanilla(checkbox.getTooltip())));
-    }
-
-    protected RenderableCheckbox(int i, int j, int k, @NotNull Component component, @NotNull Font font, boolean bl, @NotNull OnValueChange onValueChange) {
-        super(i, j, k, component, font, bl, onValueChange);
-        this.checkbox = null;
     }
 
     @NotNull
@@ -67,16 +58,17 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
     }
 
     @Override
-    public void init(@NotNull Minecraft client) {
+    public void init() {
         // update contents
-        setMessage(ComponentHelper.toVanilla(this.checkbox.getLabel()));
-        setTooltip(Tooltip.create(ComponentHelper.toVanilla(this.checkbox.getTooltip())));
+        setMessage(ComponentHelper.toVanilla(getElement().getLabel()));
+        setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
+        this.selected = BooleanUtils.isTrue(getElement().isSelected());
 
         // update pos/size
-        setX(getElement().getPos().getX());
-        setY(getElement().getPos().getY());
-        setWidth(getAdjustedWidth(getElement().getSize().getX(), this.message, client.font));
-        setHeight(getAdjustedHeight(client.font));
+        setX((int) getElement().getPos().getX());
+        setY((int) getElement().getPos().getY());
+        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.client.font));
+        setHeight(getAdjustedHeight(this.client.font));
 
         // recalculate position on screen
         RenderableDuck self = (RenderableDuck) this;
@@ -90,13 +82,8 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
 
     @Override
     public void onPress() {
-        super.onPress();
-
-        // make sure we're still on our screen
-        AbstractScreen screen = (AbstractScreen) Minecraft.getInstance().screen;
-        if (screen == null) {
-            return;
-        }
+        // toggle it
+        this.selected = !selected();
 
         // make sure the value is actually changed
         if (Boolean.TRUE.equals(getElement().isSelected()) == selected()) {
@@ -108,6 +95,6 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
 
         // tell the server
         Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(new CheckboxTogglePacket(screen.getKey(), getElement().getKey(), selected()));
+        conn.send(new CheckboxTogglePacket(this.screen.getKey(), getElement().getKey(), selected()));
     }
 }

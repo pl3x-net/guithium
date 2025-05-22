@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * @param z Z value
  * @param w W value
  */
-public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
+public record Vec4(float x, float y, float z, float w) implements JsonSerializable {
     /**
      * Vec4 of 0,0,0,0
      */
@@ -32,7 +32,7 @@ public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
      * @return A new 4D vector
      */
     @NotNull
-    public static Vec4 of(int x, int y, int z, int w) {
+    public static Vec4 of(float x, float y, float z, float w) {
         return new Vec4(x, y, z, w);
     }
 
@@ -41,7 +41,7 @@ public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
      *
      * @return The X value
      */
-    public int getX() {
+    public float getX() {
         return x();
     }
 
@@ -50,7 +50,7 @@ public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
      *
      * @return The Y value
      */
-    public int getY() {
+    public float getY() {
         return y();
     }
 
@@ -59,7 +59,7 @@ public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
      *
      * @return The Z value
      */
-    public int getZ() {
+    public float getZ() {
         return z();
     }
 
@@ -68,7 +68,7 @@ public record Vec4(int x, int y, int z, int w) implements JsonSerializable {
      *
      * @return The W value
      */
-    public int getW() {
+    public float getW() {
         return w();
     }
 
