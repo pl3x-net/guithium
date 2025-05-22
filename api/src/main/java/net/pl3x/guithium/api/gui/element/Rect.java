@@ -1,8 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,5 +76,24 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
                 super.hashCode(),
                 getSize()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("size", getSize());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Populate a rectangle from Json.
+     *
+     * @param element A rectangle to populate
+     * @param json    Json representation of a rectangle
+     */
+    public static void fromJson(@NotNull Rect<?> element, @NotNull JsonObject json) {
+        AbstractElement.fromJson(element, json);
+        element.setSize(!json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()));
     }
 }

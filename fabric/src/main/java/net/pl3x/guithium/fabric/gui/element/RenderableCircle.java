@@ -15,8 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class RenderableCircle extends AbstractWidget implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Circle circle;
 
     private int radius;
@@ -26,8 +25,7 @@ public class RenderableCircle extends AbstractWidget implements RenderableWidget
 
     public RenderableCircle(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Circle circle) {
         super(0, 0, 0, 0, Component.empty());
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.circle = circle;
         this.active = false;
     }
@@ -57,8 +55,7 @@ public class RenderableCircle extends AbstractWidget implements RenderableWidget
         setHeight(this.radius * 2);
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
 
         this.innerColor = getElement().getInnerColor();
         this.outerColor = getElement().getOuterColor();
@@ -68,9 +65,8 @@ public class RenderableCircle extends AbstractWidget implements RenderableWidget
 
     @Override
     protected void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
 
         Matrix4f matrix4f = gfx.pose().last().pose();
         VertexConsumer buf = gfx.bufferSource.getBuffer(RenderType.debugTriangleFan());

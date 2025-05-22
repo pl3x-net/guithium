@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import net.pl3x.guithium.api.gui.texture.Texture;
-import net.pl3x.guithium.api.json.JsonSerializable;
+import net.pl3x.guithium.api.json.Gson;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +47,7 @@ public class TexturesPacket extends Packet {
     public TexturesPacket(@NotNull ByteArrayDataInput in) {
         super(KEY);
         this.textures = new HashMap<>();
-        this.rawTex = JsonSerializable.GSON.fromJson(in.readUTF(), TYPE_TOKEN);
+        this.rawTex = Gson.fromJson(in.readUTF(), TYPE_TOKEN);
         if (this.rawTex != null) {
             this.rawTex.forEach((id, url) -> {
                 Key key = Key.of(id);
@@ -75,7 +75,7 @@ public class TexturesPacket extends Packet {
     @NotNull
     public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
-        out.writeUTF(JsonSerializable.GSON.toJson(this.rawTex));
+        out.writeUTF(Gson.toJson(this.rawTex));
         return out;
     }
 }

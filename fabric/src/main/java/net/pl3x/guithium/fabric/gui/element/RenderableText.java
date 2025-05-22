@@ -12,14 +12,12 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableText extends AbstractWidget implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Text text;
 
     public RenderableText(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Text text) {
         super(0, 0, 0, 0, Component.empty());
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.text = text;
         this.active = false;
     }
@@ -42,12 +40,11 @@ public class RenderableText extends AbstractWidget implements RenderableWidget {
         // update pos/size
         setX((int) getElement().getPos().getX());
         setY((int) getElement().getPos().getY());
-        setWidth(this.client.font.width(getMessage()));
-        setHeight(this.client.font.lineHeight);
+        setWidth(this.self.getClient().font.width(getMessage()));
+        setHeight(this.self.getClient().font.lineHeight);
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
@@ -56,12 +53,11 @@ public class RenderableText extends AbstractWidget implements RenderableWidget {
             return;
         }
 
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
 
         gfx.drawString(
-                this.client.font,
+                this.self.getClient().font,
                 getMessage(),
                 getX(),
                 getY(),

@@ -1,8 +1,12 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Unsafe;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -120,5 +124,26 @@ public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<T> {
                 getLabel(),
                 getTooltip()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("label", getLabel());
+        json.addProperty("tooltip", getTooltip());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Populate a labeled rectangle from Json.
+     *
+     * @param element A labeled rectangle to populate
+     * @param json    Json representation of a labeled rectangle
+     */
+    public static void fromJson(@NotNull LabeledRect<?> element, @NotNull JsonObject json) {
+        Rect.fromJson(element, json);
+        element.setLabel(!json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()));
+        element.setTooltip(!json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()));
     }
 }

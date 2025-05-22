@@ -1,7 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.QuadConsumer;
@@ -15,7 +19,6 @@ public class Radio extends LabeledRect<Radio> {
     private Key group;
     private Boolean selected;
 
-    @Exclude
     private OnToggled onToggled = (screen, radio, player, selected) -> {
     };
 
@@ -164,6 +167,31 @@ public class Radio extends LabeledRect<Radio> {
                 isSelected(),
                 onToggled()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("group", getGroup());
+        json.addProperty("selected", isSelected());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new radio button from Json.
+     *
+     * @param json Json representation of a radio button
+     * @return A new radio button
+     */
+    @NotNull
+    public static Radio fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Radio radio = new Radio(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(radio, json);
+        radio.setGroup(!json.has("group") ? null : Key.of(json.get("group").getAsString()));
+        radio.setSelected(!json.has("selected") ? null : json.get("selected").getAsBoolean());
+        return radio;
     }
 
     /**

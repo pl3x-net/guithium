@@ -3,7 +3,7 @@ package net.pl3x.guithium.api.network.packet;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.json.JsonSerializable;
+import net.pl3x.guithium.api.json.Gson;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,8 @@ public class ElementPacket extends Packet {
      * @param in Input byte array
      */
     public ElementPacket(@NotNull ByteArrayDataInput in) {
-        this(JsonSerializable.fromJson(in.readUTF(), Element.class));
+        super(KEY);
+        this.element = Gson.fromJson(in.readUTF(), Element.class);
     }
 
     /**
@@ -57,7 +58,7 @@ public class ElementPacket extends Packet {
     @NotNull
     public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
-        out.writeUTF(getElement().toJson());
+        out.writeUTF(Gson.toJson(getElement()));
         return out;
     }
 }

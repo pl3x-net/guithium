@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -275,5 +278,37 @@ public class Line extends AbstractElement<Line> {
                 getStartColor(),
                 getEndColor()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("endPos", getEndPos());
+        json.addProperty("endAnchor", getEndAnchor());
+        json.addProperty("endOffset", getEndOffset());
+        json.addProperty("width", getWidth());
+        json.addProperty("startColor", getStartColor());
+        json.addProperty("endColor", getEndColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new line from Json.
+     *
+     * @param json Json representation of a line
+     * @return A new line
+     */
+    @NotNull
+    public static Line fromJson(@NotNull JsonObject json) {
+        Line line = new Line(Key.of(json.get("key").getAsString()));
+        AbstractElement.fromJson(line, json);
+        line.setEndPos(!json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()));
+        line.setEndAnchor(!json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()));
+        line.setEndOffset(!json.has("endOffset") ? null : Vec2.fromJson(json.get("endOffset").getAsJsonObject()));
+        line.setWidth(!json.has("width") ? null : json.get("width").getAsInt());
+        line.setStartColor(!json.has("startColor") ? 0 : json.get("startColor").getAsInt());
+        line.setEndColor(!json.has("endColor") ? 0 : json.get("endColor").getAsInt());
+        return line;
     }
 }

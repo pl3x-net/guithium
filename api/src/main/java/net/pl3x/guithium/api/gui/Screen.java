@@ -2,12 +2,15 @@ package net.pl3x.guithium.api.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
@@ -274,5 +277,40 @@ public class Screen extends Keyed {
                 isHud(),
                 getElements()
         );
+    }
+
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper();
+        json.addProperty("key", getKey());
+        json.addProperty("hud", isHud());
+        json.addProperty("elements", getElements());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new screen from Json.
+     *
+     * @param json Json representation of a screen
+     * @return A new screen
+     */
+    @NotNull
+    public static Screen fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Key key = Key.of(json.get("key").getAsString());
+        boolean isHud = json.get("hud").getAsBoolean();
+        Screen screen = new Screen(key, isHud);
+        if (json.has("elements")) {
+            json.get("elements").getAsJsonArray().forEach(jsonElement -> {
+                if (jsonElement.isJsonObject()) {
+                    JsonObject obj = jsonElement.getAsJsonObject();
+                    Element element = Element.fromJson(obj);
+                    if (element != null) {
+                        screen.addElement(element);
+                    }
+                }
+            });
+        }
+        return screen;
     }
 }

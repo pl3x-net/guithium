@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonObject;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonSerializable;
@@ -175,5 +176,32 @@ public interface Element extends JsonSerializable {
      */
     default <T> void send(@NotNull T player) {
         send(Guithium.api().getPlayerManager().get(player));
+    }
+
+    /**
+     * Create an element object from json representation.
+     *
+     * @param json Json representation
+     * @return A new element object, or null if invalid type
+     */
+    @Nullable
+    static Element fromJson(@NotNull JsonObject json) {
+        if (!json.has("type")) {
+            return null;
+        }
+        String type = json.get("type").getAsString();
+        return switch (type) {
+            case "Button" -> Button.fromJson(json);
+            case "Checkbox" -> Checkbox.fromJson(json);
+            case "Circle" -> Circle.fromJson(json);
+            case "Gradient" -> Gradient.fromJson(json);
+            case "Image" -> Image.fromJson(json);
+            case "Line" -> Line.fromJson(json);
+            case "Radio" -> Radio.fromJson(json);
+            case "Slider" -> Slider.fromJson(json);
+            case "Text" -> Text.fromJson(json);
+            case "Textbox" -> Textbox.fromJson(json);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 }

@@ -1,7 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.QuadConsumer;
@@ -17,7 +21,6 @@ public class Slider extends LabeledRect<Slider> {
     private Double max;
     private String decimal;
 
-    @Exclude
     private OnChange onChange = (screen, slider, player, value) -> {
     };
 
@@ -216,6 +219,35 @@ public class Slider extends LabeledRect<Slider> {
                 getDecimalFormat(),
                 onChange()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("value", getValue());
+        json.addProperty("min", getMin());
+        json.addProperty("max", getMax());
+        json.addProperty("decimal", getDecimalFormat());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new slider from Json.
+     *
+     * @param json Json representation of a slider
+     * @return A new slider
+     */
+    @NotNull
+    public static Slider fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Slider slider = new Slider(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(slider, json);
+        slider.setValue(!json.has("value") ? 0D : json.get("value").getAsDouble());
+        slider.setMin(!json.has("min") ? 0D : json.get("min").getAsDouble());
+        slider.setMax(!json.has("max") ? 1D : json.get("max").getAsDouble());
+        slider.setDecimalFormat(!json.has("decimal") ? null : json.get("decimal").getAsString());
+        return slider;
     }
 
     /**

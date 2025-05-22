@@ -24,7 +24,8 @@ public interface RenderableWidget {
 
     @NotNull
     static AbstractWidget create(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Element element) {
-        return switch (element.getClass().getSimpleName()) {
+        String type = element.getClass().getSimpleName();
+        return switch (type) {
             case "Button" -> new RenderableButton(client, screen, (Button) element);
             case "Checkbox" -> new RenderableCheckbox(client, screen, (Checkbox) element);
             case "Circle" -> new RenderableCircle(client, screen, (Circle) element);
@@ -35,7 +36,7 @@ public interface RenderableWidget {
             case "Slider" -> new RenderableSlider(client, screen, (Slider) element);
             case "Text" -> new RenderableText(client, screen, (Text) element);
             case "Textbox" -> new RenderableTextbox(client, screen, (Textbox) element);
-            default -> throw new IllegalArgumentException("Unknown element type: " + element.getClass().getSimpleName());
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
 }

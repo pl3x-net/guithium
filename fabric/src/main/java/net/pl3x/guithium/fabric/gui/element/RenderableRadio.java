@@ -22,8 +22,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
     public static final ResourceLocation RADIO_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio_highlighted");
     public static final ResourceLocation RADIO_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio");
 
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Radio radio;
 
     public RenderableRadio(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Radio radio) {
@@ -32,8 +31,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
                 ComponentHelper.toVanilla(radio.getLabel()),
                 client.font, false, null
         );
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.radio = radio;
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(radio.getTooltip())));
     }
@@ -74,12 +72,11 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
         // update pos/size
         setX((int) getElement().getPos().getX());
         setY((int) getElement().getPos().getY());
-        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.client.font));
-        setHeight(getAdjustedHeight(this.client.font));
+        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.self.getClient().font));
+        setHeight(getAdjustedHeight(this.self.getClient().font));
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
@@ -101,7 +98,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
 
         // tell the server
         Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(new RadioTogglePacket(screen.getKey(), getElement().getKey(), selected()));
+        conn.send(new RadioTogglePacket(this.self.getScreen().getKey(), getElement().getKey(), selected()));
 
         // if this radio was toggled off, we're done.
         if (!selected()) {
@@ -115,7 +112,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
         }
 
         // toggle off other radios in the same group
-        screen.renderables.forEach(element -> {
+        this.self.getScreen().renderables.forEach(element -> {
             // ignore self
             if (element == this) {
                 return;
@@ -142,7 +139,13 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
             otherRadio.setSelected(false);
 
             // tell the server
-            conn.send(new RadioTogglePacket(screen.getKey(), otherRadio.getKey(), false));
+            conn.send(
+                    new RadioTogglePacket(
+                            this.self.getScreen().getKey(),
+                            otherRadio.getKey(),
+                            false
+                    )
+            );
         });
     }
 }

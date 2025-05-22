@@ -2,8 +2,6 @@ package net.pl3x.guithium.api.network.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -28,10 +26,10 @@ public class SliderChangePacket extends Packet {
      * @param slider Slider that was changed
      * @param value  New value of slider
      */
-    public SliderChangePacket(@NotNull Screen screen, @NotNull Slider slider, double value) {
+    public SliderChangePacket(@NotNull Key screen, @NotNull Key slider, double value) {
         super(KEY);
-        this.screen = screen.getKey();
-        this.slider = slider.getKey();
+        this.screen = screen;
+        this.slider = slider;
         this.value = value;
     }
 

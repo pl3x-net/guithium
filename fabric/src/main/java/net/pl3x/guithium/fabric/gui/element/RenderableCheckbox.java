@@ -16,8 +16,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableCheckbox extends net.minecraft.client.gui.components.Checkbox implements TextureSwappableWidget, RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Checkbox checkbox;
 
     public RenderableCheckbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Checkbox checkbox) {
@@ -26,8 +25,7 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
                 ComponentHelper.toVanilla(checkbox.getLabel()),
                 client.font, false, null
         );
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.checkbox = checkbox;
     }
 
@@ -67,12 +65,11 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         // update pos/size
         setX((int) getElement().getPos().getX());
         setY((int) getElement().getPos().getY());
-        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.client.font));
-        setHeight(getAdjustedHeight(this.client.font));
+        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.self.getClient().font));
+        setHeight(getAdjustedHeight(this.self.getClient().font));
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
@@ -95,6 +92,12 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
 
         // tell the server
         Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(new CheckboxTogglePacket(this.screen.getKey(), getElement().getKey(), selected()));
+        conn.send(
+                new CheckboxTogglePacket(
+                        this.self.getScreen().getKey(),
+                        getElement().getKey(),
+                        selected()
+                )
+        );
     }
 }

@@ -1,8 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
 import org.jetbrains.annotations.NotNull;
@@ -135,5 +138,32 @@ public abstract class AbstractElement<T extends AbstractElement<T>> extends Keye
                 getRotation(),
                 getScale()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("type", getClass().getSimpleName());
+        json.addProperty("pos", getPos());
+        json.addProperty("anchor", getAnchor());
+        json.addProperty("offset", getOffset());
+        json.addProperty("rotation", getRotation());
+        json.addProperty("scale", getScale());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Populate an abstract element from Json.
+     *
+     * @param element An abstract element to populate
+     * @param json    Json representation of an abstract element
+     */
+    public static void fromJson(@NotNull AbstractElement<?> element, @NotNull JsonObject json) {
+        element.setPos(!json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()));
+        element.setAnchor(!json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()));
+        element.setOffset(!json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()));
+        element.setRotation(!json.has("rotation") ? null : json.get("rotation").getAsFloat());
+        element.setScale(!json.has("scale") ? null : json.get("scale").getAsFloat());
     }
 }

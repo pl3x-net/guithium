@@ -1,7 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.QuadConsumer;
@@ -14,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 public class Checkbox extends LabeledRect<Checkbox> {
     private Boolean selected;
 
-    @Exclude
     private OnToggled onToggled = (screen, checkbox, player, selected) -> {
     };
 
@@ -127,6 +130,31 @@ public class Checkbox extends LabeledRect<Checkbox> {
                 isSelected(),
                 onToggled()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("label", getLabel());
+        json.addProperty("tooltip", getTooltip());
+        json.addProperty("selected", isSelected());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new checkbox from Json.
+     *
+     * @param json Json representation of a checkbox
+     * @return A new checkbox
+     */
+    @NotNull
+    public static Checkbox fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Checkbox checkbox = new Checkbox(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(checkbox, json);
+        checkbox.setSelected(!json.has("selected") ? null : json.get("selected").getAsBoolean());
+        return checkbox;
     }
 
     /**
