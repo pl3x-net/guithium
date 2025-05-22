@@ -37,7 +37,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setPos(int x, int y);
+    Element setPos(float x, float y);
 
     /**
      * Set this element's position from the anchor position.
@@ -68,7 +68,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setAnchor(int x, int y);
+    Element setAnchor(float x, float y);
 
     /**
      * Set this element's anchor position on the screen.
@@ -101,7 +101,7 @@ public interface Element extends JsonSerializable {
      * @return This element
      */
     @NotNull
-    Element setOffset(int x, int y);
+    Element setOffset(float x, float y);
 
     /**
      * Set this element's offset position on the screen.

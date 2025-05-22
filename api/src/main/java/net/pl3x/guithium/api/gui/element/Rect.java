@@ -42,7 +42,7 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
      * @return This rect
      */
     @NotNull
-    public T setSize(int width, int height) {
+    public T setSize(float width, float height) {
         return setSize(Vec2.of(width, height));
     }
 
