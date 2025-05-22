@@ -75,7 +75,7 @@ public class Line extends AbstractElement<Line> {
      * @return This line
      */
     @NotNull
-    public Line setEndPos(int x, int y) {
+    public Line setEndPos(float x, float y) {
         return setEndPos(Vec2.of(x, y));
     }
 
@@ -113,7 +113,7 @@ public class Line extends AbstractElement<Line> {
      * @return This line
      */
     @NotNull
-    public Line setEndAnchor(int x, int y) {
+    public Line setEndAnchor(float x, float y) {
         return setEndAnchor(Vec2.of(x, y));
     }
 
@@ -153,7 +153,7 @@ public class Line extends AbstractElement<Line> {
      * @return This line
      */
     @NotNull
-    public Line setEndOffset(int x, int y) {
+    public Line setEndOffset(float x, float y) {
         return setEndOffset(Vec2.of(x, y));
     }
 
