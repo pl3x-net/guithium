@@ -1,8 +1,10 @@
 package net.pl3x.guithium.fabric.network;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
@@ -14,6 +16,7 @@ import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
+import net.pl3x.guithium.fabric.gui.element.RenderableWidget;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +57,22 @@ public class FabricPacketListener implements PacketListener {
 
     @Override
     public void handleElement(@NotNull ElementPacket packet) {
-        // Element element = packet.getElement();
+        Element element = packet.getElement();
+
+        if (Minecraft.getInstance().screen instanceof AbstractScreen screen) {
+            AbstractWidget widget = screen.getWidgets().get(element.getKey());
+            if (widget instanceof RenderableWidget renderable) {
+                renderable.updateElement(element);
+                return;
+            }
+        }
+
+        for (AbstractScreen screen : this.mod.getHudManager().getAll().values()) {
+            AbstractWidget widget = screen.getWidgets().get(element.getKey());
+            if (widget instanceof RenderableWidget renderable) {
+                renderable.updateElement(element);
+            }
+        }
     }
 
     @Override

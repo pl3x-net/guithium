@@ -8,6 +8,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Line;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +16,8 @@ import org.joml.Matrix4f;
 
 public class RenderableLine extends AbstractWidget implements RenderableWidget {
     private final RenderableDuck self;
-    private final Line line;
+
+    private Line line;
 
     private int startColor;
     private int endColor;
@@ -33,6 +35,12 @@ public class RenderableLine extends AbstractWidget implements RenderableWidget {
     @NotNull
     public Line getElement() {
         return this.line;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.line = (Line) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

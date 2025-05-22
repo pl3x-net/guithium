@@ -4,16 +4,22 @@ import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableButton extends net.minecraft.client.gui.components.Button implements RenderableWidget {
     private final RenderableDuck self;
-    private final Button button;
+
+    private Button button;
 
     public RenderableButton(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Button button) {
         super(0, 0, 0, 0, Component.empty(), null, Supplier::get);
@@ -24,6 +30,12 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
     @NotNull
     public Button getElement() {
         return this.button;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.button = (Button) element;
+        this.self.getScreen().refresh();
     }
 
     @Override
@@ -52,6 +64,8 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
 
     @Override
     public void onPress() {
-        Guithium.logger.warn("CLICK! ({})", button.getKey());
+        this.self.getClient().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        ButtonClickPacket packet = new ButtonClickPacket(this.self.getScreen().getScreen(), getElement());
+        ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection().send(packet);
     }
 }

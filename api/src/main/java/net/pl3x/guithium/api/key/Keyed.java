@@ -64,6 +64,7 @@ public abstract class Keyed implements JsonSerializable {
     public JsonElement toJson() {
         JsonObjectWrapper json = new JsonObjectWrapper();
         json.addProperty("key", getKey());
+        json.addProperty("type", getClass().getSimpleName());
         return json.getJsonObject();
     }
 }

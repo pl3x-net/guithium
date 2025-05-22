@@ -20,6 +20,8 @@ public interface RenderableWidget {
     @NotNull
     Element getElement();
 
+    void updateElement(@NotNull Element element);
+
     void init();
 
     @NotNull

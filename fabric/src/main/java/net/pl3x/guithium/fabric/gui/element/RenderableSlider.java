@@ -8,6 +8,7 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
@@ -18,7 +19,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class RenderableSlider extends AbstractSliderButton implements RenderableWidget {
     private final RenderableDuck self;
-    private final Slider slider;
+
+    private Slider slider;
 
     private DecimalFormat decimalFormat;
     private double min;
@@ -33,6 +35,12 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
     @NotNull
     public Slider getElement() {
         return this.slider;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.slider = (Slider) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

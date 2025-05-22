@@ -8,6 +8,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.element.Circle;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.gui.screen.RenderableScreen;
 import net.pl3x.guithium.fabric.util.Numbers;
@@ -16,7 +17,8 @@ import org.joml.Matrix4f;
 
 public class RenderableCircle extends AbstractWidget implements RenderableWidget {
     private final RenderableDuck self;
-    private final Circle circle;
+
+    private Circle circle;
 
     private int radius;
     private int resolution;
@@ -34,6 +36,12 @@ public class RenderableCircle extends AbstractWidget implements RenderableWidget
     @NotNull
     public Circle getElement() {
         return this.circle;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.circle = (Circle) element;
+        this.self.getScreen().refresh();
     }
 
     @Override

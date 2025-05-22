@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.Connection;
@@ -23,7 +24,8 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
     public static final ResourceLocation RADIO_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio");
 
     private final RenderableDuck self;
-    private final Radio radio;
+
+    private Radio radio;
 
     public RenderableRadio(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Radio radio) {
         super(
@@ -39,6 +41,12 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
     @NotNull
     public Radio getElement() {
         return this.radio;
+    }
+
+    @Override
+    public void updateElement(@NotNull Element element) {
+        this.radio = (Radio) element;
+        this.self.getScreen().refresh();
     }
 
     @Override
