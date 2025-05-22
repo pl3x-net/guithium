@@ -1,38 +1,45 @@
 package net.pl3x.guithium.fabric.gui.element;
 
-import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.api.Guithium;
-import net.pl3x.guithium.api.gui.element.Button;
+import net.pl3x.guithium.api.gui.element.Textbox;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
+import net.pl3x.guithium.fabric.util.Numbers;
+import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class RenderableButton extends net.minecraft.client.gui.components.Button implements RenderableWidget {
+public class RenderableTextbox extends EditBox implements RenderableWidget {
     private final Minecraft client;
     private final AbstractScreen screen;
-    private final Button button;
+    private final Textbox textbox;
 
-    public RenderableButton(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Button button) {
-        super(0, 0, 0, 0, Component.empty(), null, Supplier::get);
+    public RenderableTextbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Textbox textbox) {
+        super(client.font, 0, 0, Component.empty());
         this.client = client;
         this.screen = screen;
-        this.button = button;
+        this.textbox = textbox;
     }
 
+    @Override
     @NotNull
-    public Button getElement() {
-        return this.button;
+    public Textbox getElement() {
+        return this.textbox;
     }
 
     @Override
     public void init() {
-        // update contents
-        setMessage(ComponentHelper.toVanilla(this.button.getLabel()));
-        setTooltip(Tooltip.create(ComponentHelper.toVanilla(this.button.getTooltip())));
+        setHint(ComponentHelper.toVanilla(getElement().getSuggestion()));
+        setValue(getElement().getValue());
+        setBordered(!BooleanUtils.isFalse(getElement().isBordered()));
+        setCanLoseFocus(!BooleanUtils.isFalse(getElement().canLoseFocus()));
+        setEditable(!BooleanUtils.isFalse(getElement().isEditable()));
+        setMaxLength(Numbers.unbox(getElement().getMaxLength(), 32));
+        setTextColor(Numbers.unbox(getElement().getTextColor(), 0xFFFFFF));
+        setTextColorUneditable(Numbers.unbox(getElement().getUneditableTextColor(), 0x707070));
 
         // update pos/size
         setX((int) getElement().getPos().getX());
@@ -55,7 +62,7 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
     }
 
     @Override
-    public void onPress() {
-        Guithium.logger.warn("CLICK! ({})", button.getKey());
+    public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
+        // nothing to narrate
     }
 }

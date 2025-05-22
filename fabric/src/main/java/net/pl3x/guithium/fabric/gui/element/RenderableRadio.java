@@ -22,19 +22,18 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
     public static final ResourceLocation RADIO_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio_highlighted");
     public static final ResourceLocation RADIO_SPRITE = ResourceLocation.fromNamespaceAndPath(Guithium.MOD_ID, "widget/radio");
 
+    private final Minecraft client;
+    private final AbstractScreen screen;
     private final Radio radio;
 
-    public RenderableRadio(@NotNull Radio radio) {
+    public RenderableRadio(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Radio radio) {
         super(
-                radio.getPos().getX(),
-                radio.getPos().getY(),
-                radio.getSize().getX(), // max width
+                0, 0, (int) radio.getSize().getX(),
                 ComponentHelper.toVanilla(radio.getLabel()),
-                Minecraft.getInstance().font,
-                BooleanUtils.isTrue(radio.isSelected()),
-                (chk, bl) -> {
-                }
+                client.font, false, null
         );
+        this.client = client;
+        this.screen = screen;
         this.radio = radio;
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(radio.getTooltip())));
     }
@@ -66,16 +65,17 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
     }
 
     @Override
-    public void init(@NotNull Minecraft client) {
+    public void init() {
         // update contents
         setMessage(ComponentHelper.toVanilla(getElement().getLabel()));
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
+        this.selected = BooleanUtils.isTrue(getElement().isSelected());
 
         // update pos/size
-        setX(getElement().getPos().getX());
-        setY(getElement().getPos().getY());
-        setWidth(getAdjustedWidth(getElement().getSize().getX(), getMessage(), client.font));
-        setHeight(getAdjustedHeight(client.font));
+        setX((int) getElement().getPos().getX());
+        setY((int) getElement().getPos().getY());
+        setWidth(getAdjustedWidth((int) getElement().getSize().getX(), getMessage(), this.client.font));
+        setHeight(getAdjustedHeight(this.client.font));
 
         // recalculate position on screen
         RenderableDuck self = (RenderableDuck) this;
@@ -89,13 +89,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
 
     @Override
     public void onPress() {
-        super.onPress();
-
-        // make sure we're still on our screen
-        AbstractScreen screen = (AbstractScreen) Minecraft.getInstance().screen;
-        if (screen == null) {
-            return;
-        }
+        this.selected = !this.selected;
 
         // make sure the value is actually changed
         if (Boolean.TRUE.equals(getElement().isSelected()) == selected()) {

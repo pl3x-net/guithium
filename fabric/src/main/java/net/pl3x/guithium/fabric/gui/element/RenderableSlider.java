@@ -8,30 +8,25 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.element.Slider;
+import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import net.pl3x.guithium.fabric.util.Numbers;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableSlider extends AbstractSliderButton implements RenderableWidget {
+    private final Minecraft client;
+    private final AbstractScreen screen;
     private final Slider slider;
 
     private DecimalFormat decimalFormat;
     private double min;
     private double max;
 
-    public RenderableSlider(@NotNull Slider slider) {
-        super(
-                slider.getPos().getX(),
-                slider.getPos().getY(),
-                slider.getSize().getX(),
-                slider.getSize().getY(),
-                Component.empty(),
-                0.0D
-        );
+    public RenderableSlider(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Slider slider) {
+        super(0, 0, 0, 0, Component.empty(), 0);
+        this.client = client;
+        this.screen = screen;
         this.slider = slider;
-        this.min = Numbers.unbox(slider.getMin(), 0.0D);
-        this.max = Numbers.unbox(slider.getMax(), 1.0D);
-        this.value = Numbers.invLerp(Numbers.unbox(slider.getValue(), 0.0D), this.min, this.max);
     }
 
     @NotNull
@@ -40,7 +35,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
     }
 
     @Override
-    public void init(@NotNull Minecraft client) {
+    public void init() {
         if (getElement().getDecimalFormat() != null) {
             this.decimalFormat = new DecimalFormat(getElement().getDecimalFormat());
         } else {
@@ -54,20 +49,20 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
         this.value = Numbers.invLerp(this.value, this.min, this.max);
 
         // update contents
-        this.min = Numbers.unbox(slider.getMin(), 0.0D);
-        this.max = Numbers.unbox(slider.getMax(), 1.0D);
-        this.value = Numbers.invLerp(Numbers.unbox(slider.getValue(), 0.0D), this.min, this.max);
+        this.min = Numbers.unbox(getElement().getMin(), 0.0D);
+        this.max = Numbers.unbox(getElement().getMax(), 1.0D);
+        this.value = Numbers.invLerp(Numbers.unbox(getElement().getValue(), 0.0D), this.min, this.max);
         updateMessage();
 
         // update pos/size
-        setX(getElement().getPos().getX());
-        setY(getElement().getPos().getY());
-        this.width = getElement().getSize().getX();
-        this.height = getElement().getSize().getY();
+        setX((int) getElement().getPos().getX());
+        setY((int) getElement().getPos().getY());
+        setWidth((int) getElement().getSize().getX());
+        setHeight((int) getElement().getSize().getY());
 
         // recalculate position on screen
         RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(this.width, this.height);
+        self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
@@ -80,7 +75,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
 
     @Override
     protected void updateMessage() {
-        setTooltip(Tooltip.create(ComponentHelper.toVanilla(this.slider.getTooltip())));
+        setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
         net.kyori.adventure.text.Component label = getElement().getLabel();
         setMessage(label == null ? Component.empty() : ComponentHelper.toVanilla(
                 GsonComponentSerializer.gson().serialize(label)

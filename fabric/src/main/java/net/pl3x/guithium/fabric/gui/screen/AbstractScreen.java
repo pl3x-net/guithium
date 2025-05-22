@@ -29,7 +29,7 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         this.client = Minecraft.getInstance();
 
         screen.getElements().forEach(element -> {
-            AbstractWidget widget = RenderableWidget.create(element);
+            AbstractWidget widget = RenderableWidget.create(client, this, element);
             this.widgets.put(element.getKey(), widget);
         });
     }
@@ -47,7 +47,7 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
     @Override
     protected void init() {
         this.widgets.forEach((key, widget) -> {
-            ((RenderableWidget) widget).init(this.client);
+            ((RenderableWidget) widget).init();
             addRenderableWidget(widget);
         });
     }
@@ -83,6 +83,10 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
     }
 
     public void refresh() {
-        this.widgets.forEach((key, widget) -> ((RenderableWidget) widget).init(this.client));
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderQueue.recordRenderCall(this::refresh);
+            return;
+        }
+        this.widgets.forEach((key, widget) -> ((RenderableWidget) widget).init());
     }
 }
