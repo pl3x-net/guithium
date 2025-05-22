@@ -13,8 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class RenderableGradient extends AbstractWidget implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Gradient gradient;
 
     private int x0, y0, x1, y1;
@@ -22,8 +21,7 @@ public class RenderableGradient extends AbstractWidget implements RenderableWidg
 
     public RenderableGradient(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Gradient gradient) {
         super(0, 0, 0, 0, Component.empty());
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.gradient = gradient;
         this.active = false;
     }
@@ -43,8 +41,7 @@ public class RenderableGradient extends AbstractWidget implements RenderableWidg
         setHeight((int) getElement().getSize().getY());
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
 
         this.x0 = getX();
         this.y0 = getY();
@@ -56,9 +53,8 @@ public class RenderableGradient extends AbstractWidget implements RenderableWidg
 
     @Override
     protected void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
 
         Matrix4f matrix4f = gfx.pose().last().pose();
         VertexConsumer buf = gfx.bufferSource.getBuffer(RenderType.gui());

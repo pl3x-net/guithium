@@ -1,7 +1,12 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -296,5 +301,42 @@ public class Textbox extends Rect<Textbox> {
                 getTextColor(),
                 getUneditableTextColor()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("value", getValue());
+        json.addProperty("suggestion", getSuggestion());
+        json.addProperty("bordered", isBordered());
+        json.addProperty("canLoseFocus", canLoseFocus());
+        json.addProperty("maxLength", getMaxLength());
+        json.addProperty("editable", isEditable());
+        json.addProperty("textColor", getTextColor());
+        json.addProperty("uneditableTextColor", getUneditableTextColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new textbox element from Json.
+     *
+     * @param json Json representation of a textbox element
+     * @return A new textbox element
+     */
+    @NotNull
+    public static Textbox fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Textbox textbox = new Textbox(Key.of(json.get("key").getAsString()));
+        Rect.fromJson(textbox, json);
+        textbox.setValue(!json.has("value") ? null : json.get("value").getAsString());
+        textbox.setSuggestion(!json.has("suggestion") ? null : GsonComponentSerializer.gson().deserialize(json.get("suggestion").getAsString()));
+        textbox.setBordered(!json.has("bordered") ? null : json.get("bordered").getAsBoolean());
+        textbox.setCanLoseFocus(!json.has("canLoseFocus") ? null : json.get("canLoseFocus").getAsBoolean());
+        textbox.setMaxLength(!json.has("maxLength") ? null : json.get("maxLength").getAsInt());
+        textbox.setEditable(!json.has("editable") ? null : json.get("editable").getAsBoolean());
+        textbox.setTextColor(!json.has("textColor") ? null : json.get("textColor").getAsInt());
+        textbox.setUneditableTextColor(!json.has("uneditableTextColor") ? null : json.get("uneditableTextColor").getAsInt());
+        return textbox;
     }
 }

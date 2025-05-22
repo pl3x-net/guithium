@@ -1,6 +1,9 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -184,5 +187,33 @@ public class Circle extends AbstractElement<Circle> {
                 getInnerColor(),
                 getOuterColor()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("radius", getRadius());
+        json.addProperty("resolution", getResolution());
+        json.addProperty("innerColor", getInnerColor());
+        json.addProperty("outerColor", getOuterColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new circle from Json.
+     *
+     * @param json Json representation of a circle
+     * @return A new circle
+     */
+    @NotNull
+    public static Circle fromJson(@NotNull JsonObject json) {
+        Circle circle = new Circle(Key.of(json.get("key").getAsString()));
+        AbstractElement.fromJson(circle, json);
+        circle.setRadius(!json.has("radius") ? null : json.get("radius").getAsInt());
+        circle.setResolution(!json.has("resolution") ? null : json.get("resolution").getAsInt());
+        circle.setInnerColor(!json.has("innerColor") ? 0 : json.get("innerColor").getAsInt());
+        circle.setOuterColor(!json.has("outerColor") ? 0 : json.get("outerColor").getAsInt());
+        return circle;
     }
 }

@@ -13,14 +13,12 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableTextbox extends EditBox implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Textbox textbox;
 
     public RenderableTextbox(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Textbox textbox) {
         super(client.font, 0, 0, Component.empty());
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.textbox = textbox;
     }
 
@@ -48,15 +46,13 @@ public class RenderableTextbox extends EditBox implements RenderableWidget {
         setHeight((int) getElement().getSize().getY());
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
 
         super.renderWidget(gfx, mouseX, mouseY, delta);
     }

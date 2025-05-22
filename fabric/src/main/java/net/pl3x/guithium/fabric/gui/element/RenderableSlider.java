@@ -7,15 +7,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Slider;
+import net.pl3x.guithium.api.network.packet.SliderChangePacket;
+import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import net.pl3x.guithium.fabric.util.Numbers;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableSlider extends AbstractSliderButton implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Slider slider;
 
     private DecimalFormat decimalFormat;
@@ -24,8 +26,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
 
     public RenderableSlider(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Slider slider) {
         super(0, 0, 0, 0, Component.empty(), 0);
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.slider = slider;
     }
 
@@ -61,15 +62,13 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
         setHeight((int) getElement().getSize().getY());
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
         super.renderWidget(gfx, mouseX, mouseY, delta);
     }
 
@@ -87,6 +86,24 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
 
     @Override
     protected void applyValue() {
-        updateMessage();
+        double diff = this.max - this.min;
+        double value = (diff * this.value) + this.min;
+
+        if (this.decimalFormat != null) {
+            value = Double.parseDouble(this.decimalFormat.format(value));
+        }
+
+        if (value == Numbers.unbox(getElement().getValue(), 0.0D)) {
+            return;
+        }
+
+        getElement().setValue(value);
+        ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection().send(
+                new SliderChangePacket(
+                        this.self.getScreen().getScreen().getKey(),
+                        getElement().getKey(),
+                        value
+                )
+        );
     }
 }

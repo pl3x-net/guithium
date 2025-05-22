@@ -1,7 +1,13 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import net.pl3x.guithium.api.util.TriConsumer;
@@ -12,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
  * Represents a button element.
  */
 public class Button extends LabeledRect<Button> {
-    @Exclude
     private OnClick onClick = (screen, button, player) -> {
     };
 
@@ -94,6 +99,37 @@ public class Button extends LabeledRect<Button> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), onClick());
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("label", getLabel());
+        json.addProperty("tooltip", getTooltip());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new button from Json.
+     *
+     * @param json Json representation of a button
+     * @return A new button
+     */
+    @NotNull
+    public static Button fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Button button = new Button(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(button, json);
+        button.setPos(!json.has("pos") ? null : Vec2.fromJson(json.get("pos").getAsJsonObject()));
+        button.setAnchor(!json.has("anchor") ? null : Vec2.fromJson(json.get("anchor").getAsJsonObject()));
+        button.setOffset(!json.has("offset") ? null : Vec2.fromJson(json.get("offset").getAsJsonObject()));
+        button.setRotation(!json.has("rotation") ? null : json.get("rotation").getAsFloat());
+        button.setScale(!json.has("scale") ? null : json.get("scale").getAsFloat());
+        button.setSize(!json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()));
+        button.setLabel(!json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()));
+        button.setTooltip(!json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()));
+        return button;
     }
 
     /**

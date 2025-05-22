@@ -1,8 +1,14 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import java.util.Arrays;
 import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -235,5 +241,37 @@ public class Gradient extends Rect<Gradient> {
                 super.hashCode(),
                 Arrays.hashCode(getColors())
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("color", getColors());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new gradient from Json.
+     *
+     * @param json Json representation of a gradient
+     * @return A new gradient
+     */
+    @NotNull
+    public static Gradient fromJson(@NotNull JsonObject json) {
+        if (!json.has("color")) {
+            throw new JsonParseException("Missing colors array");
+        }
+        JsonArray arr = json.get("color").getAsJsonArray();
+        if (arr.size() != 4) {
+            throw new JsonParseException("Malformed colors array (size!=4)");
+        }
+        Gradient gradient = new Gradient(Key.of(json.get("key").getAsString()));
+        Rect.fromJson(gradient, json);
+        gradient.setSize(!json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()));
+        for (int i = 0; i < 4; i++) {
+            gradient.color[i] = arr.get(i).getAsInt();
+        }
+        return gradient;
     }
 }

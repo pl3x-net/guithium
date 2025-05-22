@@ -1,12 +1,23 @@
 package net.pl3x.guithium.fabric.gui.element;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
 // Vanilla's abstract widget mixin implements these
 public interface RenderableDuck extends RenderableWidget {
+    @NotNull
+    Minecraft getClient();
+
+    @NotNull
+    AbstractScreen getScreen();
+
+    @NotNull
+    RenderableDuck duck(@NotNull Minecraft client, @NotNull AbstractScreen screen);
+
     int getCenterX();
 
     void setCenterX(int x);

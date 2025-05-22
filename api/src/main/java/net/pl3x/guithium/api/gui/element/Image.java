@@ -1,10 +1,13 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Vec4;
 import net.pl3x.guithium.api.gui.texture.Texture;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -210,5 +213,35 @@ public class Image extends Rect<Image> {
                 getVertexColor(),
                 getTileModifier()
         );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("texture", getTexture());
+        json.addProperty("uv", getUV());
+        json.addProperty("vertexColor", getVertexColor());
+        json.addProperty("tileMod", getTileModifier());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new image from Json.
+     *
+     * @param json Json representation of a image
+     * @return A new image
+     */
+    @NotNull
+    public static Image fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Preconditions.checkArgument(json.has("texture"), "Texture cannot be null");
+        Image image = new Image(Key.of(json.get("key").getAsString()));
+        Rect.fromJson(image, json);
+        image.setTexture(Texture.fromJson(json.get("texture").getAsJsonObject()));
+        image.setUV(!json.has("uv") ? null : Vec4.fromJson(json.get("uv").getAsJsonObject()));
+        image.setVertexColor(!json.has("vertex") ? null : json.get("vertex").getAsInt());
+        image.setTileModifier(!json.has("tile") ? null : json.get("tile").getAsFloat());
+        return image;
     }
 }

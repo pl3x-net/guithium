@@ -2,10 +2,12 @@ package net.pl3x.guithium.fabric.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.fabric.gui.element.RenderableDuck;
+import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +15,11 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(AbstractWidget.class)
 public abstract class AbstractWidgetMixin implements RenderableDuck {
+    @Unique
+    private Minecraft client;
+    @Unique
+    private AbstractScreen screen;
+
     @Unique
     private int centerX;
     @Unique
@@ -26,6 +33,29 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
     protected int width;
     @Shadow
     protected int height;
+
+    @Override
+    @Unique
+    @NotNull
+    public Minecraft getClient() {
+        return this.client;
+    }
+
+    @Override
+    @Unique
+    @NotNull
+    public AbstractScreen getScreen() {
+        return this.screen;
+    }
+
+    @Override
+    @Unique
+    @NotNull
+    public RenderableDuck duck(@NotNull Minecraft client, @NotNull AbstractScreen screen) {
+        this.client = client;
+        this.screen = screen;
+        return this;
+    }
 
     @Override
     @Unique
@@ -60,11 +90,11 @@ public abstract class AbstractWidgetMixin implements RenderableDuck {
             anchorX = 0;
             anchorY = 0;
         } else if (anchor == Vec2.ONE) {
-            anchorX = this.width;
-            anchorY = this.height;
+            anchorX = this.screen.width;
+            anchorY = this.screen.height;
         } else {
-            anchorX = this.width * anchor.getX();
-            anchorY = this.height * anchor.getY();
+            anchorX = this.screen.width * anchor.getX();
+            anchorY = this.screen.height * anchor.getY();
         }
 
         float offsetX, offsetY;

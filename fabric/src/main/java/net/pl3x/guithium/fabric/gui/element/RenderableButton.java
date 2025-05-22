@@ -12,14 +12,12 @@ import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class RenderableButton extends net.minecraft.client.gui.components.Button implements RenderableWidget {
-    private final Minecraft client;
-    private final AbstractScreen screen;
+    private final RenderableDuck self;
     private final Button button;
 
     public RenderableButton(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Button button) {
         super(0, 0, 0, 0, Component.empty(), null, Supplier::get);
-        this.client = client;
-        this.screen = screen;
+        this.self = ((RenderableDuck) this).duck(client, screen);
         this.button = button;
     }
 
@@ -41,15 +39,13 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
         setHeight((int) getElement().getSize().getY());
 
         // recalculate position on screen
-        RenderableDuck self = (RenderableDuck) this;
-        self.calcScreenPos(getWidth(), getHeight());
+        this.self.calcScreenPos(getWidth(), getHeight());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
-        RenderableDuck self = (RenderableDuck) this;
-        self.rotate(gfx, self.getCenterX(), self.getCenterY(), getElement().getRotation());
-        self.scale(gfx, self.getCenterX(), self.getCenterY(), getElement().getScale());
+        this.self.rotate(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getRotation());
+        this.self.scale(gfx, this.self.getCenterX(), this.self.getCenterY(), getElement().getScale());
 
         super.renderWidget(gfx, mouseX, mouseY, delta);
     }
