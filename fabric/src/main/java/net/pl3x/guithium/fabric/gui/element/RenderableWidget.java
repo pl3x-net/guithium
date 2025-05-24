@@ -7,6 +7,7 @@ import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Circle;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Gradient;
+import net.pl3x.guithium.api.gui.element.Image;
 import net.pl3x.guithium.api.gui.element.Line;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.element.Slider;
@@ -32,7 +33,7 @@ public interface RenderableWidget {
             case "Checkbox" -> new RenderableCheckbox(client, screen, (Checkbox) element);
             case "Circle" -> new RenderableCircle(client, screen, (Circle) element);
             case "Gradient" -> new RenderableGradient(client, screen, (Gradient) element);
-            //case "Image" -> new RenderableImage(client, screen, (Image) element);
+            case "Image" -> new RenderableImage(client, screen, (Image) element);
             case "Line" -> new RenderableLine(client, screen, (Line) element);
             case "Radio" -> new RenderableRadio(client, screen, (Radio) element);
             case "Slider" -> new RenderableSlider(client, screen, (Slider) element);

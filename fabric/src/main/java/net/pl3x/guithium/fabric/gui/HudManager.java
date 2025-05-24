@@ -18,7 +18,7 @@ public class HudManager {
     }
 
     @NotNull
-    public Map<Key, AbstractScreen> getAll() {
+    public Map<Key, AbstractScreen> getAllScreens() {
         return this.screens;
     }
 
@@ -36,9 +36,15 @@ public class HudManager {
         this.screens.clear();
     }
 
-    public void render(@NotNull GuiGraphics gfx, float delta) {
+    public void preRender(@NotNull GuiGraphics gfx, float delta) {
         if (!Minecraft.getInstance().gui.getDebugOverlay().showDebugScreen()) {
-            this.screens.forEach((key, screen) -> screen.render(gfx, 0, 0, delta));
+            this.screens.values().forEach((screen) -> screen.preRender(gfx, delta));
+        }
+    }
+
+    public void postRender(@NotNull GuiGraphics gfx, float delta) {
+        if (!Minecraft.getInstance().gui.getDebugOverlay().showDebugScreen()) {
+            this.screens.values().forEach((screen) -> screen.postRender(gfx, delta));
         }
     }
 

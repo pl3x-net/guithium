@@ -2,6 +2,7 @@ accessWidener v2 named
 
 accessible field net/minecraft/client/gui/GuiGraphics bufferSource Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;
 
+accessible field net/minecraft/client/gui/screens/Screen initialized Z
 accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
 
 accessible field net/minecraft/client/gui/components/AbstractWidget message Lnet/minecraft/network/chat/Component;

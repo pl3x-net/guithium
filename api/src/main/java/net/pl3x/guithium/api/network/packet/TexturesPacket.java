@@ -4,8 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.json.Gson;
 import net.pl3x.guithium.api.key.Key;
@@ -21,22 +20,19 @@ public class TexturesPacket extends Packet {
      */
     public static final Key KEY = Key.of("packet:textures");
 
-    private static final Type TYPE_TOKEN = new TypeToken<Map<String, String>>() {
+    private static final Type TYPE_TOKEN = new TypeToken<Collection<Texture>>() {
     }.getType();
 
-    private final Map<Key, Texture> textures;
-    private final Map<String, String> rawTex;
+    private final Collection<Texture> textures;
 
     /**
      * Create a new texture packet.
      *
      * @param textures Textures to preload
      */
-    public TexturesPacket(@NotNull Map<Key, Texture> textures) {
+    public TexturesPacket(@NotNull Collection<Texture> textures) {
         super(KEY);
         this.textures = textures;
-        this.rawTex = new HashMap<>();
-        textures.forEach((key, texture) -> this.rawTex.put(key.toString(), texture.getUrl()));
     }
 
     /**
@@ -46,14 +42,7 @@ public class TexturesPacket extends Packet {
      */
     public TexturesPacket(@NotNull ByteArrayDataInput in) {
         super(KEY);
-        this.textures = new HashMap<>();
-        this.rawTex = Gson.fromJson(in.readUTF(), TYPE_TOKEN);
-        if (this.rawTex != null) {
-            this.rawTex.forEach((id, url) -> {
-                Key key = Key.of(id);
-                this.textures.put(key, Texture.of(key, url));
-            });
-        }
+        this.textures = Gson.fromJson(in.readUTF(), TYPE_TOKEN);
     }
 
     /**
@@ -62,7 +51,7 @@ public class TexturesPacket extends Packet {
      * @return Texture to preload
      */
     @NotNull
-    public Map<Key, Texture> getTextures() {
+    public Collection<Texture> getTextures() {
         return this.textures;
     }
 
@@ -75,7 +64,7 @@ public class TexturesPacket extends Packet {
     @NotNull
     public ByteArrayDataOutput write() {
         ByteArrayDataOutput out = out(this);
-        out.writeUTF(Gson.toJson(this.rawTex));
+        out.writeUTF(Gson.toJson(getTextures()));
         return out;
     }
 }
