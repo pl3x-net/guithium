@@ -24,6 +24,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Get this element's position from the anchor position.
+     * <p>
+     * This is represented in pixels that scale with the client's settings.
      *
      * @return Position from anchor
      */
@@ -32,6 +34,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Set this element's position from the anchor position.
+     * <p>
+     * This is represented in pixels that scale with the client's settings.
      *
      * @param x X (horizontal) position
      * @param y Y (vertical) position
@@ -42,6 +46,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Set this element's position from the anchor position.
+     * <p>
+     * This is represented in pixels that scale with the client's settings.
      *
      * @param pos Position
      * @return This element
@@ -117,6 +123,8 @@ public interface Element extends JsonSerializable {
 
     /**
      * Get this element's rotation in degrees.
+     * <p>
+     * If null, default rotation <code>0.0</code> will be used.
      *
      * @return Degrees of rotation
      */

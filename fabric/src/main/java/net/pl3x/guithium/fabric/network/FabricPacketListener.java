@@ -41,13 +41,13 @@ public class FabricPacketListener implements PacketListener {
     public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
         // try to remove from HUD
         if (this.mod.getHudManager().remove(packet.getScreenKey()) != null) {
-            return;
+            return; // removed from hud
         }
         // not on HUD, so lets get current open screen
         if (!(Minecraft.getInstance().screen instanceof AbstractScreen screen)) {
-            return;
+            return; // nothing to remove
         }
-        // check if screen keys match
+        // check if current screen keys match
         if (!screen.getKey().equals(packet.getScreenKey())) {
             return;
         }
