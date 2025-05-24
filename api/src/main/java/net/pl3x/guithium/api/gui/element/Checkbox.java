@@ -4,21 +4,18 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Objects;
-import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
-import net.pl3x.guithium.api.player.WrappedPlayer;
-import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a checkbox element.
  */
-public class Checkbox extends LabeledRect<Checkbox> {
-    private Boolean selected;
+public class Checkbox extends LabeledRect<Checkbox> implements ValueElement<Checkbox, Boolean> {
+    private Boolean value;
 
-    private OnToggled onToggled = (screen, checkbox, player, selected) -> {
+    private OnChange<Checkbox, Boolean> onChange = (screen, checkbox, player, value) -> {
     };
 
     /**
@@ -61,55 +58,29 @@ public class Checkbox extends LabeledRect<Checkbox> {
         return new Checkbox(key);
     }
 
-    /**
-     * Get the selected state.
-     * <p>
-     * If null, default <code>false</code> state will be used.
-     *
-     * @return True if selected
-     */
-    @Nullable
-    public Boolean isSelected() {
-        return this.selected;
+    @Override
+    @NotNull
+    public Boolean getValue() {
+        return this.value;
     }
 
-    /**
-     * Set the selected state.
-     * <p>
-     * If null, default <code>false</code> state will be used.
-     *
-     * @param selected Selected state
-     * @return This checkbox
-     */
+    @Override
     @NotNull
-    public Checkbox setSelected(@Nullable Boolean selected) {
-        this.selected = selected;
+    public Checkbox setValue(@NotNull Boolean value) {
+        this.value = value;
         return this;
     }
 
-    /**
-     * Get the action to execute when the checkbox is toggled.
-     * <p>
-     * If null, no toggle action will be used.
-     *
-     * @return Toggled action
-     */
+    @Override
     @Nullable
-    public OnToggled onToggled() {
-        return this.onToggled;
+    public OnChange<Checkbox, Boolean> onChange() {
+        return this.onChange;
     }
 
-    /**
-     * Set the action to execute when the checkbox is toggled.
-     * <p>
-     * If null, no toggle action will be used.
-     *
-     * @param onToggled Toggled action
-     * @return This checkbox
-     */
+    @Override
     @NotNull
-    public Checkbox onToggled(@Nullable OnToggled onToggled) {
-        this.onToggled = onToggled;
+    public Checkbox onChange(@Nullable OnChange<Checkbox, Boolean> onChange) {
+        this.onChange = onChange;
         return this;
     }
 
@@ -119,16 +90,16 @@ public class Checkbox extends LabeledRect<Checkbox> {
             return false;
         }
         Checkbox other = (Checkbox) obj;
-        return Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(onToggled(), other.onToggled());
+        return Objects.equals(getValue(), other.getValue())
+                && Objects.equals(onChange(), other.onChange());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
                 super.hashCode(),
-                isSelected(),
-                onToggled()
+                getValue(),
+                onChange()
         );
     }
 
@@ -138,7 +109,7 @@ public class Checkbox extends LabeledRect<Checkbox> {
         JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
         json.addProperty("label", getLabel());
         json.addProperty("tooltip", getTooltip());
-        json.addProperty("selected", isSelected());
+        json.addProperty("value", getValue());
         return json.getJsonObject();
     }
 
@@ -153,23 +124,7 @@ public class Checkbox extends LabeledRect<Checkbox> {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Checkbox checkbox = new Checkbox(Key.of(json.get("key").getAsString()));
         LabeledRect.fromJson(checkbox, json);
-        checkbox.setSelected(!json.has("selected") ? null : json.get("selected").getAsBoolean());
+        checkbox.setValue(json.has("value") && json.get("value").getAsBoolean());
         return checkbox;
-    }
-
-    /**
-     * Executable functional interface to fire when a checkbox is toggled.
-     */
-    @FunctionalInterface
-    public interface OnToggled extends QuadConsumer<Screen, Checkbox, WrappedPlayer, Boolean> {
-        /**
-         * Called when a checkbox is toggled.
-         *
-         * @param screen   Active screen where checkbox was toggled
-         * @param checkbox Checkbox that was toggled
-         * @param player   Player that toggled the checkbox
-         * @param selected New selected state of the checkbox
-         */
-        void accept(@NotNull Screen screen, @NotNull Checkbox checkbox, @NotNull WrappedPlayer player, @NotNull Boolean selected);
     }
 }

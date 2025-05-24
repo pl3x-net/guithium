@@ -2,17 +2,16 @@ package net.pl3x.guithium.fabric.network;
 
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.gui.element.ClickableElement;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.ValueElement;
 import net.pl3x.guithium.api.network.PacketListener;
-import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
+import net.pl3x.guithium.api.network.packet.ElementClickedPacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
@@ -27,13 +26,7 @@ public class FabricPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleButtonClick(@NotNull ButtonClickPacket packet) {
-        // server does not send this packet to the client
-        throw new UnsupportedOperationException("Not supported on client.");
-    }
-
-    @Override
-    public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
+    public <T extends ClickableElement<T>> void handleElementClick(@NotNull ElementClickedPacket<T> packet) {
         // server does not send this packet to the client
         throw new UnsupportedOperationException("Not supported on client.");
     }
@@ -103,12 +96,6 @@ public class FabricPacketListener implements PacketListener {
         } else {
             renderableScreen.open();
         }
-    }
-
-    @Override
-    public void handleRadioToggle(@NotNull RadioTogglePacket packet) {
-        // server does not send this packet to the client
-        throw new UnsupportedOperationException("Not supported on client.");
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RegisteredHandler {
     private final ActionListener listener;
-    private final Method method;
+    private Method method;
 
     /**
      * Create a new registered action handler.
@@ -20,7 +20,7 @@ public class RegisteredHandler {
      */
     public RegisteredHandler(@NotNull ActionListener listener, @NotNull Method method) {
         this.listener = listener;
-        this.method = method;
+        setMethod(method);
     }
 
     /**
@@ -43,6 +43,11 @@ public class RegisteredHandler {
         return this.method;
     }
 
+    private void setMethod(@NotNull Method method) {
+        method.setAccessible(true);
+        this.method = method;
+    }
+
     /**
      * Execute the method for the given action.
      *
@@ -52,7 +57,6 @@ public class RegisteredHandler {
      *                                   control and the underlying method is inaccessible
      */
     public void execute(@NotNull Action action) throws InvocationTargetException, IllegalAccessException {
-        getMethod().setAccessible(true);
         getMethod().invoke(getListener(), action);
     }
 }

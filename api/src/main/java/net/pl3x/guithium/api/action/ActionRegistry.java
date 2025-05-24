@@ -40,7 +40,7 @@ public class ActionRegistry {
      */
     public void register(@NotNull ActionListener listener) {
         for (Method method : listener.getClass().getMethods()) {
-            if (method.getDeclaredAnnotation(ActionHandler.class) == null) {
+            if (method.getDeclaredAnnotation(ActionListener.ActionHandler.class) == null) {
                 continue;
             }
             Class<?>[] params = method.getParameterTypes();

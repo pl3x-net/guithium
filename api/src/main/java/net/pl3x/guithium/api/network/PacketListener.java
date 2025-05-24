@@ -1,14 +1,13 @@
 package net.pl3x.guithium.api.network;
 
+import net.pl3x.guithium.api.gui.element.ClickableElement;
 import net.pl3x.guithium.api.gui.element.ValueElement;
-import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
+import net.pl3x.guithium.api.network.packet.ElementClickedPacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,18 +16,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface PacketListener {
     /**
-     * Handle button click packet.
+     * Handle element click packet.
      *
-     * @param packet Button click packet to handle
+     * @param packet Element click packet to handle
+     * @param <T>    Type of element
      */
-    void handleButtonClick(@NotNull ButtonClickPacket packet);
-
-    /**
-     * Handle checkbox toggle packet.
-     *
-     * @param packet Checkbox toggle packet to handle
-     */
-    void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet);
+    <T extends ClickableElement<T>> void handleElementClick(@NotNull ElementClickedPacket<T> packet);
 
     /**
      * Handle close screen packet.
@@ -57,13 +50,6 @@ public interface PacketListener {
      * @param packet Open screen packet to handle
      */
     void handleOpenScreen(@NotNull OpenScreenPacket packet);
-
-    /**
-     * Handle radio toggle packet.
-     *
-     * @param packet Radio toggle packet to handle
-     */
-    void handleRadioToggle(@NotNull RadioTogglePacket packet);
 
     /**
      * Handle element changed value packet.

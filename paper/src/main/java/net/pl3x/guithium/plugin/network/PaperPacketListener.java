@@ -6,23 +6,18 @@ import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.action.actions.player.PlayerJoinedAction;
 import net.pl3x.guithium.api.action.actions.player.screen.ScreenClosedAction;
 import net.pl3x.guithium.api.action.actions.player.screen.element.ElementClickedAction;
-import net.pl3x.guithium.api.action.actions.player.screen.element.ElementToggledAction;
 import net.pl3x.guithium.api.action.actions.player.screen.element.ElementValueChangedAction;
 import net.pl3x.guithium.api.gui.Screen;
-import net.pl3x.guithium.api.gui.element.Button;
-import net.pl3x.guithium.api.gui.element.Checkbox;
-import net.pl3x.guithium.api.gui.element.Radio;
+import net.pl3x.guithium.api.gui.element.ClickableElement;
 import net.pl3x.guithium.api.gui.element.ValueElement;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.network.PacketListener;
-import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
-import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
+import net.pl3x.guithium.api.network.packet.ElementClickedPacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
-import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.plugin.player.PaperPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -35,40 +30,21 @@ public class PaperPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleButtonClick(@NotNull ButtonClickPacket packet) {
-        Screen screen = this.player.getCurrentScreen();
-        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
-            return;
-        }
-        if (!(screen.getElement(packet.getButton()) instanceof Button button)) {
-            return;
-        }
-        ElementClickedAction<Button> action = new ElementClickedAction<>(this.player, screen, button);
-        Guithium.api().getActionRegistry().callAction(action);
-        if (action.isCancelled()) {
-            return;
-        }
-        Button.OnClick onClick = button.onClick();
-        if (onClick != null) {
-            onClick.accept(screen, button, this.player);
-        }
-    }
-
-    @Override
-    public void handleCheckboxToggle(@NotNull CheckboxTogglePacket packet) {
+    public <T extends ClickableElement<T>> void handleElementClick(@NotNull ElementClickedPacket<T> packet) {
         // make sure it's the same screen
         Screen screen = this.player.getCurrentScreen();
         if (screen == null || !screen.getKey().equals(packet.getScreen())) {
             return;
         }
 
-        // make sure the screen has the checkbox
-        if (!(screen.getElement(packet.getCheckbox()) instanceof Checkbox checkbox)) {
+        // make sure the screen has the element
+        T element = Unsafe.cast(screen.getElement(packet.getElement()));
+        if (element == null) {
             return;
         }
 
-        // inform other plugins the checkbox was toggled
-        ElementToggledAction<Checkbox> action = new ElementToggledAction<>(this.player, screen, checkbox, packet.isSelected());
+        // inform other plugins the element was clicked
+        ElementClickedAction<T> action = new ElementClickedAction<>(this.player, screen, element);
         Guithium.api().getActionRegistry().callAction(action);
 
         // some other plugin says to ignore it
@@ -76,18 +52,10 @@ public class PaperPacketListener implements PacketListener {
             return;
         }
 
-        // update the selected state in our copy of the checkbox
-        checkbox.setSelected(action.isSelected());
-
-        // if the action changed the selected state, tell the client
-        if (packet.isSelected() != action.isSelected()) {
-            checkbox.send(this.player);
-        }
-
-        // trigger the radio's action for other plugins
-        Checkbox.OnToggled onToggled = checkbox.onToggled();
-        if (onToggled != null) {
-            onToggled.accept(screen, checkbox, this.player, action.isSelected());
+        // trigger the element's onClick action for other plugins
+        ClickableElement.OnClick<T> onClick = element.onClick();
+        if (onClick != null) {
+            onClick.accept(screen, element, this.player);
         }
     }
 
@@ -143,20 +111,21 @@ public class PaperPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleRadioToggle(@NotNull RadioTogglePacket packet) {
+    public <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet) {
         // make sure it's the same screen
         Screen screen = this.player.getCurrentScreen();
         if (screen == null || !screen.getKey().equals(packet.getScreen())) {
             return;
         }
 
-        // make sure the screen has the radio
-        if (!(screen.getElement(packet.getRadio()) instanceof Radio radio)) {
+        // make sure the screen has the element
+        T element = Unsafe.cast(screen.getElement(packet.getElement()));
+        if (element == null) {
             return;
         }
 
-        // inform other plugins the radio was toggled
-        ElementToggledAction<Radio> action = new ElementToggledAction<>(this.player, screen, radio, packet.isSelected());
+        // inform other plugins the element's value was changed
+        ElementValueChangedAction<T, V> action = new ElementValueChangedAction<>(this.player, screen, element, packet.getValue());
         Guithium.api().getActionRegistry().callAction(action);
 
         // some other plugin says to ignore it
@@ -164,40 +133,15 @@ public class PaperPacketListener implements PacketListener {
             return;
         }
 
-        // update the selected state in our copy of the radio
-        radio.setSelected(action.isSelected());
-
-        // if the action changed the selected state, tell the client
-        if (packet.isSelected() != action.isSelected()) {
-            radio.send(this.player);
-        }
-
-        // trigger the radio's action for other plugins
-        Radio.OnToggled onToggled = radio.onToggled();
-        if (onToggled != null) {
-            onToggled.accept(screen, radio, this.player, action.isSelected());
-        }
-    }
-
-    @Override
-    public <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet) {
-        Screen screen = this.player.getCurrentScreen();
-        if (screen == null || !screen.getKey().equals(packet.getScreen())) {
-            return;
-        }
-        T element = Unsafe.cast(screen.getElement(packet.getElement()));
-        if (element == null) {
-            return;
-        }
-        ElementValueChangedAction<T, V> action = new ElementValueChangedAction<>(this.player, screen, element, packet.getValue());
-        Guithium.api().getActionRegistry().callAction(action);
-        if (action.isCancelled()) {
-            return;
-        }
+        // update the value in our copy of the element
         element.setValue(action.getValue());
+
+        // if the action changed the value, tell the client
         if (packet.getValue() != action.getValue()) {
             element.send(this.player);
         }
+
+        // trigger the element's onChange action for other plugins
         ValueElement.OnChange<T, V> onChange = element.onChange();
         if (onChange != null) {
             onChange.accept(screen, element, this.player, action.getValue());

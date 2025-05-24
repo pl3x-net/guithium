@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> Type of element
  * @param <V> Type of value
  */
-public interface ValueElement<T extends ValueElement<T, V>, V> extends Element {
+public interface ValueElement<T extends ValueElement<T, V>, V> extends ClickableElement<T> {
     /**
      * Get the value of this element.
      *

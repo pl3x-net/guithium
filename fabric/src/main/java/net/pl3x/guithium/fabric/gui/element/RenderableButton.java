@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
+import net.pl3x.guithium.api.network.packet.ElementClickedPacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
@@ -65,7 +65,7 @@ public class RenderableButton extends net.minecraft.client.gui.components.Button
     @Override
     public void onPress() {
         this.self.getClient().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-        ButtonClickPacket packet = new ButtonClickPacket(this.self.getScreen().getScreen(), getElement());
+        ElementClickedPacket<Button> packet = new ElementClickedPacket<>(this.self.getScreen().getScreen(), getElement());
         ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection().send(packet);
     }
 }
