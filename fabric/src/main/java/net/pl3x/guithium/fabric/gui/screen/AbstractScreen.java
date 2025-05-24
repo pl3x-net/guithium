@@ -77,7 +77,10 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         }
 
         gfx.pose().pushPose();
-        super.render(gfx, mouseX, mouseY, delta);
+        if (!getScreen().isHud()) {
+            renderBackground(gfx, mouseX, mouseY, delta);
+        }
+        this.renderables.forEach(widget -> widget.render(gfx, mouseX, mouseY, delta));
         gfx.pose().popPose();
     }
 
