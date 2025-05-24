@@ -14,6 +14,11 @@ public class HudManager {
 
     public void add(@NotNull AbstractScreen screen) {
         this.screens.put(screen.getKey(), screen);
+        screen.init(
+                Minecraft.getInstance(),
+                Minecraft.getInstance().getWindow().getGuiScaledWidth(),
+                Minecraft.getInstance().getWindow().getGuiScaledHeight()
+        );
         screen.refresh();
     }
 
