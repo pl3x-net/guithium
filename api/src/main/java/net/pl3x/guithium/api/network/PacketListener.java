@@ -1,13 +1,14 @@
 package net.pl3x.guithium.api.network;
 
+import net.pl3x.guithium.api.gui.element.ValueElement;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
-import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,11 +66,13 @@ public interface PacketListener {
     void handleRadioToggle(@NotNull RadioTogglePacket packet);
 
     /**
-     * Handle Slider change packet.
+     * Handle element changed value packet.
      *
-     * @param packet Slider change packet to handle
+     * @param packet Element changed value packet to handle
+     * @param <T>    Type of element
+     * @param <V>    Type of value
      */
-    void handleSliderChange(@NotNull SliderChangePacket packet);
+    <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet);
 
     /**
      * Handle texture preload packet.

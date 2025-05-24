@@ -2,27 +2,27 @@ package net.pl3x.guithium.plugin.network;
 
 import java.util.Collection;
 import net.pl3x.guithium.api.Guithium;
+import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.action.actions.player.PlayerJoinedAction;
-import net.pl3x.guithium.api.action.actions.player.screen.CloseScreenAction;
-import net.pl3x.guithium.api.action.actions.player.screen.element.ButtonClickedAction;
-import net.pl3x.guithium.api.action.actions.player.screen.element.CheckboxToggledAction;
-import net.pl3x.guithium.api.action.actions.player.screen.element.RadioToggledAction;
-import net.pl3x.guithium.api.action.actions.player.screen.element.SliderChangedAction;
+import net.pl3x.guithium.api.action.actions.player.screen.ScreenClosedAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.ElementClickedAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.ElementToggledAction;
+import net.pl3x.guithium.api.action.actions.player.screen.element.ElementValueChangedAction;
 import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Radio;
-import net.pl3x.guithium.api.gui.element.Slider;
+import net.pl3x.guithium.api.gui.element.ValueElement;
 import net.pl3x.guithium.api.gui.texture.Texture;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
-import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.plugin.player.PaperPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +43,7 @@ public class PaperPacketListener implements PacketListener {
         if (!(screen.getElement(packet.getButton()) instanceof Button button)) {
             return;
         }
-        ButtonClickedAction action = new ButtonClickedAction(this.player, screen, button);
+        ElementClickedAction<Button> action = new ElementClickedAction<>(this.player, screen, button);
         Guithium.api().getActionRegistry().callAction(action);
         if (action.isCancelled()) {
             return;
@@ -68,7 +68,7 @@ public class PaperPacketListener implements PacketListener {
         }
 
         // inform other plugins the checkbox was toggled
-        CheckboxToggledAction action = new CheckboxToggledAction(this.player, screen, checkbox, packet.isSelected());
+        ElementToggledAction<Checkbox> action = new ElementToggledAction<>(this.player, screen, checkbox, packet.isSelected());
         Guithium.api().getActionRegistry().callAction(action);
 
         // some other plugin says to ignore it
@@ -97,7 +97,7 @@ public class PaperPacketListener implements PacketListener {
         if (screen == null || !screen.getKey().equals(packet.getScreenKey())) {
             return;
         }
-        CloseScreenAction action = new CloseScreenAction(this.player, screen);
+        ScreenClosedAction action = new ScreenClosedAction(this.player, screen);
         Guithium.api().getActionRegistry().callAction(action);
         this.player.setCurrentScreen(null);
     }
@@ -156,7 +156,7 @@ public class PaperPacketListener implements PacketListener {
         }
 
         // inform other plugins the radio was toggled
-        RadioToggledAction action = new RadioToggledAction(this.player, screen, radio, packet.isSelected());
+        ElementToggledAction<Radio> action = new ElementToggledAction<>(this.player, screen, radio, packet.isSelected());
         Guithium.api().getActionRegistry().callAction(action);
 
         // some other plugin says to ignore it
@@ -180,26 +180,27 @@ public class PaperPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleSliderChange(@NotNull SliderChangePacket packet) {
+    public <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet) {
         Screen screen = this.player.getCurrentScreen();
         if (screen == null || !screen.getKey().equals(packet.getScreen())) {
             return;
         }
-        if (!(screen.getElement(packet.getSlider()) instanceof Slider slider)) {
+        T element = Unsafe.cast(screen.getElement(packet.getElement()));
+        if (element == null) {
             return;
         }
-        SliderChangedAction action = new SliderChangedAction(this.player, screen, slider, packet.getValue());
+        ElementValueChangedAction<T, V> action = new ElementValueChangedAction<>(this.player, screen, element, packet.getValue());
         Guithium.api().getActionRegistry().callAction(action);
         if (action.isCancelled()) {
             return;
         }
-        slider.setValue(action.getValue());
+        element.setValue(action.getValue());
         if (packet.getValue() != action.getValue()) {
-            slider.send(this.player);
+            element.send(this.player);
         }
-        Slider.OnChange onChange = slider.onChange();
+        ValueElement.OnChange<T, V> onChange = element.onChange();
         if (onChange != null) {
-            onChange.accept(screen, slider, this.player, action.getValue());
+            onChange.accept(screen, element, this.player, action.getValue());
         }
     }
 

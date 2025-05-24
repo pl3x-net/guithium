@@ -3,15 +3,16 @@ package net.pl3x.guithium.fabric.network;
 import net.minecraft.client.Minecraft;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
+import net.pl3x.guithium.api.gui.element.ValueElement;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
 import net.pl3x.guithium.api.network.packet.CloseScreenPacket;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.api.network.packet.ElementPacket;
 import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
-import net.pl3x.guithium.api.network.packet.SliderChangePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
@@ -111,7 +112,7 @@ public class FabricPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleSliderChange(@NotNull SliderChangePacket packet) {
+    public <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet) {
         // server does not send this packet to the client
         throw new UnsupportedOperationException("Not supported on client.");
     }

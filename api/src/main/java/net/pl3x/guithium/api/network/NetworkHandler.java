@@ -14,7 +14,7 @@ import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.network.packet.OpenScreenPacket;
 import net.pl3x.guithium.api.network.packet.Packet;
 import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
-import net.pl3x.guithium.api.network.packet.SliderChangePacket;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.api.network.packet.TexturesPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +41,7 @@ public abstract class NetworkHandler {
         registerListener(HelloPacket.KEY, HelloPacket::new);
         registerListener(OpenScreenPacket.KEY, OpenScreenPacket::new);
         registerListener(RadioTogglePacket.KEY, RadioTogglePacket::new);
-        registerListener(SliderChangePacket.KEY, SliderChangePacket::new);
+        registerListener(ElementChangedValuePacket.KEY, ElementChangedValuePacket::new);
         registerListener(TexturesPacket.KEY, TexturesPacket::new);
     }
 
