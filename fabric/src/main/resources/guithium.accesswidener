@@ -1,0 +1,20 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/gui/GuiGraphics bufferSource Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;
+
+accessible field net/minecraft/client/gui/screens/Screen initialized Z
+accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
+
+accessible field net/minecraft/client/gui/components/AbstractWidget message Lnet/minecraft/network/chat/Component;
+extendable method net/minecraft/client/gui/components/AbstractWidget render (Lnet/minecraft/client/gui/GuiGraphics;IIF)V
+
+accessible field net/minecraft/client/gui/components/Checkbox selected Z
+accessible field net/minecraft/client/gui/components/Checkbox textWidget Lnet/minecraft/client/gui/components/MultiLineTextWidget;
+accessible field net/minecraft/client/gui/components/Checkbox CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/components/Checkbox CHECKBOX_SELECTED_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/components/Checkbox CHECKBOX_HIGHLIGHTED_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/components/Checkbox CHECKBOX_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible method net/minecraft/client/gui/components/Checkbox <init> (IIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;ZLnet/minecraft/client/gui/components/Checkbox$OnValueChange;)V
+accessible method net/minecraft/client/gui/components/Checkbox getAdjustedWidth (ILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)I
+accessible method net/minecraft/client/gui/components/Checkbox getAdjustedHeight (Lnet/minecraft/client/gui/Font;)I
+accessible method net/minecraft/client/gui/components/Checkbox getDefaultWidth (Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)I

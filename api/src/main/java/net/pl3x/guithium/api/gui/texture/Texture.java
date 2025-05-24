@@ -1,6 +1,10 @@
 package net.pl3x.guithium.api.gui.texture;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import java.util.Objects;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
@@ -81,7 +85,33 @@ public class Texture extends Keyed implements JsonSerializable {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getUrl()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("url", getUrl());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new texture from Json.
+     *
+     * @param json Json representation of a texture
+     * @return A new texture
+     */
+    @NotNull
+    public static Texture fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Preconditions.checkArgument(json.has("url"), "Url cannot be null");
+        return new Texture(
+                Key.of(json.get("key").getAsString()),
+                json.get("url").getAsString()
+        );
     }
 }

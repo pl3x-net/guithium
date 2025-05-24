@@ -1,7 +1,10 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +16,7 @@ public class Line extends AbstractElement<Line> {
     private Vec2 endPos;
     private Vec2 endAnchor;
     private Vec2 endOffset;
-    private Float width;
+    private Integer width;
     private int startColor;
     private int endColor;
 
@@ -32,7 +35,7 @@ public class Line extends AbstractElement<Line> {
      * @param key Unique identifier
      */
     public Line(@NotNull Key key) {
-        super(key, Type.LINE);
+        super(key);
     }
 
     /**
@@ -59,20 +62,16 @@ public class Line extends AbstractElement<Line> {
 
     /**
      * Get this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @return End position from end anchor
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndPos() {
-        return this.endPos;
+        return this.endPos == null ? Vec2.ZERO : this.endPos;
     }
 
     /**
      * Set this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end position
      * @param y Y (vertical) end position
@@ -80,21 +79,18 @@ public class Line extends AbstractElement<Line> {
      */
     @NotNull
     public Line setEndPos(float x, float y) {
-        setEndPos(Vec2.of(x, y));
-        return this;
+        return setEndPos(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end position from the end anchor position.
-     * <p>
-     * If null, default end position <code>0,0</code> will be used.
      *
      * @param pos End position
      * @return This line
      */
     @NotNull
     public Line setEndPos(@Nullable Vec2 pos) {
-        this.endPos = pos;
+        this.endPos = pos == Vec2.ZERO ? null : pos;
         return this;
     }
 
@@ -102,22 +98,18 @@ public class Line extends AbstractElement<Line> {
      * Get this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @return End anchor position
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndAnchor() {
-        return this.endAnchor;
+        return this.endAnchor == null ? Vec2.ZERO : this.endAnchor;
     }
 
     /**
      * Set this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end anchor
      * @param y Y (vertical) end anchor
@@ -125,23 +117,20 @@ public class Line extends AbstractElement<Line> {
      */
     @NotNull
     public Line setEndAnchor(float x, float y) {
-        setEndAnchor(Vec2.of(x, y));
-        return this;
+        return setEndAnchor(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end anchor position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end anchor <code>0,0</code> will be used.
      *
      * @param anchor End anchor position
      * @return This line
      */
     @NotNull
     public Line setEndAnchor(@Nullable Vec2 anchor) {
-        this.endAnchor = anchor;
+        this.endAnchor = anchor == Vec2.ZERO ? null : anchor;
         return this;
     }
 
@@ -149,22 +138,18 @@ public class Line extends AbstractElement<Line> {
      * Get this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @return End offset position
      */
-    @Nullable
+    @NotNull
     public Vec2 getEndOffset() {
-        return this.endOffset;
+        return this.endOffset == null ? Vec2.ZERO : this.endOffset;
     }
 
     /**
      * Set this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @param x X (horizontal) end offset
      * @param y Y (vertical) end offset
@@ -172,48 +157,41 @@ public class Line extends AbstractElement<Line> {
      */
     @NotNull
     public Line setEndOffset(float x, float y) {
-        setEndOffset(Vec2.of(x, y));
-        return this;
+        return setEndOffset(Vec2.of(x, y));
     }
 
     /**
      * Set this line's end offset position on the screen.
      * <p>
      * This is represented as a percentage (0.0-1.0) of the parent's size.
-     * <p>
-     * If null, default end offset <code>0,0</code> will be used.
      *
      * @param offset End offset position
      * @return This line
      */
     @NotNull
     public Line setEndOffset(@Nullable Vec2 offset) {
-        this.endOffset = offset;
+        this.endOffset = offset == Vec2.ZERO ? null : offset;
         return this;
     }
 
     /**
      * Get this line's width in scaled pixels.
-     * <p>
-     * If null, default width <code>1.0</code> will be used.
      *
      * @return Line width
      */
-    @Nullable
-    public Float getWidth() {
-        return this.width;
+    @NotNull
+    public Integer getWidth() {
+        return this.width == null ? 1 : this.width;
     }
 
     /**
      * Set this line's width in scaled pixels.
-     * <p>
-     * If null, default width <code>1.0</code> will be used.
      *
      * @param width Line width
      * @return This line
      */
     @NotNull
-    public Line setWidth(@Nullable Float width) {
+    public Line setWidth(@Nullable Integer width) {
         this.width = width;
         return this;
     }
@@ -291,7 +269,46 @@ public class Line extends AbstractElement<Line> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getEndPos(),
+                getEndAnchor(),
+                getEndOffset(),
+                getWidth(),
+                getStartColor(),
+                getEndColor()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("endPos", getEndPos());
+        json.addProperty("endAnchor", getEndAnchor());
+        json.addProperty("endOffset", getEndOffset());
+        json.addProperty("width", getWidth());
+        json.addProperty("startColor", getStartColor());
+        json.addProperty("endColor", getEndColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new line from Json.
+     *
+     * @param json Json representation of a line
+     * @return A new line
+     */
+    @NotNull
+    public static Line fromJson(@NotNull JsonObject json) {
+        Line line = new Line(Key.of(json.get("key").getAsString()));
+        AbstractElement.fromJson(line, json);
+        line.setEndPos(!json.has("endPos") ? null : Vec2.fromJson(json.get("endPos").getAsJsonObject()));
+        line.setEndAnchor(!json.has("endAnchor") ? null : Vec2.fromJson(json.get("endAnchor").getAsJsonObject()));
+        line.setEndOffset(!json.has("endOffset") ? null : Vec2.fromJson(json.get("endOffset").getAsJsonObject()));
+        line.setWidth(!json.has("width") ? null : json.get("width").getAsInt());
+        line.setStartColor(!json.has("startColor") ? 0 : json.get("startColor").getAsInt());
+        line.setEndColor(!json.has("endColor") ? 0 : json.get("endColor").getAsInt());
+        return line;
     }
 }

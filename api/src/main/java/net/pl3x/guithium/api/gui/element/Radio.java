@@ -1,7 +1,14 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
+import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +18,9 @@ import org.jetbrains.annotations.Nullable;
 public class Radio extends LabeledRect<Radio> {
     private Key group;
     private Boolean selected;
-    private Boolean showLabel;
+
+    private OnToggled onToggled = (screen, radio, player, selected) -> {
+    };
 
     /**
      * Create a new radio box element.
@@ -28,7 +37,7 @@ public class Radio extends LabeledRect<Radio> {
      * @param key Unique identifier
      */
     public Radio(@NotNull Key key) {
-        super(key, Type.RADIO);
+        super(key);
     }
 
     /**
@@ -75,9 +84,12 @@ public class Radio extends LabeledRect<Radio> {
      * If null, no group will be used.
      *
      * @param group This radio button's group
+     * @return This radio button
      */
-    public void setGroup(@Nullable Key group) {
+    @NotNull
+    public Radio setGroup(@Nullable Key group) {
         this.group = group;
+        return this;
     }
 
     /**
@@ -102,32 +114,38 @@ public class Radio extends LabeledRect<Radio> {
      * If null, default <code>false</code> state will be used.
      *
      * @param selected Selected state
+     * @return This radio button
      */
-    public void setSelected(@Nullable Boolean selected) {
+    @NotNull
+    public Radio setSelected(@Nullable Boolean selected) {
         this.selected = selected;
+        return this;
     }
 
     /**
-     * Get if we should show text label.
+     * Get the action to execute when the radio button is toggled.
      * <p>
-     * If null, text label will be shown.
+     * If null, no toggle action will be used.
      *
-     * @return True to show text label
+     * @return Toggled action
      */
     @Nullable
-    public Boolean isShowLabel() {
-        return this.showLabel;
+    public OnToggled onToggled() {
+        return this.onToggled;
     }
 
     /**
-     * Set if we should show text label.
+     * Set the action to execute when the radio button is toggled.
      * <p>
-     * If null, text label will be shown.
+     * If null, no toggle action will be used.
      *
-     * @param showLabel True to show text label
+     * @param onToggled Toggled action
+     * @return This radio button
      */
-    public void setShowLabel(@Nullable Boolean showLabel) {
-        this.showLabel = showLabel;
+    @NotNull
+    public Radio onToggled(@Nullable OnToggled onToggled) {
+        this.onToggled = onToggled;
+        return this;
     }
 
     @Override
@@ -138,12 +156,57 @@ public class Radio extends LabeledRect<Radio> {
         Radio other = (Radio) obj;
         return Objects.equals(getGroup(), other.getGroup())
                 && Objects.equals(isSelected(), other.isSelected())
-                && Objects.equals(isShowLabel(), other.isShowLabel());
+                && Objects.equals(onToggled(), other.onToggled());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getGroup(),
+                isSelected(),
+                onToggled()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("group", getGroup());
+        json.addProperty("selected", isSelected());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new radio button from Json.
+     *
+     * @param json Json representation of a radio button
+     * @return A new radio button
+     */
+    @NotNull
+    public static Radio fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Radio radio = new Radio(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(radio, json);
+        radio.setGroup(!json.has("group") ? null : Key.of(json.get("group").getAsString()));
+        radio.setSelected(!json.has("selected") ? null : json.get("selected").getAsBoolean());
+        return radio;
+    }
+
+    /**
+     * Executable functional interface to fire when a radio button is toggled.
+     */
+    @FunctionalInterface
+    public interface OnToggled extends QuadConsumer<Screen, Radio, WrappedPlayer, Boolean> {
+        /**
+         * Called when a radio button is toggled.
+         *
+         * @param screen   Active screen where radio button was toggled
+         * @param radio    Radio button that was toggled
+         * @param player   Player that toggled the radio button
+         * @param selected New selected state of the radio button
+         */
+        void accept(@NotNull Screen screen, @NotNull Radio radio, @NotNull WrappedPlayer player, @NotNull Boolean selected);
     }
 }

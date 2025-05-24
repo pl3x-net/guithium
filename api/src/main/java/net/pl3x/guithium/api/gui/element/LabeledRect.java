@@ -1,8 +1,12 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.pl3x.guithium.api.Unsafe;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,18 +16,17 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> Type of labeled rectangle element
  */
-public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<LabeledRect<T>> {
+public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<T> {
     private Component label;
     private Component tooltip;
 
     /**
      * Create a new checkbox element.
      *
-     * @param key  Unique identifier
-     * @param type Element type
+     * @param key Unique identifier
      */
-    protected LabeledRect(@NotNull Key key, @NotNull Type type) {
-        super(key, type);
+    protected LabeledRect(@NotNull Key key) {
+        super(key);
     }
 
     /**
@@ -116,7 +119,31 @@ public abstract class LabeledRect<T extends LabeledRect<T>> extends Rect<Labeled
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getLabel(),
+                getTooltip()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("label", getLabel());
+        json.addProperty("tooltip", getTooltip());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Populate a labeled rectangle from Json.
+     *
+     * @param element A labeled rectangle to populate
+     * @param json    Json representation of a labeled rectangle
+     */
+    public static void fromJson(@NotNull LabeledRect<?> element, @NotNull JsonObject json) {
+        Rect.fromJson(element, json);
+        element.setLabel(!json.has("label") ? null : GsonComponentSerializer.gson().deserialize(json.get("label").getAsString()));
+        element.setTooltip(!json.has("tooltip") ? null : GsonComponentSerializer.gson().deserialize(json.get("tooltip").getAsString()));
     }
 }

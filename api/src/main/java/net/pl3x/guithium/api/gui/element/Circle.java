@@ -1,6 +1,9 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a circle element.
  */
 public class Circle extends AbstractElement<Circle> {
-    private Float radius;
+    private Integer radius;
     private Integer resolution;
     private int innerColor;
     private int outerColor;
@@ -29,7 +32,7 @@ public class Circle extends AbstractElement<Circle> {
      * @param key Unique identifier
      */
     public Circle(@NotNull Key key) {
-        super(key, Type.CIRCLE);
+        super(key);
     }
 
     /**
@@ -62,7 +65,7 @@ public class Circle extends AbstractElement<Circle> {
      * @return The radius
      */
     @Nullable
-    public Float getRadius() {
+    public Integer getRadius() {
         return this.radius;
     }
 
@@ -72,9 +75,12 @@ public class Circle extends AbstractElement<Circle> {
      * If null, will default to half screen's width or height, whichever is smaller.
      *
      * @param radius The radius
+     * @return This circle
      */
-    public void setRadius(@Nullable Float radius) {
+    @NotNull
+    public Circle setRadius(@Nullable Integer radius) {
         this.radius = radius;
+        return this;
     }
 
     /**
@@ -95,9 +101,12 @@ public class Circle extends AbstractElement<Circle> {
      * If null, default of <code>{@link #getRadius()}</code> will be used.
      *
      * @param resolution Circle resolution
+     * @return This circle
      */
-    public void setResolution(@Nullable Integer resolution) {
+    @NotNull
+    public Circle setResolution(@Nullable Integer resolution) {
         this.resolution = resolution;
+        return this;
     }
 
     /**
@@ -113,9 +122,12 @@ public class Circle extends AbstractElement<Circle> {
      * Set the inner color of this circle.
      *
      * @param color Inner color
+     * @return This circle
      */
-    public void setInnerColor(int color) {
+    @NotNull
+    public Circle setInnerColor(int color) {
         this.innerColor = color;
+        return this;
     }
 
     /**
@@ -131,9 +143,12 @@ public class Circle extends AbstractElement<Circle> {
      * Set the outer color of this circle.
      *
      * @param color Outer color
+     * @return This circle
      */
-    public void setOuterColor(int color) {
+    @NotNull
+    public Circle setOuterColor(int color) {
         this.outerColor = color;
+        return this;
     }
 
     /**
@@ -142,10 +157,13 @@ public class Circle extends AbstractElement<Circle> {
      * Both the inner and outer colors will be set to the specified color.
      *
      * @param color Circle color
+     * @return This circle
      */
-    public void setColor(int color) {
+    @NotNull
+    public Circle setColor(int color) {
         setInnerColor(color);
         setOuterColor(color);
+        return this;
     }
 
     @Override
@@ -162,7 +180,40 @@ public class Circle extends AbstractElement<Circle> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getRadius(),
+                getResolution(),
+                getInnerColor(),
+                getOuterColor()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("radius", getRadius());
+        json.addProperty("resolution", getResolution());
+        json.addProperty("innerColor", getInnerColor());
+        json.addProperty("outerColor", getOuterColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new circle from Json.
+     *
+     * @param json Json representation of a circle
+     * @return A new circle
+     */
+    @NotNull
+    public static Circle fromJson(@NotNull JsonObject json) {
+        Circle circle = new Circle(Key.of(json.get("key").getAsString()));
+        AbstractElement.fromJson(circle, json);
+        circle.setRadius(!json.has("radius") ? null : json.get("radius").getAsInt());
+        circle.setResolution(!json.has("resolution") ? null : json.get("resolution").getAsInt());
+        circle.setInnerColor(!json.has("innerColor") ? 0 : json.get("innerColor").getAsInt());
+        circle.setOuterColor(!json.has("outerColor") ? 0 : json.get("outerColor").getAsInt());
+        return circle;
     }
 }

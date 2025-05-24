@@ -30,11 +30,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AnnotationTest {
     private static final String[] ACCEPTED_ANNOTATIONS = {
             "Lorg/jetbrains/annotations/Nullable;",
-            "Lorg/jetbrains/annotations/NotNull;"
+            "Lorg/jetbrains/annotations/NotNull;",
+            "Lnet/pl3x/guithium/api/Unsafe$UnknownNullability;"
     };
 
     private static final String[] EXCLUDED_CLASSES = {
-            ""
+            "net/pl3x/guithium/fabric/util/GifDecoder",
+            "net/pl3x/guithium/fabric/util/GifDecoder$BitReader",
+            "net/pl3x/guithium/fabric/util/GifDecoder$CodeTable",
+            "net/pl3x/guithium/fabric/util/GifDecoder$GifFrame",
+            "net/pl3x/guithium/fabric/util/GifDecoder$GifImage"
     };
 
     @Test

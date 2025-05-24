@@ -1,6 +1,8 @@
 package net.pl3x.guithium.api.key;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,12 +50,21 @@ public abstract class Keyed implements JsonSerializable {
 
     @Override
     public int hashCode() {
-        return GSON.toJson(this).hashCode();
+        return getKey().hashCode();
     }
 
     @Override
     @NotNull
     public String toString() {
-        return String.format("%s%s", getClass().getSimpleName(), GSON.toJson(this));
+        return String.format("%s%s", getClass().getSimpleName(), toJson());
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper();
+        json.addProperty("key", getKey());
+        json.addProperty("type", getClass().getSimpleName());
+        return json.getJsonObject();
     }
 }

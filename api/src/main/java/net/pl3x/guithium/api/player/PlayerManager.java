@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Represents a manager of wrapped players.
  */
-public class PlayerManager {
+public abstract class PlayerManager {
     private final Map<UUID, WrappedPlayer> players = new HashMap<>();
 
     /**
@@ -20,19 +20,46 @@ public class PlayerManager {
     }
 
     /**
-     * Add player to manager.
+     * Add and wrap player.
+     *
+     * @param player Player to add
+     * @param <T>    Type of player to wrap
+     * @return the wrapped player that was added
+     * @throws IllegalArgumentException if player is not correct type for the environment
+     */
+    @NotNull
+    public abstract <T> WrappedPlayer add(@NotNull T player);
+
+    /**
+     * Add wrapped player.
      *
      * @param player Wrapped player to add
+     * @return the wrapped player that was added
      */
-    public void add(@NotNull WrappedPlayer player) {
+    @NotNull
+    public WrappedPlayer add(@NotNull WrappedPlayer player) {
         this.players.put(player.getUUID(), player);
+        return player;
     }
 
     /**
-     * Get player by specified unique identifier.
+     * Get a wrapped player.
+     * <p>
+     * If player is not currently in the manager, they will be wrapped and added.
      *
-     * @param uuid Unique identifier
-     * @return Wrapped player, or null if not found
+     * @param player Player to get
+     * @param <T>    Type of player
+     * @return Wrapped player, or null if not managed
+     * @throws IllegalArgumentException if player is not correct type for the environment
+     */
+    @NotNull
+    public abstract <T> WrappedPlayer get(@NotNull T player);
+
+    /**
+     * Get a managed player.
+     *
+     * @param uuid Unique identifier of player to get
+     * @return Wrapped player, or null if not managed
      */
     @Nullable
     public WrappedPlayer get(@NotNull UUID uuid) {
@@ -42,9 +69,22 @@ public class PlayerManager {
     /**
      * Remove player from manager.
      *
-     * @param uuid Unique identifier of player to remove
+     * @param player Player to remove
+     * @param <T>    Type of wrapped player
+     * @return the wrapped player that was removed, or null if there was no player to remove
+     * @throws IllegalArgumentException if player is not correct type for the environment
      */
-    public void remove(@NotNull UUID uuid) {
-        this.players.remove(uuid);
+    @Nullable
+    public abstract <T> WrappedPlayer remove(@NotNull T player);
+
+    /**
+     * Remove player from manager.
+     *
+     * @param uuid Unique identifier of player to remove
+     * @return the wrapped player that was removed, or null if there was no player to remove
+     */
+    @Nullable
+    public WrappedPlayer remove(@NotNull UUID uuid) {
+        return this.players.remove(uuid);
     }
 }

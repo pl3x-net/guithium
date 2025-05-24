@@ -1,19 +1,19 @@
 package net.pl3x.guithium.api.gui.element;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import java.util.Locale;
-import net.pl3x.guithium.api.Unsafe;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.Vec2;
 import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.network.packet.ElementPacket;
+import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an element.
  */
-public interface Element {
+public interface Element extends JsonSerializable {
     /**
      * Get identifying key.
      *
@@ -23,27 +23,15 @@ public interface Element {
     Key getKey();
 
     /**
-     * Get this element's type.
-     *
-     * @return Type of element
-     */
-    @NotNull
-    Type getType();
-
-    /**
      * Get this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @return Position from anchor
      */
-    @Nullable
+    @NotNull
     Vec2 getPos();
 
     /**
      * Set this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @param x X (horizontal) position
      * @param y Y (vertical) position
@@ -54,8 +42,6 @@ public interface Element {
 
     /**
      * Set this element's position from the anchor position.
-     * <p>
-     * If null, default position <code>0,0</code> will be used.
      *
      * @param pos Position
      * @return This element
@@ -70,7 +56,7 @@ public interface Element {
      *
      * @return Anchor position
      */
-    @Nullable
+    @NotNull
     Vec2 getAnchor();
 
     /**
@@ -103,7 +89,7 @@ public interface Element {
      *
      * @return Position offset
      */
-    @Nullable
+    @NotNull
     Vec2 getOffset();
 
     /**
@@ -131,8 +117,6 @@ public interface Element {
 
     /**
      * Get this element's rotation in degrees.
-     * <p>
-     * If null, default rotation <code>0.0</code> will be used.
      *
      * @return Degrees of rotation
      */
@@ -172,91 +156,52 @@ public interface Element {
     Element setScale(@Nullable Float scale);
 
     /**
-     * Represents an element type.
+     * Send this element to a player.
+     * <p>
+     * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
+     *
+     * @param player Player to send to
      */
-    enum Type {
-        /**
-         * Represents a button element.
-         */
-        BUTTON(Button.class),
+    default void send(@NotNull WrappedPlayer player) {
+        player.getConnection().send(new ElementPacket(this));
+    }
 
-        /**
-         * Represents a checkbox element.
-         */
-        CHECKBOX(Checkbox.class),
+    /**
+     * Send this element to a player.
+     * <p>
+     * If the player already has this element, it will be updated on the screen. Otherwise, it will be ignored.
+     *
+     * @param player Player to send to
+     * @param <T>    Native player type
+     */
+    default <T> void send(@NotNull T player) {
+        send(Guithium.api().getPlayerManager().get(player));
+    }
 
-        /**
-         * Represents a circle element.
-         */
-        CIRCLE(Circle.class),
-
-        /**
-         * Represent a gradient element.
-         */
-        GRADIENT(Rect.class),
-
-        /**
-         * Represents an image element.
-         */
-        IMAGE(Image.class),
-
-        /**
-         * Represents a line element.
-         */
-        LINE(Line.class),
-
-        /**
-         * Represents a radio box element.
-         */
-        RADIO(Radio.class),
-
-        /**
-         * Represents a slider element.
-         */
-        SLIDER(Slider.class),
-
-        /**
-         * Represents a text element.
-         */
-        TEXT(Text.class),
-
-        /**
-         * Represents a textbox element.
-         */
-        TEXTBOX(Textbox.class),
-
-        ;
-
-        private final Class<? extends Element> clazz;
-
-        /**
-         * Create new element type
-         *
-         * @param clazz Class of element
-         */
-        Type(@NotNull Class<? extends Element> clazz) {
-            this.clazz = clazz;
+    /**
+     * Create an element object from json representation.
+     *
+     * @param json Json representation
+     * @return A new element object, or null if invalid type
+     */
+    @Nullable
+    static Element fromJson(@NotNull JsonObject json) {
+        if (!json.has("type")) {
+            return null;
         }
-
-        /**
-         * Create new element from JSON representation.
-         *
-         * @param json JSON representation of element
-         * @param <T>  Type of element
-         * @return New element
-         * @throws JsonSyntaxException if JSON is not a valid representation for an element
-         */
-        @NotNull
-        public static <T extends Element> T createElement(@NotNull JsonObject json) {
-            try {
-                if (!json.has("type")) {
-                    throw new IllegalArgumentException("JSON must have 'type' field");
-                }
-                String name = json.get("type").getAsString().toUpperCase(Locale.ROOT);
-                return Unsafe.cast(JsonSerializable.GSON.fromJson(json, valueOf(name).clazz));
-            } catch (Throwable e) {
-                throw new JsonSyntaxException(e);
-            }
-        }
+        String type = json.get("type").getAsString();
+        return switch (type) {
+            case "Button" -> Button.fromJson(json);
+            case "Checkbox" -> Checkbox.fromJson(json);
+            case "Circle" -> Circle.fromJson(json);
+            case "Gradient" -> Gradient.fromJson(json);
+            case "Image" -> Image.fromJson(json);
+            case "Line" -> Line.fromJson(json);
+            case "Radio" -> Radio.fromJson(json);
+            case "Slider" -> Slider.fromJson(json);
+            case "Text" -> Text.fromJson(json);
+            case "Textbox" -> Textbox.fromJson(json);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 }

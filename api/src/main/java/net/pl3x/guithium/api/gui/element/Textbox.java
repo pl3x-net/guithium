@@ -1,7 +1,12 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +39,7 @@ public class Textbox extends Rect<Textbox> {
      * @param key Unique identifier
      */
     public Textbox(@NotNull Key key) {
-        super(key, Type.TEXTBOX);
+        super(key);
     }
 
     /**
@@ -77,9 +82,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default empty {@link String} will be used.
      *
      * @param value Current input value
+     * @return This textbox
      */
-    public void setValue(@Nullable String value) {
+    @NotNull
+    public Textbox setValue(@Nullable String value) {
         this.value = value;
+        return this;
     }
 
     /**
@@ -100,9 +108,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, no suggestion will be used.
      *
      * @param suggestion Current suggestion
+     * @return This textbox
      */
-    public void setSuggestion(@Nullable Component suggestion) {
+    @NotNull
+    public Textbox setSuggestion(@Nullable Component suggestion) {
         this.suggestion = suggestion;
+        return this;
     }
 
     /**
@@ -123,9 +134,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param bordered True if bordered
+     * @return This textbox
      */
-    public void setBordered(@Nullable Boolean bordered) {
+    @NotNull
+    public Textbox setBordered(@Nullable Boolean bordered) {
         this.bordered = bordered;
+        return this;
     }
 
     /**
@@ -146,9 +160,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param canLoseFocus True to gain and lose focus
+     * @return This textbox
      */
-    public void setCanLoseFocus(@Nullable Boolean canLoseFocus) {
+    @NotNull
+    public Textbox setCanLoseFocus(@Nullable Boolean canLoseFocus) {
         this.canLoseFocus = canLoseFocus;
+        return this;
     }
 
     /**
@@ -169,9 +186,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default maximum length of <code>32</code> will be used.
      *
      * @param maxLength Max length of input value
+     * @return This textbox
      */
-    public void setMaxLength(@Nullable Integer maxLength) {
+    @NotNull
+    public Textbox setMaxLength(@Nullable Integer maxLength) {
         this.maxLength = maxLength;
+        return this;
     }
 
     /**
@@ -192,9 +212,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default <code>true</code> will be used.
      *
      * @param editable True to let player edit input value
+     * @return This textbox
      */
-    public void setEditable(@Nullable Boolean editable) {
+    @NotNull
+    public Textbox setEditable(@Nullable Boolean editable) {
         this.editable = editable;
+        return this;
     }
 
     /**
@@ -215,9 +238,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default text color of <code>0xFFFFFFFF</code> will be used.
      *
      * @param color Text color
+     * @return This textbox
      */
-    public void setTextColor(@Nullable Integer color) {
+    @NotNull
+    public Textbox setTextColor(@Nullable Integer color) {
         this.textColor = color;
+        return this;
     }
 
     /**
@@ -238,9 +264,12 @@ public class Textbox extends Rect<Textbox> {
      * If null, default text color of <code>0xFF707070</code> will be used.
      *
      * @param color Text color
+     * @return This textbox
      */
-    public void setUneditableTextColor(@Nullable Integer color) {
+    @NotNull
+    public Textbox setUneditableTextColor(@Nullable Integer color) {
         this.uneditableTextColor = color;
+        return this;
     }
 
     @Override
@@ -261,7 +290,53 @@ public class Textbox extends Rect<Textbox> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getValue(),
+                getSuggestion(),
+                isBordered(),
+                canLoseFocus(),
+                getMaxLength(),
+                isEditable(),
+                getTextColor(),
+                getUneditableTextColor()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("value", getValue());
+        json.addProperty("suggestion", getSuggestion());
+        json.addProperty("bordered", isBordered());
+        json.addProperty("canLoseFocus", canLoseFocus());
+        json.addProperty("maxLength", getMaxLength());
+        json.addProperty("editable", isEditable());
+        json.addProperty("textColor", getTextColor());
+        json.addProperty("uneditableTextColor", getUneditableTextColor());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new textbox element from Json.
+     *
+     * @param json Json representation of a textbox element
+     * @return A new textbox element
+     */
+    @NotNull
+    public static Textbox fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Textbox textbox = new Textbox(Key.of(json.get("key").getAsString()));
+        Rect.fromJson(textbox, json);
+        textbox.setValue(!json.has("value") ? null : json.get("value").getAsString());
+        textbox.setSuggestion(!json.has("suggestion") ? null : GsonComponentSerializer.gson().deserialize(json.get("suggestion").getAsString()));
+        textbox.setBordered(!json.has("bordered") ? null : json.get("bordered").getAsBoolean());
+        textbox.setCanLoseFocus(!json.has("canLoseFocus") ? null : json.get("canLoseFocus").getAsBoolean());
+        textbox.setMaxLength(!json.has("maxLength") ? null : json.get("maxLength").getAsInt());
+        textbox.setEditable(!json.has("editable") ? null : json.get("editable").getAsBoolean());
+        textbox.setTextColor(!json.has("textColor") ? null : json.get("textColor").getAsInt());
+        textbox.setUneditableTextColor(!json.has("uneditableTextColor") ? null : json.get("uneditableTextColor").getAsInt());
+        return textbox;
     }
 }

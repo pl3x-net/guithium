@@ -1,8 +1,11 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.Unsafe;
 import net.pl3x.guithium.api.gui.Vec2;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,17 +15,16 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> Type of rectangle element
  */
-public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
+public abstract class Rect<T extends Rect<T>> extends AbstractElement<T> {
     private Vec2 size;
 
     /**
      * Create a new rect-type element.
      *
-     * @param key  Unique identifier for element
-     * @param type Type of rect
+     * @param key Unique identifier for element
      */
-    protected Rect(@NotNull Key key, @NotNull Type type) {
-        super(key, type);
+    protected Rect(@NotNull Key key) {
+        super(key);
     }
 
     /**
@@ -30,9 +32,9 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
      *
      * @return Size of element
      */
-    @Nullable
+    @NotNull
     public Vec2 getSize() {
-        return this.size;
+        return this.size == null ? Vec2.ZERO : this.size;
     }
 
     /**
@@ -55,7 +57,7 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
      */
     @NotNull
     public T setSize(@Nullable Vec2 size) {
-        this.size = size;
+        this.size = size == Vec2.ZERO ? null : size;
         return Unsafe.cast(this);
     }
 
@@ -70,7 +72,28 @@ public abstract class Rect<T extends Rect<T>> extends AbstractElement<Rect<T>> {
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getSize()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("size", getSize());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Populate a rectangle from Json.
+     *
+     * @param element A rectangle to populate
+     * @param json    Json representation of a rectangle
+     */
+    public static void fromJson(@NotNull Rect<?> element, @NotNull JsonObject json) {
+        AbstractElement.fromJson(element, json);
+        element.setSize(!json.has("size") ? null : Vec2.fromJson(json.get("size").getAsJsonObject()));
     }
 }

@@ -1,23 +1,20 @@
 plugins {
-    `java-library`
-    `maven-publish`
+    id("java")
     alias(libs.plugins.minotaur)
     alias(libs.plugins.indra.git)
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 allprojects {
     apply(plugin = "java-library")
 
+    group = "net.pl3x.guithium"
     version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
-
-    java {
-        toolchain.languageVersion = JavaLanguageVersion.of(21)
-    }
-
-    tasks.compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release = 21
-    }
+    description = "Allows paper plugins to add GUIs to your fabric client"
+    ext["website"] = "https://github.com/BillyGalbreath/Guithium"
 }
 
 subprojects {
@@ -26,17 +23,6 @@ subprojects {
     }
 
     dependencies {
-        if (name != "api") {
-            // api can't include itself
-            compileOnly(project(":api"))
-        }
-
-        if (name != "paper") {
-            // paper already natively ship with adventure
-            compileOnly(rootProject.libs.adventure.api.get())
-            compileOnly(rootProject.libs.adventure.gson.get())
-        }
-
         testImplementation(rootProject.libs.junit.get())
         testImplementation(rootProject.libs.asm.get())
         testRuntimeOnly(rootProject.libs.junitPlatform.get())
@@ -49,7 +35,6 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
-
         // we want to see system.out from tests
         testLogging.showStandardStreams = true
     }
@@ -57,6 +42,11 @@ subprojects {
 
 // this must be after subprojects block
 tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release = 21
+    }
+
     withType<Jar> {
         subprojects {
             dependsOn(project.tasks.build)
@@ -66,6 +56,7 @@ tasks {
         manifest {
             attributes["Implementation-Version"] = version
             attributes["Git-Commit"] = indraGit.commit()?.name()
+            attributes["Build"] = System.getenv("GITHUB_RUN_NUMBER") ?: -1
         }
 
         // get subproject's built jars

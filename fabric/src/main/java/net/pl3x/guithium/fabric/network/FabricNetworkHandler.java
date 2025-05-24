@@ -8,13 +8,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.pl3x.guithium.api.network.NetworkHandler;
 import net.pl3x.guithium.api.network.packet.Packet;
+import net.pl3x.guithium.fabric.GuithiumMod;
 import org.jetbrains.annotations.NotNull;
 
 public class FabricNetworkHandler extends NetworkHandler {
     private final FabricConnection connection;
 
-    public FabricNetworkHandler() {
-        this.connection = new FabricConnection();
+    public FabricNetworkHandler(@NotNull GuithiumMod mod) {
+        this.connection = new FabricConnection(mod);
     }
 
     @NotNull

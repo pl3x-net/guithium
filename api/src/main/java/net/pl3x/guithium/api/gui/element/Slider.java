@@ -1,7 +1,14 @@
 package net.pl3x.guithium.api.gui.element;
 
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.Objects;
+import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
+import net.pl3x.guithium.api.player.WrappedPlayer;
+import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +20,9 @@ public class Slider extends LabeledRect<Slider> {
     private Double min;
     private Double max;
     private String decimal;
+
+    private OnChange onChange = (screen, slider, player, value) -> {
+    };
 
     /**
      * Create a new slider element.
@@ -29,7 +39,7 @@ public class Slider extends LabeledRect<Slider> {
      * @param key Unique identifier
      */
     public Slider(@NotNull Key key) {
-        super(key, Type.CHECKBOX);
+        super(key);
     }
 
     /**
@@ -160,6 +170,32 @@ public class Slider extends LabeledRect<Slider> {
         return this;
     }
 
+    /**
+     * Get the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
+     *
+     * @return OnClick action
+     */
+    @Nullable
+    public OnChange onChange() {
+        return this.onChange;
+    }
+
+    /**
+     * Set the action to execute when the slider is changed.
+     * <p>
+     * If null, no change action will be used.
+     *
+     * @param onChange OnChange action
+     * @return This slider
+     */
+    @NotNull
+    public Slider onChange(@Nullable OnChange onChange) {
+        this.onChange = onChange;
+        return this;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!super.equals(obj)) {
@@ -169,12 +205,64 @@ public class Slider extends LabeledRect<Slider> {
         return Objects.equals(getValue(), other.getValue())
                 && Objects.equals(getMin(), other.getMin())
                 && Objects.equals(getMax(), other.getMax())
-                && Objects.equals(getDecimalFormat(), other.getDecimalFormat());
+                && Objects.equals(getDecimalFormat(), other.getDecimalFormat())
+                && Objects.equals(onChange(), other.onChange());
     }
 
     @Override
     public int hashCode() {
-        // pacifies codefactor.io
-        return super.hashCode();
+        return Objects.hash(
+                super.hashCode(),
+                getValue(),
+                getMin(),
+                getMax(),
+                getDecimalFormat(),
+                onChange()
+        );
+    }
+
+    @Override
+    @NotNull
+    public JsonElement toJson() {
+        JsonObjectWrapper json = new JsonObjectWrapper(super.toJson());
+        json.addProperty("value", getValue());
+        json.addProperty("min", getMin());
+        json.addProperty("max", getMax());
+        json.addProperty("decimal", getDecimalFormat());
+        return json.getJsonObject();
+    }
+
+    /**
+     * Create a new slider from Json.
+     *
+     * @param json Json representation of a slider
+     * @return A new slider
+     */
+    @NotNull
+    public static Slider fromJson(@NotNull JsonObject json) {
+        Preconditions.checkArgument(json.has("key"), "Key cannot be null");
+        Slider slider = new Slider(Key.of(json.get("key").getAsString()));
+        LabeledRect.fromJson(slider, json);
+        slider.setValue(!json.has("value") ? 0D : json.get("value").getAsDouble());
+        slider.setMin(!json.has("min") ? 0D : json.get("min").getAsDouble());
+        slider.setMax(!json.has("max") ? 1D : json.get("max").getAsDouble());
+        slider.setDecimalFormat(!json.has("decimal") ? null : json.get("decimal").getAsString());
+        return slider;
+    }
+
+    /**
+     * Executable functional interface to fire when a slider is changed.
+     */
+    @FunctionalInterface
+    public interface OnChange extends QuadConsumer<Screen, Slider, WrappedPlayer, Double> {
+        /**
+         * Called when a slider is changed.
+         *
+         * @param screen Active screen where slider was changed
+         * @param slider Slider that was changed
+         * @param player Player that changed the slider
+         * @param value  New value of the slider
+         */
+        void accept(@NotNull Screen screen, @NotNull Slider slider, @NotNull WrappedPlayer player, @NotNull Double value);
     }
 }

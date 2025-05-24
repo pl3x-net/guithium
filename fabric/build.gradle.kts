@@ -2,14 +2,25 @@ plugins {
     alias(libs.plugins.fabric.loom)
 }
 
+loom {
+    @Suppress("UnstableApiUsage")
+    mixin.defaultRefmapName = "guithium.refmap.json"
+    accessWidenerPath = file("src/main/resources/guithium.accesswidener")
+    runConfigs.configureEach {
+        ideConfigGenerated(true)
+    }
+}
+
 dependencies {
-    minecraft(libs.minecraft.get())
+    implementation(project(":api"))
+
+    minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
 
-    modCompileOnly(libs.fabric.loader.get())
-    modCompileOnly(libs.fabric.api.get())
+    modImplementation(libs.fabric.loader)
+    modImplementation(libs.fabric.api.get())
 
-    compileOnly(libs.adventure.fabric) {
+    modImplementation(libs.adventure.fabric) {
         // Temporary: kyori compiled ansi against jdk22
         //       which causes the remapJar task to fail :/
         exclude("net.kyori", "ansi")
@@ -22,15 +33,19 @@ dependencies {
 }
 
 tasks.processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     filteringCharset = Charsets.UTF_8.name()
+
+    // work around IDEA-296490
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     with(copySpec {
         from("src/main/resources/fabric.mod.json") {
-            mapOf(
-                "version" to "$version",
+            expand(
+                "version" to "${project.version}",
                 "minecraft" to libs.versions.minecraft.get(),
-                "fabricloader" to libs.versions.fabricLoader.get()
-            ).forEach { k, v -> filter { it.replace("\${$k}", v) } }
+                "fabricloader" to libs.versions.fabricLoader.get(),
+                "description" to "${project.description}",
+                "website" to "${ext["website"]}"
+            )
         }
     })
 }

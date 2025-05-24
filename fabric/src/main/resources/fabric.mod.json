@@ -1,29 +1,33 @@
 {
-  "schemaVersion" : 1,
-  "id" : "guithium",
-  "version" : "${version}",
-  "name" : "Guithium",
-  "description" : "Allows paper servers to add GUIs to your fabric client",
-  "authors" : [
+  "schemaVersion": 1,
+  "id": "guithium",
+  "version": "${version}",
+  "name": "Guithium",
+  "description": "${description}",
+  "authors": [
     "BillyGalbreath"
   ],
-  "contact" : {
-    "homepage" : "https://github.com/BillyGalbreath/Guithium",
-    "sources" : "https://github.com/BillyGalbreath/Guithium",
-    "issues" : "https://github.com/BillyGalbreath/Guithium/issues"
+  "contact": {
+    "homepage": "${website}",
+    "sources": "${website}",
+    "issues": "https://github.com/BillyGalbreath/Guithium/issues"
   },
-  "license" : "MIT",
-  "icon" : "assets/guithium/icon.png",
-  "environment" : "client",
-  "entrypoints" : {
-    "client" : [
+  "license": "MIT",
+  "icon": "assets/guithium/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
       "net.pl3x.guithium.fabric.GuithiumMod"
     ]
   },
-  "depends" : {
-    "fabricloader" : ">=${fabricloader}",
-    "minecraft" : "${minecraft}",
-    "java" : ">=21",
-    "fabric-api" : "*"
+  "mixins": [
+    "guithium.mixins.json"
+  ],
+  "accessWidener": "guithium.accesswidener",
+  "depends": {
+    "fabricloader": ">=${fabricloader}",
+    "minecraft": "${minecraft}",
+    "java": ">=21",
+    "fabric-api": "*"
   }
 }

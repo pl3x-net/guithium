@@ -9,11 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: gradle/actions/wrapper-validation@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Restore gradle.properties
+        run: |
+          mkdir -p ~/.gradle/
+          echo "${GRADLE_PROPERTIES}" > ~/.gradle/gradle.properties
+        env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
 
       - name: Read Version Catalog
         uses: SebRollen/toml-action@v1.2.0
@@ -22,15 +29,25 @@ jobs:
           file: "gradle/libs.versions.toml"
           field: "versions.guithium"
 
-      - run: |
+      - name: Set Version Number
+        run: |
           VERSION=${{ steps.version.outputs.value }}
           if [ "$SNAPSHOT" == "true"  ]; then
-            VERSION=$VERSION-SNAPSHOT-${{ github.run_number }}
+            VERSION=$VERSION-SNAPSHOT
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION is $VERSION"
 
-      - name: Build
-        run: ./gradlew build --stacktrace --no-daemon
+      - name: Build Release
+        if: ${{ env.SNAPSHOT != 'true' }}
+        run: ./gradlew build publish modrinth --stacktrace --no-daemon
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+
+      - name: Build Snapshot
+        if: ${{ env.SNAPSHOT == 'true' }}
+        run: ./gradlew build publish --stacktrace --no-daemon
 
       - name: Upload Snapshot Artifact
         if: ${{ env.SNAPSHOT == 'true' }}
@@ -38,23 +55,6 @@ jobs:
         with:
           name: "Guithium-${{ env.VERSION }}"
           path: build/libs/*.jar
-
-      - name: Publish to Modrinth
-        if: ${{ env.SNAPSHOT != 'true' }}
-        run: ./gradlew modrinth --stacktrace --no-daemon
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
-
-      - name: Deploy Javadoc
-        if: ${{ env.SNAPSHOT != 'true' && success() }}
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: javadoc
-          clean: true
-          folder: api/build/docs/javadoc
-          target-folder: ./
 
       - name: Notify Discord
         if: ${{ env.SNAPSHOT != 'true' && success() }}
