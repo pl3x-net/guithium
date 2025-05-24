@@ -103,19 +103,42 @@ public class ElementChangedValuePacket<V> extends Packet {
     }
 
     private static final class DataType<T> {
+        private final int ordinal;
+        private Function<ByteArrayDataInput, T> in;
+        private BiConsumer<ByteArrayDataOutput, T> out;
+
+        private DataType(Function<ByteArrayDataInput, T> in, BiConsumer<ByteArrayDataOutput, T> out, int ordinal) {
+            this.ordinal = ordinal;
+            in(in);
+            out(out);
+        }
+
+        private Function<ByteArrayDataInput, T> in() {
+            return this.in;
+        }
+
+        private void in(Function<ByteArrayDataInput, T> in) {
+            this.in = in;
+        }
+
+        private BiConsumer<ByteArrayDataOutput, T> out() {
+            return this.out;
+        }
+
+        private void out(BiConsumer<ByteArrayDataOutput, T> out) {
+            this.out = out;
+        }
+
         private T get(ByteArrayDataInput in) {
-            return this.in.apply(in);
+            return in().apply(in);
         }
 
         private void put(ByteArrayDataOutput out, T value) {
-            this.out.accept(out, value);
+            out().accept(out, value);
         }
 
         private static final Map<String, DataType<?>> byType = new HashMap<>();
         private static final Map<Integer, DataType<?>> byOrdinal = new HashMap<>();
-        private final Function<ByteArrayDataInput, T> in;
-        private final BiConsumer<ByteArrayDataOutput, T> out;
-        private final int ordinal;
 
         static {
             int ordinal = 0;
@@ -129,12 +152,6 @@ public class ElementChangedValuePacket<V> extends Packet {
             create(Long.class, ByteArrayDataInput::readLong, ByteArrayDataOutput::writeLong, ordinal++);
             create(Short.class, ByteArrayDataInput::readShort, (out, value) -> out.writeShort(value), ordinal++);
             create(String.class, ByteArrayDataInput::readUTF, ByteArrayDataOutput::writeUTF, ordinal);
-        }
-
-        private DataType(Function<ByteArrayDataInput, T> in, BiConsumer<ByteArrayDataOutput, T> out, int ordinal) {
-            this.in = in;
-            this.out = out;
-            this.ordinal = ordinal;
         }
 
         private static <V> void create(Class<V> clazz, Function<ByteArrayDataInput, V> in, BiConsumer<ByteArrayDataOutput, V> out, int ordinal) {
