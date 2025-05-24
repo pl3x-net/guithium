@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Screen extends Keyed {
     private final boolean hud;
+    private final boolean preRender;
     private final List<Element> elements = new ArrayList<>();
 
     /**
@@ -48,7 +49,7 @@ public class Screen extends Keyed {
      * Create a new screen.
      *
      * @param key   Unique identifier
-     * @param isHud {#code true} if screen is a HUD, otherwise {#code false}
+     * @param isHud {@code true} if screen is a HUD, otherwise {@code false}
      */
     public Screen(@NotNull String key, boolean isHud) {
         this(Key.of(key), isHud);
@@ -58,20 +59,41 @@ public class Screen extends Keyed {
      * Create a new screen.
      *
      * @param key   Unique identifier
-     * @param isHud {#code true} if screen is a HUD, otherwise {#code false}
+     * @param isHud {@code true} if screen is a HUD, otherwise {@code false}
      */
     public Screen(@NotNull Key key, boolean isHud) {
+        this(key, isHud, false);
+    }
+
+    /**
+     * Create a new screen.
+     *
+     * @param key       Unique identifier
+     * @param isHud     {@code true} if screen is a HUD, otherwise {@code false}
+     * @param preRender If {@code isHud} and this is {@code true} render before vanilla's hud, otherwise {@code false} to render after
+     */
+    public Screen(@NotNull Key key, boolean isHud, boolean preRender) {
         super(key);
         this.hud = isHud;
+        this.preRender = preRender;
     }
 
     /**
      * Whether this screen is a HUD type.
      *
-     * @return {#code true} if screen is a HUD, otherwise {#code false}
+     * @return {@code true} if screen is a HUD, otherwise {@code false}
      */
     public boolean isHud() {
         return this.hud;
+    }
+
+    /**
+     * Whether this hud screen should render before vanilla's hud.
+     *
+     * @return {@code true} to render before vanilla, otherwise {@code false} to render after
+     */
+    public boolean isPreRender() {
+        return this.preRender;
     }
 
     /**
@@ -267,6 +289,7 @@ public class Screen extends Keyed {
         }
         Screen other = (Screen) obj;
         return Objects.equals(isHud(), other.isHud())
+                && Objects.equals(isPreRender(), other.isPreRender())
                 && getElements().equals(other.getElements());
     }
 
@@ -275,6 +298,7 @@ public class Screen extends Keyed {
         return Objects.hash(
                 super.hashCode(),
                 isHud(),
+                isPreRender(),
                 getElements()
         );
     }
@@ -284,6 +308,7 @@ public class Screen extends Keyed {
         JsonObjectWrapper json = new JsonObjectWrapper();
         json.addProperty("key", getKey());
         json.addProperty("hud", isHud());
+        json.addProperty("prerender", isPreRender());
         json.addProperty("elements", getElements());
         return json.getJsonObject();
     }

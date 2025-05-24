@@ -86,7 +86,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
         net.kyori.adventure.text.Component label = getElement().getLabel();
         setMessage(label == null ? Component.empty() : ComponentHelper.toVanilla(
                 GsonComponentSerializer.gson().serialize(label)
-                        .replace("{val}", this.decimalFormat.format(this.value))
+                        .replace("{value}", this.decimalFormat.format(this.value))
                         .replace("{min}", this.decimalFormat.format(this.min))
                         .replace("{max}", this.decimalFormat.format(this.max))
         ));

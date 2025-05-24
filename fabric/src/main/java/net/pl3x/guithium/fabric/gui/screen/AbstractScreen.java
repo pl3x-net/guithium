@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.element.RenderableWidget;
@@ -57,8 +58,24 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
         });
     }
 
+    public void preRender(@NotNull GuiGraphics gfx, float delta) {
+        if (getScreen().isPreRender()) {
+            render(gfx, 0, 0, delta);
+        }
+    }
+
+    public void postRender(@NotNull GuiGraphics gfx, float delta) {
+        if (!getScreen().isPreRender()) {
+            render(gfx, 0, 0, delta);
+        }
+    }
+
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+        if (!this.initialized) {
+            return;
+        }
+
         gfx.pose().pushPose();
         super.render(gfx, mouseX, mouseY, delta);
         gfx.pose().popPose();
@@ -93,5 +110,15 @@ public abstract class AbstractScreen extends net.minecraft.client.gui.screens.Sc
             return;
         }
         this.widgets.forEach((key, widget) -> ((RenderableWidget) widget).init());
+    }
+
+    public boolean updateElement(@NotNull Element element) {
+        AbstractWidget widget = getWidgets().get(element.getKey());
+        if (widget instanceof RenderableWidget renderable) {
+            // found it. update and return
+            renderable.updateElement(element);
+            return true;
+        }
+        return false;
     }
 }

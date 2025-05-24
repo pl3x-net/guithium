@@ -1,5 +1,6 @@
 package net.pl3x.guithium.api.gui.texture;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,15 @@ public class TextureManager {
      */
     public TextureManager() {
         // Empty constructor to pacify javadoc lint
+    }
+
+    /**
+     * Add some textures.
+     *
+     * @param textures Collection of textures to add
+     */
+    public void add(@NotNull Collection<Texture> textures) {
+        textures.forEach(this::add);
     }
 
     /**
@@ -59,27 +69,31 @@ public class TextureManager {
      * Remove a texture by string.
      *
      * @param key Unique identifier of texture to remove
+     * @return The removed texture associated with {@code key}, or {@code null} if there was none for {@code key}.
      */
-    public void remove(@NotNull String key) {
-        remove(Key.of(key));
+    @Nullable
+    public Texture remove(@NotNull String key) {
+        return remove(Key.of(key));
     }
 
     /**
      * Remove a texture by key.
      *
      * @param key Unique identifier of texture to remove
+     * @return The removed texture associated with {@code key}, or {@code null} if there was none for {@code key}.
      */
-    public void remove(@NotNull Key key) {
-        this.textures.remove(key);
+    @Nullable
+    public Texture remove(@NotNull Key key) {
+        return this.textures.remove(key);
     }
 
     /**
-     * Get an <a href="Collection.html#unmodview">unmodifiable view</a> of the stored textures map.
+     * Get an <a href="Collection.html#unmodview">unmodifiable view</a> of the stored textures.
      *
-     * @return An unmodifiable view of stored textures map
+     * @return An unmodifiable view of stored textures
      */
     @NotNull
-    public Map<Key, Texture> getTextures() {
-        return Collections.unmodifiableMap(this.textures);
+    public Collection<Texture> getTextures() {
+        return Collections.unmodifiableCollection(this.textures.values());
     }
 }

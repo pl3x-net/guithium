@@ -1,6 +1,6 @@
 package net.pl3x.guithium.plugin.network;
 
-import java.util.Map;
+import java.util.Collection;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.action.actions.player.PlayerJoinedAction;
 import net.pl3x.guithium.api.action.actions.player.screen.CloseScreenAction;
@@ -14,7 +14,6 @@ import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.gui.texture.Texture;
-import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import net.pl3x.guithium.api.network.packet.ButtonClickPacket;
 import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
@@ -127,7 +126,7 @@ public class PaperPacketListener implements PacketListener {
         }
 
         // tell client about textures
-        Map<Key, Texture> textures = Guithium.api().getTextureManager().getTextures();
+        Collection<Texture> textures = Guithium.api().getTextureManager().getTextures();
         if (!textures.isEmpty()) {
             this.player.getConnection().send(new TexturesPacket(textures));
         }
