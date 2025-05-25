@@ -41,6 +41,7 @@ nav_external_links:
   - title: Downloads
     url: https://modrinth.com/project/guithium/
     alt: "Download from Modrinth"
+    image: assets/images/modrinth.png
     hide_icon: false
     opens_in_new_tab: true
   - title: Discord
