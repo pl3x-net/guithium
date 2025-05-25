@@ -229,7 +229,7 @@ public class Image extends Rect<Image> {
     /**
      * Create a new image from Json.
      *
-     * @param json Json representation of a image
+     * @param json Json representation of an image
      * @return A new image
      */
     @NotNull
