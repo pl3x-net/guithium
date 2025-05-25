@@ -18,7 +18,7 @@ defaults:
       layout: "default"
 
 # Color scheme supports "light" (default) and "dark"
-color_scheme: dark
+color_scheme: guithium
 
 # Set a path/url to a logo that will be displayed instead of the title
 #logo: "/assets/images/just-the-docs.png"
@@ -32,15 +32,33 @@ nav_enabled: true
 
 # External navigation links
 nav_external_links:
-  - title: Download on Modrinth
-    url: https://modrinth.com/project/guithium
-    hide_icon: false # set to true to hide the external link icon - defaults to false
-    opens_in_new_tab: true # set to true to open this link in a new tab - defaults to false
+  - title: Source Code
+    url: https://github.com/billygalbreath/guithium/
+    image: assets/images/github.png
+    alt: "View source on GitHub"
+    hide_icon: false
+    opens_in_new_tab: true
+  - title: Downloads
+    url: https://modrinth.com/project/guithium/
+    alt: "Download from Modrinth"
+    hide_icon: false
+    opens_in_new_tab: true
+  - title: Discord
+    url: https://pl3x.net/discord/
+    image: assets/images/discord.png
+    alt: "Join us on Discord"
+    hide_icon: false
+    opens_in_new_tab: true
+  - title: Javadoc
+    url: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.3/
+    image: assets/images/java.png
+    alt: "View API Javadoc"
+    hide_icon: false
+    opens_in_new_tab: true
 
 # Aux links for the upper right navigation
 aux_links_new_tab: true
-aux_links:
-  javadoc: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.1
+aux_links: []
 
 # Heading anchor links appear on hover over h1-h6 tags in page content
 # allowing users to deep link to a particular heading on a page.
