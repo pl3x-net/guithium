@@ -8,11 +8,9 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import net.pl3x.guithium.fabric.util.Numbers;
@@ -105,12 +103,10 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
         }
 
         getElement().setValue(this.lerpedValue);
-        ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection().send(
-                new ElementChangedValuePacket<>(
-                        this.self.getScreen().getScreen().getKey(),
-                        getElement().getKey(),
-                        this.lerpedValue
-                )
-        );
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                this.lerpedValue
+        ));
     }
 }

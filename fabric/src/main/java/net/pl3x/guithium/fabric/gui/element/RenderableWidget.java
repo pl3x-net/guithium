@@ -2,6 +2,7 @@ package net.pl3x.guithium.fabric.gui.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Button;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Circle;
@@ -13,6 +14,8 @@ import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.gui.element.Slider;
 import net.pl3x.guithium.api.gui.element.Text;
 import net.pl3x.guithium.api.gui.element.Textbox;
+import net.pl3x.guithium.api.network.Connection;
+import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +27,11 @@ public interface RenderableWidget {
     void updateElement(@NotNull Element element);
 
     void init();
+
+    @NotNull
+    default Connection conn() {
+        return ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
+    }
 
     @NotNull
     static AbstractWidget create(@NotNull Minecraft client, @NotNull AbstractScreen screen, @NotNull Element element) {

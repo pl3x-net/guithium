@@ -9,9 +9,7 @@ import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.key.Key;
-import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
@@ -105,8 +103,11 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
         getElement().setValue(selected());
 
         // tell the server
-        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(new ElementChangedValuePacket<>(this.self.getScreen().getKey(), getElement().getKey(), selected()));
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                selected()
+        ));
 
         // if this radio was toggled off, we're done.
         if (!selected()) {
@@ -147,13 +148,11 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
             otherRadio.setValue(false);
 
             // tell the server
-            conn.send(
-                    new ElementChangedValuePacket<>(
-                            this.self.getScreen().getKey(),
-                            otherRadio.getKey(),
-                            false
-                    )
-            );
+            conn().send(new ElementChangedValuePacket<>(
+                    this.self.getScreen().getScreen(),
+                    otherRadio,
+                    false
+            ));
         });
     }
 }

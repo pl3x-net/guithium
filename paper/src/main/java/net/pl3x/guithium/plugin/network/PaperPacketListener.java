@@ -60,57 +60,6 @@ public class PaperPacketListener implements PacketListener {
     }
 
     @Override
-    public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
-        Screen screen = this.player.getCurrentScreen();
-        if (screen == null || !screen.getKey().equals(packet.getScreenKey())) {
-            return;
-        }
-        ScreenClosedAction action = new ScreenClosedAction(this.player, screen);
-        Guithium.api().getActionRegistry().callAction(action);
-        this.player.setCurrentScreen(null);
-    }
-
-    @Override
-    public void handleElement(@NotNull ElementPacket packet) {
-        // client does not send this packet to the server
-        throw new UnsupportedOperationException("Not supported on server.");
-    }
-
-    @Override
-    public void handleHello(@NotNull HelloPacket packet) {
-        int protocol = packet.getProtocol();
-
-        Guithium.logger.info("{} is using Guithium with protocol {}", this.player.getName(), protocol);
-
-        // set the player's client protocol
-        this.player.setProtocol(protocol);
-
-        // reply to the player with server's protocol
-        this.player.getConnection().send(new HelloPacket(), true);
-
-        // ensure the player has the correct guithium installed
-        if (!this.player.hasGuithium()) {
-            return;
-        }
-
-        // tell client about textures
-        Collection<Texture> textures = Guithium.api().getTextureManager().getTextures();
-        if (!textures.isEmpty()) {
-            this.player.getConnection().send(new TexturesPacket(textures));
-        }
-
-        // tell other plugins about this hello
-        PlayerJoinedAction action = new PlayerJoinedAction(this.player);
-        Guithium.api().getActionRegistry().callAction(action);
-    }
-
-    @Override
-    public void handleOpenScreen(@NotNull OpenScreenPacket packet) {
-        // client does not send this packet to the server
-        throw new UnsupportedOperationException("Not supported on server.");
-    }
-
-    @Override
     public <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet) {
         // make sure it's the same screen
         Screen screen = this.player.getCurrentScreen();
@@ -149,8 +98,59 @@ public class PaperPacketListener implements PacketListener {
     }
 
     @Override
+    public void handleElement(@NotNull ElementPacket packet) {
+        // client does not send this packet to the server
+        throw new UnsupportedOperationException("Not supported on server.");
+    }
+
+    @Override
+    public void handleOpenScreen(@NotNull OpenScreenPacket packet) {
+        // client does not send this packet to the server
+        throw new UnsupportedOperationException("Not supported on server.");
+    }
+
+    @Override
+    public void handleCloseScreen(@NotNull CloseScreenPacket packet) {
+        Screen screen = this.player.getCurrentScreen();
+        if (screen == null || !screen.getKey().equals(packet.getScreenKey())) {
+            return;
+        }
+        ScreenClosedAction action = new ScreenClosedAction(this.player, screen);
+        Guithium.api().getActionRegistry().callAction(action);
+        this.player.setCurrentScreen(null);
+    }
+
+    @Override
     public void handleTextures(@NotNull TexturesPacket packet) {
         // client does not send this packet to the server
         throw new UnsupportedOperationException("Not supported on server.");
+    }
+
+    @Override
+    public void handleHello(@NotNull HelloPacket packet) {
+        int protocol = packet.getProtocol();
+
+        Guithium.logger.info("{} is using Guithium with protocol {}", this.player.getName(), protocol);
+
+        // set the player's client protocol
+        this.player.setProtocol(protocol);
+
+        // reply to the player with server's protocol
+        this.player.getConnection().send(new HelloPacket(), true);
+
+        // ensure the player has the correct guithium installed
+        if (!this.player.hasGuithium()) {
+            return;
+        }
+
+        // tell client about textures
+        Collection<Texture> textures = Guithium.api().getTextureManager().getTextures();
+        if (!textures.isEmpty()) {
+            this.player.getConnection().send(new TexturesPacket(textures));
+        }
+
+        // tell other plugins about this hello
+        PlayerJoinedAction action = new PlayerJoinedAction(this.player);
+        Guithium.api().getActionRegistry().callAction(action);
     }
 }

@@ -8,6 +8,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.Unsafe;
+import net.pl3x.guithium.api.gui.Screen;
+import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.network.PacketListener;
 import org.jetbrains.annotations.NotNull;
@@ -35,10 +37,10 @@ public class ElementChangedValuePacket<V> extends Packet {
      * @param element Element that was changed
      * @param value   New value of element
      */
-    public ElementChangedValuePacket(@NotNull Key screen, @NotNull Key element, @NotNull V value) {
+    public ElementChangedValuePacket(@NotNull Screen screen, @NotNull Element element, @NotNull V value) {
         super(KEY);
-        this.screen = screen;
-        this.element = element;
+        this.screen = screen.getKey();
+        this.element = element.getKey();
         this.type = DataType.get(value);
         this.value = value;
     }

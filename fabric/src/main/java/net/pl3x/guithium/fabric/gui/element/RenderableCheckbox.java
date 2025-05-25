@@ -5,12 +5,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.resources.ResourceLocation;
-import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.network.Connection;
 import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
@@ -99,13 +96,10 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         getElement().setValue(selected());
 
         // tell the server
-        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(
-                new ElementChangedValuePacket<>(
-                        this.self.getScreen().getKey(),
-                        getElement().getKey(),
-                        selected()
-                )
-        );
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                selected()
+        ));
     }
 }

@@ -24,34 +24,6 @@ public interface PacketListener {
     <T extends ClickableElement<T>> void handleElementClick(@NotNull ElementClickedPacket<T> packet);
 
     /**
-     * Handle close screen packet.
-     *
-     * @param packet Close screen packet to handle
-     */
-    void handleCloseScreen(@NotNull CloseScreenPacket packet);
-
-    /**
-     * Handle update element packet.
-     *
-     * @param packet Element packet to handle
-     */
-    void handleElement(@NotNull ElementPacket packet);
-
-    /**
-     * Handle the hello packet.
-     *
-     * @param packet Hello packet to handle
-     */
-    void handleHello(@NotNull HelloPacket packet);
-
-    /**
-     * Handle open screen packet.
-     *
-     * @param packet Open screen packet to handle
-     */
-    void handleOpenScreen(@NotNull OpenScreenPacket packet);
-
-    /**
      * Handle element changed value packet.
      *
      * @param packet Element changed value packet to handle
@@ -61,9 +33,37 @@ public interface PacketListener {
     <T extends ValueElement<T, V>, V> void handleElementChangedValue(@NotNull ElementChangedValuePacket<V> packet);
 
     /**
+     * Handle update element packet.
+     *
+     * @param packet Element packet to handle
+     */
+    void handleElement(@NotNull ElementPacket packet);
+
+    /**
+     * Handle open screen packet.
+     *
+     * @param packet Open screen packet to handle
+     */
+    void handleOpenScreen(@NotNull OpenScreenPacket packet);
+
+    /**
+     * Handle close screen packet.
+     *
+     * @param packet Close screen packet to handle
+     */
+    void handleCloseScreen(@NotNull CloseScreenPacket packet);
+
+    /**
      * Handle texture preload packet.
      *
      * @param packet Texture preload packet to handle
      */
     void handleTextures(@NotNull TexturesPacket packet);
+
+    /**
+     * Handle the hello packet.
+     *
+     * @param packet Hello packet to handle
+     */
+    void handleHello(@NotNull HelloPacket packet);
 }
