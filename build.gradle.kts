@@ -14,7 +14,7 @@ allprojects {
     group = "net.pl3x.guithium"
     version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
     description = "Allows paper plugins to add GUIs to your fabric client"
-    ext["website"] = "https://github.com/BillyGalbreath/Guithium"
+    ext["website"] = "https://github.com/pl3x-net/guithium"
 }
 
 subprojects {

@@ -1,6 +1,6 @@
 ## Guithium API for plugin developers
 
-Wiki: https://github.com/BillyGalbreath/Guithium/wiki
+Wiki: https://github.com/pl3x-net/guithium/wiki
 
 Javadoc: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.1-SNAPSHOT
 
