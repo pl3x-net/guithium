@@ -33,10 +33,31 @@ subprojects {
         testImplementation.get().extendsFrom(compileOnly.get())
     }
 
-    tasks.test {
-        useJUnitPlatform()
-        // we want to see system.out from tests
-        testLogging.showStandardStreams = true
+    tasks {
+        test {
+            useJUnitPlatform()
+            // we want to see system.out from tests
+            testLogging.showStandardStreams = true
+        }
+
+        processResources {
+            filteringCharset = Charsets.UTF_8.name()
+
+            // work around IDEA-296490
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            with(copySpec {
+                include("*plugin.yml", "fabric.mod.json")
+                from("src/main/resources") {
+                    expand(
+                        "version" to "${project.version}",
+                        "minecraft" to rootProject.libs.versions.minecraft.get(),
+                        "fabricloader" to rootProject.libs.versions.fabricLoader.get(),
+                        "description" to "${project.description}",
+                        "website" to "${ext["website"]}"
+                    )
+                }
+            })
+        }
     }
 }
 
