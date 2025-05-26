@@ -2,21 +2,21 @@
 
 $color-scheme: dark;
 
-$body-background-color: #1e1f22; // $grey-dk-300;
-$body-heading-color: $grey-lt-000;
-$body-text-color: #bcbec4; // $grey-lt-300;
-$link-color: #90caf9; // $blue-000;
-$nav-child-link-color: $grey-dk-000;
-$sidebar-color: #2b2d30; // $grey-dk-300;
-$base-button-color: $grey-dk-250;
-$btn-primary-color: $blue-200;
-$code-background-color: #31343f; // OneDarkJekyll default for syntax-one-dark-vivid
-$code-linenumber-color: #dee2f7; // OneDarkJekyll .nf for syntax-one-dark-vivid
-$feedback-color: darken($sidebar-color, 2%);
-$table-background-color: $grey-dk-250;
-$search-background-color: $grey-dk-250;
-$search-result-preview-color: $grey-dk-000;
-$border-color: $grey-dk-200;
+$body-background-color: #1e1f22;       // $grey-dk-300;
+$body-heading-color: #f5f6fa;          // $grey-lt-000;
+$body-text-color: #bcbec4;             // $grey-lt-300;
+$link-color: #90caf9;                  // $blue-000;
+$nav-child-link-color: #959396;        // $grey-dk-000;
+$sidebar-color: #2b2d30;               // $grey-dk-300;
+$base-button-color: #302d36;           // $grey-dk-250;
+$btn-primary-color: #264caf;           // $blue-200;
+$code-background-color: #31343f;       // #31343f // OneDarkJekyll default for syntax-one-dark-vivid
+$code-linenumber-color: #dee2f7;       // #dee2f7 // OneDarkJekyll .nf for syntax-one-dark-vivid
+$feedback-color: #26282b;              // darken($sidebar-color, 2%);
+$table-background-color: #2b2d30;      // $grey-dk-250;
+$search-background-color: #2b2d30;     // $grey-dk-250;
+$search-result-preview-color: #959396; // $grey-dk-000;
+$border-color: #454545;                // $grey-dk-200;
 
 $white: #fff !default;
 $grey-dk-000: #959396 !default;

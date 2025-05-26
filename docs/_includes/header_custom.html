@@ -1,15 +1,18 @@
-{%- if site.nav_external_links -%}
-<div style="margin-top:10px;font-size:0px;">
-    {%- for node in site.nav_external_links -%}
-    {%- if node.image -%}
+{% if site.nav_external_links %}
+<div id="external-links">
+    {% for node in site.nav_external_links %}
+    {% if node.image %}
     <a href="{{ node.url | absolute_url }}"
        {% if node.opens_in_new_tab %}
        target="_blank" rel="noopener noreferrer"
        {% endif %}
     >
-        <img src="{{ node.image }}" width="16" height="16" style="margin:10px 8px" alt="{{ node.alt }}" title="{{ node.alt }}">
+        <svg>
+            <title>{{ node.alt }}</title>
+            <use href="{{ site.baseurl }}{{ node.image }}"/>
+        </svg>
     </a>
     {% endif %}
-    {%- endfor -%}
+    {% endfor %}
 </div>
-{%- endif -%}
+{% endif %}

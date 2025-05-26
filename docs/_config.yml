@@ -34,25 +34,25 @@ nav_enabled: true
 nav_external_links:
   - title: Source Code
     url: https://github.com/billygalbreath/guithium/
-    image: assets/images/github.png
+    image: "/assets/images/logos.svg#github"
     alt: "View source on GitHub"
     hide_icon: false
     opens_in_new_tab: true
   - title: Downloads
     url: https://modrinth.com/project/guithium/
     alt: "Download from Modrinth"
-    image: assets/images/modrinth.png
+    image: "/assets/images/logos.svg#modrinth"
     hide_icon: false
     opens_in_new_tab: true
   - title: Discord
     url: https://pl3x.net/discord/
-    image: assets/images/discord.png
+    image: "/assets/images/logos.svg#discord"
     alt: "Join us on Discord"
     hide_icon: false
     opens_in_new_tab: true
   - title: Javadoc
-    url: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/0.0.3/
-    image: assets/images/java.png
+    url: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/latest/
+    image: "/assets/images/logos.svg#java"
     alt: "View API Javadoc"
     hide_icon: false
     opens_in_new_tab: true

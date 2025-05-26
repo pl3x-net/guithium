@@ -1,0 +1,23 @@
+#logos-svg {
+  display: none;
+}
+.main-header {
+  div#external-links {
+    margin-top: 12px;
+    a {
+      text-decoration: none;
+      svg {
+        margin: 4px;
+        width: 24px;
+        height: 24px;
+        background: transparent;
+        color: $body-text-color;
+        transition: 0.3s;
+      }
+      &:hover svg {
+        color: $body-background-color;
+        filter: drop-shadow(0 0 3px $body-heading-color);
+      }
+    }
+  }
+}
