@@ -35,7 +35,7 @@ tasks {
         stdopts.isDocFilesSubDirs = true
         stdopts.windowTitle = "$name $version API Documentation"
         stdopts.docTitle = "<h1>$name $version API</h1>"
-        stdopts.header = """<img src="https://raw.githubusercontent.com/BillyGalbreath/Guithium/master/fabric/src/main/resources/assets/guithium/icon.png" style="height:100%">"""
+        stdopts.header = """<img src="https://raw.githubusercontent.com/pl3x-net/guithium/master/fabric/src/main/resources/assets/guithium/icon.png" style="height:100%">"""
         stdopts.bottom = "Copyright © 2025 William Blake Galbreath"
         stdopts.linkSource(true)
         stdopts.addBooleanOption("html5", true)

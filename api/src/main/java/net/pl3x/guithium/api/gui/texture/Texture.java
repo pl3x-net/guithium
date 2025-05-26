@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Objects;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
-import net.pl3x.guithium.api.json.JsonSerializable;
 import net.pl3x.guithium.api.key.Key;
 import net.pl3x.guithium.api.key.Keyed;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Represents an image texture.
  */
-public class Texture extends Keyed implements JsonSerializable {
+public class Texture extends Keyed {
     /**
      * Mojang's default dirt texture used in options screens.
      */

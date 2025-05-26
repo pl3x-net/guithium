@@ -31,21 +31,3 @@ dependencies {
     // without also pulling in all the other b.s.
     include(libs.adventure.fabric)
 }
-
-tasks.processResources {
-    filteringCharset = Charsets.UTF_8.name()
-
-    // work around IDEA-296490
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    with(copySpec {
-        from("src/main/resources/fabric.mod.json") {
-            expand(
-                "version" to "${project.version}",
-                "minecraft" to libs.versions.minecraft.get(),
-                "fabricloader" to libs.versions.fabricLoader.get(),
-                "description" to "${project.description}",
-                "website" to "${ext["website"]}"
-            )
-        }
-    })
-}
