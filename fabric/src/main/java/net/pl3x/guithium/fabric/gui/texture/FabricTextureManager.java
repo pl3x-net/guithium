@@ -77,25 +77,4 @@ public class FabricTextureManager extends TextureManager {
     public void clear() {
         new HashSet<>(this.textures.keySet()).forEach(super::remove);
     }
-
-    /*
-    @Override
-    public void add(@NotNull FabricTexture texture) {
-        FabricTexture fabricTexture = new FabricTexture(texture.getKey(), texture.getUrl());
-        super.add(Unsafe.<T>cast(fabricTexture));
-    }
-
-    @Override
-    @Nullable
-    public T remove(@NotNull Key key) {
-        T texture = super.remove(key);
-        if (texture != null) {
-            texture.unload();
-        }
-        return texture;
-    }
-
-    public void clear() {
-        new HashSet<>(this.textures.keySet()).forEach(this::remove);
-    }*/
 }

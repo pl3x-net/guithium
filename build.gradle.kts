@@ -14,7 +14,7 @@ allprojects {
     group = "net.pl3x.guithium"
     version = System.getenv("VERSION") ?: "${rootProject.libs.versions.guithium.get()}-SNAPSHOT"
     description = "Allows paper plugins to add GUIs to your fabric client"
-    ext["website"] = "https://github.com/BillyGalbreath/Guithium"
+    ext["website"] = "https://github.com/pl3x-net/guithium"
 }
 
 subprojects {
@@ -33,10 +33,31 @@ subprojects {
         testImplementation.get().extendsFrom(compileOnly.get())
     }
 
-    tasks.test {
-        useJUnitPlatform()
-        // we want to see system.out from tests
-        testLogging.showStandardStreams = true
+    tasks {
+        test {
+            useJUnitPlatform()
+            // we want to see system.out from tests
+            testLogging.showStandardStreams = true
+        }
+
+        processResources {
+            filteringCharset = Charsets.UTF_8.name()
+
+            // work around IDEA-296490
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            with(copySpec {
+                include("*plugin.yml", "fabric.mod.json")
+                from("src/main/resources") {
+                    expand(
+                        "version" to "${project.version}",
+                        "minecraft" to rootProject.libs.versions.minecraft.get(),
+                        "fabricloader" to rootProject.libs.versions.fabricLoader.get(),
+                        "description" to "${project.description}",
+                        "website" to "${ext["website"]}"
+                    )
+                }
+            })
+        }
     }
 }
 

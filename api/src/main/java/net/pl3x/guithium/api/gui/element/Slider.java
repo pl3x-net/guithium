@@ -4,24 +4,21 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Objects;
-import net.pl3x.guithium.api.gui.Screen;
 import net.pl3x.guithium.api.json.JsonObjectWrapper;
 import net.pl3x.guithium.api.key.Key;
-import net.pl3x.guithium.api.player.WrappedPlayer;
-import net.pl3x.guithium.api.util.QuadConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a slider element.
  */
-public class Slider extends LabeledRect<Slider> {
+public class Slider extends LabeledRect<Slider> implements ValueElement<Slider, Double> {
     private Double value;
     private Double min;
     private Double max;
     private String decimal;
 
-    private OnChange onChange = (screen, slider, player, value) -> {
+    private OnChange<Slider, Double> onChange = (screen, slider, player, value) -> {
     };
 
     /**
@@ -62,32 +59,6 @@ public class Slider extends LabeledRect<Slider> {
     @NotNull
     public static Slider of(@NotNull Key key) {
         return new Slider(key);
-    }
-
-    /**
-     * Get the value of this slider.
-     * <p>
-     * If null, default value <code>0</code> will be used.
-     *
-     * @return Slider's value
-     */
-    @Nullable
-    public Double getValue() {
-        return this.value;
-    }
-
-    /**
-     * Set the value of this slider.
-     * <p>
-     * If null, default value <code>0</code> will be used.
-     *
-     * @param value Slider's value
-     * @return This slider
-     */
-    @NotNull
-    public Slider setValue(@Nullable Double value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -170,28 +141,28 @@ public class Slider extends LabeledRect<Slider> {
         return this;
     }
 
-    /**
-     * Get the action to execute when the slider is changed.
-     * <p>
-     * If null, no change action will be used.
-     *
-     * @return OnClick action
-     */
+    @Override
+    @NotNull
+    public Double getValue() {
+        return this.value == null ? 0 : this.value;
+    }
+
+    @Override
+    @NotNull
+    public Slider setValue(@NotNull Double value) {
+        this.value = value;
+        return this;
+    }
+
+    @Override
     @Nullable
-    public OnChange onChange() {
+    public OnChange<Slider, Double> onChange() {
         return this.onChange;
     }
 
-    /**
-     * Set the action to execute when the slider is changed.
-     * <p>
-     * If null, no change action will be used.
-     *
-     * @param onChange OnChange action
-     * @return This slider
-     */
+    @Override
     @NotNull
-    public Slider onChange(@Nullable OnChange onChange) {
+    public Slider onChange(@Nullable OnChange<Slider, Double> onChange) {
         this.onChange = onChange;
         return this;
     }
@@ -248,21 +219,5 @@ public class Slider extends LabeledRect<Slider> {
         slider.setMax(!json.has("max") ? 1D : json.get("max").getAsDouble());
         slider.setDecimalFormat(!json.has("decimal") ? null : json.get("decimal").getAsString());
         return slider;
-    }
-
-    /**
-     * Executable functional interface to fire when a slider is changed.
-     */
-    @FunctionalInterface
-    public interface OnChange extends QuadConsumer<Screen, Slider, WrappedPlayer, Double> {
-        /**
-         * Called when a slider is changed.
-         *
-         * @param screen Active screen where slider was changed
-         * @param slider Slider that was changed
-         * @param player Player that changed the slider
-         * @param value  New value of the slider
-         */
-        void accept(@NotNull Screen screen, @NotNull Slider slider, @NotNull WrappedPlayer player, @NotNull Double value);
     }
 }

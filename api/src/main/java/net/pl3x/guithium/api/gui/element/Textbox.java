@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Represents a textbox element.
  */
-public class Textbox extends Rect<Textbox> {
+public class Textbox extends Rect<Textbox> implements ValueElement<Textbox, String> {
     private String value;
     private Component suggestion;
     private Boolean bordered;
@@ -23,6 +23,9 @@ public class Textbox extends Rect<Textbox> {
     private Boolean editable;
     private Integer textColor;
     private Integer uneditableTextColor;
+
+    private OnChange<Textbox, String> onChange = (screen, textbox, player, value) -> {
+    };
 
     /**
      * Create a new textbox element.
@@ -62,32 +65,6 @@ public class Textbox extends Rect<Textbox> {
     @NotNull
     public static Textbox of(@NotNull Key key) {
         return new Textbox(key);
-    }
-
-    /**
-     * Get the current value for the input.
-     * <p>
-     * If null, default empty {@link String} will be used.
-     *
-     * @return Current input value
-     */
-    @Nullable
-    public String getValue() {
-        return this.value;
-    }
-
-    /**
-     * Set the current value for the input.
-     * <p>
-     * If null, default empty {@link String} will be used.
-     *
-     * @param value Current input value
-     * @return This textbox
-     */
-    @NotNull
-    public Textbox setValue(@Nullable String value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -273,6 +250,32 @@ public class Textbox extends Rect<Textbox> {
     }
 
     @Override
+    @NotNull
+    public String getValue() {
+        return this.value == null ? "" : this.value;
+    }
+
+    @Override
+    @NotNull
+    public Textbox setValue(@NotNull String value) {
+        this.value = value;
+        return this;
+    }
+
+    @Override
+    @Nullable
+    public OnChange<Textbox, String> onChange() {
+        return this.onChange;
+    }
+
+    @Override
+    @NotNull
+    public Textbox onChange(@Nullable OnChange<Textbox, String> onChange) {
+        this.onChange = onChange;
+        return this;
+    }
+
+    @Override
     public boolean equals(@Nullable Object obj) {
         if (!super.equals(obj)) {
             return false;
@@ -285,7 +288,8 @@ public class Textbox extends Rect<Textbox> {
                 && Objects.equals(getMaxLength(), other.getMaxLength())
                 && Objects.equals(isEditable(), other.isEditable())
                 && Objects.equals(getTextColor(), other.getTextColor())
-                && Objects.equals(getUneditableTextColor(), other.getUneditableTextColor());
+                && Objects.equals(getUneditableTextColor(), other.getUneditableTextColor())
+                && Objects.equals(onChange(), other.onChange());
     }
 
     @Override
@@ -299,7 +303,8 @@ public class Textbox extends Rect<Textbox> {
                 getMaxLength(),
                 isEditable(),
                 getTextColor(),
-                getUneditableTextColor()
+                getUneditableTextColor(),
+                onChange()
         );
     }
 
@@ -329,7 +334,7 @@ public class Textbox extends Rect<Textbox> {
         Preconditions.checkArgument(json.has("key"), "Key cannot be null");
         Textbox textbox = new Textbox(Key.of(json.get("key").getAsString()));
         Rect.fromJson(textbox, json);
-        textbox.setValue(!json.has("value") ? null : json.get("value").getAsString());
+        textbox.setValue(!json.has("value") ? "" : json.get("value").getAsString());
         textbox.setSuggestion(!json.has("suggestion") ? null : GsonComponentSerializer.gson().deserialize(json.get("suggestion").getAsString()));
         textbox.setBordered(!json.has("bordered") ? null : json.get("bordered").getAsBoolean());
         textbox.setCanLoseFocus(!json.has("canLoseFocus") ? null : json.get("canLoseFocus").getAsBoolean());

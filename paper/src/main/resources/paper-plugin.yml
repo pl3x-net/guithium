@@ -3,5 +3,5 @@ main: "net.pl3x.guithium.plugin.GuithiumPlugin"
 version: "${version}"
 api-version: "${minecraft}"
 description: "${description}"
-author: "BillyGalbreath"
+authors: [ "BillyGalbreath" ]
 website: "${website}"

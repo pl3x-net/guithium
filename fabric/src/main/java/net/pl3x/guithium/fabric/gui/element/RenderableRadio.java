@@ -9,9 +9,7 @@ import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Radio;
 import net.pl3x.guithium.api.key.Key;
-import net.pl3x.guithium.api.network.Connection;
-import net.pl3x.guithium.api.network.packet.RadioTogglePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
@@ -75,7 +73,7 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
         // update contents
         setMessage(ComponentHelper.toVanilla(getElement().getLabel()));
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
-        this.selected = BooleanUtils.isTrue(getElement().isSelected());
+        this.selected = BooleanUtils.isTrue(getElement().getValue());
 
         // update pos/size
         setX((int) getElement().getPos().getX());
@@ -97,16 +95,19 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
         this.selected = !this.selected;
 
         // make sure the value is actually changed
-        if (Boolean.TRUE.equals(getElement().isSelected()) == selected()) {
+        if (getElement().getValue() == selected()) {
             return;
         }
 
         // toggle this radio
-        getElement().setSelected(selected());
+        getElement().setValue(selected());
 
         // tell the server
-        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(new RadioTogglePacket(this.self.getScreen().getKey(), getElement().getKey(), selected()));
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                selected()
+        ));
 
         // if this radio was toggled off, we're done.
         if (!selected()) {
@@ -138,22 +139,20 @@ public class RenderableRadio extends net.minecraft.client.gui.components.Checkbo
             }
 
             // only toggle it off if it's currently on
-            if (!Boolean.TRUE.equals(otherRadio.isSelected())) {
+            if (!otherRadio.getValue()) {
                 return;
             }
 
             // turn off the other radio
             otherWidget.selected = false;
-            otherRadio.setSelected(false);
+            otherRadio.setValue(false);
 
             // tell the server
-            conn.send(
-                    new RadioTogglePacket(
-                            this.self.getScreen().getKey(),
-                            otherRadio.getKey(),
-                            false
-                    )
-            );
+            conn().send(new ElementChangedValuePacket<>(
+                    this.self.getScreen().getScreen(),
+                    otherRadio,
+                    false
+            ));
         });
     }
 }

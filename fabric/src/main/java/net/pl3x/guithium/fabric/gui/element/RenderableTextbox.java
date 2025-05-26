@@ -7,6 +7,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Textbox;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import net.pl3x.guithium.fabric.util.Numbers;
@@ -55,6 +56,18 @@ public class RenderableTextbox extends EditBox implements RenderableWidget {
 
         // recalculate position on screen
         this.self.calcScreenPos(getWidth(), getHeight());
+
+        setResponder(untrimmedRawNewValue -> {
+            // get the real value, since it might have been trimmed
+            getElement().setValue(getValue());
+            if (getElement().onChange() != null) {
+                conn().send(new ElementChangedValuePacket<>(
+                        this.self.getScreen().getScreen(),
+                        getElement(),
+                        getValue()
+                ));
+            }
+        });
     }
 
     @Override

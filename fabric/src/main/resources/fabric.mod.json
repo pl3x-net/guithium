@@ -10,7 +10,7 @@
   "contact": {
     "homepage": "${website}",
     "sources": "${website}",
-    "issues": "https://github.com/BillyGalbreath/Guithium/issues"
+    "issues": "https://github.com/pl3x-net/guithium/issues"
   },
   "license": "MIT",
   "icon": "assets/guithium/icon.png",

@@ -7,11 +7,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.pl3x.guithium.api.Guithium;
+import net.minecraft.util.Mth;
 import net.pl3x.guithium.api.gui.element.Element;
 import net.pl3x.guithium.api.gui.element.Slider;
-import net.pl3x.guithium.api.network.packet.SliderChangePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import net.pl3x.guithium.fabric.util.Numbers;
@@ -23,6 +22,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
     private Slider slider;
 
     private DecimalFormat decimalFormat;
+    private double lerpedValue;
     private double min;
     private double max;
 
@@ -51,17 +51,13 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
             this.decimalFormat = new DecimalFormat("0.0");
         }
 
-        this.value = Numbers.unbox(getElement().getValue(), 0.0D);
-        if (this.decimalFormat != null) {
-            this.value = Double.parseDouble(this.decimalFormat.format(this.value));
-        }
-        this.value = Numbers.invLerp(this.value, this.min, this.max);
-
         // update contents
         this.min = Numbers.unbox(getElement().getMin(), 0.0D);
         this.max = Numbers.unbox(getElement().getMax(), 1.0D);
-        this.value = Numbers.invLerp(Numbers.unbox(getElement().getValue(), 0.0D), this.min, this.max);
-        updateMessage();
+        double value = Numbers.unbox(getElement().getValue(), 0.0D);
+
+        // let slider handle clamping and formatting
+        setValue(Mth.inverseLerp(value, this.min, this.max));
 
         // update pos/size
         setX((int) getElement().getPos().getX());
@@ -86,7 +82,7 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
         net.kyori.adventure.text.Component label = getElement().getLabel();
         setMessage(label == null ? Component.empty() : ComponentHelper.toVanilla(
                 GsonComponentSerializer.gson().serialize(label)
-                        .replace("{value}", this.decimalFormat.format(this.value))
+                        .replace("{value}", this.decimalFormat.format(this.lerpedValue))
                         .replace("{min}", this.decimalFormat.format(this.min))
                         .replace("{max}", this.decimalFormat.format(this.max))
         ));
@@ -94,24 +90,23 @@ public class RenderableSlider extends AbstractSliderButton implements Renderable
 
     @Override
     protected void applyValue() {
-        double diff = this.max - this.min;
-        double value = (diff * this.value) + this.min;
+        this.lerpedValue = Mth.lerp(this.value, this.min, this.max);
 
         if (this.decimalFormat != null) {
-            value = Double.parseDouble(this.decimalFormat.format(value));
+            // cut precision down
+            this.lerpedValue = Double.parseDouble(this.decimalFormat.format(this.lerpedValue));
         }
 
-        if (value == Numbers.unbox(getElement().getValue(), 0.0D)) {
+        if (this.lerpedValue == Numbers.unbox(getElement().getValue(), 0.0D)) {
+            // value has not changed
             return;
         }
 
-        getElement().setValue(value);
-        ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection().send(
-                new SliderChangePacket(
-                        this.self.getScreen().getScreen().getKey(),
-                        getElement().getKey(),
-                        value
-                )
-        );
+        getElement().setValue(this.lerpedValue);
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                this.lerpedValue
+        ));
     }
 }

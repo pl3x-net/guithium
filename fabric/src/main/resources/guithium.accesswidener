@@ -18,3 +18,5 @@ accessible method net/minecraft/client/gui/components/Checkbox <init> (IIILnet/m
 accessible method net/minecraft/client/gui/components/Checkbox getAdjustedWidth (ILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)I
 accessible method net/minecraft/client/gui/components/Checkbox getAdjustedHeight (Lnet/minecraft/client/gui/Font;)I
 accessible method net/minecraft/client/gui/components/Checkbox getDefaultWidth (Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)I
+
+accessible method net/minecraft/client/gui/components/AbstractSliderButton setValue (D)V

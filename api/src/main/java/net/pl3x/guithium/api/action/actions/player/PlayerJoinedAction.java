@@ -3,11 +3,12 @@ package net.pl3x.guithium.api.action.actions.player;
 import java.util.ArrayList;
 import java.util.List;
 import net.pl3x.guithium.api.action.RegisteredHandler;
+import net.pl3x.guithium.api.network.packet.HelloPacket;
 import net.pl3x.guithium.api.player.WrappedPlayer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Action that fires when a player joins the server.
+ * Action that fires when a player joins the server and responds to the {@link HelloPacket}.
  * <p>
  * This is different from Bukkit's PlayerJoinEvent because with this action
  * the player is guaranteed to be ready to receive packets from the server.
@@ -16,7 +17,7 @@ public class PlayerJoinedAction extends PlayerAction {
     private static final List<RegisteredHandler> handlers = new ArrayList<>();
 
     /**
-     * Create a new action for when a player joins the server.
+     * Create a new action for when a player responds to the {@link HelloPacket}.
      *
      * @param player Player that performed the action
      */

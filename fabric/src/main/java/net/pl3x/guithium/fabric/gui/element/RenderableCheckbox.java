@@ -5,12 +5,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.resources.ResourceLocation;
-import net.pl3x.guithium.api.Guithium;
 import net.pl3x.guithium.api.gui.element.Checkbox;
 import net.pl3x.guithium.api.gui.element.Element;
-import net.pl3x.guithium.api.network.Connection;
-import net.pl3x.guithium.api.network.packet.CheckboxTogglePacket;
-import net.pl3x.guithium.fabric.GuithiumMod;
+import net.pl3x.guithium.api.network.packet.ElementChangedValuePacket;
 import net.pl3x.guithium.fabric.gui.screen.AbstractScreen;
 import net.pl3x.guithium.fabric.util.ComponentHelper;
 import org.apache.commons.lang3.BooleanUtils;
@@ -68,7 +65,7 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         // update contents
         setMessage(ComponentHelper.toVanilla(getElement().getLabel()));
         setTooltip(Tooltip.create(ComponentHelper.toVanilla(getElement().getTooltip())));
-        this.selected = BooleanUtils.isTrue(getElement().isSelected());
+        this.selected = BooleanUtils.isTrue(getElement().getValue());
 
         // update pos/size
         setX((int) getElement().getPos().getX());
@@ -91,21 +88,18 @@ public class RenderableCheckbox extends net.minecraft.client.gui.components.Chec
         this.selected = !selected();
 
         // make sure the value is actually changed
-        if (Boolean.TRUE.equals(getElement().isSelected()) == selected()) {
+        if (getElement().getValue() == selected()) {
             return;
         }
 
         // toggle this checkbox
-        getElement().setSelected(selected());
+        getElement().setValue(selected());
 
         // tell the server
-        Connection conn = ((GuithiumMod) Guithium.api()).getNetworkHandler().getConnection();
-        conn.send(
-                new CheckboxTogglePacket(
-                        this.self.getScreen().getKey(),
-                        getElement().getKey(),
-                        selected()
-                )
-        );
+        conn().send(new ElementChangedValuePacket<>(
+                this.self.getScreen().getScreen(),
+                getElement(),
+                selected()
+        ));
     }
 }
