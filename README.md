@@ -24,7 +24,7 @@ clients.</b></big>
 
 ## Links
 
-* **Documentation: https://pl3x-net.github.io/guithium/**
+* **Documentation: https://guithium.pl3x.net/**
 * Downloads: https://modrinth.com/project/guithium/
 * Maven Repo: https://repo.pl3x.net/#/public/net/pl3x/guithium/guithium-api/
 * Javadoc: https://jd.pl3x.net/net/pl3x/guithium/guithium-api/latest/

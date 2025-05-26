@@ -1,9 +1,9 @@
 title: Guithium
 description: A starter template for a Jeykll site using the Just the Docs theme!
-domain: billygalbreath.github.io
-url: https://billygalbreath.github.io
-baseurl: "/guithium"
-github_username: billygalbreath
+github_username: pl3x-net
+domain: github.pl3x.net
+url: https://github.pl3x.net/
+baseurl: ""
 
 # https://just-the-docs.com/docs
 theme: just-the-docs
@@ -33,7 +33,7 @@ nav_enabled: true
 # External navigation links
 nav_external_links:
   - title: Source Code
-    url: https://github.com/billygalbreath/guithium/
+    url: https://github.com/pl3x-net/guithium/
     image: "/assets/images/logos.svg#github"
     alt: "View source on GitHub"
     hide_icon: false
@@ -108,7 +108,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true # show or hide edit this page link
 gh_edit_link_text: "Edit this page on GitHub."
-gh_edit_repository: "https://github.com/billygalbreath/guithium" # the GitHub URL for your repo
+gh_edit_repository: "https://github.com/pl3x-net/guithium" # the GitHub URL for your repo
 gh_edit_branch: "master" # the branch that your docs is served from
 gh_edit_source: "docs" # the source that your files originate from
 gh_edit_view_mode: "edit" # "tree" or "edit" if you want the user to jump into the editor immediately
