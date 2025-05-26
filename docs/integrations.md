@@ -6,7 +6,7 @@ has_toc: false
 
 ## Integrations
 
-Here is a list of known plugins that utilize the Guithium API to provide their users a better experience.
+Here is a list of known plugins that utilize the Guithium API to provide their users a better GUI experience.
 
 | Plugin          |                                                                                                                                                             Links |
 |:----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
