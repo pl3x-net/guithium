@@ -117,7 +117,7 @@ The compiled jar will be in `./build/libs/`
 [Purpur Url]: https://purpurmc.org/
 [Fabric Url]: https://fabricmc.net/
 [Fabric API Url]: https://modrinth.com/mod/fabric-api
-[GuithiumExample Url]: https://github.com/BillyGalbreath/GuithiumExample
+[GuithiumExample Url]: https://github.com/pl3x-net/GuithiumExample
 [JDK 21 Url]: https://www.oracle.com/java/technologies/downloads/#java21
 [GitHub Url]: https://github.com/pl3x-net/guithium
 
